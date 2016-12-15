@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.CSharp", "Trader.CSharp.csproj", "{B40E7440-B35A-7DD7-22F8-0238AFA41367}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.CSharp.Editor", "Trader.CSharp.Editor.csproj", "{BED8FB6D-CDDF-8119-0BDD-51B2A8E49E87}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B40E7440-B35A-7DD7-22F8-0238AFA41367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B40E7440-B35A-7DD7-22F8-0238AFA41367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B40E7440-B35A-7DD7-22F8-0238AFA41367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B40E7440-B35A-7DD7-22F8-0238AFA41367}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED8FB6D-CDDF-8119-0BDD-51B2A8E49E87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED8FB6D-CDDF-8119-0BDD-51B2A8E49E87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED8FB6D-CDDF-8119-0BDD-51B2A8E49E87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED8FB6D-CDDF-8119-0BDD-51B2A8E49E87}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
