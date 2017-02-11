@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using CodeControl;
 
-public class StationModel {
+public class StationModel: Model {
 
     public string name;
 
@@ -12,8 +13,8 @@ public class StationModel {
 
     public float capacity;
 
-    public float spaceLeft;
+    public float money = 1000;
 
-    public List<Items> items;
+    public Factory factory;
 
 }
