@@ -7,13 +7,16 @@ public class StationModel: Model {
 
     public string name;
 
-    StructureTypes type = StructureTypes.Station;
+    StructureType type = StructureType.Station;
 
     public Vector3 position;
 
-    public float capacity;
+    public ModelRefs<ShipModel> incomingShips = new ModelRefs<ShipModel>();
 
-    public float money = 1000;
+    public float capacity;
+    public Color color;
+    public float money = 50000;
+    public float runningCost = 1f;
 
     public Factory factory;
 

@@ -103,10 +103,12 @@
     <Compile Include="Assets\SFSoftShadows\SFSoftShadowDemos\DemoPrefabs\Spinner.cs" />
     <Compile Include="Assets\SFSoftShadows\SFSoftShadowDemos\ForestArtwork-Kenney\FlickerLight.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\CameraController.cs" />
+    <Compile Include="Assets\_Game\Scripts\Controllers\ShipController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\StationController.cs" />
     <Compile Include="Assets\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Factory.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Items.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\Polar2.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Types.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\ShipModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\StationModel.cs" />

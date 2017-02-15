@@ -23,8 +23,8 @@ public class CameraController : MonoBehaviour {
         float moveModifier = camMoveSpeed * mainCam.orthographicSize;
         mainCam.orthographicSize += Input.GetAxis("Mouse ScrollWheel") * -zoomSpeed * moveModifier;
 
-        float transX = Input.GetAxis("Horizontal") * moveModifier * Time.deltaTime;
-        float transY = Input.GetAxis("Vertical") * moveModifier * Time.deltaTime;
+        float transX = Input.GetAxis("Horizontal") * moveModifier * Time.deltaTime / Time.timeScale;
+        float transY = Input.GetAxis("Vertical") * moveModifier * Time.deltaTime / Time.timeScale;
 
         Camera.main.transform.Translate(new Vector3(transX, transY));
 
