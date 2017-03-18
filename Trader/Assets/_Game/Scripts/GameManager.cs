@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
     internal int statsDisplay = 0;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 
         data = new GameDataModel();
         data.ships = new ModelRefs<ShipModel>();

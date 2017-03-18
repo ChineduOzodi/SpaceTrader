@@ -115,13 +115,15 @@
     <Compile Include="Assets\_Game\Scripts\Controllers\ShipController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\SolarController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\StationController.cs" />
+    <Compile Include="Assets\_Game\Scripts\CreateGalaxy.cs" />
     <Compile Include="Assets\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\ColorTypeConverter.cs" />
-    <Compile Include="Assets\_Game\Scripts\Helpers\CreateGalaxy.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\Coord.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\DataGraph.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Date.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Factory.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\FresNoise.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\Heap.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Items.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Mathd.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\NameGen.cs" />
@@ -141,6 +143,10 @@
     <Compile Include="Assets\_Game\Scripts\Models\SolarModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\StationModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\StructureModel.cs" />
+    <Compile Include="Assets\_Game\Scripts\Node.cs" />
+    <Compile Include="Assets\_Game\Scripts\PathRequestManager.cs" />
+    <Compile Include="Assets\_Game\Scripts\Pathfinding.cs" />
+    <Compile Include="Assets\_Game\Scripts\Unit.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\CodeControl\changelog.txt" />

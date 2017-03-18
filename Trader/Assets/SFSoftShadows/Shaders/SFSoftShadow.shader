@@ -47,14 +47,14 @@
 				
 				struct VertexInput {
 					float3 position : POSITION;
-					float2 texCoord : TEXCOORD0;
+					float2 texVector2 : TEXCOORD0;
 					float4 color : COLOR;
 				};
 				
 				struct VertexOutput {
 					float4 position : SV_POSITION;
-					float2 texCoord : TEXCOORD0;
-					float4 lightCoord : TEXCOORD1;
+					float2 texVector2 : TEXCOORD0;
+					float4 lightVector2 : TEXCOORD1;
 					float4 color : COLOR;
 				};
 				
@@ -66,37 +66,37 @@
 					#endif
 					
 #if !UNITY_UV_STARTS_AT_TOP
-					float4 shadowCoord = position;
+					float4 shadowVector2 = position;
 #else
 					// Unity does some magic crap to the projection matrix for DirectX
 					// Can't trust it because you can't detect when it applies workarounds to it.
-					float4 shadowCoord = mul(mul(_SFProjection, UNITY_MATRIX_MV), float4(v.position, 1.0));
+					float4 shadowVector2 = mul(mul(_SFProjection, UNITY_MATRIX_MV), float4(v.position, 1.0));
 					
 					#if defined(PIXELSNAP_ON)
-					shadowCoord = UnityPixelSnap(shadowCoord);
+					shadowVector2 = UnityPixelSnap(shadowVector2);
 					#endif
 #endif
 					
 					VertexOutput o = {
 						position,
-						TRANSFORM_TEX(v.texCoord, _MainTex),
-						0.5*(shadowCoord + shadowCoord.w),
+						TRANSFORM_TEX(v.texVector2, _MainTex),
+						0.5*(shadowVector2 + shadowVector2.w),
 						v.color,
 					};
 
 					// If you're on DirectX, using Full Screen Image Effects, AND have certain anti-aliasing settings,
 					// you may need to manually flip your UV coordinates to account for DirectX flipping issues.
 					// If so, uncomment this line:
-					//o.texCoord.y = 1.0 - o.texCoord.y;
+					//o.texVector2.y = 1.0 - o.texVector2.y;
 
 					return o;
 				}
 				
 				fixed4 FShader(VertexOutput v) : SV_Target {
-					fixed4 color = v.color*tex2D(_MainTex, v.texCoord);
+					fixed4 color = v.color*tex2D(_MainTex, v.texVector2);
 					
-					fixed3 l0 = tex2Dproj(_SFLightMap, UNITY_PROJ_COORD(v.lightCoord)).rgb;
-					fixed3 l1 = tex2Dproj(_SFLightMapWithShadows, UNITY_PROJ_COORD(v.lightCoord)).rgb;
+					fixed3 l0 = tex2Dproj(_SFLightMap, UNITY_PROJ_COORD(v.lightVector2)).rgb;
+					fixed3 l1 = tex2Dproj(_SFLightMapWithShadows, UNITY_PROJ_COORD(v.lightVector2)).rgb;
 					fixed3 light = lerp(l0, l1, _SoftHardMix) + _Glow;
 					color.rgb *= light*_SFGlobalDynamicRange*color.a;
 					

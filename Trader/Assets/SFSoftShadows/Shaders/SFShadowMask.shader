@@ -15,7 +15,7 @@
 				float _GlobalSoftening;
 				
 				struct VertexInput {
-					float3 occluderCoord_radius : POSITION;
+					float3 occluderVector2_radius : POSITION;
 					float3 segmentA_soften : TEXCOORD0;
 					float2 segmentB : TEXCOORD1;
 				};
@@ -38,8 +38,8 @@
 					// Can't multiply by 1.0 because it is optimized away by the Cg compiler. -_-
 					const float BIZARRE_BUG_WORKAROUND = 1.0 + 1e-5;
 					
-					float2 occluderCoord = v.occluderCoord_radius.xy;
-					float radius = max(1e-5, v.occluderCoord_radius.z)*BIZARRE_BUG_WORKAROUND;
+					float2 occluderVector2 = v.occluderVector2_radius.xy;
+					float radius = max(1e-5, v.occluderVector2_radius.z)*BIZARRE_BUG_WORKAROUND;
 					
 					float2 segmentA = v.segmentA_soften.xy;
 					float2 segmentB = v.segmentB;
@@ -48,9 +48,9 @@
 					float2 lightOffsetA = float2(-radius,  radius)*normalize(segmentA).yx;
 					float2 lightOffsetB = float2( radius, -radius)*normalize(segmentB).yx;
 					
-					float2 position = lerp(segmentA, segmentB, occluderCoord.x);
-					float2 projectionOffset = lerp(lightOffsetA, lightOffsetB, occluderCoord.x);
-					float4 projected = float4(position - projectionOffset*occluderCoord.y, 0.0, 1.0 - occluderCoord.y);
+					float2 position = lerp(segmentA, segmentB, occluderVector2.x);
+					float2 projectionOffset = lerp(lightOffsetA, lightOffsetB, occluderVector2.x);
+					float4 projected = float4(position - projectionOffset*occluderVector2.y, 0.0, 1.0 - occluderVector2.y);
 					
 					// Output values
 					float4 clipPosition = mul(UNITY_MATRIX_MVP, projected);

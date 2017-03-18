@@ -24,7 +24,7 @@ public class CreateGalaxy : MonoBehaviour {
 
     internal SolarModel[] stars;
 
-    private void Start()
+    private void Awake()
     {
         CreateStars(starCount);
         LoadStars();

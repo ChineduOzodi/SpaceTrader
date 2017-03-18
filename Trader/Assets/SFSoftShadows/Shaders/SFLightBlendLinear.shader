@@ -24,7 +24,7 @@
 				
 				struct VertexOutput {
 					float4 position : SV_POSITION;
-					float2 texCoord : TEXCOORD0;
+					float2 texVector2 : TEXCOORD0;
 					float4 color : COLOR;
 				};
 				
@@ -37,7 +37,7 @@
 				}
 				
 				fixed4 FShader(VertexOutput v) : SV_Target {
-					return fixed4(v.color.rgb*tex2D(_MainTex, v.texCoord).aaa, 1.0);
+					return fixed4(v.color.rgb*tex2D(_MainTex, v.texVector2).aaa, 1.0);
 				}
 			ENDCG
 		}

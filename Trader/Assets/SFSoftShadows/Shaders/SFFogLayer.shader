@@ -30,32 +30,32 @@
 				
 				struct VertexInput {
 					float3 position : POSITION;
-					float2 texCoord : TEXCOORD0;
+					float2 texVector2 : TEXCOORD0;
 				};
 				
 				struct VertexOutput {
 					float4 position : SV_POSITION;
-					float4 lightCoord : TEXCOORD1;
+					float4 lightVector2 : TEXCOORD1;
 				};
 				
 				VertexOutput VShader(VertexInput v){
 					float4 position = mul(UNITY_MATRIX_MVP, float4(v.position, 1.0));
 					
 #if !UNITY_UV_STARTS_AT_TOP
-					float4 shadowCoord = position;
+					float4 shadowVector2 = position;
 #else
 					// Unity does some magic crap to the projection matrix for DirectX
 					// Can't trust it because you can't detect when it applies workarounds to it.
-					float4 shadowCoord = mul(mul(_SFProjection, UNITY_MATRIX_MV), float4(v.position, 1.0));
+					float4 shadowVector2 = mul(mul(_SFProjection, UNITY_MATRIX_MV), float4(v.position, 1.0));
 #endif
 					
-					VertexOutput o = {position, 0.5*(shadowCoord + shadowCoord.w)};
+					VertexOutput o = {position, 0.5*(shadowVector2 + shadowVector2.w)};
 					return o;
 				}
 				
 				fixed4 FShader(VertexOutput v) : SV_Target {
-					half3 l0 = tex2Dproj(_SFLightMap, UNITY_PROJ_COORD(v.lightCoord)).rgb;
-					half3 l1 = tex2Dproj(_SFLightMapWithShadows, UNITY_PROJ_COORD(v.lightCoord)).rgb;
+					half3 l0 = tex2Dproj(_SFLightMap, UNITY_PROJ_COORD(v.lightVector2)).rgb;
+					half3 l1 = tex2Dproj(_SFLightMapWithShadows, UNITY_PROJ_COORD(v.lightVector2)).rgb;
 					half3 scatter = _Scatter.rgb*lerp(l0, l1, _Scatter.a);
 					
 					return half4(_FogColor.rgb*_FogColor.a + scatter, _FogColor.a);
