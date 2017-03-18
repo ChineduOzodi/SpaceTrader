@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>07ae11cb-cc40-4b5c-aa83-a7b06140b3be</Id>
+  <name>Posharpers Samand Chi</name>
+  <money>4710</money>
+  <stations />
+  <ships />
+</CreatureModel>

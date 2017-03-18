@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b0fd5a74-7b23-40ef-929f-165b212ef2f2</Id>
+  <name>Studds Exbelua</name>
+  <money>9390.861</money>
+  <stations />
+  <ships />
+</CreatureModel>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>9c20a7c9-12d0-4ea3-9207-ce087bc7d623</Id>
+  <name>Orricelly Lobold War</name>
+  <money>2834.901</money>
+  <stations />
+  <ships />
+</CreatureModel>

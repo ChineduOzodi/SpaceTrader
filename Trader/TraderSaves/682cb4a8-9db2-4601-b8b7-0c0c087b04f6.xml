@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>682cb4a8-9db2-4601-b8b7-0c0c087b04f6</Id>
+  <name>Joan Hounder Ra</name>
+  <money>3113.9375</money>
+  <stations>
+    <Id>5ff46f53-d1f6-47c0-914f-dd239150f706</Id>
+  </stations>
+  <ships />
+</CreatureModel>

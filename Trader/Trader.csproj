@@ -113,8 +113,12 @@
     <Compile Include="Assets\SFSoftShadows\SFSoftShadowDemos\ForestArtwork-Kenney\FlickerLight.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\CameraController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\ShipController.cs" />
+    <Compile Include="Assets\_Game\Scripts\Controllers\SolarController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\StationController.cs" />
     <Compile Include="Assets\_Game\Scripts\GameManager.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\ColorTypeConverter.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\CreateGalaxy.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\DataGraph.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Date.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Factory.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\FresNoise.cs" />
@@ -124,14 +128,19 @@
     <Compile Include="Assets\_Game\Scripts\Helpers\NamesStrings.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Polar2.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\ShipCreator.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\SolarBody.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\Stat.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\StationCreator.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Types.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Units.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Vector2d.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Vector3d.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\CreatureModel.cs" />
+    <Compile Include="Assets\_Game\Scripts\Models\GameDataModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\ShipModel.cs" />
+    <Compile Include="Assets\_Game\Scripts\Models\SolarModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\StationModel.cs" />
+    <Compile Include="Assets\_Game\Scripts\Models\StructureModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\CodeControl\changelog.txt" />

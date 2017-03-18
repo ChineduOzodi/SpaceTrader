@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>22f9632a-dd6a-4f51-986b-f6eae56c1186</Id>
+  <name>Lafalce Azard Demo</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

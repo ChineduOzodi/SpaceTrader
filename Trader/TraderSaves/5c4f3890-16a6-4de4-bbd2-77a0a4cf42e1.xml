@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>5c4f3890-16a6-4de4-bbd2-77a0a4cf42e1</Id>
+  <name>Rittley Ridertaker</name>
+  <money>1538791.75</money>
+  <stations>
+    <Id>be21cafc-3148-4078-a45d-f74bdbb31c93</Id>
+  </stations>
+  <ships />
+</CreatureModel>

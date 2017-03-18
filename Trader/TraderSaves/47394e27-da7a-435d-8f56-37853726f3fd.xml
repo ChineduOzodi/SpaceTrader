@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>47394e27-da7a-435d-8f56-37853726f3fd</Id>
+  <name>Rangelly Ice Soldier</name>
+  <money>887997.438</money>
+  <stations>
+    <Id>7e51f78b-0167-4717-ac53-a4f0d6aab568</Id>
+  </stations>
+  <ships />
+</CreatureModel>

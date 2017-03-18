@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>281b1090-2619-4d62-b785-7f813a33bb8e</Id>
+  <name>Chrison Lullahanti</name>
+  <money>23540</money>
+  <stations />
+  <ships />
+</CreatureModel>

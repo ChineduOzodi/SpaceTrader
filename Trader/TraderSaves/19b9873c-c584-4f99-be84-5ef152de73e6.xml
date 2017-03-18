@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>19b9873c-c584-4f99-be84-5ef152de73e6</Id>
+  <name>Gundquiste Doods Wing Pot</name>
+  <money>5554.40625</money>
+  <stations>
+    <Id>c8f0ab22-3ed7-46d6-87ee-e8153879e4b5</Id>
+  </stations>
+  <ships />
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>46d7efe8-2898-410b-8d48-1ea5b5ed9f58</Id>
+  <name>Matteryl Earth Elementas</name>
+  <money>54283.3242</money>
+  <stations />
+  <ships>
+    <Id>62eb0847-c3ea-40f1-af3c-46d02d9cf42e</Id>
+  </ships>
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>28a4fd78-04b0-4cca-83b2-81d57abd7f50</Id>
+  <name>Feightfoot Skeletone Soldi</name>
+  <money>92639.68</money>
+  <stations />
+  <ships>
+    <Id>75858470-5e69-476d-b095-e8f8c2f934ba</Id>
+  </ships>
+</CreatureModel>

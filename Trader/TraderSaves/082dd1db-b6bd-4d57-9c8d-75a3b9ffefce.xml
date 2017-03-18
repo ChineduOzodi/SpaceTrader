@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>082dd1db-b6bd-4d57-9c8d-75a3b9ffefce</Id>
+  <name>Kostmayes Gryphon</name>
+  <money>1034135.69</money>
+  <stations>
+    <Id>5cdb95cc-6526-4d95-b28a-7f0a27372e5a</Id>
+  </stations>
+  <ships />
+</CreatureModel>

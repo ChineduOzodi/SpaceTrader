@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>2b828279-a926-471a-beb7-36bce832cdc6</Id>
+  <name>Josepharle Gressilia</name>
+  <money>319455.469</money>
+  <stations>
+    <Id>814c96fe-3593-44c4-ae55-4649e541cf86</Id>
+  </stations>
+  <ships />
+</CreatureModel>

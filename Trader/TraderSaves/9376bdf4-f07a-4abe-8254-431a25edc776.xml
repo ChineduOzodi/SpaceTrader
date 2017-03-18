@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>9376bdf4-f07a-4abe-8254-431a25edc776</Id>
+  <name>Udally Sephyr</name>
+  <money>102291.438</money>
+  <stations>
+    <Id>df464476-b7c4-45b8-8fac-ef3f0f8f5711</Id>
+  </stations>
+  <ships />
+</CreatureModel>

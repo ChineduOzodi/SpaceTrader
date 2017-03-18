@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>446242d5-926f-4a9f-80cb-0401695c961f</Id>
+  <name>Kohl Talon Lordiant </name>
+  <money>56352.9844</money>
+  <stations>
+    <Id>7ebdc5e1-c4fb-4b1e-91e3-b29c4f35024a</Id>
+  </stations>
+  <ships />
+</CreatureModel>

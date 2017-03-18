@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>09a9395b-3ba5-4f9e-a9c6-a2cc56239fb9</Id>
+  <name>Mcnulty Starfish</name>
+  <money>96669.16</money>
+  <stations>
+    <Id>aba55207-f21e-4b8b-a1f9-3a0cc83b6d0a</Id>
+  </stations>
+  <ships />
+</CreatureModel>

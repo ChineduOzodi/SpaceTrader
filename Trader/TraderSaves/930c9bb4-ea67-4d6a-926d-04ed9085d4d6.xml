@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>930c9bb4-ea67-4d6a-926d-04ed9085d4d6</Id>
+  <name>Rangmeisis Ice Wriging Swo</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

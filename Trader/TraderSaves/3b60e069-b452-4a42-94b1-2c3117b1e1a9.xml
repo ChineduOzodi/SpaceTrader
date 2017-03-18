@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>3b60e069-b452-4a42-94b1-2c3117b1e1a9</Id>
+  <name>Susan Adulociant</name>
+  <money>2225668.25</money>
+  <stations>
+    <Id>9488547d-4851-4fcc-928d-ccf6bc02682c</Id>
+  </stations>
+  <ships />
+</CreatureModel>

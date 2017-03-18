@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>4563cafa-0270-42e7-b1ad-1cc9eb954f91</Id>
+  <name>Cooperstan Chimerachl</name>
+  <money>10718</money>
+  <stations>
+    <Id>0c200e53-f7d0-41f4-b7c6-0a77c747532f</Id>
+  </stations>
+  <ships />
+</CreatureModel>

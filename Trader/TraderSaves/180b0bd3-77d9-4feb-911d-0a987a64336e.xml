@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>180b0bd3-77d9-4feb-911d-0a987a64336e</Id>
+  <name>Kellegle Vile Dragora</name>
+  <money>120007.344</money>
+  <stations />
+  <ships>
+    <Id>85155a70-bf18-4650-81af-84b77ef27143</Id>
+  </ships>
+</CreatureModel>

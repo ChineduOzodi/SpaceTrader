@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>6b5b86a1-a455-4ecf-9d91-43737d40437a</Id>
+  <name>Hefner Jell Knuck</name>
+  <money>2365752.25</money>
+  <stations>
+    <Id>d520da9a-a415-4170-8a74-f8a3bccc8977</Id>
+  </stations>
+  <ships />
+</CreatureModel>

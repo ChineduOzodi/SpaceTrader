@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>98c10863-46bc-4aa9-8ea8-36ff603e1fb1</Id>
+  <name>Lott Wise Systerachn</name>
+  <money>435128.563</money>
+  <stations>
+    <Id>92564785-4baf-4e0c-8a0c-3a41905b9979</Id>
+  </stations>
+  <ships />
+</CreatureModel>

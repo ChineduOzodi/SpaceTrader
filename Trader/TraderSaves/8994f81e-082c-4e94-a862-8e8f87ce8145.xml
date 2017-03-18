@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>8994f81e-082c-4e94-a862-8e8f87ce8145</Id>
+  <name>Defazio Tiamaerachnid</name>
+  <money>547167.438</money>
+  <stations />
+  <ships />
+</CreatureModel>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>0c5b3235-5377-4524-bf0c-24996e32d03b</Id>
+  <name>Sidney Super Knight Ra</name>
+  <money>1778.84656</money>
+  <stations />
+  <ships />
+</CreatureModel>

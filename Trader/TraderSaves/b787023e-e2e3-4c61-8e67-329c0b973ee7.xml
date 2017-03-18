@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b787023e-e2e3-4c61-8e67-329c0b973ee7</Id>
+  <name>Levingello Karstera Worm C</name>
+  <money>8603.536</money>
+  <stations />
+  <ships />
+</CreatureModel>

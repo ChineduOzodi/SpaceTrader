@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>27740615-b148-4589-9039-7a768e527c6d</Id>
+  <name>Young Yuan</name>
+  <money>4379.25635</money>
+  <stations />
+  <ships />
+</CreatureModel>

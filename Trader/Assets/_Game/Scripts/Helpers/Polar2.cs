@@ -32,6 +32,12 @@ public struct Polar2
         angle = polar.angle;
         radius = polar.radius;
     }
+
+    //--------------Static Fields-------------------//
+    public static Polar2 zero
+    {
+        get { return new Polar2(0, 0); }
+    }
     //--------------Static Functions----------------//
     /// <summary>
     /// the angle difference from angle1 to angle2 (in radians)

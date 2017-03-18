@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>bd9a21e5-66e9-4f3d-9175-9d17f86baf84</Id>
+  <name>Armeyerson Salt</name>
+  <money>217.828125</money>
+  <stations>
+    <Id>159603e7-9692-40d3-a7e6-79f3d66cb533</Id>
+  </stations>
+  <ships />
+</CreatureModel>

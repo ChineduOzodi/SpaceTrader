@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>c83e50c7-3b2b-4000-98f6-7bad8b1aaefa</Id>
+  <name>Sikorski Octos Auri</name>
+  <money>4334270.5</money>
+  <stations>
+    <Id>9a32351b-4ceb-4da8-9038-557f5f1d6315</Id>
+    <Id>613a4808-4851-493a-a0d6-87a737f62d74</Id>
+    <Id>3d85fe4d-44ee-4e0e-a446-a5885f20c930</Id>
+    <Id>037fd07b-0ae0-4196-a22d-511dc28516be</Id>
+  </stations>
+  <ships />
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>70776f2c-eb83-44c5-9646-8d5f34e592f9</Id>
+  <name>Coughlinga Rimerachlingel </name>
+  <money>306258.031</money>
+  <stations>
+    <Id>f4a0f9f0-a453-4f4c-9454-6f9ba64ba4a1</Id>
+  </stations>
+  <ships />
+</CreatureModel>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>ee28b125-f24c-4830-8bd2-6dbc0e76c0b4</Id>
+  <name>Maxinen Pyrodragon</name>
+  <money>2879.17285</money>
+  <stations />
+  <ships />
+</CreatureModel>

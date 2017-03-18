@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>d6781849-8550-4dc0-9fb6-c6b01c560f35</Id>
+  <name>Yatrombest Mithost Ogre</name>
+  <money>170409.313</money>
+  <stations>
+    <Id>c4dc54bc-9bda-4606-a49e-539314876fde</Id>
+  </stations>
+  <ships />
+</CreatureModel>

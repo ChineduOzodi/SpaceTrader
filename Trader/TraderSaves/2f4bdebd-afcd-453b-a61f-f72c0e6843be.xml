@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>2f4bdebd-afcd-453b-a61f-f72c0e6843be</Id>
+  <name>Ortinen Sasquatch</name>
+  <money>64956.1875</money>
+  <stations />
+  <ships />
+</CreatureModel>

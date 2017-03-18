@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>70eaaca5-8582-428d-aca5-f8b369e12e9d</Id>
+  <name>Stokes Dark Spected</name>
+  <money>3590</money>
+  <stations />
+  <ships />
+</CreatureModel>

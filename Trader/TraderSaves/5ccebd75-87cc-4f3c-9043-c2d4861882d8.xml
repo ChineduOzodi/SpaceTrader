@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>5ccebd75-87cc-4f3c-9043-c2d4861882d8</Id>
+  <name>Sherwoody Beetle Dra</name>
+  <money>69185.41</money>
+  <stations />
+  <ships>
+    <Id>c9e8f250-9b34-416c-ac91-31b31540d6bd</Id>
+  </ships>
+</CreatureModel>

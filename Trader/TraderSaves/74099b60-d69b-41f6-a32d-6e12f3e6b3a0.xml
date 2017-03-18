@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>74099b60-d69b-41f6-a32d-6e12f3e6b3a0</Id>
+  <name>Thorntos Efresses</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

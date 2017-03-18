@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>3bad0ceb-ba0e-4753-bbc2-2be0ec4aee0a</Id>
+  <name>Newt Poise Soldier</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

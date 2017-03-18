@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Text.RegularExpressions;
 
 [Serializable]
 public class NameGen {
 
-    private int order = 2;
-    public int maxLen = 25;
+    private int order = 3;
+    public int maxLen = 15;
     public int wordMaxLen = 10;
     public string maleFirstNames;
     public string worldNames;
@@ -21,8 +22,8 @@ public class NameGen {
     // Use this for initialization
     public NameGen() {
 
-        maleFirstNames = GetMaleFirstNames();
-        worldNames = GetWorldNames();
+        maleFirstNames = NamesStrings.maleNames;
+        worldNames = NamesStrings.planetNames;
         regionNames = GetRegionNames();
 
         worldNameTable = Load(worldNames, order);
@@ -33,20 +34,14 @@ public class NameGen {
 
     public string GenerateWorldName(string seed = null)
     {
-        if (seed == null || seed == "")
-            seed = Time.time.ToString();
         return GenerateName(worldNameTable,seed);
     }
     public string GenerateRegionName(string seed = null)
     {
-        if (seed == null || seed == "")
-            seed = Time.time.ToString();
         return GenerateName(regionNameTable,seed);
     }
     public string GenerateMaleFirstName(string seed = null)
     {
-        if (seed == null || seed == "")
-            seed = Time.time.ToString();
         return GenerateName(maleFirstNameTable,seed);
     }
     /// <summary>
@@ -69,17 +64,19 @@ public class NameGen {
 
         foreach (string s in namesAr)
         {
-            for (int i = 0; i < s.Length - ord; i++)
+            string newS = Regex.Replace(s.Trim(), @"\b(\w)", m => m.Value.ToUpper());
+
+            for (int i = 0; i < newS.Length - ord; i++)
             {
-                string tableKey = s.Substring(i,ord);
+                string tableKey = newS.Substring(i,ord);
                 try
                 {
-                    table[tableKey].Add(s[i + ord]);
+                    table[tableKey].Add(newS[i + ord]);
                 }
                 catch (KeyNotFoundException)
                 {
                     table[tableKey] = new List<char>();
-                    table[tableKey].Add(s[i + ord]);
+                    table[tableKey].Add(newS[i + ord]);
                 }
                 
             }
@@ -131,10 +128,11 @@ public class NameGen {
 
         string selectedKey = "" ;
 
-        if (seed == null)
-            seed = Time.time.ToString();
+        System.Random randNum = new System.Random();
+        if (seed != null && seed != "")
+            randNum = new System.Random(seed.GetHashCode());
 
-        System.Random randNum = new System.Random(seed.GetHashCode());
+
         int actualNum = randNum.Next(keyList.Count);
         selectedKey = keyList[actualNum];
 
@@ -149,11 +147,6 @@ public class NameGen {
         return selectedChar;
     }
 
-    private string GetMaleFirstNames()
-    {
-        string names = "Bob, Matthew, Chinedu, Daniel, Emanuel, Aaron, Jonathan";
-        return names;
-    }
     private string GetRegionNames()
     {
         string names = GetWorldNames();

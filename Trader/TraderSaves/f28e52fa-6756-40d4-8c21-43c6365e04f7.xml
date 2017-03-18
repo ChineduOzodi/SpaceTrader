@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>f28e52fa-6756-40d4-8c21-43c6365e04f7</Id>
+  <name>Gingstones Mummy</name>
+  <money>873283.9</money>
+  <stations />
+  <ships />
+</CreatureModel>

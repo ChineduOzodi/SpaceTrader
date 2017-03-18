@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>9fb8975e-55f4-41c1-8fe7-f3f0483dbe11</Id>
+  <name>Valensoeld The Needle Demo</name>
+  <money>88014.1953</money>
+  <stations />
+  <ships>
+    <Id>fccf9622-188f-4ec8-9109-6c3b29a8260e</Id>
+  </ships>
+</CreatureModel>

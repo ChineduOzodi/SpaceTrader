@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>55b6bf5b-716d-4bb6-8ccb-1239be4a3aa2</Id>
+  <name>Hefner Jellyfish</name>
+  <money>70069.82</money>
+  <stations />
+  <ships>
+    <Id>9697543c-9984-406e-bd3e-dc214a9b39fe</Id>
+  </ships>
+</CreatureModel>

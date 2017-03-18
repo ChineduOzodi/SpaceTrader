@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>f32962bd-c86a-4300-b73b-e78b68ca9375</Id>
+  <name>Jeffordon Firesh Ant</name>
+  <money>166329.188</money>
+  <stations />
+  <ships />
+</CreatureModel>

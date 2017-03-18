@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>fd5239ff-4b90-4825-abe0-701e657ec6f5</Id>
+  <name>Hopkinson Under Demonga</name>
+  <money>1116256.88</money>
+  <stations />
+  <ships />
+</CreatureModel>

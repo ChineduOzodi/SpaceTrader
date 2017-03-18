@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>ae8b8ebb-a908-42e0-81de-dfaab5834745</Id>
+  <name>Gekas Brightera Wolfk</name>
+  <money>4465.88525</money>
+  <stations />
+  <ships />
+</CreatureModel>

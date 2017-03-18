@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>6672957f-3314-45c2-bf8e-d67513508b28</Id>
+  <name>Gibbonston Creetlementle D</name>
+  <money>3370</money>
+  <stations />
+  <ships />
+</CreatureModel>

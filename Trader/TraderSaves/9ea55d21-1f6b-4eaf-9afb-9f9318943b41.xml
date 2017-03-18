@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>9ea55d21-1f6b-4eaf-9afb-9f9318943b41</Id>
+  <name>Donaldon Pronyma</name>
+  <money>2488.6626</money>
+  <stations />
+  <ships />
+</CreatureModel>

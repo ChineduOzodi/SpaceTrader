@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>36d55765-925a-4b80-a068-691e92562d6d</Id>
+  <name>Ronaldon Mastropica</name>
+  <money>89630.09</money>
+  <stations />
+  <ships>
+    <Id>d128ae33-a423-4e68-86b2-5be245143a38</Id>
+  </ships>
+</CreatureModel>

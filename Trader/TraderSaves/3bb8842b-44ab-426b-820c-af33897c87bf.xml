@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>3bb8842b-44ab-426b-820c-af33897c87bf</Id>
+  <name>Kelly Vile Elementle </name>
+  <money>81033.39</money>
+  <stations>
+    <Id>b14297aa-1c2d-466e-b605-f17dc0605f21</Id>
+  </stations>
+  <ships />
+</CreatureModel>

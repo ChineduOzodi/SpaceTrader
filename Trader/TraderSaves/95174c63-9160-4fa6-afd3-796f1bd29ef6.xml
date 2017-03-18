@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>95174c63-9160-4fa6-afd3-796f1bd29ef6</Id>
+  <name>Estertelly Anglec Gol</name>
+  <money>188268.5</money>
+  <stations />
+  <ships />
+</CreatureModel>

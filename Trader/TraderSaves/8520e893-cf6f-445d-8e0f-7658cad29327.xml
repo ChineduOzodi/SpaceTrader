@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>8520e893-cf6f-445d-8e0f-7658cad29327</Id>
+  <name>Matthew Earth Hedged Da</name>
+  <money>15810</money>
+  <stations />
+  <ships />
+</CreatureModel>

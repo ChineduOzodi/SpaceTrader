@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>10348013-0fa4-414b-b132-654e012c1a4b</Id>
+  <name>Waxmanovic Aurior</name>
+  <money>92234.3359</money>
+  <stations />
+  <ships />
+</CreatureModel>

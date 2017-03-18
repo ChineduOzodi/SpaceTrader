@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>22de6206-d360-4957-bf57-aa4bb8101c2b</Id>
+  <name>Inouye Needle Bug</name>
+  <money>5380</money>
+  <stations />
+  <ships />
+</CreatureModel>

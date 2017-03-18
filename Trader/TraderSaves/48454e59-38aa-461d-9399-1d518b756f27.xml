@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>48454e59-38aa-461d-9399-1d518b756f27</Id>
+  <name>Unson Yutivern Chick</name>
+  <money>13753.1875</money>
+  <stations>
+    <Id>db134cb5-f7aa-4c97-ada6-c849ba22772b</Id>
+  </stations>
+  <ships />
+</CreatureModel>

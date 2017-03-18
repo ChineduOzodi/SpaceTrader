@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>dd5f204d-5667-46e1-ae91-a40d00246cc6</Id>
+  <name>Franestert Drona</name>
+  <money>1555159.25</money>
+  <stations>
+    <Id>c0c485a4-8da9-40c9-80b9-1d2a19743574</Id>
+  </stations>
+  <ships />
+</CreatureModel>

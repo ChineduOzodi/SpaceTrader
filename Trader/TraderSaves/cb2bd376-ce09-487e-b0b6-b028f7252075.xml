@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>cb2bd376-ce09-487e-b0b6-b028f7252075</Id>
+  <name>Gaydos Gnome Master He</name>
+  <money>334052.219</money>
+  <stations>
+    <Id>a219a52b-762e-4083-adc2-f240b8bd271a</Id>
+  </stations>
+  <ships />
+</CreatureModel>

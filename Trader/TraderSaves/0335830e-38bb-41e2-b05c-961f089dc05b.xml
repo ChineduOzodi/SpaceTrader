@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>0335830e-38bb-41e2-b05c-961f089dc05b</Id>
+  <name>Moody Mock Gold Skele</name>
+  <money>95796.67</money>
+  <stations />
+  <ships>
+    <Id>96fdbb88-34b0-4a64-b1a7-252044948412</Id>
+  </ships>
+</CreatureModel>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>9222720c-6e4b-4752-88fd-a2ca9f087708</Id>
+  <name>Taylor Idun</name>
+  <money>188354.422</money>
+  <stations />
+  <ships />
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>9df5f75a-42b0-4692-82dd-4d640fce0b2b</Id>
+  <name>Bakermanov Coronyma</name>
+  <money>1405194.13</money>
+  <stations>
+    <Id>1caf3ee9-5331-4c8d-9481-b89e1c03bae7</Id>
+  </stations>
+  <ships />
+</CreatureModel>

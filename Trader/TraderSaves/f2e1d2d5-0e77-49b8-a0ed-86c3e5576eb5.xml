@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>f2e1d2d5-0e77-49b8-a0ed-86c3e5576eb5</Id>
+  <name>Jeffordon Fire Wolfkin Tr</name>
+  <money>15780</money>
+  <stations />
+  <ships />
+</CreatureModel>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>87c406c8-7704-4c80-a783-9d631d650b0c</Id>
+  <name>Wilson Selet Warr</name>
+  <money>5780</money>
+  <stations />
+  <ships />
+</CreatureModel>

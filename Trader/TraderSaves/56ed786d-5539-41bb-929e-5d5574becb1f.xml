@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>56ed786d-5539-41bb-929e-5d5574becb1f</Id>
+  <name>Calvingsto Black Bat</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

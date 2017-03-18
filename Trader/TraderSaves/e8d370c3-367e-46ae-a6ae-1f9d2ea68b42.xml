@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>e8d370c3-367e-46ae-a6ae-1f9d2ea68b42</Id>
+  <name>Couglandle Rimerachli</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>0c3befbd-b84c-4831-b22d-1bc96abe7323</Id>
+  <name>Jacobson Living Plantix</name>
+  <money>113537.492</money>
+  <stations />
+  <ships>
+    <Id>68882df2-69ef-4500-bb3c-ca9a74bb9ea1</Id>
+  </ships>
+</CreatureModel>

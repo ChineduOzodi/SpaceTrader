@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>59b9b304-4331-4a5c-a9c2-905b15811db5</Id>
+  <name>Myerson Seedle Plantis</name>
+  <money>5376.924</money>
+  <stations />
+  <ships />
+</CreatureModel>

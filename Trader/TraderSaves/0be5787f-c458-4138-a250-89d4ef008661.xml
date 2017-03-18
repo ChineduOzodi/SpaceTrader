@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>0be5787f-c458-4138-a250-89d4ef008661</Id>
+  <name>Leon Blue Demonga</name>
+  <money>3801.82813</money>
+  <stations>
+    <Id>28b002ef-a239-4236-9cb3-a79e937292e9</Id>
+  </stations>
+  <ships />
+</CreatureModel>

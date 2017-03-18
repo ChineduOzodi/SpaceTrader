@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+[Serializable]
 public class Date
 {
     private static int Seasons = 4;
@@ -8,17 +9,18 @@ public class Date
     private static int Hours = 24;
     private static int Minutes = 60;
 
+    
+    private static int Minute = 60;
     /// <summary>
     /// seconds in year (3156000)
     /// </summary>
-    public static int Year = 3156000; //Seconds in a year 14400
-    public static int Season = 789000;
-    public static int Day = 86400;
+    public static int Year = 3156000 / Minute; //Seconds in a year 14400
+    public static int Season = 789000 / Minute;
+    public static int Day = 86400 / Minute;
     /// <summary>
     /// 3600s
     /// </summary>
-    public static int Hour = 3600;
-    public static int Minute = 60;
+    public static int Hour = 3600 / Minute;
 
     public float time;
     public float deltaTime;
@@ -27,6 +29,10 @@ public class Date
     public int day;
     public int hour;
     private float minute;
+
+    public Date()
+    {
+    }
 
     public Date(float _time)
     {
@@ -59,7 +65,7 @@ public class Date
                 day += Mathf.FloorToInt(hour / Hours);
                 hour = hour % Hours;
 
-                season = Mathf.FloorToInt(day / 10f);
+                season = Mathf.FloorToInt(day / Season);
 
                 if (day > Days)
                 {
@@ -113,7 +119,7 @@ public class Date
     private string GetSeason()
     {
         string[] seasonNames = new string[4] { "Spring", "Summer", "Fall", "Winter" };
-        return seasonNames[season];
+        return seasonNames[season % 4];
     }
 
     public static Date operator -( Date date1, Date date2)

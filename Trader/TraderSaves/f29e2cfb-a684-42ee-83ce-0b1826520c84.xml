@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>f29e2cfb-a684-42ee-83ce-0b1826520c84</Id>
+  <name>Fazio Skeletone Bird</name>
+  <money>123461.063</money>
+  <stations />
+  <ships>
+    <Id>57479239-99e0-4bbb-b697-798a08d54cf6</Id>
+  </ships>
+</CreatureModel>

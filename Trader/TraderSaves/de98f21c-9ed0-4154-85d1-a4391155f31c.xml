@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>de98f21c-9ed0-4154-85d1-a4391155f31c</Id>
+  <name>Maxinetta Pyrodrasil</name>
+  <money>4290</money>
+  <stations />
+  <ships />
+</CreatureModel>

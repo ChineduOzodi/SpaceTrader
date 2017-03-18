@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>fd6757ec-06af-41b9-afa3-59b5e8e33d49</Id>
+  <name>Majorski Aka Mast Armor</name>
+  <money>29747.2188</money>
+  <stations>
+    <Id>249ac34f-d1a6-460b-bd60-031915529580</Id>
+  </stations>
+  <ships />
+</CreatureModel>

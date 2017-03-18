@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>ffbd5267-c9bc-41b8-878a-46c7d4dbabdd</Id>
+  <name>Rittenbren Ridewind C</name>
+  <money>89725.5547</money>
+  <stations />
+  <ships />
+</CreatureModel>

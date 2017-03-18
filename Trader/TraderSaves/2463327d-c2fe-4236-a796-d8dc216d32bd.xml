@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>2463327d-c2fe-4236-a796-d8dc216d32bd</Id>
+  <name>Kenningell Turtle Bug</name>
+  <money>4920</money>
+  <stations />
+  <ships />
+</CreatureModel>

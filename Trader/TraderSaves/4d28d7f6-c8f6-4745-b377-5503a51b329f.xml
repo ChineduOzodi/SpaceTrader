@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>4d28d7f6-c8f6-4745-b377-5503a51b329f</Id>
+  <name>Abermanter Yggdrasili</name>
+  <money>15149.4531</money>
+  <stations>
+    <Id>7edda309-ba53-4c19-abb9-5818876ede28</Id>
+  </stations>
+  <ships />
+</CreatureModel>

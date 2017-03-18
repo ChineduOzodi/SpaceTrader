@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>41de9bb4-d362-41f5-99e0-26dd652334b7</Id>
+  <name>Johnson Wood Walke</name>
+  <money>513300.4</money>
+  <stations>
+    <Id>10248bbd-3d6a-42b3-a1e8-756d9c367e60</Id>
+  </stations>
+  <ships />
+</CreatureModel>

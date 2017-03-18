@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>37481754-845a-45c2-9a02-4cf887d8d00d</Id>
+  <name>Durbin Hauresses</name>
+  <money>93371.07</money>
+  <stations />
+  <ships>
+    <Id>90d8a9a5-1a52-457b-b570-372703458b75</Id>
+  </ships>
+</CreatureModel>

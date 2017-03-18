@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>f03af576-2b7b-4598-a0a7-b01b20f1013c</Id>
+  <name>Sikorski Octoslimer</name>
+  <money>1614683.13</money>
+  <stations />
+  <ships />
+</CreatureModel>

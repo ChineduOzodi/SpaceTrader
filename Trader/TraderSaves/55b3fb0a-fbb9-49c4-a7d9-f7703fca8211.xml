@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>55b3fb0a-fbb9-49c4-a7d9-f7703fca8211</Id>
+  <name>Raymour Water Bird</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>5651af13-f6e4-46b7-9f81-da0f1ad1db4c</Id>
+  <name>Campbelloh Wheeze</name>
+  <money>79611.4</money>
+  <stations />
+  <ships>
+    <Id>19ba5323-1df1-49b8-a06c-aa600e64ddfa</Id>
+  </ships>
+</CreatureModel>

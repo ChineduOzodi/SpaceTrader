@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>74904bc3-2e97-448d-bc83-63d1963fc9fc</Id>
+  <name>Udalloway Sephitrago</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

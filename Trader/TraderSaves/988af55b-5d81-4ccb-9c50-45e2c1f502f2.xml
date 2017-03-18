@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>988af55b-5d81-4ccb-9c50-45e2c1f502f2</Id>
+  <name>Stumperson Exbone Beetle W</name>
+  <money>402474.938</money>
+  <stations>
+    <Id>e9b783b8-ad85-460e-b806-2de6c068f6d8</Id>
+  </stations>
+  <ships />
+</CreatureModel>

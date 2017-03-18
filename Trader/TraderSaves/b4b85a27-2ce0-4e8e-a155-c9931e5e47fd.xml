@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b4b85a27-2ce0-4e8e-a155-c9931e5e47fd</Id>
+  <name>Dwyerschle Azul</name>
+  <money>3710</money>
+  <stations />
+  <ships />
+</CreatureModel>

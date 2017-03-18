@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>93e6087c-7037-4d01-b285-9523bc5a6506</Id>
+  <name>Rohranovic Ogre</name>
+  <money>153178.875</money>
+  <stations />
+  <ships />
+</CreatureModel>

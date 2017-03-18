@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>1bb3d1f1-ac8e-4128-9bed-96f05a73ab3a</Id>
+  <name>Paxon Coffian Lill He</name>
+  <money>1709214.5</money>
+  <stations>
+    <Id>2b535a60-d853-4673-bd23-4b88b906d90e</Id>
+  </stations>
+  <ships />
+</CreatureModel>

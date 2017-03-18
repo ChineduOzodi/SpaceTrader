@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>8c34abcf-1bc5-4b7e-9713-d8f67e342c24</Id>
+  <name>Jackarty Army</name>
+  <money>88165.73</money>
+  <stations />
+  <ships />
+</CreatureModel>

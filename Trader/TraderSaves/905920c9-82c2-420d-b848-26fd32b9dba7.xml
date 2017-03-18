@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>905920c9-82c2-420d-b848-26fd32b9dba7</Id>
+  <name>Hunteryl O' Warrior</name>
+  <money>1320.17188</money>
+  <stations>
+    <Id>b2e918cf-ae6c-4f9e-b04b-08ca4bed6c60</Id>
+  </stations>
+  <ships />
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>96bc5bf4-ae09-42df-9937-4b7f4bca26a2</Id>
+  <name>Charpalius Whorse</name>
+  <money>320607.563</money>
+  <stations>
+    <Id>82606617-c1c4-43eb-ba14-25228ef09bc7</Id>
+  </stations>
+  <ships />
+</CreatureModel>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>a2cb1a49-3bf6-4a6a-870f-e2b00e923e80</Id>
+  <name>Benneta Cannon</name>
+  <money>226776.125</money>
+  <stations />
+  <ships />
+</CreatureModel>

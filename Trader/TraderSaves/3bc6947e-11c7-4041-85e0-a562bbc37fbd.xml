@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>3bc6947e-11c7-4041-85e0-a562bbc37fbd</Id>
+  <name>Metzenbert Wonder Bird</name>
+  <money>1886393.38</money>
+  <stations>
+    <Id>28996946-57a6-4100-ad53-bb56069f08cd</Id>
+  </stations>
+  <ships />
+</CreatureModel>

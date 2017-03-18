@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>11eceaff-b1b1-4127-b015-e9137349669d</Id>
+  <name>Lentinez Macetail</name>
+  <money>70615.7</money>
+  <stations />
+  <ships>
+    <Id>db39f99f-d064-47de-84e8-c512c2232ea9</Id>
+  </ships>
+</CreatureModel>

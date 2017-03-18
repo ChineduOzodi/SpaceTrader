@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>daf431a9-df09-46e9-a1a9-8d356b3d5de9</Id>
+  <name>Fish Gobling Po</name>
+  <money>389176.25</money>
+  <stations />
+  <ships />
+</CreatureModel>

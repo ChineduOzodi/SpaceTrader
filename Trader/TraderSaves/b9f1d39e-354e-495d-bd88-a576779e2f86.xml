@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b9f1d39e-354e-495d-bd88-a576779e2f86</Id>
+  <name>Morristone Alraune</name>
+  <money>3990</money>
+  <stations />
+  <ships />
+</CreatureModel>

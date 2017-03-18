@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>aff32089-05f6-473b-8899-a224fef3a29f</Id>
+  <name>Pricketta Doller Knighter</name>
+  <money>4060</money>
+  <stations />
+  <ships />
+</CreatureModel>

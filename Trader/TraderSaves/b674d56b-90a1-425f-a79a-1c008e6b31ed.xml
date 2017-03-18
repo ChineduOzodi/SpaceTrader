@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b674d56b-90a1-425f-a79a-1c008e6b31ed</Id>
+  <name>Fordon Head Vermin</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

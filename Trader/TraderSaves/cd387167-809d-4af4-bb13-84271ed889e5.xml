@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>cd387167-809d-4af4-bb13-84271ed889e5</Id>
+  <name>Fish Gobling Doller </name>
+  <money>820840.7</money>
+  <stations>
+    <Id>65f5fb1d-ce04-43e8-bbc0-0c3224060a38</Id>
+  </stations>
+  <ships />
+</CreatureModel>

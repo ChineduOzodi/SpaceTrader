@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>f74ec7dd-b849-4d82-9f62-d6673d960abc</Id>
+  <name>Crames Ball</name>
+  <money>6751.672</money>
+  <stations>
+    <Id>c03275cd-42cc-42a6-bd6d-5dbbd0a4619b</Id>
+  </stations>
+  <ships />
+</CreatureModel>

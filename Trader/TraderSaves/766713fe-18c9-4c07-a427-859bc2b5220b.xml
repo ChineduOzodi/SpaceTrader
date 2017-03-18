@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>766713fe-18c9-4c07-a427-859bc2b5220b</Id>
+  <name>Bryanterte Smog</name>
+  <money>267030.25</money>
+  <stations>
+    <Id>c104e1c9-cca9-43c3-aa60-5fbbdb0e5c51</Id>
+  </stations>
+  <ships />
+</CreatureModel>

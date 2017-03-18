@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>76aefd23-1a1f-4e7e-b3b1-21b7adc3a271</Id>
+  <name>Durbin Hauresser Knigh</name>
+  <money>2307.51367</money>
+  <stations />
+  <ships />
+</CreatureModel>

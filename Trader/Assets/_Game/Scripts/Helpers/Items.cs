@@ -9,7 +9,8 @@ public class Items {
 
     public int pendingAmount;
     public int amount;
-
+    public Color color;
+    public string coloredName;
     public float price;
     public float basePrice;
     public float processTime;
@@ -26,7 +27,7 @@ public class Items {
             return new Items("Coal Ore", 0);
         }
     }
-
+    public Items() { }
     public Items(string _name, int _amount, int _ratio = 1, int _maxAmount = 1000)
     {
         name = _name;
@@ -107,5 +108,11 @@ public class Items {
             processTime = 30f;
         }
         price = basePrice;
+        System.Random rand = new System.Random(name.GetHashCode());
+        float a = rand.Next(1000) / 1000f;
+        float b = rand.Next(1000) / 1000f;
+        float c = rand.Next(1000) / 1000f;
+        color = new Color(a, b, c);
+        coloredName = "<color=" + ColorTypeConverter.ToRGBHex(color) + ">" + name + "</color>";
     }
 }

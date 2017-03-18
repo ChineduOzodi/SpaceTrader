@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>c055b51b-c5ac-45b0-b9d1-05e716704c9a</Id>
+  <name>Jillmory Goldier</name>
+  <money>11585.9063</money>
+  <stations>
+    <Id>436363f7-fcfb-4d72-9fc5-92edc1ff0664</Id>
+  </stations>
+  <ships />
+</CreatureModel>

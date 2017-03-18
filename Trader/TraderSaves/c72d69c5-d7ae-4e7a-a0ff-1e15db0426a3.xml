@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>c72d69c5-d7ae-4e7a-a0ff-1e15db0426a3</Id>
+  <name>Danfordson Ramses</name>
+  <money>5943.06055</money>
+  <stations />
+  <ships />
+</CreatureModel>

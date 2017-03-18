@@ -6,9 +6,11 @@ using CodeControl;
 public class CreatureModel : Model {
 
     public string name;
-    public float money = 1000;
+    public float money = 0;
     public ModelRefs<StationModel> stations;
     public ModelRefs<ShipModel> ships;
+
+    public CreatureModel() { }
 
     public CreatureModel(string name)
     {
@@ -16,5 +18,12 @@ public class CreatureModel : Model {
         stations = new ModelRefs<StationModel>();
         ships = new ModelRefs<ShipModel>();
     }
-    
+    public CreatureModel(string name, float money)
+    {
+        this.name = name;
+        this.money = money;
+        stations = new ModelRefs<StationModel>();
+        ships = new ModelRefs<ShipModel>();
+    }
+
 }

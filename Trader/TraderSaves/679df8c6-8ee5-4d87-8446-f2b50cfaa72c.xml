@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>679df8c6-8ee5-4d87-8446-f2b50cfaa72c</Id>
+  <name>Hoagle Calame Magingel</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

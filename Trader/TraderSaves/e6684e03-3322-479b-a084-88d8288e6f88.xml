@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>e6684e03-3322-479b-a084-88d8288e6f88</Id>
+  <name>Hobson Numb Ant</name>
+  <money>8424.486</money>
+  <stations />
+  <ships />
+</CreatureModel>

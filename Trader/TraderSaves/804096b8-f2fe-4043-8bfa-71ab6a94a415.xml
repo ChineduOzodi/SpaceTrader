@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>804096b8-f2fe-4043-8bfa-71ab6a94a415</Id>
+  <name>Howak Magnius</name>
+  <money>358453.469</money>
+  <stations>
+    <Id>d4b87194-50df-41c5-8a9b-985bc0cd9342</Id>
+  </stations>
+  <ships />
+</CreatureModel>

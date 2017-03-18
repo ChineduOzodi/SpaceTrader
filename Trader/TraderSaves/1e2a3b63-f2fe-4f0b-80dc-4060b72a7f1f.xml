@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>1e2a3b63-f2fe-4f0b-80dc-4060b72a7f1f</Id>
+  <name>Morrickles Alraune</name>
+  <money>2718.814</money>
+  <stations />
+  <ships />
+</CreatureModel>

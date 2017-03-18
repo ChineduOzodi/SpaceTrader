@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>cb86b688-d9f1-4d1b-8112-2caf149b392c</Id>
+  <name>Bumperson Squa Jellp</name>
+  <money>1135187.13</money>
+  <stations>
+    <Id>b9564fd0-9f0d-4066-9fa5-492e1f38f8f1</Id>
+  </stations>
+  <ships />
+</CreatureModel>

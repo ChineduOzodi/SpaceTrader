@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>e7ac3ec1-5539-4d39-a79e-ee0e103ecdbe</Id>
+  <name>Cardin Wheeze</name>
+  <money>320959.938</money>
+  <stations>
+    <Id>55796473-91d2-4d06-a33a-1a3e81e46a68</Id>
+  </stations>
+  <ships />
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>4009e522-360b-4c4f-afeb-e9972eeb5065</Id>
+  <name>Rosteryl Master Ele</name>
+  <money>2374101.5</money>
+  <stations>
+    <Id>653ea784-d3e0-469e-9d4a-5643e00f1854</Id>
+  </stations>
+  <ships />
+</CreatureModel>

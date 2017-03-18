@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>9ea3623c-7f33-422b-8caa-49d8156291e8</Id>
+  <name>Dwyerson Azul</name>
+  <money>2984.16187</money>
+  <stations />
+  <ships />
+</CreatureModel>

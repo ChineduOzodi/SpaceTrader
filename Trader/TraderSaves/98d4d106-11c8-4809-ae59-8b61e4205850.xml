@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>98d4d106-11c8-4809-ae59-8b61e4205850</Id>
+  <name>Howay Magnius</name>
+  <money>204221.5</money>
+  <stations />
+  <ships />
+</CreatureModel>

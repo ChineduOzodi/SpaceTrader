@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>d72a6abe-732c-4c9c-a47e-4765e42242ae</Id>
+  <name>Uptonesten Fairession</name>
+  <money>5780</money>
+  <stations />
+  <ships />
+</CreatureModel>

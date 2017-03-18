@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>d9dabe70-9800-45b6-b387-edd3f60c8b44</Id>
+  <name>Coyne Eddy</name>
+  <money>2830</money>
+  <stations />
+  <ships />
+</CreatureModel>

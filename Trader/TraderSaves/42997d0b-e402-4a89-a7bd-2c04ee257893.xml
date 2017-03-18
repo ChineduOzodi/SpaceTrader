@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>42997d0b-e402-4a89-a7bd-2c04ee257893</Id>
+  <name>Murkowski Cardian O' Warr</name>
+  <money>320928.5</money>
+  <stations>
+    <Id>7f7991ea-75e6-406d-b30b-6239f0d8a2c4</Id>
+  </stations>
+  <ships />
+</CreatureModel>

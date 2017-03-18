@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>4f5998f6-bcbe-4ee0-83e9-7abc0461d867</Id>
+  <name>Franestenk Drone Bird</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

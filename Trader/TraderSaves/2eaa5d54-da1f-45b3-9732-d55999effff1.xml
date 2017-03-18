@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>2eaa5d54-da1f-45b3-9732-d55999effff1</Id>
+  <name>Dorntorum Zagaera Wo</name>
+  <money>56592.5469</money>
+  <stations />
+  <ships>
+    <Id>f35609bf-9e95-41a6-9a01-8a592211c8c3</Id>
+  </ships>
+</CreatureModel>

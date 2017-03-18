@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>75c39a6f-3c01-4b59-bc2c-5d561ecb8418</Id>
+  <name>Garza Spidertaker</name>
+  <money>788966.938</money>
+  <stations>
+    <Id>6879624d-7f08-45df-b352-6edc920ce404</Id>
+  </stations>
+  <ships />
+</CreatureModel>

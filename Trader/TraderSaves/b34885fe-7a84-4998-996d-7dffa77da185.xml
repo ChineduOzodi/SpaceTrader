@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b34885fe-7a84-4998-996d-7dffa77da185</Id>
+  <name>Whittley Botta</name>
+  <money>6660</money>
+  <stations />
+  <ships />
+</CreatureModel>

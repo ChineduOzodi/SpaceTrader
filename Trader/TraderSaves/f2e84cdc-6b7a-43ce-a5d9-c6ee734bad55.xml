@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>f2e84cdc-6b7a-43ce-a5d9-c6ee734bad55</Id>
+  <name>Rittley Rider Elem</name>
+  <money>72213.86</money>
+  <stations>
+    <Id>ecaaf3b8-d183-448c-a038-f94f0c4ef0c5</Id>
+  </stations>
+  <ships />
+</CreatureModel>

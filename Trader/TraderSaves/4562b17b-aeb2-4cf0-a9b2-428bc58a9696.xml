@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>4562b17b-aeb2-4cf0-a9b2-428bc58a9696</Id>
+  <name>Inouye Dragon Lord Arm</name>
+  <money>69922.45</money>
+  <stations>
+    <Id>eecdf372-a714-4cfc-8489-1637169d92b2</Id>
+  </stations>
+  <ships />
+</CreatureModel>

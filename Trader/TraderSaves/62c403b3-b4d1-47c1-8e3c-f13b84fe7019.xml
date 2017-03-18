@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>62c403b3-b4d1-47c1-8e3c-f13b84fe7019</Id>
+  <name>Pally Basiller Swordi</name>
+  <money>74541.5156</money>
+  <stations />
+  <ships />
+</CreatureModel>

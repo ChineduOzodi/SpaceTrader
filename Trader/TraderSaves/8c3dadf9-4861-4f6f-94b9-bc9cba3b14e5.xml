@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>8c3dadf9-4861-4f6f-94b9-bc9cba3b14e5</Id>
+  <name>Sisisky Fish</name>
+  <money>1148176.25</money>
+  <stations>
+    <Id>acbcdac4-083b-4642-bdac-88eb73e43260</Id>
+  </stations>
+  <ships />
+</CreatureModel>

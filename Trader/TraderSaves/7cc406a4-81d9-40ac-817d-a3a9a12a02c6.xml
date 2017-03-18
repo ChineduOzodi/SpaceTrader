@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>7cc406a4-81d9-40ac-817d-a3a9a12a02c6</Id>
+  <name>Unson Yutis</name>
+  <money>66341.27</money>
+  <stations />
+  <ships />
+</CreatureModel>

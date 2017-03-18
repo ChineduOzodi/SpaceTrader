@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>5b50b82f-f905-48d7-9bb0-37ae9c7811db</Id>
+  <name>Dorney Zagan</name>
+  <money>1756.52441</money>
+  <stations />
+  <ships />
+</CreatureModel>

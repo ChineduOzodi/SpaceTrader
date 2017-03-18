@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>df9ddeca-a470-4067-ad48-19a3208c722a</Id>
+  <name>Atkinski Crystalant</name>
+  <money>118125.594</money>
+  <stations>
+    <Id>58a3403f-1aab-4558-a1b8-97198a7788e1</Id>
+  </stations>
+  <ships />
+</CreatureModel>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>753e081c-6076-45fe-a5ac-2899ce23fa70</Id>
+  <name>Murphy Cardinergy</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

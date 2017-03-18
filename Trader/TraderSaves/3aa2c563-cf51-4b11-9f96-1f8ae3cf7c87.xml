@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>3aa2c563-cf51-4b11-9f96-1f8ae3cf7c87</Id>
+  <name>Jakermott Stone Fighter K</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

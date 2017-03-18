@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>2250ce06-8381-431c-b4f4-414a4fd3a8fe</Id>
+  <name>Georgan Sea Dragor</name>
+  <money>103639.43</money>
+  <stations />
+  <ships>
+    <Id>c16344bb-0563-4110-bf14-9e2f74986be4</Id>
+  </ships>
+</CreatureModel>

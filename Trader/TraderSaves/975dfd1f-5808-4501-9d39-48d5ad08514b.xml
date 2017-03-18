@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>975dfd1f-5808-4501-9d39-48d5ad08514b</Id>
+  <name>Milly Sky Dragon Rock</name>
+  <money>143789.047</money>
+  <stations />
+  <ships />
+</CreatureModel>

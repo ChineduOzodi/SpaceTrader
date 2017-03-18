@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>1af32ace-38ba-409f-9836-753748081f52</Id>
+  <name>Hefley Jellpeppet</name>
+  <money>1007141.06</money>
+  <stations />
+  <ships />
+</CreatureModel>

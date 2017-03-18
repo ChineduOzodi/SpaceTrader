@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>4eaa07d0-9b34-468b-b79f-ff08637b1222</Id>
+  <name>Callohande Waft</name>
+  <money>59545.2344</money>
+  <stations />
+  <ships>
+    <Id>308dcdc0-5faf-4b78-9ac3-a4ac4fb840e0</Id>
+  </ships>
+</CreatureModel>

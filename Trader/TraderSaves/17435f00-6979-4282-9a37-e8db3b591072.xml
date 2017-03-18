@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>17435f00-6979-4282-9a37-e8db3b591072</Id>
+  <name>Ramstancoc Nevil Frog</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>8a4a5d0a-e911-4197-b626-1c357791ba34</Id>
+  <name>Benjamilli Cannibal Shelly</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

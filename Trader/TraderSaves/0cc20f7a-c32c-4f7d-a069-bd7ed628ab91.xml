@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>0cc20f7a-c32c-4f7d-a069-bd7ed628ab91</Id>
+  <name>Ortonesten Sasqua Jel</name>
+  <money>10290.4688</money>
+  <stations>
+    <Id>66995c2e-6726-4f47-8934-7343a5586a6a</Id>
+  </stations>
+  <ships />
+</CreatureModel>

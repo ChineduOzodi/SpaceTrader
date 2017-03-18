@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>d45b21cb-0976-4f3a-a70d-94da619ec901</Id>
+  <name>Toby Luna</name>
+  <money>24041.4121</money>
+  <stations />
+  <ships />
+</CreatureModel>

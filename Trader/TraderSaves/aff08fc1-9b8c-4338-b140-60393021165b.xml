@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>aff08fc1-9b8c-4338-b140-60393021165b</Id>
+  <name>Jakermondi Storm Clay Garr</name>
+  <money>78358.05</money>
+  <stations />
+  <ships>
+    <Id>6b500fc9-7f99-43a9-9bda-ce863401d9ec</Id>
+  </ships>
+</CreatureModel>

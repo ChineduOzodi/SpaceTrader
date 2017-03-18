@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>2345475d-9caa-4316-903e-1437c5f0e52f</Id>
+  <name>Dymallerts Azul</name>
+  <money>1879508</money>
+  <stations>
+    <Id>c6b852c5-dcf1-48b4-9f58-73f71fc2f689</Id>
+  </stations>
+  <ships />
+</CreatureModel>

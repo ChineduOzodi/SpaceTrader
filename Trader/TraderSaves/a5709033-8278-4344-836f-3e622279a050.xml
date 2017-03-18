@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>a5709033-8278-4344-836f-3e622279a050</Id>
+  <name>Mcewensenb Pupper Snail</name>
+  <money>918551.438</money>
+  <stations>
+    <Id>6c5b6ca9-bb16-49d5-ab81-f18b814e8446</Id>
+  </stations>
+  <ships />
+</CreatureModel>

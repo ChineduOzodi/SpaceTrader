@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>dae2d466-79e5-419c-8d03-74d7aa98cf1f</Id>
+  <name>Moyne Alraune</name>
+  <money>5316.62939</money>
+  <stations />
+  <ships />
+</CreatureModel>

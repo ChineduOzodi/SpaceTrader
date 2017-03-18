@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b2d41a31-026e-49c2-9832-ecad9b2814ef</Id>
+  <name>Gepharpers Ooze</name>
+  <money>9860.047</money>
+  <stations>
+    <Id>c789d788-7078-4a7e-a66c-fc3314139e53</Id>
+  </stations>
+  <ships />
+</CreatureModel>

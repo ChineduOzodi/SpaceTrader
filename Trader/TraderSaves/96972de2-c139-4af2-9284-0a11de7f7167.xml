@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>96972de2-c139-4af2-9284-0a11de7f7167</Id>
+  <name>Yatricello Mithost Ogre</name>
+  <money>129003.719</money>
+  <stations />
+  <ships />
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>4aab3b46-0e8a-47ef-b6f5-c07f763aba56</Id>
+  <name>Torrison Aska</name>
+  <money>320948.7</money>
+  <stations>
+    <Id>5b463bb0-17db-466e-af39-3ee934efbb1c</Id>
+  </stations>
+  <ships />
+</CreatureModel>

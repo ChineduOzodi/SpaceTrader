@@ -2,10 +2,11 @@
 using System.Collections;
 using CodeControl;
 using System;
+using System.Collections.Generic;
 
-public class ShipController : Controller<ShipModel> {
+public class ShipController : Controller<ShipModel>
+{
 
-    internal string info;
     internal string profitableRoutes;
     internal GameObject target;
     internal string mode;
@@ -16,7 +17,8 @@ public class ShipController : Controller<ShipModel> {
     internal GameManager game;
     internal SpriteRenderer sprite;
     internal LineRenderer line;
-    
+    internal float timeUpdate = 0;
+
     protected override void OnInitialize()
     {
         game = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
@@ -24,17 +26,61 @@ public class ShipController : Controller<ShipModel> {
         line = GetComponent<LineRenderer>();
         transform.position = model.position;
         name = model.name;
+
+        model.moneyStats = new DataGraph("Money Over Time", "Time (hours)", "Money");
+        model.moneyStats.data.Add("Money", new List<Stat>() { new Stat(model.age.hour, model.money) });
+        model.moneyStats.data.Add("Money Change", new List<Stat>());
+
         transform.localScale = Vector3.one * (model.capacity / 200f + .5f);
+        timeUpdate = model.age.time + Date.Hour;
         FindTradeRoute();
+
     }
     protected override void OnModelChanged()
     {
         target = null;
     }
     // Update is called once per frame
-    void Update () {
-        model.money -= model.runningCost * Time.deltaTime;
-        UpdateInfo();
+    void Update()
+    {
+        model.age.AddTime(Time.deltaTime);
+        if (timeUpdate < model.age.time)
+        {
+            timeUpdate = model.age.time + Date.Hour;
+
+            //Money Evaluation
+            model.money -= model.runningCost;
+
+            foreach (CreatureModel worker in model.workers)
+            {
+                worker.money += 10;
+                model.money -= 10;
+            }
+
+            if (model.captain.Model != model.owner.Model)
+            {
+                model.captain.Model.money += 15;
+                model.money -= 15;
+            }
+
+            float moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+
+            if (moneyEarned > 0)
+            {
+                model.owner.Model.money += moneyEarned * .25f;
+                model.money -= moneyEarned * .25f;
+
+                model.captain.Model.money += moneyEarned * .1f;
+                model.money -= moneyEarned * .1f;
+            }
+            moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+            model.moneyChange = moneyEarned;
+            model.moneyStats.data["Money Change"].Add(new Stat(model.age.time, model.moneyChange));
+            model.moneyStats.data["Money"].Add(new Stat(model.age.time, model.money));
+
+
+        }
+
         if (target != null)
         {
 
@@ -73,16 +119,17 @@ public class ShipController : Controller<ShipModel> {
                     else if (model.item.name == "Ship")
                     {
                         model.item = station.Buy(model.item.name, model.item.amount, model);
-                        model.money -= model.item.totalPrice;
+                        model.money -= model.item.totalPrice - 1000;
+                        model.owner.Model.money += 1000;
                         FindTradeRoute();
                     }
                     else
                     {
                         if (model.item.amount <= 0)
-                        {                           
+                        {
                             FindTradeRoute();
                         }
-                            
+
                         else
                         {
                             mode = "sell";
@@ -95,7 +142,7 @@ public class ShipController : Controller<ShipModel> {
                                 station = target.GetComponent<StationController>();
                                 station.AddIncoming(model);
                             }
-                            
+
                         }
                     }
 
@@ -108,7 +155,7 @@ public class ShipController : Controller<ShipModel> {
                 }
             }
 
-            
+
         }
         else if (waitTime > updateCount)
         {
@@ -146,8 +193,9 @@ public class ShipController : Controller<ShipModel> {
             {
                 if (outputItem.name == itemName && (station.transform.position - transform.position).sqrMagnitude < distance && outputItem.amount > 0)
                 {
+                    distance = (station.transform.position - transform.position).sqrMagnitude;
                     foundStation = station;
-                    
+
                 }
             }
         }
@@ -161,16 +209,20 @@ public class ShipController : Controller<ShipModel> {
         if ((float)model.fuel.amount / model.fuelCapacity < .1)
         {
             target = FindClosestStation("Fuel");
-            StationController station = target.GetComponent<StationController>();
-            model.item = new Items("Fuel", model.fuelCapacity);
-            sprite.color = Color.yellow;
-            mode = "buy";
-            model.item = station.Buy(model.item.name, model.item.amount);
-            model.money -= model.item.totalPrice;
-            station.AddIncoming(model);
-            return;
+            if (target != null)
+            {
+                StationController station = target.GetComponent<StationController>();
+                model.item = new Items("Fuel", model.fuelCapacity);
+                sprite.color = Color.yellow;
+                mode = "buy";
+                model.item = station.Buy(model.item.name, model.item.amount);
+                model.money -= model.item.totalPrice;
+                station.AddIncoming(model);
+                return;
+            }
+            else if (model.fuel.amount < 0) { return; }
         }
-        
+
         if (model.money > 4000)
         {
             GameObject pTarget = FindClosestStation("Ship");
@@ -181,7 +233,7 @@ public class ShipController : Controller<ShipModel> {
                 {
                     if (outputItem.name == "Ship")
                     {
-                        if (outputItem.price + 1000 < model.money)
+                        if (outputItem.price + 2000 < model.money)
                         {
                             target = station.gameObject;
                             model.item = new Items("Ship", 1);
@@ -193,7 +245,7 @@ public class ShipController : Controller<ShipModel> {
                     }
                 }
             }
-           }
+        }
 
         GameObject[] stations = GameObject.FindGameObjectsWithTag("station");
         float profitability = 0;
@@ -214,9 +266,15 @@ public class ShipController : Controller<ShipModel> {
                             amountToBuy = outputItem.amount;
                         if (amountToBuy * inputItem.price > stationA.money - 1000)
                         {
-                            amountToBuy = (int)((stationA.money - 1000) / inputItem.price); 
+                            amountToBuy = (int)((stationA.money - 1000) / inputItem.price);
                         }
-                        float distanceToTargetCost = (otherStation.transform.position - transform.position).magnitude/model.speed/model.fuelEfficiency * 5;
+                        if (amountToBuy < 0)
+                            amountToBuy = 0;
+                        if (amountToBuy * outputItem.price > model.money)
+                        {
+                            amountToBuy = (int) (model.money / outputItem.price);
+                        }
+                        float distanceToTargetCost = (otherStation.transform.position - transform.position).magnitude / model.speed / model.fuelEfficiency * 5;
                         float routeDistanceCost = (station.transform.position - otherStation.transform.position).magnitude / model.speed / model.fuelEfficiency * 5;
 
                         if (inputItem.name == outputItem.name && ((inputItem.price - outputItem.price) * amountToBuy - distanceToTargetCost - routeDistanceCost > profitability))
@@ -234,7 +292,7 @@ public class ShipController : Controller<ShipModel> {
                 }
             }
 
-            
+
         }
 
         if (mode == "buy")
@@ -251,13 +309,25 @@ public class ShipController : Controller<ShipModel> {
         }
     }
 
-    private void UpdateInfo()
+    public string GetInfo()
     {
-        info = "";
+        string info = "";
         string targetName = "---";
         if (target != null)
             targetName = target.name;
-        
-        info += string.Format("Ship Name: {0}\nMoney: {3}\nMode: {1}\nCargo: {4} - {8}/{5}\nTarget: {2}\nSpeed: {9}\nFuel: {6}/{7}\nFuel Efficeincy: {10}", model.name, mode, targetName, model.money, model.item.name, model.capacity, model.fuel.amount, model.fuelCapacity, model.item.amount, model.speed, model.fuelEfficiency);
+
+        info += string.Format("Ship Name: {0}\nMoney: {3}\n\nOwner: {11}\nCaptain: {12}\n Number Workers: {13}/{14}\n\nMode: {1}\nCargo: {4} - {8}/{5}\nTarget: {2}\nSpeed: {9}\nFuel: {6}/{7}\nFuel Efficeincy: {10}\n\n",
+            model.name, mode, targetName, model.money, model.item.coloredName, model.capacity, model.fuel.amount, model.fuelCapacity, model.item.amount, model.speed, model.fuelEfficiency, model.owner.Model.name, model.captain.Model.name, model.workers.Count, model.workerCapacity);
+
+        List<Stat> moneyStats = new List<Stat>();
+        moneyStats.AddRange(model.moneyStats.data["Money"]);
+        moneyStats.Reverse();
+        foreach (Stat stat in moneyStats)
+        {
+            if (stat.x > (model.age.time - Date.Day))
+                info += string.Format("\n{0}. {1}", (stat.x / Date.Hour).ToString("0"), stat.y.ToString("0.00"));
+        }
+
+        return info;
     }
 }

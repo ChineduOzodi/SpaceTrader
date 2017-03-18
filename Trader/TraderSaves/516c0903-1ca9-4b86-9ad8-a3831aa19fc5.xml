@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>516c0903-1ca9-4b86-9ad8-a3831aa19fc5</Id>
+  <name>Bevingston Spark Swordian </name>
+  <money>1219832</money>
+  <stations>
+    <Id>7dfd13ed-f38e-413c-b7e9-224581e8ba77</Id>
+  </stations>
+  <ships />
+</CreatureModel>

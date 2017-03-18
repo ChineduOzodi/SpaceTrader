@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>df309906-dda3-42a0-8d04-1bd0063c341e</Id>
+  <name>Fortellone Head Plant Beas</name>
+  <money>641841.063</money>
+  <stations>
+    <Id>cf4c1241-64bb-4e7e-a675-8d75c764b22b</Id>
+  </stations>
+  <ships />
+</CreatureModel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>e1ef6515-17bf-4f02-a42d-d5aacfdd6478</Id>
+  <name>Schusterts Cock Gobli</name>
+  <money>95068.84</money>
+  <stations>
+    <Id>79ceecf5-7b4e-4fb5-927d-6887e89eef8e</Id>
+  </stations>
+  <ships />
+</CreatureModel>

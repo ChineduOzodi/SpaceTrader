@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>d769d6df-e375-478d-ba68-29c51fb60e0b</Id>
+  <name>Rohrabache Ogre</name>
+  <money>2560.81641</money>
+  <stations />
+  <ships />
+</CreatureModel>

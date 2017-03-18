@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>1b0dcf6b-05a9-40a2-99ed-bdba9dc483be</Id>
+  <name>Archelby Petragon Knight</name>
+  <money>5032.15967</money>
+  <stations />
+  <ships />
+</CreatureModel>

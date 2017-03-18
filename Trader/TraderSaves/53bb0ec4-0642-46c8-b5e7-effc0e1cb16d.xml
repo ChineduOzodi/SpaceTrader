@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>53bb0ec4-0642-46c8-b5e7-effc0e1cb16d</Id>
+  <name>Tonyerschl Luna</name>
+  <money>68866.875</money>
+  <stations>
+    <Id>1aa9ec71-2243-40ed-8750-c469546555f7</Id>
+  </stations>
+  <ships />
+</CreatureModel>

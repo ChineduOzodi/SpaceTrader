@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>bfa1e5d1-3279-4c6c-81b3-3f9e2f3c2677</Id>
+  <name>Kelly Vile Dragon Kni</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

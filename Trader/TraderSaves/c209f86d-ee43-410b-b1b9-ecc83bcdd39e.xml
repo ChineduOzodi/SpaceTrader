@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>c209f86d-ee43-410b-b1b9-ecc83bcdd39e</Id>
+  <name>Pallandy Basilia</name>
+  <money>23520</money>
+  <stations />
+  <ships />
+</CreatureModel>

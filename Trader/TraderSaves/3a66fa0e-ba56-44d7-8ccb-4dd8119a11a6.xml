@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>3a66fa0e-ba56-44d7-8ccb-4dd8119a11a6</Id>
+  <name>Bevenee Spark Army</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

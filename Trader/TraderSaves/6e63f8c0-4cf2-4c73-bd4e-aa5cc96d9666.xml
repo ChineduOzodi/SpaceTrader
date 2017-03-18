@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>6e63f8c0-4cf2-4c73-bd4e-aa5cc96d9666</Id>
+  <name>Rothy Bowmand Ch</name>
+  <money>101030.344</money>
+  <stations>
+    <Id>ea420659-9944-484c-909a-cc932fcc7910</Id>
+  </stations>
+  <ships />
+</CreatureModel>

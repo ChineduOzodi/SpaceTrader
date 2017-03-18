@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>3c6f81a6-56ce-4dbe-9711-6ffb1cc5985c</Id>
+  <name>Ileana Lizarth Elemand</name>
+  <money>77984.39</money>
+  <stations />
+  <ships>
+    <Id>7881def9-fd06-4145-9c51-d2c69b5dd641</Id>
+  </ships>
+</CreatureModel>

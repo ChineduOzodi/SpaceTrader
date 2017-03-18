@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>706c0ff8-1320-4a89-a594-d18028537369</Id>
+  <name>Schrabache Cockatrice</name>
+  <money>98867.5156</money>
+  <stations />
+  <ships />
+</CreatureModel>

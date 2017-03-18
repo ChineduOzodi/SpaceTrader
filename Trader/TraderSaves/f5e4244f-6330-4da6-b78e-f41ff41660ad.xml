@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>f5e4244f-6330-4da6-b78e-f41ff41660ad</Id>
+  <name>Sabo Axe Bird</name>
+  <money>40560</money>
+  <stations />
+  <ships />
+</CreatureModel>

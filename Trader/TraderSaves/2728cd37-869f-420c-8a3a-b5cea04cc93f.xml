@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>2728cd37-869f-420c-8a3a-b5cea04cc93f</Id>
+  <name>Bentley Cannibal Spidew</name>
+  <money>414841.1</money>
+  <stations>
+    <Id>e6d5bac1-3c9b-469f-be78-5072afb34240</Id>
+  </stations>
+  <ships />
+</CreatureModel>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b332a29b-4296-4b84-8388-1a8d7ef2c1b2</Id>
+  <name>Udallertel Sephitrago</name>
+  <money>6110.976</money>
+  <stations />
+  <ships />
+</CreatureModel>

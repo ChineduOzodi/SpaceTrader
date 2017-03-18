@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>0136797f-daaf-4c2f-a4fe-ed8c228d5d1e</Id>
+  <name>Lafalcolm Azard Arch</name>
+  <money>1977202.75</money>
+  <stations>
+    <Id>d992c64a-475b-40f9-95fd-50b51fad1257</Id>
+  </stations>
+  <ships />
+</CreatureModel>

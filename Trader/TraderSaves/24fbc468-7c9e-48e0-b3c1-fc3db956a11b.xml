@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>24fbc468-7c9e-48e0-b3c1-fc3db956a11b</Id>
+  <name>Cunningham Serpentlement S</name>
+  <money>13050.2813</money>
+  <stations>
+    <Id>fad6717a-a3b2-4d76-bd23-993596ede85e</Id>
+  </stations>
+  <ships />
+</CreatureModel>

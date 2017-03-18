@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>df706848-3e16-4d66-a5e5-b3ee35d1e6bf</Id>
+  <name>Savage Lightning Plant</name>
+  <money>189009.078</money>
+  <stations />
+  <ships />
+</CreatureModel>

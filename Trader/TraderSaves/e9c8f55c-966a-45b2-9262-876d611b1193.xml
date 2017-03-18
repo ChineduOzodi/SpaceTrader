@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>e9c8f55c-966a-45b2-9262-876d611b1193</Id>
+  <name>Uptonestel Fair Uniterachl</name>
+  <money>3372.524</money>
+  <stations />
+  <ships />
+</CreatureModel>
