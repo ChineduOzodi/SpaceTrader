@@ -230,7 +230,7 @@ public class ShipController : Controller<ShipModel>
                 yield break;
             }
 
-
+            yield return null;
         }
 
         

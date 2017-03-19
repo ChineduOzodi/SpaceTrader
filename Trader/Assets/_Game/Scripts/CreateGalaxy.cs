@@ -4,6 +4,7 @@ using UnityEngine;
 using CodeControl;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
 
 public class CreateGalaxy : MonoBehaviour {
 
@@ -20,9 +21,10 @@ public class CreateGalaxy : MonoBehaviour {
 
     private GameObject selectedObj;
     private Camera cam;
-    private SolarController solar;
+    internal SolarController solar;
 
     internal SolarModel[] stars;
+    internal SolarController[] starControllers;
 
     private void Awake()
     {
@@ -46,9 +48,9 @@ public class CreateGalaxy : MonoBehaviour {
                     if (selectedObj.tag == "solar")
                     {
                         solar = selectedObj.GetComponent<SolarController>();
-                        solar.ToggleSystem();
-                        cam.cullingMask = solarMask;
-                        transform.position = new Vector3(0, 0, -10);
+                        ToggleSystem();
+                        
+                        
                     }
 
                 }
@@ -56,13 +58,26 @@ public class CreateGalaxy : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            solar.ToggleSystem();
+            ToggleSystem();            
+        }
+        if (infoText != null)
+            infoText.text = "Timescale: " + Time.timeScale + "\n";
+    }
+
+    public void ToggleSystem()
+    {
+        if (solar.ToggleSystem())
+        {
+            cam.cullingMask = solarMask;
+            transform.position = new Vector3(0, 0, -10);
+            cam.orthographicSize = 1000;
+        }
+        else
+        {
             cam.cullingMask = mapMask;
             transform.position = new Vector3(solar.transform.position.x, solar.transform.position.y, -10);
             cam.orthographicSize = 100;
         }
-        if (infoText != null)
-            infoText.text = "Timescale: " + Time.timeScale + "\n";
     }
 
     public void CreateStars(int count)
@@ -71,17 +86,19 @@ public class CreateGalaxy : MonoBehaviour {
 
         for (int i = 0; i < count; i++)
         {
-            Vector2 position = new Vector2(Random.Range(-mapField.x * .5f, mapField.x * .5f), Random.Range(-mapField.y * .5f, mapField.y * .5f));
-            float sunMass = Random.Range(1f, 1000);
-            int numPlanets = Random.Range(0, (int) Mathf.Sqrt(sunMass / 10));
+            Vector2 position = new Vector2(UnityEngine.Random.Range(-mapField.x * .5f, mapField.x * .5f), UnityEngine.Random.Range(-mapField.y * .5f, mapField.y * .5f));
+            float sunMass = UnityEngine.Random.Range(1f, 1000);
+            int numPlanets = UnityEngine.Random.Range(0, (int) Mathf.Sqrt(sunMass / 10));
             stars[i] = new SolarModel("Solar " + i + 1, i, position, sunMass, G, numPlanets, sunSizeColor, sunMass *.001f);
         }
     }
     public void LoadStars()
     {
+        starControllers = new SolarController[stars.Length];
         foreach (SolarModel star in stars)
         {
-            Controller.Instantiate<SolarController>("solar", star).name = star.name;
+            starControllers[star.index] = Controller.Instantiate<SolarController>("solar", star);
+            starControllers[star.index].name = star.name;
         }
     }
 	

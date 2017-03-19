@@ -20,7 +20,7 @@ public class SolarController : Controller<SolarModel> {
     {
         game = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
         transform.position = model.position;
-
+        name = model.name;
         GetComponent<SpriteRenderer>().color = model.sun.color;
         transform.localScale = Vector3.one * Mathf.Sqrt(model.sun.mass / Mathf.PI);
 
@@ -35,7 +35,7 @@ public class SolarController : Controller<SolarModel> {
 
         if (model.isActive)
         {
-            sun.transform.localScale = Vector3.one * Mathf.Sqrt(model.sun.mass / Mathf.PI) * game.localScaleMod;
+            sun.transform.localScale = Vector3.one * Mathf.Sqrt(model.sun.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, .9f);
             
 
             for ( int i = 0; i < model.planets.Length; i++)
@@ -84,7 +84,7 @@ public class SolarController : Controller<SolarModel> {
 		
 	}
 
-    public void ToggleSystem()
+    public bool ToggleSystem()
     {
         model.isActive = !model.isActive;
 
@@ -94,6 +94,7 @@ public class SolarController : Controller<SolarModel> {
         }
         else
             DestroySystem();
+        return model.isActive;
     }
 
     public void CreateSystem()

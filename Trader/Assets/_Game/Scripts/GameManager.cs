@@ -160,6 +160,16 @@ public class GameManager : MonoBehaviour {
                 infoText.text += BasicStats();
             }
         }
+
+        if (transform.parent != null && transform.parent.tag == "ship")
+        {
+            ShipController ship = transform.parent.GetComponent<ShipController>();
+            galaxy.solar = galaxy.starControllers[ship.starIndex];
+            if (!ship.GetComponent<SpriteRenderer>().enabled)
+            {
+                galaxy.ToggleSystem();
+            }
+        }
     }
 
     //private void BreakStationLinks()

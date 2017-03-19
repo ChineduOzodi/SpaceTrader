@@ -14,16 +14,18 @@ public class SolarModel : Model {
     public SolarBody sun;
 
     public SolarBody[] planets;
+    public int index;
 
     public SolarModel() { }
 
-    public SolarModel(string _name, int index, Vector2 _position, float sunMass, float G, int numPlanets, Gradient sunSizeColor, float sunColorValue)
+    public SolarModel(string _name, int _index, Vector2 _position, float sunMass, float G, int numPlanets, Gradient sunSizeColor, float sunColorValue)
     {
         name = _name;
         position = _position;
+        index = _index;
         Color color = sunSizeColor.Evaluate(sunColorValue);
 
-        sun = new SolarBody(_name + " Sun", index, SolarType.Star, Polar2.zero, sunMass, color, G, null);
+        sun = new SolarBody(_name + " Sun", _index, SolarType.Star, Polar2.zero, sunMass, color, G, null);
 
         planets = new SolarBody[numPlanets];
 
@@ -35,7 +37,7 @@ public class SolarModel : Model {
             float planetMass = Random.Range(1f, 10f);
             color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
 
-            planets[i] = new SolarBody(name + " Planet " + i + 1, index, SolarType.Planet, new Polar2(radius,angle),planetMass,color, G, sun);
+            planets[i] = new SolarBody(name + " Planet " + i + 1, _index, SolarType.Planet, new Polar2(radius,angle),planetMass,color, G, sun);
 
             int numMoon = Random.Range(0, 5);
             planets[i].children = new SolarBody[numMoon];
@@ -45,7 +47,7 @@ public class SolarModel : Model {
                 radius = Random.Range(planets[i].bodyRadius + 2, planets[i].SOI);
                 angle = Random.Range(0, 2 * Mathf.PI);
                 color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
-                planets[i].children[m] = new SolarBody(name + "Moon " + i, index, SolarType.Moon, new Polar2(radius, angle), moonMass, color, G, planets[i]);
+                planets[i].children[m] = new SolarBody(name + "Moon " + i, _index, SolarType.Moon, new Polar2(radius, angle), moonMass, color, G, planets[i]);
             }
         }
     }
