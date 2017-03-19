@@ -16,7 +16,7 @@ public class CreateGalaxy : MonoBehaviour {
 
     public Text infoText;
 
-    public float G;
+    internal static float G = .01f;
 
     private GameObject selectedObj;
     private Camera cam;
@@ -54,24 +54,6 @@ public class CreateGalaxy : MonoBehaviour {
                 }
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Comma))
-        {
-            Time.timeScale *= .5f;
-        }
-        if (Input.GetKeyDown(KeyCode.Period))
-        {
-            Time.timeScale *= 2;
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (selectedObj != null && transform.parent == null)
-            {
-                transform.parent = selectedObj.transform;
-                transform.localPosition = new Vector3(0, 0, -10);
-            }
-            else transform.parent = null;
-        }
         if (Input.GetKeyDown(KeyCode.M))
         {
             solar.ToggleSystem();
@@ -79,8 +61,8 @@ public class CreateGalaxy : MonoBehaviour {
             transform.position = new Vector3(solar.transform.position.x, solar.transform.position.y, -10);
             cam.orthographicSize = 100;
         }
-
-        infoText.text = "Timescale: " + Time.timeScale + "\n";
+        if (infoText != null)
+            infoText.text = "Timescale: " + Time.timeScale + "\n";
     }
 
     public void CreateStars(int count)
@@ -91,8 +73,8 @@ public class CreateGalaxy : MonoBehaviour {
         {
             Vector2 position = new Vector2(Random.Range(-mapField.x * .5f, mapField.x * .5f), Random.Range(-mapField.y * .5f, mapField.y * .5f));
             float sunMass = Random.Range(1f, 1000);
-            int numPlanets = Random.Range(0, 10);
-            stars[i] = new SolarModel("Solar " + i + 1, position, sunMass, G, numPlanets, sunSizeColor, sunMass *.001f);
+            int numPlanets = Random.Range(0, (int) Mathf.Sqrt(sunMass / 10));
+            stars[i] = new SolarModel("Solar " + i + 1, i, position, sunMass, G, numPlanets, sunSizeColor, sunMass *.001f);
         }
     }
     public void LoadStars()

@@ -13,7 +13,7 @@ public class StructureModel : Model {
     public float money = 0;
 
     public string name;
-    public Vector3 position;
+    public SolarBody solar;
     public Vector3 lineTarget;
     public Color lineColor;
     public Date age = new Date(0);

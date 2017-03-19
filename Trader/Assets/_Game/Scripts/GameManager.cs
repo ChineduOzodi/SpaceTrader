@@ -8,15 +8,18 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour {
 
+    internal float localScaleMod;
+
     internal GameObject selectedObj;
     internal Text infoText;
     internal GameDataModel data;
     
     internal int statsDisplay = 0;
+    internal CreateGalaxy galaxy;
 
 	// Use this for initialization
-	void Awake () {
-
+	void Start () {
+        galaxy = GetComponent<CreateGalaxy>();
         data = new GameDataModel();
         data.ships = new ModelRefs<ShipModel>();
         data.stations = new ModelRefs<StationModel>();
@@ -26,9 +29,18 @@ public class GameManager : MonoBehaviour {
         int numStation = 100;
         for (int i = 0; i < numStation; i++)
         {
-            int index = UnityEngine.Random.Range(0, 10);
-            Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-1000, 1000), UnityEngine.Random.Range(-1000, 1000));
-            StationModel station = StationCreator.CreateStation((FactoryType)index, randomLocation);
+            int factoryIndex = UnityEngine.Random.Range(0, 10);
+            int starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
+            int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
+            SolarBody parent;
+            if (galaxy.stars[starIndex].planets.Length > 0)
+                parent = galaxy.stars[starIndex].planets[planetIndex];
+            else
+                parent = galaxy.stars[starIndex].sun;
+
+            Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+
+            StationModel station = StationCreator.CreateStation((FactoryType)factoryIndex, starIndex, parent, position, null);
             data.stations.Add(station);
             UpdateCreatures(station);
         }
@@ -36,19 +48,29 @@ public class GameManager : MonoBehaviour {
         numStation = 10;
         for (int i = 0; i < numStation; i++)
         {
-            int index = 9;
-            Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-1000, 1000), UnityEngine.Random.Range(-1000, 1000));
-            StationModel station = StationCreator.CreateStation((FactoryType)index, randomLocation);
+            int factoryIndex = 9;
+            int starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
+            int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
+            SolarBody parent;
+            if (galaxy.stars[starIndex].planets.Length > 0)
+                parent = galaxy.stars[starIndex].planets[planetIndex];
+            else
+                parent = galaxy.stars[starIndex].sun;
+
+            Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+
+            StationModel station = StationCreator.CreateStation((FactoryType)factoryIndex, starIndex, parent, position, null);
             data.stations.Add(station);
             UpdateCreatures(station);
         }
 
         //--------------Create Ships---------------------------//
-        int numShip = 100;
+        int numShip = 75;
         for (int i = 0; i < numShip; i++)
         {
+            StationModel startStation = data.stations[UnityEngine.Random.Range(0, data.stations.Count)];
             Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-1000, 1000), UnityEngine.Random.Range(-1000, 1000));
-            ShipModel ship = ShipCreator.CreateShip("Freight Ship " + i, randomLocation);
+            ShipModel ship = ShipCreator.CreateShip("Freight Ship " + i, startStation.solar.starIndex, startStation.solar.parent, startStation.solar.GetLocalPosition(data.date.time));
             data.ships.Add(ship);
             UpdateCreatures(ship);
         }
@@ -75,14 +97,14 @@ public class GameManager : MonoBehaviour {
                     selectedObj = hit.transform.gameObject;
                     if (selectedObj.tag == "station")
                     {
-                        BreakStationLinks();
-                        SetStationLinks();
+                        //BreakStationLinks();
+                        //SetStationLinks();
                     }
                         
                 }
                 else
                 {
-                    BreakStationLinks();
+                    //BreakStationLinks();
                     selectedObj = null;
                     statsDisplay = 0;
                 }
@@ -115,7 +137,7 @@ public class GameManager : MonoBehaviour {
         {
             if (selectedObj.tag == "station")
                 infoText.text += selectedObj.GetComponent<StationController>().GetInfo();
-            else
+            else if (selectedObj.tag == "ship")
                 infoText.text += selectedObj.GetComponent<ShipController>().GetInfo();
         }
         else
@@ -140,14 +162,14 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void BreakStationLinks()
-    {
-        foreach (StationModel station in data.stations)
-        {
-            station.lineTarget = station.position;
-            station.NotifyChange();
-        }
-    }
+    //private void BreakStationLinks()
+    //{
+    //    foreach (StationModel station in data.stations)
+    //    {
+    //        station.lineTarget = station.position;
+    //        station.NotifyChange();
+    //    }
+    //}
 
     private void SetStationLinks()
     {

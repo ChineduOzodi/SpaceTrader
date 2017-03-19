@@ -22,3 +22,12 @@ public enum FactoryType
     Food,
     Consumer
 }
+
+public enum SolarType
+{
+    Star,
+    Planet,
+    Moon,
+    Asteroid,
+    Structure
+}

@@ -5,20 +5,18 @@ using UnityEngine;
 
 public class StationCreator {
 
-    public static StationModel CreateStation(FactoryType name, Vector3 location, Transform parent = null)
+    public static StationModel CreateStation(FactoryType name, int starIndex, SolarBody parent, Polar2 position, CreatureModel owner)
     {
         StationModel model = new StationModel();
         NameGen names = new NameGen();
-        if (parent == null)
+        if (owner == null)
         {
             model.owner = new ModelRef<CreatureModel>( new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateRegionName(), 1000000));
             model.captain = new ModelRef<CreatureModel>(model.owner.Model);   
         }
         else
         {
-            StationController parentStation = parent.GetComponent<StationController>();
-            model.owner = new ModelRef<CreatureModel>(parentStation.GetOwner());
-            model.parentStationLocation = parent.position;
+            model.owner = new ModelRef<CreatureModel>(owner);
         }
 
         model.captain = new ModelRef<CreatureModel>(new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateRegionName()));
@@ -28,7 +26,7 @@ public class StationCreator {
         model.workerCapacity = 50;
 
         model.name = name + " Station";
-        model.position = location;
+        
         model.capacity = 10000;
         System.Random rand = new System.Random(model.name.GetHashCode());
         float a = rand.Next(1000)/1000f;
@@ -39,6 +37,7 @@ public class StationCreator {
         b = rand.Next(1000) / 1000f;
         c = rand.Next(1000) / 1000f;
         model.backgroundColor = new Color(a, b, c);
+        model.solar = new SolarBody(model.name, starIndex, SolarType.Structure, position, .0001f, model.color, CreateGalaxy.G, parent);
 
         model.factory = new Factory(name);
 

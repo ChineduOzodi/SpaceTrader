@@ -9,17 +9,20 @@ public class Unit : MonoBehaviour {
     internal int oldTarget;
     internal int currentIndex;
     internal CreateGalaxy galaxy;
+    internal ShipController ship;
     public float speed = 2;
     public float jumpDistance = 100;
     internal LineRenderer line;
     Node[] path;
+    
 
 	// Use this for initialization
 	void Start () {
         line = GetComponent<LineRenderer>();
         galaxy = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CreateGalaxy>();
-        transform.position = galaxy.stars[0].position;
-        target = UnityEngine.Random.Range(0, galaxy.starCount);
+        ship = GetComponent<ShipController>();
+        target = ship.starIndex;
+        oldTarget = ship.starIndex;
     }
     void Update()
     {
@@ -27,7 +30,7 @@ public class Unit : MonoBehaviour {
         {
             if (target == currentIndex)
                 target += 1;
-            PathRequestManager.RequestPath(currentIndex, target, jumpDistance, OnPathFound);
+            
             oldTarget = target;
         }
     }
@@ -67,7 +70,7 @@ public class Unit : MonoBehaviour {
                 targetIndex++;
                 if (targetIndex >= path.Length)
                 {
-                    target = UnityEngine.Random.Range(0, galaxy.starCount);
+                    ship.HyperSpaceDone();
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -87,5 +90,11 @@ public class Unit : MonoBehaviour {
             line.SetPosition(0, transform.position);
             yield return null;
         }
+    }
+
+    internal void HyperSpaceTravel(int startIndex, int endIndex, float speed)
+    {
+        this.speed = speed;
+        PathRequestManager.RequestPath(startIndex, endIndex, jumpDistance, OnPathFound);
     }
 }

@@ -5,12 +5,10 @@ using CodeControl;
 
 public class ShipModel: StructureModel {
 
-    
-
     public StructureType type = StructureType.Ship;
-    
 
-    
+    public bool hyperSpace = false;
+    public Vector3 hyperSpacePosition;
 
     public int capacity;
     internal int index = 0;
