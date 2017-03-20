@@ -29,6 +29,10 @@ public class ShipController : Controller<ShipModel>
             return model.solar.starIndex;
         }
     }
+    internal bool hyperspace
+    {
+        get { return model.hyperSpace; }
+    }
 
     protected override void OnInitialize()
     {

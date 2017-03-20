@@ -8,7 +8,8 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour {
 
-    internal float localScaleMod;
+    internal float localScaleMod = 1;
+    bool galaxyView = true;
 
     internal GameObject selectedObj;
     internal Text infoText;
@@ -165,10 +166,24 @@ public class GameManager : MonoBehaviour {
         {
             ShipController ship = transform.parent.GetComponent<ShipController>();
             galaxy.solar = galaxy.starControllers[ship.starIndex];
-            if (!ship.GetComponent<SpriteRenderer>().enabled)
+            if (ship.hyperspace != galaxyView)
             {
-                galaxy.ToggleSystem();
+                if (ship.hyperspace)
+                {
+                    galaxyView = true;
+                    galaxy.GalaxyView();
+                    transform.localPosition = new Vector3(0, 0, -10);
+                    transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
+
+                }
+                else {
+                    galaxyView = false;
+                    galaxy.SolarView();
+                    transform.localPosition = new Vector3(0, 0, -10);
+                    transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
+                }
             }
+
         }
     }
 

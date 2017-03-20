@@ -48,7 +48,7 @@ public class CreateGalaxy : MonoBehaviour {
                     if (selectedObj.tag == "solar")
                     {
                         solar = selectedObj.GetComponent<SolarController>();
-                        ToggleSystem();
+                        SolarView();
                         
                         
                     }
@@ -58,26 +58,28 @@ public class CreateGalaxy : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            ToggleSystem();            
+            if (cam.cullingMask == solarMask)
+                GalaxyView();
+            else
+                SolarView();         
         }
         if (infoText != null)
             infoText.text = "Timescale: " + Time.timeScale + "\n";
     }
 
-    public void ToggleSystem()
+    public void GalaxyView()
     {
-        if (solar.ToggleSystem())
-        {
-            cam.cullingMask = solarMask;
-            transform.position = new Vector3(0, 0, -10);
-            cam.orthographicSize = 1000;
-        }
-        else
-        {
-            cam.cullingMask = mapMask;
-            transform.position = new Vector3(solar.transform.position.x, solar.transform.position.y, -10);
-            cam.orthographicSize = 100;
-        }
+        cam.cullingMask = mapMask;
+        transform.position = new Vector3(solar.transform.position.x, solar.transform.position.y, -10);
+        cam.orthographicSize = 100;
+    }
+
+    public void SolarView()
+    {
+
+        cam.cullingMask = solarMask;
+        transform.position = new Vector3(0, 0, -10);
+        cam.orthographicSize = 1000;
     }
 
     public void CreateStars(int count)

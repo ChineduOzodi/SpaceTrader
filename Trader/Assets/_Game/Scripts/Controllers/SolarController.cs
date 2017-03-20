@@ -15,10 +15,11 @@ public class SolarController : Controller<SolarModel> {
     internal List<GameObject> moons = new List<GameObject>();
     internal List<SolarBody> moonModels = new List<SolarBody>();
     internal GameManager game;
-
+    internal CreateGalaxy galaxy;
     protected override void OnInitialize()
     {
         game = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
+        galaxy = game.GetComponent<CreateGalaxy>();
         transform.position = model.position;
         name = model.name;
         GetComponent<SpriteRenderer>().color = model.sun.color;
@@ -32,15 +33,14 @@ public class SolarController : Controller<SolarModel> {
 	
 	// Update is called once per frame
 	void Update () {
-
+        ToggleSystem();
         if (model.isActive)
         {
             sun.transform.localScale = Vector3.one * Mathf.Sqrt(model.sun.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, .9f);
-            
+            game.localScaleMod = Mathf.Pow(Camera.main.orthographicSize, .5f);
 
             for ( int i = 0; i < model.planets.Length; i++)
             {
-                game.localScaleMod = Mathf.Pow(Camera.main.orthographicSize, .5f);
                 SolarBody body = model.planets[i];
                 Vector3 position = body.GetLocalPosition(game.data.date.time).cartesian;
                 planets[i].transform.position = position;
@@ -54,8 +54,7 @@ public class SolarController : Controller<SolarModel> {
             }
 
             for (int i = 0; i < moons.Count; i++)
-            {
-                game.localScaleMod = Mathf.Pow(Camera.main.orthographicSize, .5f);
+            {               
                 SolarBody moon = moonModels[i];
                 Vector3 position = moon.GetWorldPosition(game.data.date.time);
                 moons[i].transform.position = position;
@@ -84,17 +83,23 @@ public class SolarController : Controller<SolarModel> {
 		
 	}
 
-    public bool ToggleSystem()
+    public void ToggleSystem()
     {
-        model.isActive = !model.isActive;
-
-        if (model.isActive)
+        if (galaxy.solar == this && Camera.main.cullingMask == galaxy.solarMask && !model.isActive)
         {
+            model.isActive = true;
             CreateSystem();
         }
-        else
+        else if ((galaxy.solar != this || Camera.main.cullingMask != galaxy.solarMask) && model.isActive)
+        {
+            model.isActive = false;
             DestroySystem();
-        return model.isActive;
+        }
+        //else if (galaxy.solar != this || Camera.main.cullingMask != galaxy.solarMask)
+        //{
+        //    model.isActive = false;
+        //}
+
     }
 
     public void CreateSystem()
