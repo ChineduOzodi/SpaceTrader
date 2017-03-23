@@ -34,6 +34,8 @@ public class TradeRouteFinding : MonoBehaviour
     }
     IEnumerator FindTradeRoute(ShipModel model)
     {
+        bool success = false;
+        StationModel[] targets = new StationModel[2];
         while (true)
         {
             model.mode = ShipMode.SearchingTradeRoute;
@@ -73,12 +75,11 @@ public class TradeRouteFinding : MonoBehaviour
                             if (inputItem.name == outputItem.name && ((inputItem.price - outputItem.price) * amountToBuy - distanceToTargetCost - routeDistanceCost > profitability))
                             {
                                 profitability = (inputItem.price - outputItem.price) * amountToBuy - distanceToTargetCost - routeDistanceCost;
-
-                                model.target.Model = buyStation;
-                                model.sellTarget.Model = sellStation;
+                                success = true;
+                                targets[0] = buyStation;
+                                targets[1] = sellStation;
                                 model.item = new Items(inputItem.name, model.capacity);
                                 model.spriteColor = Color.blue;
-                                model.mode = ShipMode.Buy;
                             }
                         }
                     }
@@ -86,19 +87,8 @@ public class TradeRouteFinding : MonoBehaviour
 
                 yield return null;
             }
-
-            if (model.mode == ShipMode.Buy)
-            {
-                StationModel station = (StationModel) model.target.Model;
-
-                model.item = station.Buy(model.item.name, model.item.amount);
-                model.money -= model.item.totalPrice;
-
-                station.incomingShips.Add(model);
-                station = (StationModel)model.sellTarget.Model;
-                model.money += station.Sell(model.item);
-                model.NotifyChange();
-            }
+            requestManager.FinishedProcessingRoute(model, targets, success);
+            
             yield break;
         }
 

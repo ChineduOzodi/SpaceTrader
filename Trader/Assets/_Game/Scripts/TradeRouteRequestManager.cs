@@ -19,7 +19,7 @@ public class TradeRouteRequestManager : MonoBehaviour {
         tradeRoute = GetComponent<TradeRouteFinding>();
     }
 
-    public static void RequestTradeRoute(ShipModel model, Action<StructureModel[], bool> callback)
+    public static void RequestTradeRoute(ShipModel model, Action<ShipModel, StructureModel[], bool> callback)
     {
         TradeRequest newRequest = new TradeRequest(model, callback);
 
@@ -37,9 +37,9 @@ public class TradeRouteRequestManager : MonoBehaviour {
         }
     }
 
-    public void FinishedProcessingRoute(StructureModel[] targets, bool success)
+    public void FinishedProcessingRoute(ShipModel model, StructureModel[] targets, bool success)
     {
-        currentTradeRequest.callback(targets, success);
+        currentTradeRequest.callback(model, targets, success);
         isProcessingPath = false;
         TryProcessNext();
     }
@@ -47,9 +47,9 @@ public class TradeRouteRequestManager : MonoBehaviour {
     struct TradeRequest
     {
         public ShipModel model;
-        public Action<StructureModel[], bool> callback;
+        public Action<ShipModel, StructureModel[], bool> callback;
 
-        public TradeRequest(ShipModel _model, Action<StructureModel[],bool> _callback)
+        public TradeRequest(ShipModel _model, Action<ShipModel, StructureModel[],bool> _callback)
         {
             model = _model;
             callback = _callback;

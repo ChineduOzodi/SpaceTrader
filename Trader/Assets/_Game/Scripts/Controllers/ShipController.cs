@@ -127,21 +127,25 @@ public class ShipController : Controller<ShipModel>
                     if (model.item.name == "Fuel")
                     {
                         model.fuel.amount += model.item.amount;
+                        model.mode = ShipMode.Idle;
                     }
                     else if (model.item.name == "Ship")
                     {
                         model.item = station.Buy(model.item.name, model.item.amount, model);
                         model.money -= model.item.totalPrice - 1000;
                         model.owner.Model.money += 1000;
+                        model.mode = ShipMode.Idle;
                     }
                     else
                     {
                         if (model.item.amount <= 0)
                         {
+                            model.mode = ShipMode.Idle;
                         }
                         else
                         {
                             model.mode = ShipMode.Sell;
+                            model.target = model.sellTarget;
                             sprite.color = Color.green;
                         }
                     }
@@ -151,6 +155,7 @@ public class ShipController : Controller<ShipModel>
                 {
                     station.SellComplete(model.item);
                     station.incomingShips.Remove(model);
+                    model.mode = ShipMode.Idle;
                 }
 
                 yield break;

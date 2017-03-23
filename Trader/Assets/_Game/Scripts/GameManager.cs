@@ -19,10 +19,12 @@ public class GameManager : MonoBehaviour {
     
     internal int statsDisplay = 0;
     internal CreateGalaxy galaxy;
+    internal TradeRouteRequestManager tradeRequestManager;
 
 	// Use this for initialization
 	void Start () {
         galaxy = GetComponent<CreateGalaxy>();
+        tradeRequestManager = GetComponent<TradeRouteRequestManager>();
         data = new GameDataModel();
         data.ships = new ModelRefs<ShipModel>();
         data.stations = new ModelRefs<StationModel>();
@@ -201,15 +203,32 @@ public class GameManager : MonoBehaviour {
         float deltaTime = 0;
         while (true)
         {
-
+            if (shipIndex >= data.ships.Count)
+                shipIndex = 0;
             for (int i =0; i < updatesPerFrame; i++)
             {
                 deltaTime += Time.deltaTime;
                 ShipControl(shipIndex, deltaTime);
                 shipIndex++;
             }
-            if (shipIndex >= data.ships.Count)
-                shipIndex = 0;
+
+            yield return null;
+        }
+    }
+
+    IEnumerator UpdateStations(int updatesPerFrame)
+    {
+        int stationIndex = 0;
+        float deltaTime = 0;
+        while (true)
+        {
+            if (stationIndex >= data.stations.Count)
+                stationIndex = 0;
+            for (int i = 0; i < updatesPerFrame; i++)
+            {
+            }
+            stationIndex++;
+            yield return null;
         }
     }
 
@@ -324,11 +343,36 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        if (model.target == null)
+        if (model.mode == ShipMode.Idle)
         {
-            StartCoroutine("FindTradeRoute");
+            model.mode = ShipMode.SearchingTradeRoute;
+            TradeRouteRequestManager.RequestTradeRoute(model, OnFindRouteFinished);
         }
     }
+
+    private void OnFindRouteFinished(ShipModel model, StructureModel[] targets, bool success)
+    {
+        if (success)
+        {
+            model.target.Model = targets[0];
+            model.sellTarget.Model = targets[1];
+            model.mode = ShipMode.Buy;
+            StationModel station = (StationModel)model.target.Model;
+
+            model.item = station.Buy(model.item.name, model.item.amount);
+            model.money -= model.item.totalPrice;
+
+            station.incomingShips.Add(model);
+            station = (StationModel)model.sellTarget.Model;
+            model.money += station.Sell(model.item);
+            model.NotifyChange();
+        }
+        else
+        {
+            model.mode = ShipMode.Idle;
+        }
+    }
+
     private StationModel FindClosestStation(string itemName, ShipModel model)
     {
         float distance = 100000000;
