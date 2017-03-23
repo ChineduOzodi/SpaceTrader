@@ -146,6 +146,8 @@
     <Compile Include="Assets\_Game\Scripts\Node.cs" />
     <Compile Include="Assets\_Game\Scripts\PathRequestManager.cs" />
     <Compile Include="Assets\_Game\Scripts\Pathfinding.cs" />
+    <Compile Include="Assets\_Game\Scripts\TradeRouteFinding.cs" />
+    <Compile Include="Assets\_Game\Scripts\TradeRouteRequestManager.cs" />
     <Compile Include="Assets\_Game\Scripts\Unit.cs" />
   </ItemGroup>
   <ItemGroup>

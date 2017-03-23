@@ -7,10 +7,12 @@ using System;
 using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour {
-
+    public int numStation;
+    public int numShip;
     internal float localScaleMod = 1;
     bool galaxyView = true;
-
+    public int numShipsPerFrame;
+    public int numStationsPerFrame;
     internal GameObject selectedObj;
     internal Text infoText;
     internal GameDataModel data;
@@ -27,7 +29,6 @@ public class GameManager : MonoBehaviour {
         data.creatures = new ModelRefs<CreatureModel>();
         
         data.date = new Date(0);
-        int numStation = 100;
         for (int i = 0; i < numStation; i++)
         {
             int factoryIndex = UnityEngine.Random.Range(0, 10);
@@ -46,8 +47,7 @@ public class GameManager : MonoBehaviour {
             UpdateCreatures(station);
         }
 
-        numStation = 10;
-        for (int i = 0; i < numStation; i++)
+        for (int i = 0; i < numStation * .1f; i++)
         {
             int factoryIndex = 9;
             int starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
@@ -66,7 +66,6 @@ public class GameManager : MonoBehaviour {
         }
 
         //--------------Create Ships---------------------------//
-        int numShip = 75;
         for (int i = 0; i < numShip; i++)
         {
             StationModel startStation = data.stations[UnityEngine.Random.Range(0, data.stations.Count)];
@@ -77,9 +76,10 @@ public class GameManager : MonoBehaviour {
         }
         //------------------------------------------------------------------------------------------------//
         infoText = GameObject.FindGameObjectWithTag("InfoText").GetComponent<Text>();
+        StartCoroutine("UpdateShips", numShipsPerFrame);
+        StartCoroutine("UpdateStations", numStationsPerFrame);
 
-	
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -195,7 +195,161 @@ public class GameManager : MonoBehaviour {
     //        station.NotifyChange();
     //    }
     //}
+    IEnumerator UpdateShips(int updatesPerFrame)
+    {
+        int shipIndex = 0;
+        float deltaTime = 0;
+        while (true)
+        {
 
+            for (int i =0; i < updatesPerFrame; i++)
+            {
+                deltaTime += Time.deltaTime;
+                ShipControl(shipIndex, deltaTime);
+                shipIndex++;
+            }
+            if (shipIndex >= data.ships.Count)
+                shipIndex = 0;
+        }
+    }
+
+    private void ShipControl(int shipIndex, float deltaTime)
+    {
+        ShipModel model = data.ships[shipIndex];
+        model.age.AddTime(deltaTime);
+
+        if (model.timeUpdate < model.age.time)
+        {
+            model.timeUpdate += Date.Hour;
+
+            //Money Evaluation
+            model.money -= model.runningCost;
+
+            foreach (CreatureModel worker in model.workers)
+            {
+                worker.money += 10;
+                model.money -= 10;
+            }
+
+            if (model.captain.Model != model.owner.Model)
+            {
+                model.captain.Model.money += 15;
+                model.money -= 15;
+            }
+
+            float moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+
+            if (moneyEarned > 0)
+            {
+                model.owner.Model.money += moneyEarned * .25f;
+                model.money -= moneyEarned * .25f;
+
+                model.captain.Model.money += moneyEarned * .1f;
+                model.money -= moneyEarned * .1f;
+            }
+            moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+            model.moneyChange = moneyEarned;
+            model.moneyStats.data["Money Change"].Add(new Stat(model.age.time, model.moneyChange));
+            model.moneyStats.data["Money"].Add(new Stat(model.age.time, model.money));
+
+            if (model.money < 0)
+            {
+                if (model.mode == ShipMode.Sell && model.target != null && model.target.Model != null)
+                {
+                    ((StationModel) model.target.Model).SellIncomplete(model.item);
+                }
+                print(model.name + " Died");
+                model.Delete();
+                return;
+            }
+
+        }
+
+        if ((float)model.fuel.amount / model.fuelCapacity < .25f && model.target.Model == null)
+        {
+            model.target = new ModelRef<StructureModel>(FindClosestStation("Fuel", model));
+            if (model.target.Model != null)
+            {
+                StationModel station = (StationModel) model.target.Model;
+                model.item = new Items("Fuel", model.fuelCapacity);
+                model.spriteColor = Color.yellow;
+                model.mode = ShipMode.Buy;
+                model.item = station.Buy(model.item.name, model.item.amount);
+                model.money -= model.item.totalPrice;
+                station.incomingShips.Add(model);
+                model.NotifyChange();
+                return;
+            }
+            else if (model.fuel.amount < 0) {  }
+        }
+
+        if (model.item.name == "Ship" && model.item.amount > 0)
+        {
+            for (int i = 0; i < model.item.amount; i++)
+            {
+                //Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
+                ShipModel ship = ShipCreator.CreateShip(model.name + "." + model.index, model.solar.starIndex, model.solar.parent, model.solar.GetLocalPosition(data.date.time), model.owner.Model);
+                data.ships.Add(ship);
+                UpdateCreatures(ship);
+                model.index++;
+            }
+
+            model.item = null;
+        }
+
+        if (model.money > 10000 && model.target.Model == null)
+        {
+            model.target.Model = FindClosestStation("Ship", model);
+            if (model.target.Model != null)
+            {
+                StationModel station = (StationModel) model.target.Model;
+                foreach (Items outputItem in station.factory.outputItems)
+                {
+                    if (outputItem.name == "Ship")
+                    {
+                        if (outputItem.price + 2000 < model.money)
+                        {
+                            model.item = new Items("Ship", 1);
+                            model.spriteColor = Color.cyan;
+                            model.mode = ShipMode.Buy;
+                            station.incomingShips.Add(model);
+                            model.NotifyChange();
+                            return;
+                        }
+                        else
+                        {
+                            model.target.Model = null;
+                        }
+                    }
+                }
+            }
+        }
+        if (model.target == null)
+        {
+            StartCoroutine("FindTradeRoute");
+        }
+    }
+    private StationModel FindClosestStation(string itemName, ShipModel model)
+    {
+        float distance = 100000000;
+        StationModel foundStation = null;
+        foreach (StationModel station in data.stations)
+        {
+            foreach (Items outputItem in station.factory.outputItems)
+            {
+                float closestDistance = Vector2.Distance(galaxy.stars[station.solar.starIndex].position, model.hyperSpacePosition) * 1000;
+                closestDistance += Vector2.Distance(station.solar.GetWorldPosition(data.date.time), model.solar.GetWorldPosition(data.date.time));
+                if (outputItem.name == itemName && closestDistance < distance && outputItem.amount > 0)
+                {
+                    distance = closestDistance;
+                    foundStation = station;
+
+                }
+            }
+        }
+
+        return foundStation;
+    }
     private void SetStationLinks()
     {
         StationController thisStation = selectedObj.GetComponent<StationController>();

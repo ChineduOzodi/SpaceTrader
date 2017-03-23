@@ -31,3 +31,11 @@ public enum SolarType
     Asteroid,
     Structure
 }
+
+public enum ShipMode
+{
+    Buy,
+    Sell,
+    SearchingTradeRoute,
+    Idle
+}

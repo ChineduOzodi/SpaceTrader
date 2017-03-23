@@ -20,13 +20,6 @@ public class StationController : Controller<StationModel> {
             return model.money;
         }
     }
-    internal int starIndex
-    {
-        get
-        {
-            return model.solar.starIndex;
-        }
-    }
     protected override void OnInitialize()
     {
         game = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
@@ -273,46 +266,6 @@ public class StationController : Controller<StationModel> {
         return null;
     }
 
-    internal float Sell(Items sellItem)
-    {
-        foreach (Items item in model.factory.inputItems)
-        {
-            if (item.name == sellItem.name)
-            {
-                item.pendingAmount += sellItem.amount;
-
-                model.money -= item.price * sellItem.amount;
-                float price = item.price * sellItem.amount;
-                model.factory.SetPrices();
-                return price;
-            }
-        }
-
-        return -1;
-    }
-    internal void SellComplete(Items sellItem)
-    {
-        foreach (Items item in model.factory.inputItems)
-        {
-            if (item.name == sellItem.name)
-            {
-                item.amount += sellItem.amount;
-            }
-        }
-    }
-    internal void SellIncomplete(Items sellItem)
-    {
-        foreach (Items item in model.factory.inputItems)
-        {
-            if (item.name == sellItem.name)
-            {
-                item.pendingAmount -= sellItem.amount;
-                model.money += item.price * sellItem.amount;
-                model.factory.SetPrices();
-            }
-        }
-    }
-
     internal Items[] GetInputItems()
     {
         return model.factory.inputItems;
@@ -322,16 +275,5 @@ public class StationController : Controller<StationModel> {
     {
         return model.factory.outputItems;
     }
-    internal CreatureModel GetOwner()
-    {
-        return model.owner.Model;
-    }
-    internal void AddIncoming(ShipModel ship)
-    {
-        model.incomingShips.Add(ship);
-    }
-    internal void RemoveIncoming(ShipModel ship)
-    {
-        model.incomingShips.Remove(ship);
-    }
+
 }
