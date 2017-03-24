@@ -26,8 +26,11 @@ public class CreateGalaxy : MonoBehaviour {
     internal SolarModel[] stars;
     internal SolarController[] starControllers;
 
+    internal static CreateGalaxy instance;
+
     private void Awake()
     {
+        instance = this;
         CreateStars(starCount);
         LoadStars();
         cam = GetComponent<Camera>();

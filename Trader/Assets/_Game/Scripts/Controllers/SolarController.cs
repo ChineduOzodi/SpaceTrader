@@ -23,7 +23,7 @@ public class SolarController : Controller<SolarModel> {
         transform.position = model.position;
         name = model.name;
         GetComponent<SpriteRenderer>().color = model.sun.color;
-        transform.localScale = Vector3.one * Mathf.Sqrt(model.sun.mass / Mathf.PI);
+        transform.localScale = Vector3.one * Mathf.Pow(model.sun.mass / Mathf.PI,.3f) * 2;
 
         if (model.isActive)
         {
@@ -156,7 +156,7 @@ public class SolarController : Controller<SolarModel> {
 
     public void DestroySystem()
     {
-        transform.localScale = Vector3.one * Mathf.Sqrt(model.sun.mass / Mathf.PI);
+        transform.localScale = Vector3.one * Mathf.Pow(model.sun.mass / Mathf.PI, .3f) * 2;
 
         Destroy(sun);
         for (int i = 0; i < model.planets.Length; i++)

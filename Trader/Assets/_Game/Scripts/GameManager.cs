@@ -20,9 +20,13 @@ public class GameManager : MonoBehaviour {
     internal int statsDisplay = 0;
     internal CreateGalaxy galaxy;
     internal TradeRouteRequestManager tradeRequestManager;
-
-	// Use this for initialization
-	void Start () {
+    internal static GameManager instance;
+    private void Awake()
+    {
+        instance = this;
+    }
+    // Use this for initialization
+    void Start () {
         galaxy = GetComponent<CreateGalaxy>();
         tradeRequestManager = GetComponent<TradeRouteRequestManager>();
         data = new GameDataModel();
@@ -200,15 +204,13 @@ public class GameManager : MonoBehaviour {
     IEnumerator UpdateShips(int updatesPerFrame)
     {
         int shipIndex = 0;
-        float deltaTime = 0;
         while (true)
         {
             if (shipIndex >= data.ships.Count)
                 shipIndex = 0;
             for (int i =0; i < updatesPerFrame; i++)
             {
-                deltaTime += Time.deltaTime;
-                ShipControl(shipIndex, deltaTime);
+                ShipControl(shipIndex);
                 shipIndex++;
             }
 
@@ -219,22 +221,113 @@ public class GameManager : MonoBehaviour {
     IEnumerator UpdateStations(int updatesPerFrame)
     {
         int stationIndex = 0;
-        float deltaTime = 0;
         while (true)
         {
             if (stationIndex >= data.stations.Count)
+            {
                 stationIndex = 0;
+
+            }
+                
             for (int i = 0; i < updatesPerFrame; i++)
             {
+                StationControl(stationIndex);
             }
             stationIndex++;
             yield return null;
         }
     }
 
-    private void ShipControl(int shipIndex, float deltaTime)
+    private void StationControl(int stationIndex)
+    {
+        StationModel model = data.stations[stationIndex];
+        float deltaTime = data.date.time - model.age.time;
+        model.age.AddTime(deltaTime);
+        int factoryStatus = model.factory.UpdateProduction(deltaTime);
+
+        foreach (Items item in model.factory.outputItems)
+        {
+            if (item.selfProducing && factoryStatus > 0)
+            {
+                model.money += item.basePrice * factoryStatus * item.ratio;
+            }
+        }
+
+        if (model.timeUpdate < model.age.time)
+        {
+            model.timeUpdate = model.age.time + Date.Hour;
+
+            //Money Evaluation
+            model.money -= model.runningCost;
+
+            foreach (CreatureModel worker in model.workers)
+            {
+                worker.money += 10;
+                model.money -= 10;
+            }
+
+            if (model.captain.Model != model.owner.Model)
+            {
+                model.captain.Model.money += 15;
+                model.money -= 15;
+            }
+
+            float moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+
+            if (moneyEarned > 0)
+            {
+                model.owner.Model.money += moneyEarned * .25f;
+                model.money -= moneyEarned * .25f;
+
+                model.captain.Model.money += moneyEarned * .1f;
+                model.money -= moneyEarned * .1f;
+            }
+            moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+            model.moneyChange = moneyEarned;
+            model.moneyStats.data["Money Change"].Add(new Stat(model.age.time, moneyEarned));
+            model.moneyStats.data["Money"].Add(new Stat(model.age.time, model.money));
+
+
+        }
+
+        if (model.money < 0)
+        {
+            foreach (ShipModel ship in model.incomingShips)
+            {
+                ship.NotifyChange();
+            }
+            print(model.name + " Died");
+            model.Delete();
+        }
+        else if (model.money > 5000000)
+        {
+            int factoryIndex = UnityEngine.Random.Range(0, 10);
+            int starIndex;
+            if (UnityEngine.Random.Range(0, 2) == 1)
+                starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
+            else starIndex = model.solar.starIndex;
+            int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
+            SolarBody parent;
+            if (galaxy.stars[starIndex].planets.Length > 0)
+                parent = galaxy.stars[starIndex].planets[planetIndex];
+            else
+                parent = galaxy.stars[starIndex].sun;
+
+            Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+
+            StationModel station = StationCreator.CreateStation((FactoryType)factoryIndex, starIndex, parent, position, model.owner.Model);
+            data.stations.Add(station);
+            UpdateCreatures(station);
+            model.money -= 1750000;
+            model.owner.Model.money += 1000000;
+            print(name + " Bought " + (FactoryType)factoryIndex);
+        }
+    }
+
+    private void ShipControl(int shipIndex)
     {
         ShipModel model = data.ships[shipIndex];
+        float deltaTime = data.date.time - model.age.time;
         model.age.AddTime(deltaTime);
 
         if (model.timeUpdate < model.age.time)

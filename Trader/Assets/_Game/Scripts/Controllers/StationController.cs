@@ -44,24 +44,20 @@ public class StationController : Controller<StationModel> {
             sprite.enabled = true;
             background.enabled = true;
         }
-
-        model.moneyStats = new DataGraph("Money Over Time", "Time (hours)", "Money");
-        model.moneyStats.data.Add("Money", new List<Stat>() { new Stat(model.age.hour, model.money) });
-        model.moneyStats.data.Add("Money Change", new List<Stat>());
     }
     protected override void OnModelChanged()
     {
-        line.SetPositions(new Vector3[] { transform.position, model.lineTarget });
-        model.lineColor.a = 1.1f - Mathf.Pow(.1f, 100 / (model.lineTarget - transform.position).magnitude);
-        line.startColor = model.lineColor;
-        line.endColor = model.lineColor;
-        line.startWidth = model.lineColor.a;
-        line.endWidth = model.lineColor.a;
+        //line.SetPositions(new Vector3[] { transform.position, model.lineTarget });
+        //model.lineColor.a = 1.1f - Mathf.Pow(.1f, 100 / (model.lineTarget - transform.position).magnitude);
+        //line.startColor = model.lineColor;
+        //line.endColor = model.lineColor;
+        //line.startWidth = model.lineColor.a;
+        //line.endWidth = model.lineColor.a;
     }
     // Update is called once per frame
     void Update() {
 
-        int factoryStatus = model.factory.UpdateProduction(Time.deltaTime);
+        
         if (!galaxy.stars[model.solar.starIndex].isActive)
         {
             sprite.enabled = false;
@@ -96,86 +92,6 @@ public class StationController : Controller<StationModel> {
         }
         transform.position = model.solar.GetWorldPosition(game.data.date.time);
         transform.localScale = Vector3.one * .1f * (model.money / 1000000f + .5f) * Mathf.Pow(game.localScaleMod, 1.7f);
-
-
-        foreach (Items item in model.factory.outputItems)
-        {
-            if (item.selfProducing && factoryStatus > 0)
-            {
-                model.money += item.basePrice * factoryStatus * item.ratio;
-            }
-        }
-
-        model.age.AddTime(Time.deltaTime);
-        if (timeUpdate < model.age.time)
-        {
-            timeUpdate = model.age.time + Date.Hour;
-
-            //Money Evaluation
-            model.money -= model.runningCost;
-
-            foreach (CreatureModel worker in model.workers)
-            {
-                worker.money += 10;
-                model.money -= 10;
-            }
-
-            if (model.captain.Model != model.owner.Model)
-            {
-                model.captain.Model.money += 15;
-                model.money -= 15;
-            }
-
-            float moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
-
-            if (moneyEarned > 0)
-            {
-                model.owner.Model.money += moneyEarned * .25f;
-                model.money -= moneyEarned * .25f;
-
-                model.captain.Model.money += moneyEarned * .1f;
-                model.money -= moneyEarned * .1f;
-            }
-            moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
-            model.moneyChange = moneyEarned;
-            model.moneyStats.data["Money Change"].Add(new Stat(model.age.time, moneyEarned));
-            model.moneyStats.data["Money"].Add(new Stat(model.age.time, model.money));
-
-
-        }
-
-        if (money < 0)
-        {
-            foreach (ShipModel ship in model.incomingShips)
-            {
-                ship.NotifyChange();
-            }
-            print(model.name + " Died");
-            model.Delete();
-        }
-        else if (money > 5000000)
-        {
-            int factoryIndex = UnityEngine.Random.Range(0, 10);
-            int starIndex;
-            if (UnityEngine.Random.Range(0, 2) == 1)
-                starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
-            else starIndex = model.solar.starIndex;
-            int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
-            SolarBody parent;
-            if (galaxy.stars[starIndex].planets.Length > 0)
-                parent = galaxy.stars[starIndex].planets[planetIndex];
-            else
-                parent = galaxy.stars[starIndex].sun;
-
-            Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-
-            StationModel station = StationCreator.CreateStation((FactoryType)factoryIndex, starIndex, parent, position, model.owner.Model);
-            game.data.stations.Add(station);
-            game.UpdateCreatures(station);
-            model.money -= 1750000;
-            model.owner.Model.money += 1000000;
-            print(name + " Bought " + (FactoryType)factoryIndex);
-        }
     }
 
     public string GetInfo()

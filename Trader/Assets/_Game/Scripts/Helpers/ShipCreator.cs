@@ -24,11 +24,12 @@ public class ShipCreator{
         shipModel.workers.Add(new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateRegionName()));
 
         shipModel.name = name;
-        
+        shipModel.dateCreated = new Date(GameManager.instance.data.date.time);
+        shipModel.lastUpdated = new Date(GameManager.instance.data.date.time);
         shipModel.capacity = Random.Range(10, 200);
         shipModel.workerCapacity = shipModel.capacity / 10;
         shipModel.speed = Random.Range(2f,5f) * ( 1 - shipModel.capacity/200f + .5f);
-        shipModel.fuelEfficiency = Random.Range(175f, 300f) * (1 - shipModel.capacity / 200f + .5f);
+        shipModel.fuelEfficiency = Random.Range(5000f, 1000f) * (1 - shipModel.capacity / 200f + .5f);
         shipModel.fuelCapacity = (int) (Random.Range(50, 200) * (shipModel.capacity / 200f + .5f));
         shipModel.fuel = new Items("Fuel", shipModel.fuelCapacity);
         shipModel.solar = new SolarBody(shipModel.name, starIndex, SolarType.Structure, position, .0001f, Color.black, CreateGalaxy.G, parent);

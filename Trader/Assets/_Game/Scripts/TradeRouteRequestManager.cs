@@ -8,7 +8,7 @@ public class TradeRouteRequestManager : MonoBehaviour {
     Queue<TradeRequest> tradeRequestQueue = new Queue<TradeRequest>();
     TradeRequest currentTradeRequest;
 
-    static TradeRouteRequestManager instance;
+    internal static TradeRouteRequestManager instance;
     TradeRouteFinding tradeRoute;
 
     bool isProcessingPath;

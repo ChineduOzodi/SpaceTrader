@@ -26,7 +26,8 @@ public class StationCreator {
         model.workerCapacity = 50;
 
         model.name = name + " Station";
-        
+        model.dateCreated = new Date(GameManager.instance.data.date.time);
+        model.lastUpdated = new Date(GameManager.instance.data.date.time);
         model.capacity = 10000;
         System.Random rand = new System.Random(model.name.GetHashCode());
         float a = rand.Next(1000)/1000f;
@@ -54,7 +55,7 @@ public class StationCreator {
         //Money Setup
         model.money = 1000000f;
         model.owner.Model.money -= 1000000;
-
+        model.moneyStats = new DataGraph("Money Over Time", "Time (hours)", "Money");
         model.moneyStats.data.Add("Money", new List<Stat>() { new Stat(model.age.hour, model.money) });
         model.moneyStats.data.Add("Money Change", new List<Stat>());
 

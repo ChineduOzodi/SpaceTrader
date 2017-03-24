@@ -27,5 +27,5 @@ public class ShipModel: StructureModel {
     public float fuelEfficiency = 5;
     public int fuelCapacity = 100;
     public Color spriteColor;
-    public float timeUpdate;
+    
 }
