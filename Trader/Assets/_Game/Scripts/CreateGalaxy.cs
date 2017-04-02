@@ -88,14 +88,54 @@ public class CreateGalaxy : MonoBehaviour {
     public void CreateStars(int count)
     {
         stars = new SolarModel[count];
-
+        
         for (int i = 0; i < count; i++)
         {
             Vector2 position = new Vector2(UnityEngine.Random.Range(-mapField.x * .5f, mapField.x * .5f), UnityEngine.Random.Range(-mapField.y * .5f, mapField.y * .5f));
             float sunMass = UnityEngine.Random.Range(1f, 1000);
             int numPlanets = UnityEngine.Random.Range(0, (int) Mathf.Sqrt(sunMass / 10));
             stars[i] = new SolarModel("Solar " + i + 1, i, position, sunMass, G, numPlanets, sunSizeColor, sunMass *.001f);
+            for (int c = 0; c < i; c++)
+            {
+                float maxDist = Mathf.Pow(sunMass + stars[c].sun.mass, .5f);
+                float actualDist = Vector3.Distance(position, stars[c].position);
+                if ( actualDist < maxDist)
+                {
+                    stars[i].nearStars.Add(stars[c]);
+                    stars[c].nearStars.Add(stars[i]);
+                }
+            }
+            
         }
+        float connectedness = 0;
+        for (int i = 0; i < count; i++)
+        {
+            float closestStarDist = 1000000000000000;
+            int closestStarIndex = 0;
+            for (int c = 0; c < count; c++)
+            {
+                if (c != i)
+                {
+                    float maxDist = Mathf.Pow(stars[i].sun.mass + stars[c].sun.mass, .5f);
+                    float actualDist = Vector3.Distance(stars[i].position, stars[c].position);
+                    if (actualDist < closestStarDist)
+                    {
+                        closestStarDist = actualDist;
+                        closestStarIndex = c;
+                    }
+                }
+                
+            }
+            if (stars[i].nearStars.Count == 0)
+            {
+                stars[i].nearStars.Add(stars[closestStarIndex]);
+                stars[closestStarIndex].nearStars.Add(stars[i]);
+                print("added disconnected star");
+            }
+            connectedness += stars[i].nearStars.Count;
+        }
+        connectedness /= count;
+        print("Connectedness average: " + connectedness);
     }
     public void LoadStars()
     {

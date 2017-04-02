@@ -34,6 +34,7 @@ public class TradeRouteFinding : MonoBehaviour
     }
     IEnumerator FindTradeRoute(ShipModel model)
     {
+        Items item = new Items();
         bool success = false;
         StationModel[] targets = new StationModel[2];
         while (true)
@@ -43,11 +44,11 @@ public class TradeRouteFinding : MonoBehaviour
             foreach (StationModel sellStation in game.data.stations)
             {
 
-                foreach (Items inputItem in sellStation.factory.inputItems)
+                foreach (ProductionItem inputItem in sellStation.factory.inputItems)
                 {
                     foreach (StationModel buyStation in game.data.stations)
                     {
-                        foreach (Items outputItem in buyStation.factory.outputItems)
+                        foreach (ProductionItem outputItem in buyStation.factory.outputItems)
                         {
                             int amountToBuy = model.capacity;
                             if (outputItem.amount < amountToBuy)
@@ -78,7 +79,7 @@ public class TradeRouteFinding : MonoBehaviour
                                 success = true;
                                 targets[0] = buyStation;
                                 targets[1] = sellStation;
-                                model.item = new Items(inputItem.name, model.capacity);
+                                item = new Items(inputItem.name, inputItem.itemType, model.capacity);
                                 model.spriteColor = Color.blue;
                             }
                         }
@@ -87,7 +88,7 @@ public class TradeRouteFinding : MonoBehaviour
 
                 yield return null;
             }
-            requestManager.FinishedProcessingRoute(model, targets, success);
+            requestManager.FinishedProcessingRoute(model, item, targets, success);
             
             yield break;
         }

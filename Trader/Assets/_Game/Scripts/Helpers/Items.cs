@@ -2,117 +2,103 @@
 using System.Collections;
 
 public class Items {
-
     public string name;
-
-    public StructureType type = StructureType.Item;
-
+    public ItemTypes itemType;
     public int pendingAmount;
     public int amount;
     public Color color;
     public string coloredName;
-    public float price;
-    public float basePrice;
-    public float processTime;
-    public float totalPrice;
 
-    public int maxAmount;
-    public bool selfProducing = false;
-    public int ratio;
-
-    public static Items coalOre
-    {
-        get
-        {
-            return new Items("Coal Ore", 0);
-        }
-    }
     public Items() { }
-    public Items(string _name, int _amount, int _ratio = 1, int _maxAmount = 1000)
+    public Items(ItemTypes _itemType, int _amount)
     {
-        name = _name;
+        name = _itemType.ToString();
+        itemType = _itemType;
         amount = _amount;
         pendingAmount = amount;
-        
-        ratio = _ratio;
-        maxAmount = _maxAmount;
 
-        if (_name == "Coal Ore")
-        {
-            basePrice = 12;
-            processTime = .5f;            
-        }
-        else if (_name == "Coal Rock")
-        {
-            basePrice = 7;
-            processTime = 1.5f;
-        }
-        else if (_name == "Iron Ore")
-        {
-            basePrice = 15;
-            processTime = 2f;
-        }
-        else if (_name == "Iron Rock")
-        {
-            basePrice = 9;
-            processTime = 1.75f;
-        }
-        else if (_name == "Fuel")
-        {
-            basePrice = 5;
-            processTime = 1f;
-        }
-        else if (_name == "Rock")
-        {
-            basePrice = 1;
-            processTime = 1f;
-        }
-        else if (_name == "Unrefined Fuel")
-        {
-            basePrice = 3;
-            processTime = 1.2f;
-        }
-        else if (_name == "Steel")
-        {
-            basePrice = 30;
-            processTime = 4f;
-        }
-        else if (_name == "Glass")
-        {
-            basePrice = 10;
-            processTime = 2f;
-        }
-        else if (_name == "Ship")
-        {
-            basePrice = 5000;
-            processTime = 120f;
-        }
-        else if (_name == "Seed")
-        {
-            basePrice = 5;
-            processTime = 10f;
-        }
-        else if (_name == "Wheat")
-        {
-            basePrice = 5;
-            processTime = 15f;
-        }
-        else if (_name == "Food")
-        {
-            basePrice = 8;
-            processTime = 5f;
-        }
-        else if (_name == "Sculpture")
-        {
-            basePrice = 50;
-            processTime = 30f;
-        }
-        price = basePrice;
         System.Random rand = new System.Random(name.GetHashCode());
         float a = rand.Next(1000) / 1000f;
         float b = rand.Next(1000) / 1000f;
         float c = rand.Next(1000) / 1000f;
         color = new Color(a, b, c);
         coloredName = "<color=" + ColorTypeConverter.ToRGBHex(color) + ">" + name + "</color>";
+    }
+    public Items(string _name, ItemTypes _itemType, int _amount)
+    {
+        name = _name;
+        itemType = _itemType;
+        amount = _amount;
+        pendingAmount = amount;
+
+        System.Random rand = new System.Random(name.GetHashCode());
+        float a = rand.Next(1000) / 1000f;
+        float b = rand.Next(1000) / 1000f;
+        float c = rand.Next(1000) / 1000f;
+        color = new Color(a, b, c);
+        coloredName = "<color=" + ColorTypeConverter.ToRGBHex(color) + ">" + name + "</color>";
+    }
+
+    public static Items CoalOre
+    {
+        get { return new Items(ItemTypes.Coal, 1); }
+    }
+    public static Items Rock
+    {
+        get { return new Items(ItemTypes.Rock, 1); }
+    }
+    public static Items IronOre
+    {
+        get { return new Items(ItemTypes.Iron, 1); }
+    }
+    public static Items Fuel
+    {
+        get { return new Items(ItemTypes.Fuel, 1); }
+    }
+    public static Items Steel
+    {
+        get { return new Items(ItemTypes.Steel, 1); }
+    }
+    public static Items Wheat
+    {
+        get { return new Items(ItemTypes.Wheat, 1); }
+    }
+    public static Items Food
+    {
+        get { return new Items(ItemTypes.Food, 1); }
+    }
+    public static Items Glass
+    {
+        get { return new Items(ItemTypes.Glass, 1); }
+    }
+    public static Items Sculpture
+    {
+        get { return new Items(ItemTypes.Sculpture, 1); }
+    }
+    public static Items Ship
+    {
+        get { return new Items(ItemTypes.Ship, 1); }
+    }
+
+    //Operators
+    public static Items operator *(Items item, int num)
+    {
+        item.amount *= num;
+        return item;
+    }
+    public static Items operator /(Items item, int num)
+    {
+        item.amount /= num;
+        return item;
+    }
+    public static Items operator +(Items item, int num)
+    {
+        item.amount += num;
+        return item;
+    }
+    public static Items operator -(Items item, int num)
+    {
+        item.amount -= num;
+        return item;
     }
 }

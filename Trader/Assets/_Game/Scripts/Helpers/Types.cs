@@ -1,26 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum StructureType {
+public enum IdentityType {
 
     Station,
     Ship,
-    Human,
-    Item
+    Human
 }
 
-public enum FactoryType
+public enum ItemTypes
 {
     Coal,
     Fuel,
     Iron,
+    Rock,
     Steel,
     Ship,
     Glass,
     Sculpture,
     Wheat,
     Food,
-    Consumer
+}
+
+public enum RawResources
+{
+    CoalRock,
+    IronRock,
+    UnrefinedFuel,
+    None
+}
+
+public enum PlanetType
+{
+    Gas,
+    Dwarf,
+    Regular
 }
 
 public enum SolarType

@@ -117,43 +117,67 @@ public class ShipController : Controller<ShipModel>
 
             if (distance.sqrMagnitude < 1)
             {
-                new WaitForSeconds(model.item.amount * .1f);
+                
                 StationModel station = (StationModel) model.target.Model;
                 model.target = null;
                 if (model.mode == ShipMode.Buy)
                 {
                     station.incomingShips.Remove(model);
 
-                    if (model.item.name == "Fuel")
+                    foreach (Items item in model.items)
                     {
-                        model.fuel.amount += model.item.amount;
-                        model.mode = ShipMode.Idle;
-                    }
-                    else if (model.item.name == "Ship")
-                    {
-                        model.item = station.Buy(model.item.name, model.item.amount, model);
-                        model.money -= model.item.totalPrice - 1000;
-                        model.owner.Model.money += 1000;
-                        model.mode = ShipMode.Idle;
-                    }
-                    else
-                    {
-                        if (model.item.amount <= 0)
+                        foreach (Items buyItem in station.factory.outputItems)
                         {
-                            model.mode = ShipMode.Idle;
+                            if (item.name == ItemTypes.Fuel.ToString())
+                            {
+                                model.fuel.amount += item.pendingAmount;
+                                model.mode = ShipMode.Idle;
+                                yield break;
+                            }
+                            else if (item.name == ItemTypes.Ship.ToString())
+                            {
+                                item.amount += (item.pendingAmount - item.amount);
+                                buyItem.amount -= (item.pendingAmount - item.amount);
+                                model.mode = ShipMode.Idle;
+                                yield break;
+                            }
+                            else if (item.name == buyItem.name)
+                            {
+                                item.amount += (item.pendingAmount - item.amount);
+                                buyItem.amount -= (item.pendingAmount - item.amount);
+                                new WaitForSeconds(item.amount * .1f);
+                            }
                         }
-                        else
-                        {
-                            model.mode = ShipMode.Sell;
-                            model.target = model.sellTarget;
-                            sprite.color = Color.green;
-                        }
-                    }
 
+                    }
+                    if (model.sellTarget != null && model.sellTarget.Model != null)
+                    {
+                        model.mode = ShipMode.Sell;
+                        model.target = model.sellTarget;
+                        model.sellTarget.Model = null;
+                        station = (StationModel)model.target.Model;
+                        foreach (Items item in model.items)
+                        {
+                            item.amount -= station.Sell(item, model).amount;
+                        }
+                        sprite.color = Color.green;
+                        yield break;
+                    }
                 }
                 else if (model.mode == ShipMode.Sell)
                 {
-                    station.SellComplete(model.item);
+                    foreach (Items item in model.items)
+                    {
+                        foreach (Items sellItem in station.factory.inputItems)
+                        {
+                            if (item.name == sellItem.name)
+                            {
+                                item.amount -= (item.amount - item.pendingAmount);
+                                sellItem.amount += (item.amount - item.pendingAmount);
+                                new WaitForSeconds(item.amount * .1f);
+                            }
+                        }
+                    }
                     station.incomingShips.Remove(model);
                     model.mode = ShipMode.Idle;
                 }
@@ -204,8 +228,8 @@ public class ShipController : Controller<ShipModel>
         if (model.target != null && model.target.Model != null)
             targetName = model.target.Model.name;
 
-        info += string.Format("Ship Name: {0}\nMoney: {3}\n\nOwner: {11}\nCaptain: {12}\n Number Workers: {13}/{14}\n\nMode: {1}\nCargo: {4} - {8}/{5}\nTarget: {2}\nSpeed: {9}\nFuel: {6}/{7}\nFuel Efficeincy: {10}\n\n",
-            model.name, model.mode, targetName, model.money, model.item.coloredName, model.capacity, model.fuel.amount, model.fuelCapacity, model.item.amount, model.speed, model.fuelEfficiency, model.owner.Model.name, model.captain.Model.name, model.workers.Count, model.workerCapacity);
+        //info += string.Format("Ship Name: {0}\nMoney: {3}\n\nOwner: {11}\nCaptain: {12}\n Number Workers: {13}/{14}\n\nMode: {1}\nCargo: {4} - {8}/{5}\nTarget: {2}\nSpeed: {9}\nFuel: {6}/{7}\nFuel Efficeincy: {10}\n\n",
+        //    model.name, model.mode, targetName, model.money, model.item.coloredName, model.capacity, model.fuel.amount, model.fuelCapacity, model.item.amount, model.speed, model.fuelEfficiency, model.owner.Model.name, model.captain.Model.name, model.workers.Count, model.workerCapacity);
 
         List<Stat> moneyStats = new List<Stat>();
         moneyStats.AddRange(model.moneyStats.data["Money"]);

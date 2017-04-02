@@ -9,6 +9,8 @@ using UnityEngine.EventSystems;
 public class GameManager : MonoBehaviour {
     public int numStation;
     public int numShip;
+    public int numGov;
+    public int numComp;
     internal float localScaleMod = 1;
     bool galaxyView = true;
     public int numShipsPerFrame;
@@ -16,7 +18,7 @@ public class GameManager : MonoBehaviour {
     internal GameObject selectedObj;
     internal Text infoText;
     internal GameDataModel data;
-    
+    internal bool setup = false;
     internal int statsDisplay = 0;
     internal CreateGalaxy galaxy;
     internal TradeRouteRequestManager tradeRequestManager;
@@ -29,168 +31,122 @@ public class GameManager : MonoBehaviour {
     void Start () {
         galaxy = GetComponent<CreateGalaxy>();
         tradeRequestManager = GetComponent<TradeRouteRequestManager>();
-        data = new GameDataModel();
-        data.ships = new ModelRefs<ShipModel>();
-        data.stations = new ModelRefs<StationModel>();
-        data.creatures = new ModelRefs<CreatureModel>();
-        
-        data.date = new Date(0);
-        for (int i = 0; i < numStation; i++)
-        {
-            int factoryIndex = UnityEngine.Random.Range(0, 10);
-            int starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
-            int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
-            SolarBody parent;
-            if (galaxy.stars[starIndex].planets.Length > 0)
-                parent = galaxy.stars[starIndex].planets[planetIndex];
-            else
-                parent = galaxy.stars[starIndex].sun;
-
-            Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-
-            StationModel station = StationCreator.CreateStation((FactoryType)factoryIndex, starIndex, parent, position, null);
-            data.stations.Add(station);
-            UpdateCreatures(station);
-        }
-
-        for (int i = 0; i < numStation * .1f; i++)
-        {
-            int factoryIndex = 9;
-            int starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
-            int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
-            SolarBody parent;
-            if (galaxy.stars[starIndex].planets.Length > 0)
-                parent = galaxy.stars[starIndex].planets[planetIndex];
-            else
-                parent = galaxy.stars[starIndex].sun;
-
-            Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-
-            StationModel station = StationCreator.CreateStation((FactoryType)factoryIndex, starIndex, parent, position, null);
-            data.stations.Add(station);
-            UpdateCreatures(station);
-        }
-
-        //--------------Create Ships---------------------------//
-        for (int i = 0; i < numShip; i++)
-        {
-            StationModel startStation = data.stations[UnityEngine.Random.Range(0, data.stations.Count)];
-            Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-1000, 1000), UnityEngine.Random.Range(-1000, 1000));
-            ShipModel ship = ShipCreator.CreateShip("Freight Ship " + i, startStation.solar.starIndex, startStation.solar.parent, startStation.solar.GetLocalPosition(data.date.time));
-            data.ships.Add(ship);
-            UpdateCreatures(ship);
-        }
-        //------------------------------------------------------------------------------------------------//
         infoText = GameObject.FindGameObjectWithTag("InfoText").GetComponent<Text>();
-        StartCoroutine("UpdateShips", numShipsPerFrame);
-        StartCoroutine("UpdateStations", numStationsPerFrame);
-
+        data = new GameDataModel();
+        data.date = new Date(0);
+        setup = true;
+        StartCoroutine("CreateGame");
     }
 	
 	// Update is called once per frame
 	void Update () {
 
         //Mouse Hit
-        data.date.AddTime(Time.deltaTime);
-        if (Input.GetMouseButtonDown(0))
+        if (!setup)
         {
-            Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-            RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero, 0f);
-
-            if (!EventSystem.current.IsPointerOverGameObject())
+            data.date.AddTime(Time.deltaTime);
+            if (Input.GetMouseButtonDown(0))
             {
-                if (hit)
+                Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+                RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero, 0f);
+
+                if (!EventSystem.current.IsPointerOverGameObject())
                 {
-                    selectedObj = hit.transform.gameObject;
-                    if (selectedObj.tag == "station")
+                    if (hit)
+                    {
+                        selectedObj = hit.transform.gameObject;
+                        if (selectedObj.tag == "station")
+                        {
+                            //BreakStationLinks();
+                            //SetStationLinks();
+                        }
+
+                    }
+                    else
                     {
                         //BreakStationLinks();
-                        //SetStationLinks();
+                        selectedObj = null;
+                        statsDisplay = 0;
                     }
-                        
+
+
                 }
-                else
+            }
+
+            if (Input.GetKeyDown(KeyCode.Comma))
+            {
+                Time.timeScale *= .5f;
+            }
+            if (Input.GetKeyDown(KeyCode.Period))
+            {
+                Time.timeScale *= 2;
+            }
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (selectedObj != null && transform.parent == null)
                 {
-                    //BreakStationLinks();
-                    selectedObj = null;
-                    statsDisplay = 0;
+                    transform.parent = selectedObj.transform;
+                    transform.localPosition = new Vector3(0, 0, -10);
                 }
-            
-                
+                else transform.parent = null;
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.Comma))
-        {
-            Time.timeScale *= .5f;
-        }
-        if (Input.GetKeyDown(KeyCode.Period))
-        {
-            Time.timeScale *= 2;
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (selectedObj != null && transform.parent == null)
-            {
-                transform.parent = selectedObj.transform;
-                transform.localPosition = new Vector3(0, 0, -10);
-            }
-            else transform.parent = null;
-        }
+            infoText.text = data.date.GetDateTime() + "\nTimescale: " + Time.timeScale + "\n";
 
-        infoText.text = data.date.GetDateTime() + "\nTimescale: " + Time.timeScale + "\n";
-
-        if (selectedObj != null)
-        {
-            if (selectedObj.tag == "station")
-                infoText.text += selectedObj.GetComponent<StationController>().GetInfo();
-            else if (selectedObj.tag == "ship")
-                infoText.text += selectedObj.GetComponent<ShipController>().GetInfo();
-        }
-        else
-        {
-            
-            if (statsDisplay == 1)
+            if (selectedObj != null)
             {
-                infoText.text += ShipStats();
-            }
-            else if (statsDisplay == 2)
-            {
-                infoText.text += StationStats();
-            }
-            else if (statsDisplay == 3)
-            {
-                infoText.text += CreatureStats();
+                if (selectedObj.tag == "station")
+                    infoText.text += selectedObj.GetComponent<StationController>().GetInfo();
+                else if (selectedObj.tag == "ship")
+                    infoText.text += selectedObj.GetComponent<ShipController>().GetInfo();
             }
             else
             {
-                infoText.text += BasicStats();
-            }
-        }
 
-        if (transform.parent != null && transform.parent.tag == "ship")
-        {
-            ShipController ship = transform.parent.GetComponent<ShipController>();
-            galaxy.solar = galaxy.starControllers[ship.starIndex];
-            if (ship.hyperspace != galaxyView)
-            {
-                if (ship.hyperspace)
+                if (statsDisplay == 1)
                 {
-                    galaxyView = true;
-                    galaxy.GalaxyView();
-                    transform.localPosition = new Vector3(0, 0, -10);
-                    transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
-
+                    infoText.text += ShipStats();
                 }
-                else {
-                    galaxyView = false;
-                    galaxy.SolarView();
-                    transform.localPosition = new Vector3(0, 0, -10);
-                    transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
+                else if (statsDisplay == 2)
+                {
+                    infoText.text += StationStats();
+                }
+                else if (statsDisplay == 3)
+                {
+                    infoText.text += CreatureStats();
+                }
+                else
+                {
+                    infoText.text += BasicStats();
                 }
             }
 
+            if (transform.parent != null && transform.parent.tag == "ship")
+            {
+                ShipController ship = transform.parent.GetComponent<ShipController>();
+                galaxy.solar = galaxy.starControllers[ship.starIndex];
+                if (ship.hyperspace != galaxyView)
+                {
+                    if (ship.hyperspace)
+                    {
+                        galaxyView = true;
+                        galaxy.GalaxyView();
+                        transform.localPosition = new Vector3(0, 0, -10);
+                        transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
+
+                    }
+                    else
+                    {
+                        galaxyView = false;
+                        galaxy.SolarView();
+                        transform.localPosition = new Vector3(0, 0, -10);
+                        transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
+                    }
+                }
+
+            }
         }
+        
     }
 
     //private void BreakStationLinks()
@@ -201,6 +157,108 @@ public class GameManager : MonoBehaviour {
     //        station.NotifyChange();
     //    }
     //}
+
+    IEnumerator CreateGame()
+    {
+        NameGen names = new NameGen();
+        while (setup)
+        {
+            for (int a = 0; a < numGov; a++)
+            {
+                //Create Government
+                GovernmentModel gov = new GovernmentModel(names.GenerateWorldName() + " Government");
+                data.governments.Add(gov);
+                int starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
+                int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
+                SolarBody parent;
+                if (galaxy.stars[starIndex].planets.Length > 0)
+                    parent = galaxy.stars[starIndex].planets[planetIndex];
+                else
+                    parent = galaxy.stars[starIndex].sun;
+                Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+                if (parent.planetType == PlanetType.Regular)
+                {
+                    position = new Polar2(0,0);
+                }
+
+                //Add Government Capital
+                CreatureModel owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
+                CreatureModel manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
+                StationModel station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", galaxy.stars[starIndex], parent, position, owner, manager);
+                data.stations.Add(station);
+                data.creatures.Add(owner);
+                data.creatures.Add(manager);
+                gov.location.Model = station;
+                for (int c = 0; c < numComp; c++)
+                {
+                    owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
+                    CompanyModel comp = new CompanyModel(names.GenerateRegionName() + " Company", gov, owner);
+                    gov.companyAcess.Add(comp);
+                    data.creatures.Add(owner);
+
+                    //Add Company Headquarter Station
+
+                    int factoryIndex = UnityEngine.Random.Range(0, 10);
+                    starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
+                    planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
+                    if (galaxy.stars[starIndex].planets.Length > 0)
+                        parent = galaxy.stars[starIndex].planets[planetIndex];
+                    else
+                        parent = galaxy.stars[starIndex].sun;
+
+                    position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+                    owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
+                    manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
+                    station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", galaxy.stars[starIndex], parent, position, owner, manager);
+                    data.creatures.Add(owner);
+                    data.creatures.Add(manager);
+                    data.stations.Add(station);
+                    yield return null;
+
+                    for (int i = 0; i < numStation - 1; i++)
+                    {
+                        factoryIndex = UnityEngine.Random.Range(0, 10);
+                        starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
+                        planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
+                        if (galaxy.stars[starIndex].planets.Length > 0)
+                            parent = galaxy.stars[starIndex].planets[planetIndex];
+                        else
+                            parent = galaxy.stars[starIndex].sun;
+
+                        position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+                        owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
+                        manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
+                        station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", galaxy.stars[starIndex], parent, position, owner, manager);
+                        data.creatures.Add(owner);
+                        data.creatures.Add(manager);
+                        data.stations.Add(station);
+                        infoText.text = string.Format("Creating stations: {0} of {1}", i, numStation);
+                        yield return null;
+                    }
+
+                    //--------------Create Ships---------------------------//
+                    for (int i = 0; i < numShip; i++)
+                    {
+                        StationModel startStation = data.stations[UnityEngine.Random.Range(0, data.stations.Count)];
+                        Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-1000, 1000), UnityEngine.Random.Range(-1000, 1000));
+                        manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000);
+                        ShipModel ship = ShipCreator.CreateShip(comp.name + " Ship " + i, startStation.solar.starIndex, startStation.solar.parent, startStation.solar.GetLocalPosition(data.date.time), comp, manager);
+                        data.ships.Add(ship);
+                        data.creatures.Add(manager);
+                        infoText.text = string.Format("Creating ships: {0} of {1}", i, numShip);
+                        yield return null;
+                    }
+                }
+                
+            }
+            
+            //------------------------------------------------------------------------------------------------//
+            
+            StartCoroutine("UpdateShips", numShipsPerFrame);
+            StartCoroutine("UpdateStations", numStationsPerFrame);
+            setup = false;
+        }
+    }
     IEnumerator UpdateShips(int updatesPerFrame)
     {
         int shipIndex = 0;
@@ -245,11 +303,11 @@ public class GameManager : MonoBehaviour {
         model.age.AddTime(deltaTime);
         int factoryStatus = model.factory.UpdateProduction(deltaTime);
 
-        foreach (Items item in model.factory.outputItems)
+        foreach (ProductionItem item in model.factory.inputItems)
         {
-            if (item.selfProducing && factoryStatus > 0)
+            if (model.factory.outputItems.Length == 0 && factoryStatus > 0)
             {
-                model.money += item.basePrice * factoryStatus * item.ratio;
+                model.money += item.productionAmount * factoryStatus * item.price;
             }
         }
 
@@ -259,33 +317,28 @@ public class GameManager : MonoBehaviour {
 
             //Money Evaluation
             model.money -= model.runningCost;
+            model.money -= 10 * model.workers;
 
-            foreach (CreatureModel worker in model.workers)
+            if (model.manager.Model != model.owner.Model)
             {
-                worker.money += 10;
-                model.money -= 10;
-            }
-
-            if (model.captain.Model != model.owner.Model)
-            {
-                model.captain.Model.money += 15;
-                model.money -= 15;
+                model.manager.Model.money += 85;
+                model.money -= 85;
             }
 
             float moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
 
             if (moneyEarned > 0)
             {
-                model.owner.Model.money += moneyEarned * .25f;
-                model.money -= moneyEarned * .25f;
-
-                model.captain.Model.money += moneyEarned * .1f;
+                model.manager.Model.money += moneyEarned * .1f;
                 model.money -= moneyEarned * .1f;
             }
             moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
             model.moneyChange = moneyEarned;
             model.moneyStats.data["Money Change"].Add(new Stat(model.age.time, moneyEarned));
             model.moneyStats.data["Money"].Add(new Stat(model.age.time, model.money));
+
+            model.owner.Model.money += model.money;
+            model.money = 0;
 
 
         }
@@ -299,29 +352,29 @@ public class GameManager : MonoBehaviour {
             print(model.name + " Died");
             model.Delete();
         }
-        else if (model.money > 5000000)
-        {
-            int factoryIndex = UnityEngine.Random.Range(0, 10);
-            int starIndex;
-            if (UnityEngine.Random.Range(0, 2) == 1)
-                starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
-            else starIndex = model.solar.starIndex;
-            int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
-            SolarBody parent;
-            if (galaxy.stars[starIndex].planets.Length > 0)
-                parent = galaxy.stars[starIndex].planets[planetIndex];
-            else
-                parent = galaxy.stars[starIndex].sun;
+        //else if (model.money > 5000000)
+        //{
+        //    int factoryIndex = UnityEngine.Random.Range(0, 10);
+        //    int starIndex;
+        //    if (UnityEngine.Random.Range(0, 2) == 1)
+        //        starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
+        //    else starIndex = model.solar.starIndex;
+        //    int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
+        //    SolarBody parent;
+        //    if (galaxy.stars[starIndex].planets.Length > 0)
+        //        parent = galaxy.stars[starIndex].planets[planetIndex];
+        //    else
+        //        parent = galaxy.stars[starIndex].sun;
 
-            Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+        //    Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
 
-            StationModel station = StationCreator.CreateStation((FactoryType)factoryIndex, starIndex, parent, position, model.owner.Model);
-            data.stations.Add(station);
-            UpdateCreatures(station);
-            model.money -= 1750000;
-            model.owner.Model.money += 1000000;
-            print(name + " Bought " + (FactoryType)factoryIndex);
-        }
+        //    StationModel station = StationCreator.CreateStation((FactoryType)factoryIndex, galaxy.stars[starIndex], parent, position, model.owner.Model);
+        //    data.stations.Add(station);
+        //    UpdateCreatures(station);
+        //    model.money -= 1750000;
+        //    model.owner.Model.money += 1000000;
+        //    print(name + " Bought " + (FactoryType)factoryIndex);
+        //}
     }
 
     private void ShipControl(int shipIndex)
@@ -336,26 +389,18 @@ public class GameManager : MonoBehaviour {
 
             //Money Evaluation
             model.money -= model.runningCost;
-
-            foreach (CreatureModel worker in model.workers)
-            {
-                worker.money += 10;
-                model.money -= 10;
-            }
+            model.money -= model.workers * 15;
 
             if (model.captain.Model != model.owner.Model)
             {
-                model.captain.Model.money += 15;
-                model.money -= 15;
+                model.captain.Model.money += 35;
+                model.money -= 35;
             }
 
             float moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
 
             if (moneyEarned > 0)
             {
-                model.owner.Model.money += moneyEarned * .25f;
-                model.money -= moneyEarned * .25f;
-
                 model.captain.Model.money += moneyEarned * .1f;
                 model.money -= moneyEarned * .1f;
             }
@@ -363,31 +408,31 @@ public class GameManager : MonoBehaviour {
             model.moneyChange = moneyEarned;
             model.moneyStats.data["Money Change"].Add(new Stat(model.age.time, model.moneyChange));
             model.moneyStats.data["Money"].Add(new Stat(model.age.time, model.money));
-
-            if (model.money < 0)
-            {
-                if (model.mode == ShipMode.Sell && model.target != null && model.target.Model != null)
-                {
-                    ((StationModel) model.target.Model).SellIncomplete(model.item);
-                }
-                print(model.name + " Died");
-                model.Delete();
-                return;
-            }
+            model.owner.Model.money += model.money;
+            model.money = 0;
+            //if (model.money < 0)
+            //{
+            //    if (model.mode == ShipMode.Sell && model.target != null && model.target.Model != null)
+            //    {
+            //        ((StationModel) model.target.Model).SellIncomplete(model.item);
+            //    }
+            //    print(model.name + " Died");
+            //    model.Delete();
+            //    return;
+            //}
 
         }
 
         if ((float)model.fuel.amount / model.fuelCapacity < .25f && model.target.Model == null)
         {
-            model.target = new ModelRef<StructureModel>(FindClosestStation("Fuel", model));
+            model.target = new ModelRef<StructureModel>(FindClosestStation( ItemTypes.Fuel.ToString() , model));
             if (model.target.Model != null)
             {
                 StationModel station = (StationModel) model.target.Model;
-                model.item = new Items("Fuel", model.fuelCapacity);
+                Items buyItem = new Items(ItemTypes.Fuel, model.fuelCapacity);
+                model.items.Add(station.Buy(buyItem, model));
                 model.spriteColor = Color.yellow;
                 model.mode = ShipMode.Buy;
-                model.item = station.Buy(model.item.name, model.item.amount);
-                model.money -= model.item.totalPrice;
                 station.incomingShips.Add(model);
                 model.NotifyChange();
                 return;
@@ -395,47 +440,54 @@ public class GameManager : MonoBehaviour {
             else if (model.fuel.amount < 0) {  }
         }
 
-        if (model.item.name == "Ship" && model.item.amount > 0)
+        foreach (Items item in model.items)
         {
-            for (int i = 0; i < model.item.amount; i++)
+            if (item.name == ItemTypes.Ship.ToString() && item.amount > 0)
             {
-                //Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
-                ShipModel ship = ShipCreator.CreateShip(model.name + "." + model.index, model.solar.starIndex, model.solar.parent, model.solar.GetLocalPosition(data.date.time), model.owner.Model);
-                data.ships.Add(ship);
-                UpdateCreatures(ship);
-                model.index++;
-            }
-
-            model.item = null;
-        }
-
-        if (model.money > 10000 && model.target.Model == null)
-        {
-            model.target.Model = FindClosestStation("Ship", model);
-            if (model.target.Model != null)
-            {
-                StationModel station = (StationModel) model.target.Model;
-                foreach (Items outputItem in station.factory.outputItems)
+                for (int i = 0; i < item.amount; i++)
                 {
-                    if (outputItem.name == "Ship")
-                    {
-                        if (outputItem.price + 2000 < model.money)
-                        {
-                            model.item = new Items("Ship", 1);
-                            model.spriteColor = Color.cyan;
-                            model.mode = ShipMode.Buy;
-                            station.incomingShips.Add(model);
-                            model.NotifyChange();
-                            return;
-                        }
-                        else
-                        {
-                            model.target.Model = null;
-                        }
-                    }
+                    CreatureModel captain = new CreatureModel(model.owner.Model.name + " Ship Captain " + model.owner.Model.itemsBought, 1000);
+                    ShipModel ship = ShipCreator.CreateShip(model.owner.Model.name + "." + model.owner.Model.itemsBought, model.solar.starIndex, model.solar.parent, model.solar.GetLocalPosition(data.date.time), model.owner.Model, captain);
+                    data.ships.Add(ship);
+                    data.creatures.Add(captain);
+                    model.owner.Model.itemsBought++;
                 }
+
+                item.amount = 0;
             }
+
+            if (item.amount == 0 && item.pendingAmount == 0)
+                model.items.Remove(item);
         }
+        
+
+        //if (model.money > 10000 && model.target.Model == null)
+        //{
+        //    model.target.Model = FindClosestStation("Ship", model);
+        //    if (model.target.Model != null)
+        //    {
+        //        StationModel station = (StationModel) model.target.Model;
+        //        foreach (Items outputItem in station.factory.outputItems)
+        //        {
+        //            if (outputItem.name == "Ship")
+        //            {
+        //                if (outputItem.price + 2000 < model.money)
+        //                {
+        //                    model.item = new Items("Ship", 1);
+        //                    model.spriteColor = Color.cyan;
+        //                    model.mode = ShipMode.Buy;
+        //                    station.incomingShips.Add(model);
+        //                    model.NotifyChange();
+        //                    return;
+        //                }
+        //                else
+        //                {
+        //                    model.target.Model = null;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
         if (model.mode == ShipMode.Idle)
         {
             model.mode = ShipMode.SearchingTradeRoute;
@@ -443,7 +495,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void OnFindRouteFinished(ShipModel model, StructureModel[] targets, bool success)
+    private void OnFindRouteFinished(ShipModel model, Items buyItem, StructureModel[] targets, bool success)
     {
         if (success)
         {
@@ -451,13 +503,8 @@ public class GameManager : MonoBehaviour {
             model.sellTarget.Model = targets[1];
             model.mode = ShipMode.Buy;
             StationModel station = (StationModel)model.target.Model;
-
-            model.item = station.Buy(model.item.name, model.item.amount);
-            model.money -= model.item.totalPrice;
-
+            model.items.Add(station.Buy(buyItem, model));
             station.incomingShips.Add(model);
-            station = (StationModel)model.sellTarget.Model;
-            model.money += station.Sell(model.item);
             model.NotifyChange();
         }
         else
@@ -528,59 +575,59 @@ public class GameManager : MonoBehaviour {
         string stats = "";
         Dictionary<string, Items> stationData = new Dictionary<string, Items>();
 
-        foreach (StationModel station in data.stations)
-        {
-            foreach (Items item in station.factory.inputItems)
-            {
-                if (!item.selfProducing)
-                {
-                    if (stationData.ContainsKey(item.name))
-                    {
-                        stationData[item.name].price += item.price;
-                        stationData[item.name].amount++;
-                    }
-                    else
-                    {
-                        Items addItem = new Items(item.name, 1);
-                        addItem.price = item.price;
-                        addItem.basePrice = item.basePrice;
-                        addItem.selfProducing = item.selfProducing;
-                        stationData.Add(item.name, addItem);
-                    }
-                }
+        //foreach (StationModel station in data.stations)
+        //{
+        //    foreach (Items item in station.factory.inputItems)
+        //    {
+        //        if (!item.selfProducing)
+        //        {
+        //            if (stationData.ContainsKey(item.name))
+        //            {
+        //                stationData[item.name].price += item.price;
+        //                stationData[item.name].amount++;
+        //            }
+        //            else
+        //            {
+        //                Items addItem = new Items(item.name, 1);
+        //                addItem.price = item.price;
+        //                addItem.basePrice = item.basePrice;
+        //                addItem.selfProducing = item.selfProducing;
+        //                stationData.Add(item.name, addItem);
+        //            }
+        //        }
                     
-            }
-            foreach (Items item in station.factory.outputItems)
-            {
-                if (!item.selfProducing)
-                {
-                    if (stationData.ContainsKey(item.name))
-                    {
-                        stationData[item.name].price += item.price;
-                        stationData[item.name].amount++;
-                    }
-                    else
-                    {
-                        Items addItem = new Items(item.name, 1);
-                        addItem.price = item.price;
-                        addItem.basePrice = item.basePrice;
-                        stationData.Add(item.name, addItem);
-                        addItem.selfProducing = item.selfProducing;
-                    }
-                }
+        //    }
+        //    foreach (Items item in station.factory.outputItems)
+        //    {
+        //        if (!item.selfProducing)
+        //        {
+        //            if (stationData.ContainsKey(item.name))
+        //            {
+        //                stationData[item.name].price += item.price;
+        //                stationData[item.name].amount++;
+        //            }
+        //            else
+        //            {
+        //                Items addItem = new Items(item.name, 1);
+        //                addItem.price = item.price;
+        //                addItem.basePrice = item.basePrice;
+        //                stationData.Add(item.name, addItem);
+        //                addItem.selfProducing = item.selfProducing;
+        //            }
+        //        }
                 
-            }
-        }
+        //    }
+        //}
         List<Items> sortedItems = new List<Items>();
         foreach (Items item in stationData.Values)
         {
             sortedItems.Add(item);
         }
-        sortedItems.Sort(delegate (Items c1, Items c2) { return (c2.price/ c2.amount /c2.basePrice).CompareTo(c1.price/ c1.amount /c1.basePrice); });
-        for (int i = 0; i < sortedItems.Count; i++)
-        {
-            stats += string.Format("\n{0}. {1} - {2} | {3}/{4}", i + 1, sortedItems[i].coloredName, sortedItems[i].amount, (sortedItems[i].price / sortedItems[i].amount).ToString("0.00"), sortedItems[i].basePrice.ToString("0.00"));
-        }
+        //sortedItems.Sort(delegate (Items c1, Items c2) { return (c2.price/ c2.amount /c2.basePrice).CompareTo(c1.price/ c1.amount /c1.basePrice); });
+        //for (int i = 0; i < sortedItems.Count; i++)
+        //{
+        //    stats += string.Format("\n{0}. {1} - {2} | {3}/{4}", i + 1, sortedItems[i].coloredName, sortedItems[i].amount, (sortedItems[i].price / sortedItems[i].amount).ToString("0.00"), sortedItems[i].basePrice.ToString("0.00"));
+        //}
 
         return stats;
     }
@@ -648,19 +695,6 @@ public class GameManager : MonoBehaviour {
                 break;
         }
         return stats;
-    }
-    public void UpdateCreatures(StructureModel model)
-    {
-        if (!data.creatures.Contains(model.owner.Model))
-            data.creatures.Add(model.owner.Model);
-        if (!data.creatures.Contains(model.captain.Model))
-            data.creatures.Add(model.captain.Model);
-
-        foreach( CreatureModel creature in model.workers)
-        {
-            if (!data.creatures.Contains(creature))
-                data.creatures.Add(creature);
-        }
     }
     public void SaveGame()
     {

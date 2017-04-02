@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using CodeControl;
 using System;
@@ -12,6 +12,7 @@ public class SolarController : Controller<SolarModel> {
 
     internal GameObject sun;
     internal GameObject[] planets;
+    internal StationController[] stations;
     internal List<GameObject> moons = new List<GameObject>();
     internal List<SolarBody> moonModels = new List<SolarBody>();
     internal GameManager game;
@@ -152,6 +153,16 @@ public class SolarController : Controller<SolarModel> {
                 moons[moons.Count - 1].transform.localScale = Vector3.one * (Mathf.Sqrt(body.mass / Mathf.PI));
             }
         }
+
+        //Create Stations
+        stations = new StationController[model.stations.Count];
+        int c = 0;
+        foreach (StationModel station in model.stations)
+        {
+            stations[c] = Controller.Instantiate<StationController>("station", station);
+            c++;
+        }
+
     }
 
     public void DestroySystem()
@@ -171,5 +182,11 @@ public class SolarController : Controller<SolarModel> {
             
         }
         moons = new List<GameObject>();
+        for (int i = 0; i < stations.Length; i++)
+        {
+            Destroy(stations[i].gameObject);
+
+        }
+        stations = new StationController[0];
     }
 }

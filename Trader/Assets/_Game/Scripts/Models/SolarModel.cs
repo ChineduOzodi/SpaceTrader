@@ -14,6 +14,9 @@ public class SolarModel : Model {
     public SolarBody sun;
 
     public SolarBody[] planets;
+    public ModelRefs<StationModel> stations = new ModelRefs<StationModel>();
+    public ModelRefs<ShipModel> ships = new ModelRefs<ShipModel>();
+    public ModelRefs<SolarModel> nearStars = new ModelRefs<SolarModel>();
     public int index;
 
     public SolarModel() { }

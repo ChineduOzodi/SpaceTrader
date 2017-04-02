@@ -5,23 +5,14 @@ using CodeControl;
 
 public class ShipCreator{
 
-    public static ShipModel CreateShip(string name, int starIndex, SolarBody parent, Polar2 position, CreatureModel owner = null)
+    public static ShipModel CreateShip(string name, int starIndex, SolarBody parent, Polar2 position, IdentityModel owner, CreatureModel captain)
     {
         ShipModel shipModel = new ShipModel();
-        NameGen names = new NameGen();
-        if (owner == null)
-        {
-            shipModel.owner = new ModelRef<CreatureModel>( new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateRegionName(), 1000));
-            shipModel.captain = shipModel.owner;
-        }
-        else
-        {
-            shipModel.owner = new ModelRef<CreatureModel>(owner);
-            shipModel.captain = new ModelRef<CreatureModel>(new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateRegionName()));
-        }
+        shipModel.owner = new ModelRef<IdentityModel>(owner);
+        shipModel.captain = new ModelRef<CreatureModel>(captain);
+        shipModel.captain.Model.location.Model = shipModel;
         shipModel.owner.Model.ships.Add(shipModel);
-        shipModel.workers = new ModelRefs<CreatureModel>();
-        shipModel.workers.Add(new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateRegionName()));
+        shipModel.workers = 0;
 
         shipModel.name = name;
         shipModel.dateCreated = new Date(GameManager.instance.data.date.time);
@@ -31,7 +22,7 @@ public class ShipCreator{
         shipModel.speed = Random.Range(2f,5f) * ( 1 - shipModel.capacity/200f + .5f);
         shipModel.fuelEfficiency = Random.Range(5000f, 1000f) * (1 - shipModel.capacity / 200f + .5f);
         shipModel.fuelCapacity = (int) (Random.Range(50, 200) * (shipModel.capacity / 200f + .5f));
-        shipModel.fuel = new Items("Fuel", shipModel.fuelCapacity);
+        shipModel.fuel = new Items( ItemTypes.Fuel, shipModel.fuelCapacity);
         shipModel.solar = new SolarBody(shipModel.name, starIndex, SolarType.Structure, position, .0001f, Color.black, CreateGalaxy.G, parent);
         //Money Setup
         shipModel.money = 1000f;

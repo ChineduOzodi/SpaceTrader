@@ -98,32 +98,9 @@ public class StationController : Controller<StationModel> {
     {
         string info = "";
         info += "Factory Name: <color=" + ColorTypeConverter.ToRGBHex(model.color) + ">" + model.factory.name + "</color>\nMoney: " + model.money + "\n";
-        info += string.Format("Owner: {0}\nCaptain: {1}\n Number Workers: {2}/{3}\n", model.owner.Model.name, model.captain.Model.name, model.workers.Count, model.workerCapacity);
+        info += string.Format("Owner: {0}\nCaptain: {1}\n Number Workers: {2}/{3}\n", model.owner.Model.name, model.manager.Model.name, model.workers, model.workerCapacity);
         info += "Progress: " + (model.factory.productionTime / model.factory.unitTime).ToString("0.00") + " - " + model.factory.unitTime + "\n\n";
 
-        foreach (Items item in model.factory.inputItems)
-        {
-            if (item.selfProducing == false)
-                info += "Input " + item.coloredName + ": " + item.amount + " (" + (item.pendingAmount - item.amount) + ")/" + item.maxAmount + "| Price: " + item.price.ToString("0.00") + " - " +item.basePrice +  "\n";
-            else
-                info += "Input " + item.coloredName + ": ---\n";
-        }
-        foreach (Items item in model.factory.outputItems)
-        {
-            info += "Output " + item.coloredName + ": " + item.amount + "/" + item.maxAmount + "| Price: " + item.price.ToString("0.00") + " - " + item.basePrice + "\n";
-        }
-
-        List<ShipModel> sortedShips = new List<ShipModel>();
-        foreach (ShipModel shipModel in model.incomingShips)
-        {
-            sortedShips.Add(shipModel);
-        }
-        sortedShips.Sort(delegate (ShipModel c1, ShipModel c2) { return c2.item.amount.CompareTo(c1.item.amount); });
-
-        for (int i = 0; i < sortedShips.Count; i++)
-        {
-            info += string.Format("\n{0}. {1} - {2} | {3} - {4}", i + 1, sortedShips[i].name, sortedShips[i].money.ToString("0.00"), sortedShips[i].item.coloredName, sortedShips[i].item.amount);
-        }
         info += "\n\n";
         List<Stat> moneyStats = new List<Stat>();
         moneyStats.AddRange(model.moneyStats.data["Money"]);
@@ -137,50 +114,7 @@ public class StationController : Controller<StationModel> {
         return info;
     }
 
-    internal Items Buy(string itemName, int itemAmount, ShipModel buyer = null)
-    {
-        foreach (Items item in model.factory.outputItems)
-        {
-            if (item.name == itemName)
-            {
-                if (itemAmount > item.amount)
-                {
-                    itemAmount = item.amount;
-                }
-                Items soldItem = new Items(itemName, itemAmount);
-                soldItem.price = item.price;
-                soldItem.totalPrice = soldItem.price * soldItem.amount;
-
-                model.money += soldItem.totalPrice;
-                item.amount -= itemAmount;
-                model.factory.SetPrices();
-
-                if (item.name == "Ship" && itemAmount > 0)
-                {
-                    item.amount += itemAmount;
-                    if (buyer != null)
-                    {
-                        StationModel startStation = model;
-                        Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-1000, 1000), UnityEngine.Random.Range(-1000, 1000));
-                        ShipModel ship = ShipCreator.CreateShip(buyer.name + "." + buyer.index, startStation.solar.starIndex, startStation.solar.parent, startStation.solar.GetLocalPosition(game.data.date.time), buyer.owner.Model);
-                        game.data.ships.Add(ship);
-                        game.UpdateCreatures(ship);
-                        buyer.index++;
-                        buyer.item.totalPrice = soldItem.totalPrice;
-                    }
-                    else
-                    {
-                        print("No buyer for Ship purchase in Station: " + model.name);
-                    }
-                }
-
-                return soldItem;
-            }
-
-        }
-
-        return null;
-    }
+    
 
     internal Items[] GetInputItems()
     {

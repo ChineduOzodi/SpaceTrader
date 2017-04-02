@@ -5,27 +5,18 @@ using UnityEngine;
 
 public class StationCreator {
 
-    public static StationModel CreateStation(FactoryType name, int starIndex, SolarBody parent, Polar2 position, CreatureModel owner)
+    public static StationModel CreateStation(string name, SolarModel star, SolarBody parent, Polar2 position, IdentityModel owner, CreatureModel captain)
     {
         StationModel model = new StationModel();
-        NameGen names = new NameGen();
-        if (owner == null)
-        {
-            model.owner = new ModelRef<CreatureModel>( new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateRegionName(), 1000000));
-            model.captain = new ModelRef<CreatureModel>(model.owner.Model);   
-        }
-        else
-        {
-            model.owner = new ModelRef<CreatureModel>(owner);
-        }
+        
+        model.owner = new ModelRef<IdentityModel>(owner);
+        model.manager = new ModelRef<CreatureModel>(captain);
+        model.manager.Model.location.Model = model;
 
-        model.captain = new ModelRef<CreatureModel>(new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateRegionName()));
-        model.owner.Model.stations.Add(model);
-        model.workers = new ModelRefs<CreatureModel>();
-        model.workers.Add(new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateRegionName()));
+        model.workers = 10;
         model.workerCapacity = 50;
 
-        model.name = name + " Station";
+        model.name = name;
         model.dateCreated = new Date(GameManager.instance.data.date.time);
         model.lastUpdated = new Date(GameManager.instance.data.date.time);
         model.capacity = 10000;
@@ -38,9 +29,17 @@ public class StationCreator {
         b = rand.Next(1000) / 1000f;
         c = rand.Next(1000) / 1000f;
         model.backgroundColor = new Color(a, b, c);
-        model.solar = new SolarBody(model.name, starIndex, SolarType.Structure, position, .0001f, model.color, CreateGalaxy.G, parent);
-
-        model.factory = new Factory(name);
+        model.solar = new SolarBody(model.name, star.index, SolarType.Structure, position, .0001f, model.color, CreateGalaxy.G, parent);
+        star.stations.Add(model);
+        if (position.radius == 0 && parent.rawResource != RawResources.None)
+        {
+            model.factory = new Factory(parent.rawResource,model);
+        }
+        else
+        {
+            model.factory = new Factory(true, model);
+        }
+        
 
         foreach (Items item in model.factory.inputItems)
         {
@@ -58,8 +57,6 @@ public class StationCreator {
         model.moneyStats = new DataGraph("Money Over Time", "Time (hours)", "Money");
         model.moneyStats.data.Add("Money", new List<Stat>() { new Stat(model.age.hour, model.money) });
         model.moneyStats.data.Add("Money Change", new List<Stat>());
-
-        StationController station = Controller.Instantiate<StationController>("station", model);
 
         return model;
     }
