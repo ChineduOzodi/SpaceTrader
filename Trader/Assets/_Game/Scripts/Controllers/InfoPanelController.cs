@@ -27,6 +27,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button = Instantiate(uiButtonInstance, contentPosition.transform);
             mainInfo.Add(button);
             button.GetComponentInChildren<Text>().text = "Capital: " + gov.location.Model.name;
+            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(gov.location.Model));
             button.GetComponent<Image>().color = gov.location.Model.spriteColor;
             button = Instantiate(uiButtonInstance, contentPosition.transform);
             mainInfo.Add(button);
@@ -42,6 +43,43 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button = Instantiate(uiButtonInstance, contentPosition.transform);
             mainInfo.Add(button);
             button.GetComponentInChildren<Text>().text = "Total Influence:" + totalInfluence;
+
+        }
+        else if (model.target.Model.identityType == IdentityType.Station)
+        {
+            StationModel station = (StationModel)model.target.Model;
+            Button name = Instantiate(uiButtonInstance, contentPosition.transform);
+            name.GetComponent<Image>().color = station.spriteColor;
+            mainInfo.Add(name);
+            name.onClick.AddListener(() => GameManager.instance.GoToTarget(model.target.Model));
+            name.GetComponentInChildren<Text>().text = station.name;
+            Button button = Instantiate(uiButtonInstance, contentPosition.transform);
+            mainInfo.Add(button);
+            button.GetComponentInChildren<Text>().text = "Owner: " + station.owner.Model.name;
+            button = Instantiate(uiButtonInstance, contentPosition.transform);
+            mainInfo.Add(button);
+            button.GetComponentInChildren<Text>().text = "Manager: " + station.manager.Model.name;
+            button = Instantiate(uiButtonInstance, contentPosition.transform);
+            mainInfo.Add(button);
+            button.GetComponentInChildren<Text>().text = "Money: " + station.money;
+            button = Instantiate(uiButtonInstance, contentPosition.transform);
+            mainInfo.Add(button);
+            button.GetComponentInChildren<Text>().text = "Input Goods:";
+            foreach (Items item in station.factory.inputItems)
+            {
+                button = Instantiate(uiButtonInstance, contentPosition.transform);
+                mainInfo.Add(button);
+                button.GetComponentInChildren<Text>().text = item.name + ": "+ item.amount+" ("+item.pendingAmount+")";
+                button.GetComponent<Image>().color = item.color;
+            }
+            button.GetComponentInChildren<Text>().text = "Output Goods:";
+            foreach (Items item in station.factory.outputItems)
+            {
+                button = Instantiate(uiButtonInstance, contentPosition.transform);
+                mainInfo.Add(button);
+                button.GetComponentInChildren<Text>().text = item.name + ": " + item.amount + " (" + item.pendingAmount + ")";
+                button.GetComponent<Image>().color = item.color;
+            }
 
         }
     }

@@ -13,6 +13,7 @@ public class StationController : Controller<StationModel> {
     internal SpriteRenderer sprite;
     internal float timeUpdate;
     internal LineRenderer line;
+    internal StationModel Model;
     internal float money
     {
         get
@@ -22,6 +23,7 @@ public class StationController : Controller<StationModel> {
     }
     protected override void OnInitialize()
     {
+        Model = model;
         game = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
         galaxy = game.galaxy;
         sprite = GetComponent<SpriteRenderer>();

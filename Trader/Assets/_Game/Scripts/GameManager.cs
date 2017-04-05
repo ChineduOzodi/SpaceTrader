@@ -60,8 +60,7 @@ public class GameManager : MonoBehaviour {
                         selectedObj = hit.transform.gameObject;
                         if (selectedObj.tag == "station")
                         {
-                            //BreakStationLinks();
-                            //SetStationLinks();
+                            OpenInfoPanel(selectedObj.GetComponent<StationController>().Model);
                         }
 
                     }
@@ -201,66 +200,42 @@ public class GameManager : MonoBehaviour {
                 gov.location.Model = station;
                 gov.solar = station.solar;
                 gov.stations.Add(station);
-                //for (int c = 0; c < numComp; c++)
-                //{
-                //    owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
-                //    CompanyModel comp = new CompanyModel(names.GenerateRegionName() + " Company", gov, owner);
-                //    gov.companyAcess.Add(comp);
-                //    data.creatures.Add(owner);
+                for (int c = 0; c < numComp; c++)
+                {
+                    CreatureModel owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
+                    CompanyModel comp = new CompanyModel(names.GenerateRegionName() + " Company", gov, owner);
+                    gov.companyAcess.Add(comp);
+                    comp.governmentAccess.Add(gov);
+                    data.creatures.Add(owner);
+                    data.companies.Add(comp);
+                    //Add Company Headquarter Station
+                    starIndex = UnityEngine.Random.Range(0, gov.stars.Count);
+                    planetIndex = UnityEngine.Random.Range(0, gov.stars[starIndex].planets.Length);
+                    if (gov.stars[starIndex].planets.Length > 0)
+                        parent = gov.stars[starIndex].planets[planetIndex];
+                    else
+                        parent = gov.stars[starIndex].sun;
 
-                //    //Add Company Headquarter Station
+                    position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+                    CreatureModel manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
+                    station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", gov.stars[starIndex], parent, position, comp, manager);
+                    comp.stations.Add(station);
+                    data.creatures.Add(manager);
+                    data.stations.Add(station);
 
-                //    int factoryIndex = UnityEngine.Random.Range(0, 10);
-                //    starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
-                //    planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
-                //    if (galaxy.stars[starIndex].planets.Length > 0)
-                //        parent = galaxy.stars[starIndex].planets[planetIndex];
-                //    else
-                //        parent = galaxy.stars[starIndex].sun;
-
-                //    position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-                //    owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
-                //    manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
-                //    station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", galaxy.stars[starIndex], parent, position, owner, manager);
-                //    data.creatures.Add(owner);
-                //    data.creatures.Add(manager);
-                //    data.stations.Add(station);
-                //    yield return null;
-
-                //    for (int i = 0; i < numStation - 1; i++)
-                //    {
-                //        factoryIndex = UnityEngine.Random.Range(0, 10);
-                //        starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
-                //        planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
-                //        if (galaxy.stars[starIndex].planets.Length > 0)
-                //            parent = galaxy.stars[starIndex].planets[planetIndex];
-                //        else
-                //            parent = galaxy.stars[starIndex].sun;
-
-                //        position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-                //        owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
-                //        manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
-                //        station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", galaxy.stars[starIndex], parent, position, owner, manager);
-                //        data.creatures.Add(owner);
-                //        data.creatures.Add(manager);
-                //        data.stations.Add(station);
-                //        dateInfo.text = string.Format("Creating stations: {0} of {1}", i, numStation);
-                //        yield return null;
-                //    }
-
-                //    //--------------Create Ships---------------------------//
-                //    for (int i = 0; i < numShip; i++)
-                //    {
-                //        StationModel startStation = data.stations[UnityEngine.Random.Range(0, data.stations.Count)];
-                //        Vector3 randomLocation = new Vector3(UnityEngine.Random.Range(-1000, 1000), UnityEngine.Random.Range(-1000, 1000));
-                //        manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000);
-                //        ShipModel ship = ShipCreator.CreateShip(comp.name + " Ship " + i, startStation.solar.starIndex, startStation.solar.parent, startStation.solar.GetLocalPosition(data.date.time), comp, manager);
-                //        data.ships.Add(ship);
-                //        data.creatures.Add(manager);
-                //        dateInfo.text = string.Format("Creating ships: {0} of {1}", i, numShip);
-                //        yield return null;
-                //    }
-                //}
+                    //--------------Create Ships---------------------------//
+                    for (int i = 0; i < numShip; i++)
+                    {
+                        StationModel startStation = station;
+                        manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000);
+                        ShipModel ship = ShipCreator.CreateShip(comp.name + " Ship " + i, startStation.solar.starIndex, startStation.solar.parent, startStation.solar.GetLocalPosition(data.date.time), comp, manager);
+                        data.ships.Add(ship);
+                        data.creatures.Add(manager);
+                        dateInfo.text = string.Format("Creating ships: {0} of {1}", i, numShip);
+                        
+                    }
+                    yield return null;
+                }
                 yield return null;
             }
 
@@ -392,7 +367,7 @@ public class GameManager : MonoBehaviour {
                     nearStar.governmentInfluence += star.governmentInfluence * .1f * data.date.deltaTime;
                     star.governmentInfluence -= star.governmentInfluence *.1f * data.date.deltaTime;
                     if (galaxy.mapButtonCanvases.Count > 0 && galaxyView)
-                        nearStar.localScale = Mathf.Pow(nearStar.governmentInfluence, .6f) + .5f;
+                        nearStar.localScale = Mathf.Pow(nearStar.governmentInfluence, .6f) + 1f;
                     if (nearStar.governmentInfluence > 250 && nearStar.government.Model == null)
                     {
                         nearStar.government.Model = star.government.Model;
