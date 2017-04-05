@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using CodeControl;
 using System;
 
@@ -9,7 +10,6 @@ public class SolarController : Controller<SolarModel> {
     public GameObject sunObj;
     public GameObject planetObj;
     public GameObject moonObj;
-
     internal GameObject sun;
     internal GameObject[] planets;
     internal StationController[] stations;
@@ -17,13 +17,15 @@ public class SolarController : Controller<SolarModel> {
     internal List<SolarBody> moonModels = new List<SolarBody>();
     internal GameManager game;
     internal CreateGalaxy galaxy;
+    private SpriteRenderer sprite;
     protected override void OnInitialize()
     {
         game = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
         galaxy = game.GetComponent<CreateGalaxy>();
         transform.position = model.position;
         name = model.name;
-        GetComponent<SpriteRenderer>().color = model.sun.color;
+        sprite = GetComponent<SpriteRenderer>();
+        sprite.color = model.sun.color;
         transform.localScale = Vector3.one * Mathf.Pow(model.sun.mass / Mathf.PI,.3f) * 2;
 
         if (model.isActive)
@@ -84,6 +86,13 @@ public class SolarController : Controller<SolarModel> {
 		
 	}
 
+    protected override void OnModelChanged()
+    {
+
+        sprite.color = model.color;
+        transform.localScale = Vector3.one * model.localScale;
+    }
+
     public void ToggleSystem()
     {
         if (galaxy.solar == this && Camera.main.cullingMask == galaxy.solarMask && !model.isActive)
@@ -105,6 +114,7 @@ public class SolarController : Controller<SolarModel> {
 
     public void CreateSystem()
     {
+        model.localScale = 1;
         transform.localScale = Vector3.one;
         sun = Instantiate(sunObj, transform);
         sun.transform.position = Vector3.zero;
@@ -167,8 +177,12 @@ public class SolarController : Controller<SolarModel> {
 
     public void DestroySystem()
     {
+        //if (model.nameText != "" && model.nameText != null)
+        //{
+        //    nameButton.enabled = false;
+        //}
         transform.localScale = Vector3.one * Mathf.Pow(model.sun.mass / Mathf.PI, .3f) * 2;
-
+        model.localScale = Mathf.Pow(model.sun.mass / Mathf.PI, .3f) * 2;
         Destroy(sun);
         for (int i = 0; i < model.planets.Length; i++)
         {

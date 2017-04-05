@@ -64,6 +64,8 @@ public struct Polar2
 
     private static Vector2 PolarToCartesian(float radius, float angle)
     {
+        if (radius == 0)
+            return Vector2.zero;
         return new Vector2(radius * Mathf.Cos(angle), radius * Mathf.Sin(angle));
     }
     /// <summary>

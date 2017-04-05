@@ -10,14 +10,17 @@ public class SolarModel : Model {
     public bool isActive = false;
 
     public Vector3 position;
-
+    public Color color;
     public SolarBody sun;
-
     public SolarBody[] planets;
     public ModelRefs<StationModel> stations = new ModelRefs<StationModel>();
     public ModelRefs<ShipModel> ships = new ModelRefs<ShipModel>();
     public ModelRefs<SolarModel> nearStars = new ModelRefs<SolarModel>();
+    public ModelRef<GovernmentModel> government = new ModelRef<GovernmentModel>();
+    public float governmentInfluence;
+    public bool isCapital;
     public int index;
+    internal float localScale;
 
     public SolarModel() { }
 

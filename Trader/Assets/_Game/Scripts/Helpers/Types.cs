@@ -2,7 +2,8 @@
 using System.Collections;
 
 public enum IdentityType {
-
+    Government,
+    Company,
     Station,
     Ship,
     Human

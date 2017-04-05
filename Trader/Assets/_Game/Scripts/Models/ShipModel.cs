@@ -24,6 +24,6 @@ public class ShipModel: StructureModel {
     public Items fuel = new Items( ItemTypes.Fuel, 100);
     public float fuelEfficiency = 5;
     public int fuelCapacity = 100;
-    public Color spriteColor;
+    
     
 }

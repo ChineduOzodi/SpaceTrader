@@ -11,10 +11,14 @@ public class GovernmentModel : StructureModel {
     public ModelRefs<CompanyModel> companyAcess = new ModelRefs<CompanyModel>();
     public ModelRefs<GovernmentModel> enemyGovernments = new ModelRefs<GovernmentModel>();
 
-    public GovernmentModel() { }
+    public GovernmentModel() {
+        identityType = IdentityType.Government;
+    }
 
-    public GovernmentModel(string _name, CreatureModel[] leaders = null)
+    public GovernmentModel(string _name, ModelRefs<CreatureModel> _leaders)
     {
         name = _name;
+        leaders = _leaders;
+        identityType = IdentityType.Government;
     }
 }

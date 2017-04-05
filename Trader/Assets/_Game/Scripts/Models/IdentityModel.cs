@@ -9,6 +9,7 @@ public class IdentityModel : Model {
     public IdentityType identityType;
     public Vector3 lineTarget;
     public Color lineColor;
+    public Color spriteColor;
     /// <summary>
     /// Used to Track how many ships it has bought. Will change later
     /// </summary>

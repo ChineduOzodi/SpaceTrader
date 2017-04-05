@@ -11,7 +11,7 @@ public class SolarBody:Orbit
     }
 
     public string name;
-    
+    public int population;
     public Color color;
     public float bodyRadius;
     public SolarBody[] children;

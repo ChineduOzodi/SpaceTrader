@@ -14,7 +14,7 @@ public class StationModel: StructureModel {
     public List<Items> inventory = new List<Items>();
     public Color color;
     public Color backgroundColor;
-
+    public int population;
     public float runningCost = 10f;
 
     public Factory factory;

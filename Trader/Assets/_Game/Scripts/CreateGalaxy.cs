@@ -8,14 +8,15 @@ using System;
 
 public class CreateGalaxy : MonoBehaviour {
 
+    public Canvas mapCanvas;
     public LayerMask mapMask;
     public LayerMask solarMask;
     public Gradient sunSizeColor;
     public Gradient planetSizeColor;
     public Vector2 mapField;
+    public Canvas buttonInstanceCanvas;
     public int starCount;
-
-    public Text infoText;
+    internal List<Canvas> mapButtonCanvases;
 
     internal static float G = .01f;
 
@@ -31,6 +32,7 @@ public class CreateGalaxy : MonoBehaviour {
     private void Awake()
     {
         instance = this;
+        mapButtonCanvases = new List<Canvas>();
         CreateStars(starCount);
         LoadStars();
         cam = GetComponent<Camera>();
@@ -66,20 +68,53 @@ public class CreateGalaxy : MonoBehaviour {
             else
                 SolarView();         
         }
-        if (infoText != null)
-            infoText.text = "Timescale: " + Time.timeScale + "\n";
+        if (mapCanvas.enabled)
+        {
+            foreach (Canvas canvas in mapButtonCanvases)
+            {
+                canvas.transform.localScale = Vector3.one * Mathf.Pow(cam.orthographicSize, .5f) * 1f;
+            }
+        }
     }
 
     public void GalaxyView()
     {
+        foreach (Canvas canvas in mapButtonCanvases)
+        {
+            canvas.enabled = true;
+        }
+        GameManager.instance.galaxyView = true;
+        mapCanvas.enabled = true;
         cam.cullingMask = mapMask;
-        transform.position = new Vector3(solar.transform.position.x, solar.transform.position.y, -10);
+        if (solar != null)
+            transform.position = new Vector3(solar.transform.position.x, solar.transform.position.y, -10);
         cam.orthographicSize = 100;
+
+        if (mapButtonCanvases.Count > 0)
+        {
+            foreach (SolarModel star in stars)
+            {
+                if (star.government.Model == null)
+                {
+                    star.color = Color.grey;
+                }
+                else
+                {
+                    
+                }
+                star.NotifyChange();
+            }
+        }
     }
 
     public void SolarView()
     {
-
+        foreach (Canvas canvas in mapButtonCanvases)
+        {
+            canvas.enabled = false;
+        }
+        GameManager.instance.galaxyView = false;
+        mapCanvas.enabled = false;
         cam.cullingMask = solarMask;
         transform.position = new Vector3(0, 0, -10);
         cam.orthographicSize = 1000;
@@ -130,7 +165,7 @@ public class CreateGalaxy : MonoBehaviour {
             {
                 stars[i].nearStars.Add(stars[closestStarIndex]);
                 stars[closestStarIndex].nearStars.Add(stars[i]);
-                print("added disconnected star");
+                print("Connected disconnected star");
             }
             connectedness += stars[i].nearStars.Count;
         }
@@ -146,5 +181,50 @@ public class CreateGalaxy : MonoBehaviour {
             starControllers[star.index].name = star.name;
         }
     }
-	
+	public void SetStarsGovernment()
+    {
+        for (int i = 0; i < mapButtonCanvases.Count; i++)
+        {
+            Destroy(mapButtonCanvases[i].gameObject);
+        }
+        mapButtonCanvases = new List<Canvas>();
+        foreach (SolarModel star in stars)
+        {
+            if (star.government.Model == null)
+            {
+                star.color = Color.grey;
+                star.localScale = Mathf.Pow(star.governmentInfluence, .6f) + .5f;
+            }
+            else
+            {
+                star.color = star.government.Model.spriteColor;
+                star.localScale = Mathf.Pow(star.governmentInfluence, .6f) + .5f;
+                if (star.isCapital)
+                {
+                    Canvas textCanvas = Instantiate(buttonInstanceCanvas, star.position, Quaternion.identity);
+                    Button textButton = textCanvas.GetComponentInChildren<Button>();
+                    Text text = textCanvas.GetComponentInChildren<Text>();
+                    mapButtonCanvases.Add(textCanvas);
+                    text.text = star.government.Model.name;
+                    textButton.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(star.government.Model));
+                }
+            }
+            star.NotifyChange();
+        }
+    }
+    public void SetStarsRegularColor()
+    {
+        foreach (SolarModel star in stars)
+        {
+            star.color = star.sun.color;
+            star.localScale = Mathf.Pow(star.sun.mass / Mathf.PI, .3f) * 2;
+            star.NotifyChange();
+        }
+
+        for (int i = 0; i < mapButtonCanvases.Count; i++)
+        {
+            Destroy(mapButtonCanvases[i].gameObject);
+        }
+        mapButtonCanvases = new List<Canvas>();
+    } 
 }

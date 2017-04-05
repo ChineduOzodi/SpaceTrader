@@ -116,6 +116,7 @@
     <Compile Include="Assets\TextAction\Link.cs" />
     <Compile Include="Assets\TextAction\TextButton.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\CameraController.cs" />
+    <Compile Include="Assets\_Game\Scripts\Controllers\InfoPanelController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\ShipController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\SolarController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\StationController.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Assets\_Game\Scripts\Models\GameDataModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\GovernmentModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\IdentityModel.cs" />
+    <Compile Include="Assets\_Game\Scripts\Models\InfoPanelModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\ShipModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\SolarModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\StationModel.cs" />

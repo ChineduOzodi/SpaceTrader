@@ -51,7 +51,10 @@ public class Factory {
             }
             else if (factory == 2)
             {
+                inputItems = new ProductionItem[] { ProductionItem.Rock * 5, ProductionItem.Steel * 10, ProductionItem.Glass * 2 };
+                outputItems = new ProductionItem[] {  };
 
+                unitTime = UnityEngine.Random.Range(30f, 45f);
             }
             else if (factory == 3)
             {
@@ -80,7 +83,7 @@ public class Factory {
         }
         else
         {
-            inputItems = new ProductionItem[] { ProductionItem.Glass * 20, ProductionItem.Sculpture, ProductionItem.Food * 10, ProductionItem.Steel * 5};
+            inputItems = new ProductionItem[] { ProductionItem.Sculpture, ProductionItem.Food * 10};
             outputItems = new ProductionItem[] { };
             inputItems = new ProductionItem[] { inputItems[UnityEngine.Random.Range(0, inputItems.Length)] };
             unitTime = UnityEngine.Random.Range(30f, 40f);
