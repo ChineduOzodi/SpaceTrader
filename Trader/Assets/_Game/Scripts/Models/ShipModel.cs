@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using NeuralNetwork;
 using CodeControl;
 using System.Collections.Generic;
 

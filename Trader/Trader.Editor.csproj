@@ -152,8 +152,6 @@
     <Compile Include="Assets\CodeControl\Scripts\Editor\RenderingHelper.cs" />
     <Compile Include="Assets\CodeControl\Scripts\Editor\Widget.cs" />
     <Compile Include="Assets\SFSoftShadows\Editor\SFEditor.cs" />
-    <Compile Include="Assets\Scripts\Editor\TexButtonHandler.cs" />
-    <Compile Include="Assets\Scripts\Editor\TextClassHandler.cs" />
     <Compile Include="Assets\unity-ui-extensions\Editor\AccordionElementEditor.cs" />
     <Compile Include="Assets\unity-ui-extensions\Editor\BoxSliderEditor.cs" />
     <Compile Include="Assets\unity-ui-extensions\Editor\CanvasGroupActivator.cs" />

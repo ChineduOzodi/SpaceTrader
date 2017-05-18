@@ -21,6 +21,7 @@ public class StationModel: StructureModel {
 
     public StationModel() {
         identityType = IdentityType.Station;
+        GameManager.instance.data.stations.Add(this);
     }
     /// <summary>
     /// Item is Being Baught from station

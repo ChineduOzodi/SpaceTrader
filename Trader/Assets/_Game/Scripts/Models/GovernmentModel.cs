@@ -20,5 +20,6 @@ public class GovernmentModel : StructureModel {
         name = _name;
         leaders = _leaders;
         identityType = IdentityType.Government;
+        GameManager.instance.data.governments.Add(this);
     }
 }

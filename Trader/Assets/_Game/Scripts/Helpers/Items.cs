@@ -4,8 +4,8 @@ using System.Collections;
 public class Items {
     public string name;
     public ItemTypes itemType;
-    public int pendingAmount;
-    public int amount;
+    public float pendingAmount;
+    public float amount;
     public Color color;
     public string coloredName;
 

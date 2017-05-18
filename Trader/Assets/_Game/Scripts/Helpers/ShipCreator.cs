@@ -23,15 +23,15 @@ public class ShipCreator{
         shipModel.fuelEfficiency = Random.Range(5000f, 1000f) * (1 - shipModel.capacity / 200f + .5f);
         shipModel.fuelCapacity = (int) (Random.Range(50, 200) * (shipModel.capacity / 200f + .5f));
         shipModel.fuel = new Items( ItemTypes.Fuel, shipModel.fuelCapacity);
-        shipModel.solar = new SolarBody(shipModel.name, starIndex, SolarType.Structure, position, .0001f, Color.black, CreateGalaxy.G, parent);
+        shipModel.solar = new Orbit(starIndex, parent, position);
+        GameManager.instance.galaxy.stars[starIndex].ships.Add(shipModel);
+
         //Money Setup
         shipModel.money = 1000f;
         shipModel.owner.Model.money -= 1000;
 
         shipModel.moneyStats.data.Add("Money", new List<Stat>() { new Stat(shipModel.age.hour, shipModel.money) });
         shipModel.moneyStats.data.Add("Money Change", new List<Stat>());
-
-        ShipController ship = Controller.Instantiate<ShipController>("ship", shipModel);
 
         return shipModel;
     }

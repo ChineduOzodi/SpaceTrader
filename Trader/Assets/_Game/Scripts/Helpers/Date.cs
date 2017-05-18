@@ -7,20 +7,20 @@ public class Date
     private static int Seasons = 4;
     private static int Days = 360;
     private static int Hours = 24;
-    private static int Minutes = 60;
+    private static int Minutes = 10;
 
     
     private static int Minute = 60;
     /// <summary>
-    /// seconds in year (3156000)
+    /// seconds in year (3156000) 
     /// </summary>
-    public static int Year = 3156000 / Minute; //Seconds in a year 14400
-    public static int Season = 789000 / Minute;
-    public static int Day = 86400 / Minute;
+    public static int Year = (int) (3156000 / Minute * ((float) Minutes/Minute)); //Seconds in a year 14400
+    public static int Season = (int) (789000 / Minute * ((float)Minutes / Minute));
+    public static int Day = (int) (86400 / Minute * ((float)Minutes / Minute));
     /// <summary>
     /// 3600s
     /// </summary>
-    public static int Hour = 3600 / Minute;
+    public static int Hour = (int) (3600 / Minute * ((float)Minutes / Minute));
 
     public float time;
     public float deltaTime;
@@ -119,7 +119,7 @@ public class Date
     private string GetSeason()
     {
         string[] seasonNames = new string[4] { "Spring", "Summer", "Fall", "Winter" };
-        return seasonNames[season % 4];
+        return seasonNames[season % Seasons];
     }
 
     public static Date operator -( Date date1, Date date2)

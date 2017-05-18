@@ -87,108 +87,12 @@ public class ShipController : Controller<ShipModel>
                 //Set orbit outline
                 line.startWidth = transform.localScale.x * .3f;
                 line.endWidth = transform.localScale.x * .3f;
+                Vector3 targetPosition = model.target.Model.solar.GetWorldPosition(game.data.date.time);
+                line.SetPositions(new Vector3[] { transform.position, targetPosition });
+                line.startColor = sprite.color;
+                line.endColor = ((StationModel)model.target.Model).color;
             }
         }
-    }
-
-    IEnumerator SolarTravel()
-    {
-        while (model.target != null && model.target.Model != null && !model.hyperSpace)
-        {
-            //Vector3 distance = target.transform.position - transform.position;
-            //Polar2 angleOfAttack = new Polar2(distance);
-            //float rotateAmount = angleOfAttack.angle * Mathf.Rad2Deg - transform.eulerAngles.z;
-            //transform.Rotate(0, 0, rotateAmount * model.rotateSpeed * Time.deltaTime);
-            //distance.Normalize();
-            Vector3 targetPosition = model.target.Model.solar.GetWorldPosition(game.data.date.time);
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, model.speed * Time.deltaTime);
-            travelCounter += Time.deltaTime;
-            if (travelCounter > model.fuelEfficiency)
-            {
-                model.fuel.amount--;
-                travelCounter = 0;
-            }
-
-            Vector2 distance = targetPosition - transform.position;
-
-            line.SetPositions(new Vector3[] { transform.position, targetPosition });
-            line.startColor = sprite.color;
-            line.endColor = ((StationModel)model.target.Model).color;
-
-            if (distance.sqrMagnitude < 1)
-            {
-                
-                StationModel station = (StationModel) model.target.Model;
-                model.target = null;
-                if (model.mode == ShipMode.Buy)
-                {
-                    station.incomingShips.Remove(model);
-
-                    foreach (Items item in model.items)
-                    {
-                        foreach (Items buyItem in station.factory.outputItems)
-                        {
-                            if (item.name == ItemTypes.Fuel.ToString())
-                            {
-                                model.fuel.amount += item.pendingAmount;
-                                model.mode = ShipMode.Idle;
-                                yield break;
-                            }
-                            else if (item.name == ItemTypes.Ship.ToString())
-                            {
-                                item.amount += (item.pendingAmount - item.amount);
-                                buyItem.amount -= (item.pendingAmount - item.amount);
-                                model.mode = ShipMode.Idle;
-                                yield break;
-                            }
-                            else if (item.name == buyItem.name)
-                            {
-                                item.amount += (item.pendingAmount - item.amount);
-                                buyItem.amount -= (item.pendingAmount - item.amount);
-                                new WaitForSeconds(item.amount * .1f);
-                            }
-                        }
-
-                    }
-                    if (model.sellTarget != null && model.sellTarget.Model != null)
-                    {
-                        model.mode = ShipMode.Sell;
-                        model.target = model.sellTarget;
-                        model.sellTarget.Model = null;
-                        station = (StationModel)model.target.Model;
-                        foreach (Items item in model.items)
-                        {
-                            item.amount -= station.Sell(item, model).amount;
-                        }
-                        sprite.color = Color.green;
-                        yield break;
-                    }
-                }
-                else if (model.mode == ShipMode.Sell)
-                {
-                    foreach (Items item in model.items)
-                    {
-                        foreach (Items sellItem in station.factory.inputItems)
-                        {
-                            if (item.name == sellItem.name)
-                            {
-                                item.amount -= (item.amount - item.pendingAmount);
-                                sellItem.amount += (item.amount - item.pendingAmount);
-                                new WaitForSeconds(item.amount * .1f);
-                            }
-                        }
-                    }
-                    station.incomingShips.Remove(model);
-                    model.mode = ShipMode.Idle;
-                }
-
-                yield break;
-            }
-
-            yield return null;
-        }
-
-        
     }
 
     private void HyperSpaceTravel(int starIndex)
@@ -207,7 +111,7 @@ public class ShipController : Controller<ShipModel>
 
             SolarBody parent = galaxy.stars[starIndex].sun;
             Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-            model.solar = new SolarBody(model.name, starIndex, SolarType.Structure, position, .0001f, Color.black, CreateGalaxy.G, parent);
+            model.solar = new Orbit(starIndex, parent, position);
             model.hyperSpacePosition = galaxy.stars[starIndex].position;
         }
         

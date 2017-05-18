@@ -45,7 +45,7 @@ public class SolarController : Controller<SolarModel> {
             for ( int i = 0; i < model.planets.Length; i++)
             {
                 SolarBody body = model.planets[i];
-                Vector3 position = body.GetLocalPosition(game.data.date.time).cartesian;
+                Vector3 position = body.solar.GetLocalPosition(game.data.date.time).cartesian;
                 planets[i].transform.position = position;
                 planets[i].transform.localScale = Vector3.one * Mathf.Sqrt(body.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, 1.3f);
                 LineRenderer line = planets[i].GetComponent<LineRenderer>();
@@ -59,7 +59,7 @@ public class SolarController : Controller<SolarModel> {
             for (int i = 0; i < moons.Count; i++)
             {               
                 SolarBody moon = moonModels[i];
-                Vector3 position = moon.GetWorldPosition(game.data.date.time);
+                Vector3 position = moon.solar.GetWorldPosition(game.data.date.time);
                 moons[i].transform.position = position;
                 moons[i].transform.localScale = Vector3.one * Mathf.Sqrt(moon.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, 1.1f);
 
@@ -77,7 +77,7 @@ public class SolarController : Controller<SolarModel> {
 
                 for (int b = 0; b < numPoints + 1; b++)
                 {
-                    orbitPos[b] = moon.parent.GetWorldPosition(game.data.date.time) + new Polar2(moon.radius, angleStep * b).cartesian;
+                    orbitPos[b] = moon.solar.parent.solar.GetWorldPosition(game.data.date.time) + new Polar2(moon.solar.radius, angleStep * b).cartesian;
                 }
                 line.numPositions = numPoints;
                 line.SetPositions(orbitPos);
@@ -125,7 +125,7 @@ public class SolarController : Controller<SolarModel> {
         for (int i = 0; i < model.planets.Length; i++)
         {
             SolarBody body = model.planets[i];
-            Vector3 position = body.GetLocalPosition(game.data.date.time).cartesian;
+            Vector3 position = body.solar.GetLocalPosition(game.data.date.time).cartesian;
             planets[i] = Instantiate(planetObj,transform);
             planets[i].name = body.name;
             planets[i].transform.localPosition = position;
@@ -143,7 +143,7 @@ public class SolarController : Controller<SolarModel> {
 
             for (int b = 0; b < numPoints + 1; b++)
             {
-                orbitPos[b] = new Polar2(body.radius, angleStep * b).cartesian;
+                orbitPos[b] = new Polar2(body.solar.radius, angleStep * b).cartesian;
             }
             LineRenderer line = planets[i].GetComponent<LineRenderer>();
             line.numPositions = numPoints;
@@ -153,7 +153,7 @@ public class SolarController : Controller<SolarModel> {
             for (int m = 0; m < model.planets[i].children.Length; m++)
             {
                 SolarBody moon = model.planets[i].children[m];
-                position = moon.GetLocalPosition(game.data.date.time).cartesian;
+                position = moon.solar.GetLocalPosition(game.data.date.time).cartesian;
                 moonModels.Add(moon);
                 moons.Add(Instantiate(moonObj, transform));
                 moons[moons.Count - 1].name = moon.name;

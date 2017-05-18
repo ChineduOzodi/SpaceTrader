@@ -10,7 +10,6 @@ public class TradeRouteFinding : MonoBehaviour
     public bool displayGizmos = false;
     TradeRouteRequestManager requestManager;
 
-    private int maxLocalSize = 100 * 100;
     private GameManager game;
     private CreateGalaxy galaxy;
     // Use this for initialization
@@ -50,7 +49,7 @@ public class TradeRouteFinding : MonoBehaviour
                     {
                         foreach (ProductionItem outputItem in buyStation.factory.outputItems)
                         {
-                            int amountToBuy = model.capacity;
+                            float amountToBuy = model.capacity;
                             if (outputItem.amount < amountToBuy)
                                 amountToBuy = outputItem.amount;
                             if (amountToBuy * inputItem.price > sellStation.money - 1000)

@@ -172,11 +172,8 @@ public class GameManager : MonoBehaviour {
                 CreatureModel leader = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
                 leaders.Add(leader);
                 GovernmentModel gov = new GovernmentModel(names.GenerateWorldName() + " Government", leaders);
-                data.governments.Add(gov);
-                gov.dateCreated = new Date(data.date.time);
-                gov.lastUpdated = new Date(data.date.time);
-                gov.spriteColor = UnityEngine.Random.ColorHSV(.5f,1f,.5f,1f);
-                gov.spriteColor.a = 1;
+               
+                //Location
                 int starIndex = FindGovernmentStar(gov);
                 int planetIndex = UnityEngine.Random.Range(0, galaxy.stars[starIndex].planets.Length);
                 SolarBody parent;
@@ -188,15 +185,15 @@ public class GameManager : MonoBehaviour {
                 if (parent.planetType == PlanetType.Regular)
                 {
                     position = new Polar2(0,0);
-                    parent.population = 65000;
+                    parent.population = UnityEngine.Random.Range(1000,100000);
                 }
 
                 //Add Government Capital
                 
                 StationModel station = StationCreator.CreateStation(gov.name + " Capital", galaxy.stars[starIndex], parent, position, gov, leader);
                 station.population = 5;
-                data.stations.Add(station);
-                data.creatures.Add(leader);
+
+                //location
                 gov.location.Model = station;
                 gov.solar = station.solar;
                 gov.stations.Add(station);
@@ -595,7 +592,96 @@ public class GameManager : MonoBehaviour {
             model.mode = ShipMode.SearchingTradeRoute;
             TradeRouteRequestManager.RequestTradeRoute(model, OnFindRouteFinished);
         }
+
+        ShipTravel(model, deltaTime);
     }
+
+    private void ShipTravel(ShipModel model, float deltaTime)
+    {
+        if (model.target != null && model.target.Model != null && !model.hyperSpace)
+        {
+            //Vector3 distance = target.transform.position - transform.position;
+            //Polar2 angleOfAttack = new Polar2(distance);
+            //float rotateAmount = angleOfAttack.angle * Mathf.Rad2Deg - transform.eulerAngles.z;
+            //transform.Rotate(0, 0, rotateAmount * model.rotateSpeed * Time.deltaTime);
+            //distance.Normalize();
+            Vector2 targetPosition = model.target.Model.solar.GetWorldPosition(data.date.time);
+            model.solar.SetWorldPosition( Vector3.MoveTowards(model.solar.GetWorldPosition(data.date.time), targetPosition, model.speed * deltaTime), data.date.time);
+            model.fuel.amount -= deltaTime / model.fuelEfficiency;
+
+            Vector2 distance = targetPosition - model.solar.GetWorldPosition(data.date.time);
+            
+
+            if (distance.sqrMagnitude < 1)
+            {
+
+                StationModel station = (StationModel)model.target.Model;
+                model.target = null;
+                if (model.mode == ShipMode.Buy)
+                {
+                    station.incomingShips.Remove(model);
+
+                    foreach (Items item in model.items)
+                    {
+                        foreach (Items buyItem in station.factory.outputItems)
+                        {
+                            if (item.name == ItemTypes.Fuel.ToString())
+                            {
+                                model.fuel.amount += item.pendingAmount;
+                                model.mode = ShipMode.Idle;
+                                //yield break;
+                            }
+                            else if (item.name == ItemTypes.Ship.ToString())
+                            {
+                                item.amount += (item.pendingAmount - item.amount);
+                                buyItem.amount -= (item.pendingAmount - item.amount);
+                                model.mode = ShipMode.Idle;
+                                //yield break;
+                            }
+                            else if (item.name == buyItem.name)
+                            {
+                                item.amount += (item.pendingAmount - item.amount);
+                                buyItem.amount -= (item.pendingAmount - item.amount);
+                                //new WaitForSeconds(item.amount * .1f);
+                            }
+                        }
+
+                    }
+                    if (model.sellTarget != null && model.sellTarget.Model != null)
+                    {
+                        model.mode = ShipMode.Sell;
+                        model.target = model.sellTarget;
+                        model.sellTarget.Model = null;
+                        station = (StationModel)model.target.Model;
+                        foreach (Items item in model.items)
+                        {
+                            item.amount -= station.Sell(item, model).amount;
+                        }
+                        //sprite.color = Color.green; //Used to color the ship
+                    }
+                }
+                else if (model.mode == ShipMode.Sell)
+                {
+                    foreach (Items item in model.items)
+                    {
+                        foreach (Items sellItem in station.factory.inputItems)
+                        {
+                            if (item.name == sellItem.name)
+                            {
+                                item.amount -= (item.amount - item.pendingAmount);
+                                sellItem.amount += (item.amount - item.pendingAmount);
+                                //new WaitForSeconds(item.amount * .1f);
+                            }
+                        }
+                    }
+                    station.incomingShips.Remove(model);
+                    model.mode = ShipMode.Idle;
+                }
+            }
+
+        }
+    }
+
     internal void GoToTarget(IdentityModel model)
     {
         if (model.identityType == IdentityType.Government)
@@ -833,17 +919,7 @@ public class GameManager : MonoBehaviour {
     private void OnDone()
     {
         print("Loading Done");
-        GameObject stationEmpty = new GameObject("Stations");
-        GameObject shipEmpty = new GameObject("Ships");
         data = Model.First<GameDataModel>();
-        foreach (Model model in Model.GetAll<StationModel>())
-        {
-            StationController station = Controller.Instantiate<StationController>("station", model, stationEmpty.transform);
-        }
-        foreach (Model model in Model.GetAll<ShipModel>())
-        {
-            ShipController ship = Controller.Instantiate<ShipController>("ship", model, shipEmpty.transform);
-        }
     }
 
     private void OnError(string obj)

@@ -32,4 +32,12 @@ public class IdentityModel : Model {
 
     public DataGraph moneyStats = new DataGraph("Money Over Time", "Time (hours)", "Money");
     public float moneyChange;
+
+    public IdentityModel()
+    {
+        dateCreated = new Date(GameManager.instance.data.date.time);
+        lastUpdated = new Date(GameManager.instance.data.date.time);
+        spriteColor = UnityEngine.Random.ColorHSV(.5f, 1f, .5f, 1f);
+        spriteColor.a = 1;
+    }
 }

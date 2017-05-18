@@ -26,13 +26,14 @@ public class CreateGalaxy : MonoBehaviour {
 
     internal SolarModel[] stars;
     internal SolarController[] starControllers;
-
+    internal ModelRefs<ShipModel> hyperSpaceShips;
     internal static CreateGalaxy instance;
 
     private void Awake()
     {
         instance = this;
         mapButtonCanvases = new List<Canvas>();
+        hyperSpaceShips = new ModelRefs<ShipModel>();
         CreateStars(starCount);
         LoadStars();
         cam = GetComponent<Camera>();
@@ -151,7 +152,6 @@ public class CreateGalaxy : MonoBehaviour {
             {
                 if (c != i)
                 {
-                    float maxDist = Mathf.Pow(stars[i].sun.mass + stars[c].sun.mass, .5f);
                     float actualDist = Vector3.Distance(stars[i].position, stars[c].position);
                     if (actualDist < closestStarDist)
                     {

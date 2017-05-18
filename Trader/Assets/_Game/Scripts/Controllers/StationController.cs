@@ -87,7 +87,7 @@ public class StationController : Controller<StationModel> {
 
             for (int b = 0; b < numPoints + 1; b++)
             {
-                orbitPos[b] = model.solar.parent.GetWorldPosition(game.data.date.time) + new Polar2(model.solar.radius, angleStep * b).cartesian;
+                orbitPos[b] = model.solar.parent.solar.GetWorldPosition(game.data.date.time) + new Polar2(model.solar.radius, angleStep * b).cartesian;
             }
             line.numPositions = numPoints;
             line.SetPositions(orbitPos);

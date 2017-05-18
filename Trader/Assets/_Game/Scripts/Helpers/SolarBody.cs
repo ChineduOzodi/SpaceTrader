@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SolarBody:Orbit
+public class SolarBody
 {
     
     public SolarType solarType
     {
         get { return solType; }
     }
-
+    public float SOI
+    {
+        get { return soi; }
+    }
     public string name;
+    public float soi;
+    public float mass;
     public int population;
     public Color color;
     public float bodyRadius;
@@ -18,20 +23,20 @@ public class SolarBody:Orbit
     public SolarType solType;
     public PlanetType planetType;
     public RawResources rawResource;
+    public Orbit solar;
+
 
     public SolarBody(string _name, int _starIndex, SolarType solarType, Polar2 _position, float _mass, Color _color, float G, SolarBody _parent)
     {
-        starIndex = _starIndex;
+        solar = new Orbit(_starIndex, _parent, _position);
+        mass = _mass;
         name = _name;
         solType = solarType;
-        pos = _position;
-        mass = _mass;
         bodyRadius = Mathf.Sqrt(mass / Mathf.PI);
-        color = _color;
-        parent = _parent;       
+        color = _color;       
         if (solarType != SolarType.Star)
         {
-            angularSpeed = Mathf.Sqrt((G * parent.mass) / Mathf.Pow(pos.radius, 3));
+            solar.angularSpeed = Mathf.Sqrt((G * solar.parent.mass) / Mathf.Pow(solar.pos.radius, 3));
             //soi = pos.radius * Mathf.Pow(mass / par.mass, 0.4f);
             soi = mass * Mathf.Sqrt(mass + 10);
             if(mass < 3)
@@ -59,7 +64,7 @@ public class SolarBody:Orbit
         else
         {
             soi = mass * Mathf.Sqrt(mass + 10);
-            angularSpeed = 0;
+            solar.angularSpeed = 0;
         }
             
     }

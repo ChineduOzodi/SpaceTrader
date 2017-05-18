@@ -29,7 +29,7 @@ public class StationCreator {
         b = rand.Next(1000) / 1000f;
         c = rand.Next(1000) / 1000f;
         model.backgroundColor = new Color(a, b, c);
-        model.solar = new SolarBody(model.name, star.index, SolarType.Structure, position, .0001f, model.color, CreateGalaxy.G, parent);
+        model.solar = new Orbit(star.index, parent, position);
         star.stations.Add(model);
         if (position.radius == 0 && parent.rawResource != RawResources.None)
         {
