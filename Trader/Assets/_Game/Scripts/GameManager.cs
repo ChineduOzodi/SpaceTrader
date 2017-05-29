@@ -5,12 +5,15 @@ using CodeControl;
 using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
-
+/// <summary>
+/// Manages the main aspects of the game, including player interaction, main ai, game ui, and view changes. Anything specific should be moved to a more specific file
+/// </summary>
 public class GameManager : MonoBehaviour {
-    public Canvas menuCanvas;
-    public Canvas settingsCanvas;
-    public Canvas gameCanvas;
-    public Canvas infoPanelCanvas;
+    public Canvas menuCanvas; //Main Menu
+    public Canvas settingsCanvas; //Settings Menu
+    public Canvas gameCanvas; //Game UI
+    public Canvas infoPanelCanvas; //Object Info popup
+
     public int numGov;
     public int numComp;
     public int numStation;
@@ -30,15 +33,16 @@ public class GameManager : MonoBehaviour {
     private void Awake()
     {
         instance = this;
+        //TODO: Should not be deleted when switching scenes
     }
     // Use this for initialization
     void Start () {
         galaxy = GetComponent<CreateGalaxy>();
         tradeRequestManager = GetComponent<TradeRouteRequestManager>();
         data = new GameDataModel();
-        data.date = new Date(0);
         setup = true;
-        StartCoroutine("CreateGame");
+        StartCoroutine("LoadAssets"); //Will be used to load assets when starting, allowing for mods and alterations to the game
+        StartCoroutine("CreateGame"); //Creates a new Game
     }
 	
 	// Update is called once per frame
@@ -295,7 +299,11 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
-
+    /// <summary>
+    /// Update all ship positions and actions
+    /// </summary>
+    /// <param name="updatesPerFrame"> how many ships to update per frame. Should be calculated to make it more effective</param>
+    /// <returns></returns>
     IEnumerator UpdateShips(int updatesPerFrame)
     {
         int shipIndex = 0;
@@ -312,7 +320,11 @@ public class GameManager : MonoBehaviour {
             yield return null;
         }
     }
-
+    /// <summary>
+    /// Updates all stations per frame
+    /// </summary>
+    /// <param name="updatesPerFrame">how many stations to update per frame.</param>
+    /// <returns></returns>
     IEnumerator UpdateStations(int updatesPerFrame)
     {
         int stationIndex = 0;
@@ -332,6 +344,10 @@ public class GameManager : MonoBehaviour {
             yield return null;
         }
     }
+    /// <summary>
+    /// Updates all the government bodies per frame
+    /// </summary>
+    /// <returns></returns>
     IEnumerator UpdateGovernments()
     {
         int govIndex = 0;
@@ -394,7 +410,10 @@ public class GameManager : MonoBehaviour {
                 govIndex = 0;
         }
     }
-
+    /// <summary>
+    /// runs commands on a station when called
+    /// </summary>
+    /// <param name="stationIndex">index of station in the station data to call</param>
     private void StationControl(int stationIndex)
     {
         StationModel model = data.stations[stationIndex];
@@ -475,7 +494,10 @@ public class GameManager : MonoBehaviour {
         //    print(name + " Bought " + (FactoryType)factoryIndex);
         //}
     }
-
+    /// <summary>
+    /// Runs commands on ships when called
+    /// </summary>
+    /// <param name="shipIndex">index of ship in the ship data to call</param>
     private void ShipControl(int shipIndex)
     {
         ShipModel model = data.ships[shipIndex];
@@ -595,7 +617,11 @@ public class GameManager : MonoBehaviour {
 
         ShipTravel(model, deltaTime);
     }
-
+    /// <summary>
+    /// Controls ship movement, taking into the account of when the ship was last called
+    /// </summary>
+    /// <param name="model">ship model</param>
+    /// <param name="deltaTime">time since the ship was last called</param>
     private void ShipTravel(ShipModel model, float deltaTime)
     {
         if (model.target != null && model.target.Model != null && !model.hyperSpace)
@@ -681,7 +707,10 @@ public class GameManager : MonoBehaviour {
 
         }
     }
-
+    /// <summary>
+    /// Allows the user view to go to the target when a button or shortcut is clecked
+    /// </summary>
+    /// <param name="model"></param>
     internal void GoToTarget(IdentityModel model)
     {
         if (model.identityType == IdentityType.Government)
@@ -901,7 +930,7 @@ public class GameManager : MonoBehaviour {
     }
     public void SaveGame()
     {
-        Model.SaveAll("TraderSaves");
+        Model.Save("TraderSaves", data);
         print("Game Saved");
     }
 
