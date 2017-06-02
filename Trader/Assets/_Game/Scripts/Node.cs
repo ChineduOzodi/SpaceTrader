@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeControl;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 public class Node : IHeapItem<Node>
@@ -52,7 +53,7 @@ public class Node : IHeapItem<Node>
         return -compare;
     }
 
-    internal static Node NodeFromStar(int index, SolarModel[] stars)
+    internal static Node NodeFromStar(int index, ModelRefs<SolarModel> stars)
     {
         Node node = new Node(index, 1, stars[index].position);
         node.index = index;

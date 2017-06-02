@@ -1,4 +1,6 @@
-﻿Shader "Hidden/SFSoftShadows/FogLayer" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Hidden/SFSoftShadows/FogLayer" {
 	Properties {
 		_FogColor ("Fog color and alpha.", Color) = (1.0, 1.0, 1.0, 0.0)
 		_Scatter ("Light scattering color (RGB), Hard/soft mix (A)", Color) = (1.0, 1.0, 1.0, 0.15)
@@ -39,7 +41,7 @@
 				};
 				
 				VertexOutput VShader(VertexInput v){
-					float4 position = mul(UNITY_MATRIX_MVP, float4(v.position, 1.0));
+					float4 position = UnityObjectToClipPos(float4(v.position, 1.0));
 					
 #if !UNITY_UV_STARTS_AT_TOP
 					float4 shadowVector2 = position;

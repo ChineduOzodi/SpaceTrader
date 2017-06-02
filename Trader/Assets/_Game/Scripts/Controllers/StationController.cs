@@ -9,7 +9,7 @@ public class StationController : Controller<StationModel> {
 
     public SpriteRenderer background;
     internal GameManager game;
-    internal CreateGalaxy galaxy;
+    internal GalaxyManager galaxy;
     internal SpriteRenderer sprite;
     internal float timeUpdate;
     internal LineRenderer line;
@@ -36,7 +36,7 @@ public class StationController : Controller<StationModel> {
         transform.position = model.solar.GetWorldPosition(game.data.date.time);
 
 
-        if (!galaxy.stars[model.solar.starIndex].isActive)
+        if (!game.data.stars[model.solar.starIndex].isActive)
         {
             sprite.enabled = false;
             background.enabled = false;
@@ -60,7 +60,7 @@ public class StationController : Controller<StationModel> {
     void Update() {
 
         
-        if (!galaxy.stars[model.solar.starIndex].isActive)
+        if (!game.data.stars[model.solar.starIndex].isActive)
         {
             sprite.enabled = false;
             background.enabled = false;
@@ -89,7 +89,7 @@ public class StationController : Controller<StationModel> {
             {
                 orbitPos[b] = model.solar.parent.solar.GetWorldPosition(game.data.date.time) + new Polar2(model.solar.radius, angleStep * b).cartesian;
             }
-            line.numPositions = numPoints;
+            line.positionCount = numPoints;
             line.SetPositions(orbitPos);
         }
         transform.position = model.solar.GetWorldPosition(game.data.date.time);

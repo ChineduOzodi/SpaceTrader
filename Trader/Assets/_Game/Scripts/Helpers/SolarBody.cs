@@ -38,7 +38,8 @@ public class SolarBody
         {
             solar.angularSpeed = Mathf.Sqrt((G * solar.parent.mass) / Mathf.Pow(solar.pos.radius, 3));
             //soi = pos.radius * Mathf.Pow(mass / par.mass, 0.4f);
-            soi = mass * Mathf.Sqrt(mass + 10);
+            //soi = bodyRadius * Mathf.Sqrt(bodyRadius);
+            soi = bodyRadius * 10;
             if(mass < 3)
             {
                 planetType = PlanetType.Dwarf;
@@ -63,7 +64,8 @@ public class SolarBody
         }            
         else
         {
-            soi = mass * Mathf.Sqrt(mass + 10);
+            //soi = mass * Mathf.Sqrt(mass + 10);
+            soi = bodyRadius * 20;
             solar.angularSpeed = 0;
         }
             

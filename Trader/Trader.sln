@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader", "Trader.csproj", "{890C0D3E-1EE9-F402-5785-3D36B94B3E23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader.Editor", "Trader.Editor.csproj", "{2C6365FB-4E75-122D-F09F-C22CCA52C53D}"

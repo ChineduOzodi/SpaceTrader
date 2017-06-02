@@ -24,7 +24,7 @@ public class ShipCreator{
         shipModel.fuelCapacity = (int) (Random.Range(50, 200) * (shipModel.capacity / 200f + .5f));
         shipModel.fuel = new Items( ItemTypes.Fuel, shipModel.fuelCapacity);
         shipModel.solar = new Orbit(starIndex, parent, position);
-        GameManager.instance.galaxy.stars[starIndex].ships.Add(shipModel);
+        GameManager.instance.data.stars[starIndex].ships.Add(shipModel);
 
         //Money Setup
         shipModel.money = 1000f;

@@ -8,7 +8,7 @@ public class Unit : MonoBehaviour {
     internal int target;
     internal int oldTarget;
     internal int currentIndex;
-    internal CreateGalaxy galaxy;
+    internal GalaxyManager galaxy;
     internal ShipController ship;
     public float speed = 2;
     public float jumpDistance = 100;
@@ -19,7 +19,7 @@ public class Unit : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         line = GetComponent<LineRenderer>();
-        galaxy = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CreateGalaxy>();
+        galaxy = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GalaxyManager>();
         ship = GetComponent<ShipController>();
         target = ship.starIndex;
         oldTarget = ship.starIndex;
@@ -40,7 +40,7 @@ public class Unit : MonoBehaviour {
         {
             path = newPath;
             //Setting LineRender vertex positions
-            line.numPositions = path.Length + 1;
+            line.positionCount = path.Length + 1;
             line.SetPosition(0, transform.position);
             
             for (int i = 0; i < path.Length; i++)
@@ -54,7 +54,7 @@ public class Unit : MonoBehaviour {
         else
         {
             print("no path");
-            target = UnityEngine.Random.Range(0, galaxy.starCount);
+            target = UnityEngine.Random.Range(0, GameManager.instance.data.stars.Count);
         }
     }
 
@@ -76,7 +76,7 @@ public class Unit : MonoBehaviour {
                 currentWaypoint = path[targetIndex];
                 
                 //update linerenderer
-                line.numPositions--;
+                line.positionCount--;
                 line.SetPosition(0, transform.position);
 
                 for (int i = targetIndex; i < path.Length; i++)

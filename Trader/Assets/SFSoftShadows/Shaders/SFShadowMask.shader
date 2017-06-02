@@ -1,4 +1,6 @@
-﻿Shader "Hidden/SFSoftShadows/ShadowMask" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Hidden/SFSoftShadows/ShadowMask" {
 	SubShader {
 		Pass {
 			BlendOp RevSub
@@ -53,7 +55,7 @@
 					float4 projected = float4(position - projectionOffset*occluderVector2.y, 0.0, 1.0 - occluderVector2.y);
 					
 					// Output values
-					float4 clipPosition = mul(UNITY_MATRIX_MVP, projected);
+					float4 clipPosition = UnityObjectToClipPos(projected);
 					
 					float2 penumbraA = mul(penumbraMatrix(lightOffsetA, segmentA), projected.xy - segmentA*projected.w);
 					float2 penumbraB = mul(penumbraMatrix(lightOffsetB, segmentB), projected.xy - segmentB*projected.w);

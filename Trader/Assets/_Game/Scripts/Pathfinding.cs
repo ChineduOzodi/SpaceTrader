@@ -3,25 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System;
+using CodeControl;
 
 public class Pathfinding : MonoBehaviour
 {
 
     public bool displayGizmos = false;
     PathRequestManager requestManager;
-    
+    GameManager game;
     
     Node[] nodes;
     List<Node> path;
 
     private int maxLocalSize = 100 * 100;
-    private CreateGalaxy galaxy;
+    private GalaxyManager galaxy;
     // Use this for initialization
-    void Awake()
+    public void Awake()
     {
-        galaxy = GetComponent<CreateGalaxy>();
-        maxLocalSize = galaxy.starCount;
-        nodes = new Node[galaxy.starCount];
+        game = GameManager.instance;
+        galaxy = GetComponent<GalaxyManager>();
+        maxLocalSize = game.data.stars.Count;
+        nodes = new Node[game.data.stars.Count];
         requestManager = GetComponent<PathRequestManager>();
 
     }
@@ -60,11 +62,11 @@ public class Pathfinding : MonoBehaviour
         //Save Nodes to Grid
         if (nodes[startIndex] == null)
         {
-            nodes[startIndex] = Node.NodeFromStar(startIndex, galaxy.stars);
+            nodes[startIndex] = Node.NodeFromStar(startIndex, game.data.stars);
         }
         if (nodes[targetIndex] == null)
         {
-            nodes[targetIndex] = Node.NodeFromStar(targetIndex, galaxy.stars);
+            nodes[targetIndex] = Node.NodeFromStar(targetIndex, game.data.stars);
         }
 
         Node startNode = nodes[startIndex];
@@ -95,7 +97,7 @@ public class Pathfinding : MonoBehaviour
                     break;
                 }
 
-                foreach (Node neighbor in GetNeighbors(currentNode, maxDistance, galaxy.stars))
+                foreach (Node neighbor in GetNeighbors(currentNode, maxDistance, game.data.stars))
                 {
 
                     if (neighbor.walkSpeed == 0 || closedSet.Contains(neighbor))
@@ -168,12 +170,12 @@ public class Pathfinding : MonoBehaviour
         return waypoints.ToArray();
     }
 
-    public List<Node> GetNeighbors(Node node, float maxDistance, SolarModel[] stars)
+    public List<Node> GetNeighbors(Node node, float maxDistance, ModelRefs<SolarModel> stars)
     {
         //Set neighbors
 
-        node.neighbors = new List<Node>(stars.Length);
-        for (int i = 0; i < stars.Length; i++)
+        node.neighbors = new List<Node>(stars.Count);
+        for (int i = 0; i < stars.Count; i++)
         {
 
             if (nodes[i] == null)

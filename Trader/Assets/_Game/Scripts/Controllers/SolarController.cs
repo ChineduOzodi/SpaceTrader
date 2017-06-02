@@ -16,17 +16,17 @@ public class SolarController : Controller<SolarModel> {
     internal List<GameObject> moons = new List<GameObject>();
     internal List<SolarBody> moonModels = new List<SolarBody>();
     internal GameManager game;
-    internal CreateGalaxy galaxy;
+    internal GalaxyManager galaxy;
     private SpriteRenderer sprite;
     protected override void OnInitialize()
     {
-        game = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
-        galaxy = game.GetComponent<CreateGalaxy>();
+        game = GameManager.instance;
+        galaxy = GalaxyManager.instance;
         transform.position = model.position;
         name = model.name;
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = model.sun.color;
-        transform.localScale = Vector3.one * Mathf.Pow(model.sun.mass / Mathf.PI,.3f) * 2;
+        transform.localScale = Vector3.one * Mathf.Pow(model.sun.mass / Mathf.PI,.3f);
 
         if (model.isActive)
         {
@@ -39,7 +39,8 @@ public class SolarController : Controller<SolarModel> {
         ToggleSystem();
         if (model.isActive)
         {
-            sun.transform.localScale = Vector3.one * Mathf.Sqrt(model.sun.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, .9f);
+            //sun.transform.localScale = Vector3.one * Mathf.Sqrt(model.sun.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, .9f);
+            sun.transform.localScale = Vector3.one * model.sun.bodyRadius * 2;
             game.localScaleMod = Mathf.Pow(Camera.main.orthographicSize, .5f);
 
             for ( int i = 0; i < model.planets.Length; i++)
@@ -47,7 +48,9 @@ public class SolarController : Controller<SolarModel> {
                 SolarBody body = model.planets[i];
                 Vector3 position = body.solar.GetLocalPosition(game.data.date.time).cartesian;
                 planets[i].transform.position = position;
-                planets[i].transform.localScale = Vector3.one * Mathf.Sqrt(body.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, 1.3f);
+                //planets[i].transform.localScale = Vector3.one * Mathf.Sqrt(body.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, 1.3f);
+                planets[i].transform.localScale = Vector3.one * body.bodyRadius * 2;
+
                 LineRenderer line = planets[i].GetComponent<LineRenderer>();
 
                 line.startWidth = planets[i].transform.localScale.x * .3f;
@@ -61,7 +64,8 @@ public class SolarController : Controller<SolarModel> {
                 SolarBody moon = moonModels[i];
                 Vector3 position = moon.solar.GetWorldPosition(game.data.date.time);
                 moons[i].transform.position = position;
-                moons[i].transform.localScale = Vector3.one * Mathf.Sqrt(moon.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, 1.1f);
+                //moons[i].transform.localScale = Vector3.one * Mathf.Sqrt(moon.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, 1.1f);
+                moons[i].transform.localScale = Vector3.one * moon.bodyRadius * 2;
 
                 LineRenderer line = moons[i].GetComponent<LineRenderer>();
                 line.startWidth = moons[i].transform.localScale.x * .3f;
@@ -79,7 +83,7 @@ public class SolarController : Controller<SolarModel> {
                 {
                     orbitPos[b] = moon.solar.parent.solar.GetWorldPosition(game.data.date.time) + new Polar2(moon.solar.radius, angleStep * b).cartesian;
                 }
-                line.numPositions = numPoints;
+                line.positionCount = numPoints;
                 line.SetPositions(orbitPos);
             }
         }
@@ -90,26 +94,29 @@ public class SolarController : Controller<SolarModel> {
     {
 
         sprite.color = model.color;
-        transform.localScale = Vector3.one * model.localScale;
+        if (model.isActive)
+            transform.localScale = Vector3.one * model.localScale;
     }
 
     public void ToggleSystem()
     {
+        SystemToggle();
+    }
+    //TODO: new way to save and load focus star system
+    private void SystemToggle()
+    {
         if (galaxy.solar == this && Camera.main.cullingMask == galaxy.solarMask && !model.isActive)
         {
             model.isActive = true;
+            game.nameOfSystem.text = model.name;
             CreateSystem();
         }
         else if ((galaxy.solar != this || Camera.main.cullingMask != galaxy.solarMask) && model.isActive)
         {
             model.isActive = false;
+            game.nameOfSystem.text = "Galaxy";
             DestroySystem();
         }
-        //else if (galaxy.solar != this || Camera.main.cullingMask != galaxy.solarMask)
-        //{
-        //    model.isActive = false;
-        //}
-
     }
 
     public void CreateSystem()
@@ -117,6 +124,7 @@ public class SolarController : Controller<SolarModel> {
         model.localScale = 1;
         transform.localScale = Vector3.one;
         sun = Instantiate(sunObj, transform);
+        sun.name = model.name + " Sun";
         sun.transform.position = Vector3.zero;
         sun.transform.localScale = Vector3.one * Mathf.Sqrt(model.sun.mass / Mathf.PI);
         sun.GetComponent<SpriteRenderer>().color = model.sun.color;
@@ -146,7 +154,7 @@ public class SolarController : Controller<SolarModel> {
                 orbitPos[b] = new Polar2(body.solar.radius, angleStep * b).cartesian;
             }
             LineRenderer line = planets[i].GetComponent<LineRenderer>();
-            line.numPositions = numPoints;
+            line.positionCount = numPoints;
             line.SetPositions(orbitPos);
 
             //Create Moons
@@ -181,8 +189,8 @@ public class SolarController : Controller<SolarModel> {
         //{
         //    nameButton.enabled = false;
         //}
-        transform.localScale = Vector3.one * Mathf.Pow(model.sun.mass / Mathf.PI, .3f) * 2;
-        model.localScale = Mathf.Pow(model.sun.mass / Mathf.PI, .3f) * 2;
+        transform.localScale = Vector3.one * Mathf.Pow(model.sun.mass / Mathf.PI, .3f);
+        model.localScale = Mathf.Pow(model.sun.mass / Mathf.PI, .3f);
         Destroy(sun);
         for (int i = 0; i < model.planets.Length; i++)
         {
@@ -202,5 +210,14 @@ public class SolarController : Controller<SolarModel> {
 
         }
         stations = new StationController[0];
+    }
+
+    public void OnMouseEnter()
+    {
+        ToolTip.instance.SetTooltip(model.name, String.Format("Planets: {0}", model.planets.Length));
+    }
+    public void OnMouseExit()
+    {
+        ToolTip.instance.CancelTooltip();
     }
 }

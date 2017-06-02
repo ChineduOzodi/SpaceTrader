@@ -1,4 +1,6 @@
-﻿Shader "Sprites/SFSoftShadow" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Sprites/SFSoftShadow" {
 	Properties {
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		_SoftHardMix ("Unshadowed/Shadowed Mix", Range(0.0, 1.0)) = 0.0
@@ -59,7 +61,7 @@
 				};
 				
 				VertexOutput VShader(VertexInput v){
-					float4 position = mul(UNITY_MATRIX_MVP, float4(v.position, 1.0));
+					float4 position = UnityObjectToClipPos(float4(v.position, 1.0));
 					
 					#if defined(PIXELSNAP_ON)
 					position = UnityPixelSnap(position);

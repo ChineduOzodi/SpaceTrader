@@ -11,12 +11,12 @@ public class TradeRouteFinding : MonoBehaviour
     TradeRouteRequestManager requestManager;
 
     private GameManager game;
-    private CreateGalaxy galaxy;
+    private GalaxyManager galaxy;
     // Use this for initialization
     void Awake()
     {
         game = GetComponent<GameManager>();
-        galaxy = GetComponent<CreateGalaxy>();
+        galaxy = GetComponent<GalaxyManager>();
         requestManager = GetComponent<TradeRouteRequestManager>();
 
     }
@@ -63,9 +63,9 @@ public class TradeRouteFinding : MonoBehaviour
                                 amountToBuy = (int)(model.money / outputItem.price);
                             }
 
-                            float stationBDistance = (galaxy.stars[buyStation.solar.starIndex].position - model.hyperSpacePosition).magnitude;
+                            float stationBDistance = (game.data.stars[buyStation.solar.starIndex].position - model.hyperSpacePosition).magnitude;
                             stationBDistance += (buyStation.solar.GetWorldPosition(game.data.date.time) - model.solar.GetWorldPosition(game.data.date.time)).magnitude;
-                            float routeDistance = (galaxy.stars[sellStation.solar.starIndex].position - galaxy.stars[buyStation.solar.starIndex].position).magnitude;
+                            float routeDistance = (game.data.stars[sellStation.solar.starIndex].position - game.data.stars[buyStation.solar.starIndex].position).magnitude;
                             routeDistance += (sellStation.solar.GetWorldPosition(game.data.date.time) - buyStation.solar.GetWorldPosition(game.data.date.time)).magnitude;
 
                             float distanceToTargetCost = stationBDistance / model.speed / model.fuelEfficiency;

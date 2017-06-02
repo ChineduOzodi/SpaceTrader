@@ -15,7 +15,7 @@ public class ShipController : Controller<ShipModel>
     internal SpriteRenderer sprite;
     internal LineRenderer line;
     internal float timeUpdate = 0;
-    private CreateGalaxy galaxy;
+    private GalaxyManager galaxy;
     private Unit unit;
 
     internal int starIndex
@@ -32,7 +32,7 @@ public class ShipController : Controller<ShipModel>
 
     protected override void OnInitialize()
     {
-        game = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GameManager>();
+        game = GameManager.instance;
         galaxy = game.galaxy;
         unit = GetComponent<Unit>();
         sprite = GetComponent<SpriteRenderer>();
@@ -73,7 +73,7 @@ public class ShipController : Controller<ShipModel>
         else
         {
             gameObject.layer = solarMask;
-            if (!galaxy.stars[model.solar.starIndex].isActive)
+            if (!game.data.stars[model.solar.starIndex].isActive)
             {
                 sprite.enabled = false;
                 line.enabled = false;
@@ -106,13 +106,13 @@ public class ShipController : Controller<ShipModel>
         {
             model.hyperSpace = true;
             gameObject.layer = mapMask;
-            transform.position = galaxy.stars[model.solar.starIndex].position;
+            transform.position = game.data.stars[model.solar.starIndex].position;
             unit.HyperSpaceTravel(model.solar.starIndex, starIndex, model.speed);
 
-            SolarBody parent = galaxy.stars[starIndex].sun;
+            SolarBody parent = game.data.stars[starIndex].sun;
             Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
             model.solar = new Orbit(starIndex, parent, position);
-            model.hyperSpacePosition = galaxy.stars[starIndex].position;
+            model.hyperSpacePosition = game.data.stars[starIndex].position;
         }
         
         
