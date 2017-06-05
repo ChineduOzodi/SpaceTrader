@@ -22,7 +22,7 @@ public class SolarController : Controller<SolarModel> {
     {
         game = GameManager.instance;
         galaxy = GalaxyManager.instance;
-        transform.position = model.position;
+        transform.position = model.position[0];
         name = model.name;
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = model.sun.color;
@@ -83,7 +83,7 @@ public class SolarController : Controller<SolarModel> {
                 {
                     orbitPos[b] = moon.solar.parent.solar.GetWorldPosition(game.data.date.time) + new Polar2(moon.solar.radius, angleStep * b).cartesian;
                 }
-                line.positionCount = numPoints;
+                line.numPositions = numPoints;
                 line.SetPositions(orbitPos);
             }
         }
@@ -154,7 +154,7 @@ public class SolarController : Controller<SolarModel> {
                 orbitPos[b] = new Polar2(body.solar.radius, angleStep * b).cartesian;
             }
             LineRenderer line = planets[i].GetComponent<LineRenderer>();
-            line.positionCount = numPoints;
+            line.numPositions = numPoints;
             line.SetPositions(orbitPos);
 
             //Create Moons

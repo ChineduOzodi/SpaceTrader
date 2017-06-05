@@ -106,13 +106,13 @@ public class ShipController : Controller<ShipModel>
         {
             model.hyperSpace = true;
             gameObject.layer = mapMask;
-            transform.position = game.data.stars[model.solar.starIndex].position;
+            transform.position = game.data.stars[model.solar.starIndex].position[0];
             unit.HyperSpaceTravel(model.solar.starIndex, starIndex, model.speed);
 
             SolarBody parent = game.data.stars[starIndex].sun;
             Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
             model.solar = new Orbit(starIndex, parent, position);
-            model.hyperSpacePosition = game.data.stars[starIndex].position;
+            model.position = game.data.stars[starIndex].position;
         }
         
         

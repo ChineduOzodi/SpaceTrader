@@ -55,7 +55,7 @@ public class Node : IHeapItem<Node>
 
     internal static Node NodeFromStar(int index, ModelRefs<SolarModel> stars)
     {
-        Node node = new Node(index, 1, stars[index].position);
+        Node node = new Node(index, 1, stars[index].position[0]);
         node.index = index;
         return node;
     }

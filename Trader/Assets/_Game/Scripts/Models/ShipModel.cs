@@ -8,7 +8,7 @@ public class ShipModel: StructureModel {
     public IdentityType type = IdentityType.Ship;
     public ShipMode mode = ShipMode.Idle;
     public bool hyperSpace = false;
-    public Vector3 hyperSpacePosition;
+    public SystemPosition position;
     public ModelRef<StructureModel> target = new ModelRef<StructureModel>();
     public ModelRef<StructureModel> sellTarget = new ModelRef<StructureModel>();
     public int capacity;

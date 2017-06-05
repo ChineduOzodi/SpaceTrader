@@ -612,7 +612,7 @@ public class GameManager : MonoBehaviour {
         {
             galaxyView = true;
             galaxy.GalaxyView();
-            transform.position = new Vector3(data.stars[model.solar.starIndex].position.x, data.stars[model.solar.starIndex].position.y, -10);
+            transform.position = new Vector3(data.stars[model.solar.starIndex].position[0].x, data.stars[model.solar.starIndex].position[0].y, -10);
 
         }
     }
@@ -620,7 +620,7 @@ public class GameManager : MonoBehaviour {
     {
         galaxyView = true;
         galaxy.GalaxyView();
-        transform.position = new Vector3(model.position.x, model.position.y, -10);
+        transform.position = new Vector3(model.position[0].x, model.position[0].y, -10);
     }
     private void OnFindRouteFinished(ShipModel model, Items buyItem, StructureModel[] targets, bool success)
     {
@@ -648,7 +648,7 @@ public class GameManager : MonoBehaviour {
         {
             foreach (Items outputItem in station.factory.outputItems)
             {
-                float closestDistance = Vector2.Distance(data.stars[station.solar.starIndex].position, model.hyperSpacePosition) * 1000;
+                float closestDistance = Vector2.Distance(data.stars[station.solar.starIndex].position[0], model.position[0]) * 1000;
                 closestDistance += Vector2.Distance(station.solar.GetWorldPosition(data.date.time), model.solar.GetWorldPosition(data.date.time));
                 if (outputItem.name == itemName && closestDistance < distance && outputItem.amount > 0)
                 {

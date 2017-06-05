@@ -138,7 +138,7 @@ public class GalaxyManager : MonoBehaviour {
                 star.localScale = Mathf.Pow(star.governmentInfluence, .6f) + .5f;
                 if (star.isCapital)
                 {
-                    Canvas textCanvas = Instantiate(buttonInstanceCanvas, star.position, Quaternion.identity);
+                    Canvas textCanvas = Instantiate(buttonInstanceCanvas, star.position[0], Quaternion.identity);
                     Button textButton = textCanvas.GetComponentInChildren<Button>();
                     Text text = textCanvas.GetComponentInChildren<Text>();
                     mapButtonCanvases.Add(textCanvas);

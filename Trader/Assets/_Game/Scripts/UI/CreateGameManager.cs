@@ -150,7 +150,7 @@ public class CreateGameManager : MonoBehaviour {
             for (int c = 0; c < i; c++) //Checking the distance to each already generated star and then adding it to a list of near stars if close enough
             {
                 float maxDist = Mathf.Pow(sunMass + game.data.stars[c].sun.mass, .5f);
-                float actualDist = Vector3.Distance(position, game.data.stars[c].position);
+                float actualDist = Vector3.Distance(position, game.data.stars[c].position.location[0]);
                 if (actualDist < maxDist)
                 {
                     star.nearStars.Add(game.data.stars[c]);
@@ -168,7 +168,7 @@ public class CreateGameManager : MonoBehaviour {
             {
                 if (c != i)
                 {
-                    float actualDist = Vector3.Distance(game.data.stars[i].position, game.data.stars[c].position);
+                    float actualDist = Vector3.Distance(game.data.stars[i].position[0], game.data.stars[c].position[0]);
                     if (actualDist < closestStarDist)
                     {
                         closestStarDist = actualDist;

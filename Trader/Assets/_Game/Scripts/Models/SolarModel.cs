@@ -9,7 +9,7 @@ public class SolarModel : Model {
 
     public bool isActive = false;
 
-    public Vector3 position;
+    public SystemPosition position;
     public Color color;
     public SolarBody sun;
     public SolarBody[] planets;
@@ -24,10 +24,10 @@ public class SolarModel : Model {
 
     public SolarModel() { }
 
-    public SolarModel(string _name, int _index, Vector2 _position, float sunMass, float G, int numPlanets, Gradient sunSizeColor, float sunColorValue)
+    public SolarModel(string _name, int _index, Vector3 _position, float sunMass, float G, int numPlanets, Gradient sunSizeColor, float sunColorValue)
     {
         name = _name;
-        position = _position;
+        position = new SystemPosition( new Vector3[] { _position, Vector3.zero, Vector3.zero });
         index = _index;
         Color color = sunSizeColor.Evaluate(sunColorValue);
 
