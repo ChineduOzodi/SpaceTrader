@@ -83,7 +83,7 @@ public class SolarController : Controller<SolarModel> {
                 {
                     orbitPos[b] = moon.solar.parent.solar.GetWorldPosition(game.data.date.time) + new Polar2(moon.solar.radius, angleStep * b).cartesian;
                 }
-                line.numPositions = numPoints;
+                line.positionCount = numPoints;
                 line.SetPositions(orbitPos);
             }
         }
@@ -154,7 +154,7 @@ public class SolarController : Controller<SolarModel> {
                 orbitPos[b] = new Polar2(body.solar.radius, angleStep * b).cartesian;
             }
             LineRenderer line = planets[i].GetComponent<LineRenderer>();
-            line.numPositions = numPoints;
+            line.positionCount = numPoints;
             line.SetPositions(orbitPos);
 
             //Create Moons

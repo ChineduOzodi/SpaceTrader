@@ -112,17 +112,41 @@
     <Reference Include="UnityEditor.iOS.Extensions">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.WSA.Extensions">
+      <HintPath>Library\UnityAssemblies\UnityEditor.WSA.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>Library\UnityAssemblies\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ConditionalExpression">
+      <HintPath>Assets\PlayMaker\ConditionalExpression.dll</HintPath>
+    </Reference>
+    <Reference Include="ConditionalExpressionEditor">
+      <HintPath>Assets\PlayMaker\Editor\ConditionalExpressionEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayMakerEditor">
+      <HintPath>Assets\PlayMaker\Editor\PlayMakerEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayMakerEditorResources">
+      <HintPath>Assets\PlayMaker\Editor\PlayMakerEditorResources.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayMakerEditor.es-ES.resources">
+      <HintPath>Assets\PlayMaker\Editor\es-ES\PlayMakerEditor.es-ES.resources.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-UnityScript">
+      <HintPath>Library\ScriptAssemblies\Assembly-UnityScript.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +175,107 @@
     <Compile Include="Assets\CodeControl\Scripts\Editor\ModelStructures\TypeAggregation.cs" />
     <Compile Include="Assets\CodeControl\Scripts\Editor\RenderingHelper.cs" />
     <Compile Include="Assets\CodeControl\Scripts\Editor\Widget.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\data\ArrayX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\data\ColorX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\data\FloatX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\data\IntX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\data\ListX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\data\RectX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\data\StringX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\data\TypeX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\data\Vector3X.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\gui\GDrawX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\gui\GuiEventX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\gui\GuiX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\mono\ComponentX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\mono\ObjectX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\mono\TransformX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\EditorX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\FileX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\MenuX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\ReflectionX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\SelectionX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\SerializeX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\SkinX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\TextureX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\UndoX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\extension\unity\WindowX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\gui\h2StringBool.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\gui\vlbForm.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\gui\vlbGEHandler.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\gui\vlbGUIList.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\gui\vlbGUIPopup.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\gui\vlbGUISearch.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\gui\vlbGUITab.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\gui\vlbProgress.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\gui\vlbStringArray.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\module\EditorPersist.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\module\EditorResource.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\Core\module\EditorVersion.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\Hierarchy2.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\core\HierarchyX.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\core\h2Icon.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\core\h2Info.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\core\h2Settings.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\core\h2Utils.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\experiment\IsolateWindow.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\experiment\h2QuickFind.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\experiment\h2SceneReference.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\Isolate43.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Active.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Combine.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Component.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Depth.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Layer.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Lock.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Prefab.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Script.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2SelectionHL.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Static.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\icon\h2Tag.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\misc\h2GameObjectHL.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\special\h2Camera.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\special\h2Goto.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\special\h2ParentIndicator.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\special\h2SceneViewHL.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\feature\special\h2Transform.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\module\h2Context.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\module\h2IconMode.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\module\h2Reference.cs" />
+    <Compile Include="Assets\Hierarchy2\Editor\h2\module\h2Shortcut.cs" />
+    <Compile Include="Assets\PlayMaker\Actions\Editor\GetDistanceEditor.cs" />
+    <Compile Include="Assets\PlayMaker\Actions\Editor\LookAtActionEditor.cs" />
+    <Compile Include="Assets\PlayMaker\Actions\Editor\MoveTowardsActionEditor.cs" />
+    <Compile Include="Assets\PlayMaker\Actions\Editor\SetCameraFOVActionEditor.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\AboutWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\ContextToolWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmActionWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmComponentInspector.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmEditorHelpers.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmEditorWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmErrorWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmEventsWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmGlobalsWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmLogWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmSelectorWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmStateWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmTemplate.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmTemplateEditor.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmTemplateWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\FsmTimelineWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerAutoUpdater.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerBugReportWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerBuildCallbacks.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerCustomActionWizard.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerGUIInspector.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerGlobalsInspector.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerMainMenu.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerProjectTools.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerUpdater.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerUpgradeGuide.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerUpgradeTools.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\PlayMakerWelcomeWindow.cs" />
+    <Compile Include="Assets\PlayMaker\Editor\ReportWindow.cs" />
     <Compile Include="Assets\PostProcessing\Editor\Attributes\PostProcessingModelEditorAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Editor\Models\AmbientOcclusionModelEditor.cs" />
     <Compile Include="Assets\PostProcessing\Editor\Models\AntialiasingModelEditor.cs" />
@@ -198,6 +323,15 @@
   <ItemGroup>
     <None Include="Assets\CodeControl\changelog.txt" />
     <None Include="Assets\CodeControl\readme.txt" />
+    <None Include="Assets\Easy Save 2\changelog.txt" />
+    <None Include="Assets\Easy Save 2\readme.txt" />
+    <None Include="Assets\Hierarchy2\Help\ChangeLog.txt" />
+    <None Include="Assets\Hierarchy2\Help\FAQ.txt" />
+    <None Include="Assets\Hierarchy2\Help\ReleaseNotes.txt" />
+    <None Include="Assets\PlayMaker\Readme.txt" />
+    <None Include="Assets\PlayMaker\Resources\PlayMakerAssemblies.txt" />
+    <None Include="Assets\PlayMaker\Templates\readme.txt" />
+    <None Include="Assets\PlayMaker\Versions\readme.txt" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\HistogramCompute.compute" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\HistogramRender.shader" />
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\ParadeRender.shader" />

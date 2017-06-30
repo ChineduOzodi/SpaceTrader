@@ -40,7 +40,7 @@ public class Unit : MonoBehaviour {
         {
             path = newPath;
             //Setting LineRender vertex positions
-            line.numPositions = path.Length + 1;
+            line.positionCount = path.Length + 1;
             line.SetPosition(0, transform.position);
             
             for (int i = 0; i < path.Length; i++)
@@ -76,7 +76,7 @@ public class Unit : MonoBehaviour {
                 currentWaypoint = path[targetIndex];
                 
                 //update linerenderer
-                line.numPositions--;
+                line.positionCount--;
                 line.SetPosition(0, transform.position);
 
                 for (int i = targetIndex; i < path.Length; i++)

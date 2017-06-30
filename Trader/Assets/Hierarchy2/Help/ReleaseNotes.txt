@@ -1,0 +1,98 @@
+﻿Hierarchy2 v1.4.0 - Beta 4 ( 31 May 2015 )
+------------------------------------------------------
+
+Welcome to the beta program of Hierarchy2. Your feedbacks are absolutely precious to me, please do tell your personal taste when using it. It will absolutely help the product to going forward !
+
+Please note that many things has change since the previous Hierarchy2 v1.3.10, many parts has been rewritten, many parts has not yet get their way through yet, so please be patient as I'm trying my best to keep up with the schedule. If something terribly important to you got missing please tell also, I will check it right away.
+
+WARNING : only use it on hobby / side project as it may cause unrecoverable damanges.
+
+
+
+FEATURES
+------------------------------------------------------
+- Toggle Active / Lock / Static
+- ChildCount / Toggle Combine children
+- Tag / Layer icons
+- Prefab icon
+- Components icons
+- Has Script / Missing Scripts Indicator
+- SceneView Boundary highlight
+- Parent Indicator
+- Depth Indicator
+- Capture SceneView / Lookthrough Camera
+- Goto Parent / Child / Sibling
+- New Empty GameObjects as Child / Parent / Sibling
+- Reset Local Position / Rotation / Scale / Transform
+- Set GameObject Color
+
+- Reference panel to change icons displayed in each mode (Edit -> Reference -> Hierarchy2)
+- Context menu / Shortcut / Undo supported
+- Support HierarchyDraw
+- GameObject Highlighter
+
+
+
+KNOWN BUGS / LIMITATION
+------------------------------------------------------
+- Isolate modes only available in Unity 4.3 (Unity 4.5+ introduced breaking changes I still can not figure out a way to make it works correctly)
+- Many options are missing from Reference panel
+- No shortcut configuration yet
+- No documentation / tutorial yet
+- Context menu are partially missing 
+- Shortcuts are partially set (see Shortcut List below)
+
+
+SHORTCUT LIST (need focus on Hierarchy panel)
+------------------------------------------------------
+- Ctrl + Alt + Shift + 0			: Enable / Disable Hierarchy2
+- Ctrl + Shift + MouseWheel			: Switch between icon modes
+- Shift + H							: Enable / Disable SceneView Boundary
+
+- Shift + C + C						: Show / Hide Component icons
+- Shift + C + P						: Show / Hide Physics components (Colliders / rigidBodies)
+- Shift + C + U						: Show / Hide Not useful components (Transform / MeshFilters )
+
+- Shift + C							: Camera - Capture sceneView
+- Shift + L							: Camera - LookThrough
+
+- Shift + B							: Break prefab instance
+
+- A									: Toggle Active GameObject
+
+- [									: Goto Parent
+- ]									: Goto Child
+- /									: Goto Next Sibling
+
+- Shift + P							: Reset position
+- Shift + R							: Reset rotation
+- Shift + S							: Reset scale
+- Shift + T							: Reset transform
+
+- Shift + 0							: Clear GameObject's highlight color
+- Shift + 1 .. 5					: Set GameObject's highlight color to color 1 --> color 6
+
+Ctrl + RightClick					: Context Menu
+
+DEVELOPER OVERVIEW
+------------------------------------------------------
+Hierarchy2.cs	: Main class to hook up Unity's event & manage init / update for all features
+Module			: Shared library to manage GenericMenu, Shortcuts, Reference panel ...
+Feature			: Each class manage Icon / Feature for themself
+Experiment		: Half baked things, mostly broken
+
+
+IDEAS
+------------------------------------------------------
+- Quick search / filter / highlight
+- Remove missing behaviour (?)
+- Apply prefabs
+- Track changes of H2 icons
+- Expanding Collapse state saver
+- GameObject / Component info
+- Preview Object
+- Quick select - all siblings
+- Add / remove item from Isolate / Find panel
+- Sequential search
+
+
