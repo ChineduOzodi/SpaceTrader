@@ -31,18 +31,14 @@ public enum RawResources
     None
 }
 
-public enum PlanetType
-{
-    Gas,
-    Dwarf,
-    Regular
-}
-
 public enum SolarType
 {
     Star,
-    Planet,
+    RockyPlanet,
+    GasGiant,
+    DwarfPlanet,
     Moon,
+    Meteor,
     Asteroid,
     Structure
 }

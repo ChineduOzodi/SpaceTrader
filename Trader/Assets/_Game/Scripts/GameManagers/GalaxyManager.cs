@@ -153,8 +153,8 @@ public class GalaxyManager : MonoBehaviour {
     {
         foreach (SolarModel star in game.data.stars)
         {
-            star.color = star.sun.color;
-            star.localScale = (float)(star.sun.orbit.bodyRadius /1000000);
+            star.color = star.solar.color;
+            star.localScale = (float)(star.solar.bodyRadius /1000000);
             star.NotifyChange();
         }
 

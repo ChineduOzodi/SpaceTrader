@@ -63,24 +63,24 @@ public class TradeRouteFinding : MonoBehaviour
                                 amountToBuy = (int)(model.money / outputItem.price);
                             }
 
-                            double stationBDistance = (game.data.stars[buyStation.solarIndex].galacticPosition - model.position).magnitude;
-                            stationBDistance += (buyStation.orbit.Radius(game.data.date.time) - model.orbit.Radius(game.data.date.time)).magnitude;
-                            double routeDistance = (game.data.stars[sellStation.solarIndex].galacticPosition - game.data.stars[buyStation.solarIndex].galacticPosition).magnitude;
-                            routeDistance += (sellStation.orbit.Radius(game.data.date.time) - buyStation.orbit.Radius(game.data.date.time)).magnitude;
+                            //double stationBDistance = (game.data.stars[buyStation.solarIndex].galacticPosition - model.galaxyPosition).magnitude;
+                            //stationBDistance += (buyStation.GamePosition(game.data.date.time) - model.GamePosition(game.data.date.time)).magnitude;
+                            //double routeDistance = (game.data.stars[sellStation.solarIndex].galacticPosition - game.data.stars[buyStation.solarIndex].galacticPosition).magnitude;
+                            //routeDistance += (sellStation.GamePosition(game.data.date.time) - buyStation.GamePosition(game.data.date.time)).magnitude;
 
-                            double distanceToTargetCost = stationBDistance / model.speed / model.fuelEfficiency;
-                            double routeDistanceCost = routeDistance / model.speed / model.fuelEfficiency;
-                            //print("will make: " + (inputItem.price - outputItem.price) * amountToBuy);
-                            //print("will lose: " + (distanceToTargetCost + routeDistanceCost));
-                            if (inputItem.name == outputItem.name && ((inputItem.price - outputItem.price) * amountToBuy - distanceToTargetCost - routeDistanceCost > profitability))
-                            {
-                                profitability = (inputItem.price - outputItem.price) * amountToBuy - distanceToTargetCost - routeDistanceCost;
-                                success = true;
-                                targets[0] = buyStation;
-                                targets[1] = sellStation;
-                                item = new Items(inputItem.name, inputItem.itemType, model.capacity);
-                                model.spriteColor = Color.blue;
-                            }
+                            //double distanceToTargetCost = stationBDistance / model.speed / model.fuelEfficiency;
+                            //double routeDistanceCost = routeDistance / model.speed / model.fuelEfficiency;
+                            ////print("will make: " + (inputItem.price - outputItem.price) * amountToBuy);
+                            ////print("will lose: " + (distanceToTargetCost + routeDistanceCost));
+                            //if (inputItem.name == outputItem.name && ((inputItem.price - outputItem.price) * amountToBuy - distanceToTargetCost - routeDistanceCost > profitability))
+                            //{
+                            //    profitability = (inputItem.price - outputItem.price) * amountToBuy - distanceToTargetCost - routeDistanceCost;
+                            //    success = true;
+                            //    targets[0] = buyStation;
+                            //    targets[1] = sellStation;
+                            //    item = new Items(inputItem.name, inputItem.itemType, model.capacity);
+                            //    model.spriteColor = Color.blue;
+                            //}
                         }
                     }
                 }

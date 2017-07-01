@@ -33,7 +33,7 @@ public class StationController : Controller<StationModel> {
         sprite.color = model.color;
 
         background.color = model.backgroundColor;
-        transform.position = (Vector2) model.orbit.Radius(game.data.date.time);
+        //transform.position = (Vector2) model.GamePosition(game.data.date.time, model.solar.satelites[moon.solarIndex[1]].mass);
 
 
         if (!game.data.stars[model.solarIndex].isActive)
@@ -92,7 +92,7 @@ public class StationController : Controller<StationModel> {
             //line.positionCount = numPoints;
             //line.SetPositions(orbitPos);
         }
-        transform.position = (Vector2)model.orbit.Radius(game.data.date.time);
+        //transform.position = (Vector2)model.GamePosition(game.data.date.time);
         transform.localScale = Vector3.one * .1f * (float) (model.money / 1000000f + .5f) * Mathf.Pow(game.localScaleMod, 1.7f);
     }
 

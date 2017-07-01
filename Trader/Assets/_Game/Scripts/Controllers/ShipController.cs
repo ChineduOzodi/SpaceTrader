@@ -85,12 +85,12 @@ public class ShipController : Controller<ShipModel>
 
                 transform.localScale = Vector3.one * (model.capacity / 200f + .5f) * Mathf.Pow(game.localScaleMod, 1.7f) * .1f;
                 //Set orbit outline
-                line.startWidth = transform.localScale.x * .3f;
-                line.endWidth = transform.localScale.x * .3f;
-                Vector3 targetPosition = (Vector2) model.target.Model.orbit.Radius(game.data.date.time);
-                line.SetPositions(new Vector3[] { transform.position, targetPosition });
-                line.startColor = sprite.color;
-                line.endColor = ((StationModel)model.target.Model).color;
+                //line.startWidth = transform.localScale.x * .3f;
+                //line.endWidth = transform.localScale.x * .3f;
+                //Vector3 targetPosition = (Vector2) model.target.Model.GamePosition(game.data.date.time);
+                //line.SetPositions(new Vector3[] { transform.position, targetPosition });
+                //line.startColor = sprite.color;
+                //line.endColor = ((StationModel)model.target.Model).color;
             }
         }
     }
@@ -109,11 +109,11 @@ public class ShipController : Controller<ShipModel>
             transform.position = game.data.stars[model.solarIndex].galacticPosition;
             unit.HyperSpaceTravel(model.solarIndex, solarIndex, model.speed);
 
-            SolarBody parent = game.data.stars[solarIndex].sun;
-            Polar2d position = new Polar2d(UnityEngine.Random.Range((float) parent.orbit.bodyRadius + 2, (float) parent.orbit.soi), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-            model.solarIndex = solarIndex;
-            model.orbit.parentMass = parent.orbit.Mass;
-            model.position = game.data.stars[solarIndex].galacticPosition;
+            SolarBody parent = game.data.stars[solarIndex].solar;
+            //Polar2d position = new Polar2d(UnityEngine.Random.Range((float) parent.bodyRadius + 2, (float) parent.orbit.soi), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+            //model.solarIndex = solarIndex;
+            //model.orbit.parentMass = parent.orbit.mass;
+            //model.position = game.data.stars[solarIndex].galacticPosition;
         }
         
         
@@ -122,7 +122,7 @@ public class ShipController : Controller<ShipModel>
     public void HyperSpaceDone()
     {
         model.hyperSpace = false;
-        transform.position = (Vector2) model.orbit.Radius(game.data.date.time);
+        //transform.position = (Vector2) model.GamePosition(game.data.date.time);
         StartCoroutine("SolarTravel");
     }
 

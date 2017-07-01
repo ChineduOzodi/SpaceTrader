@@ -254,21 +254,21 @@ public class GameManager : MonoBehaviour {
             {
                 double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
                 model.age.AddTime(deltaTime);
-                int totalPop = 0;
-                foreach (SolarBody body in star.planets)
-                {
-                    totalPop += body.population;
-                    foreach (SolarBody moon in body.children)
-                    {
-                        totalPop += moon.population;
-                    }
-                }
-                foreach (StationModel station in star.stations)
-                {
-                    totalPop += station.population;
-                }
+                Units totalPop = new Units(0,1,"people");
+                //foreach (SolarBody body in star.solar.satelites)
+                //{
+                //    totalPop += body.population;
+                //    foreach (SolarBody moon in body.satelites)
+                //    {
+                //        totalPop += moon.population;
+                //    }
+                //}
+                //foreach (StationModel station in star.stations)
+                //{
+                //    totalPop += station.population;
+                //}
 
-                star.governmentInfluence += (totalPop * .001f * (float) data.date.deltaTime) - (star.governmentInfluence * .1f * (float)data.date.deltaTime);
+                //star.governmentInfluence += (totalPop * .001f * (float) data.date.deltaTime) - (star.governmentInfluence * .1f * (float)data.date.deltaTime);
 
                 foreach (SolarModel nearStar in star.nearStars)
                 {
@@ -526,7 +526,7 @@ public class GameManager : MonoBehaviour {
             //float rotateAmount = angleOfAttack.angle * Mathf.Rad2Deg - transform.eulerAngles.z;
             //transform.Rotate(0, 0, rotateAmount * model.rotateSpeed * Time.deltaTime);
             //distance.Normalize();
-            Vector2 targetPosition = model.target.Model.orbit.Radius(data.date.time);
+            //Vector2 targetPosition = model.target.Model.GamePosition(data.date.time);
             //model.orbit.SetWorldPosition( Vector3d.MoveTowards((Vector3d) model.orbit.Radius(data.date.time), (Vector2d) targetPosition, model.speed * deltaTime), data.date.time);
             model.fuel.amount -= (float) (deltaTime / model.fuelEfficiency);
 
@@ -648,14 +648,14 @@ public class GameManager : MonoBehaviour {
         {
             foreach (Items outputItem in station.factory.outputItems)
             {
-                double closestDistance = Vector2.Distance(data.stars[station.solarIndex].galacticPosition, model.position) * 1000;
-                closestDistance += Vector2.Distance(station.orbit.Radius(data.date.time), model.orbit.Radius(data.date.time));
-                if (outputItem.name == itemName && closestDistance < distance && outputItem.amount > 0)
-                {
-                    distance = closestDistance;
-                    foundStation = station;
+                //double closestDistance = Vector2.Distance(data.stars[station.solarIndex].galacticPosition, model.position) * 1000;
+                //closestDistance += Vector2.Distance(station.GamePosition(data.date.time), model.GamePosition(data.date.time));
+                //if (outputItem.name == itemName && closestDistance < distance && outputItem.amount > 0)
+                //{
+                //    distance = closestDistance;
+                //    foundStation = station;
 
-                }
+                //}
             }
         }
 

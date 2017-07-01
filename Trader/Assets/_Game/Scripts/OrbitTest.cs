@@ -34,17 +34,17 @@ public class OrbitTest : MonoBehaviour {
         models = new List<OrbitTestModel>();
         date = new Dated(2017,6,33,20,4,0);
 
-        Orbit sun = new Orbit(SunMass * Mathd.Pow(10, 30));
-        OrbitTestModel sunModel = new OrbitTestModel(sun);
-        models.Add(sunModel);
+        //Orbit sun = new Orbit(SunMass * Mathd.Pow(10, 30));
+        //OrbitTestModel sunModel = new OrbitTestModel(sun);
+        //models.Add(sunModel);
         
 
-        orbit = new Orbit(Mass * Orbit.massConversion, SemiMajor * Orbit.distanceConversion, ECC, MeanAnom,0, Longitude, sun.Mass);
-        orbit.G = G;
-        OrbitTestModel orbitModel = new OrbitTestModel(orbit);
-        models.Add(orbitModel);
-        orbitModel.parent = new ModelRef<OrbitTestModel>(sunModel);
-        InstanceModels();
+        //orbit = new Orbit(Mass * Orbit.massConversion, SemiMajor * Orbit.distanceConversion, ECC, MeanAnom,0, Longitude, sun.mass);
+        //orbit.G = G;
+        //OrbitTestModel orbitModel = new OrbitTestModel(orbit);
+        //models.Add(orbitModel);
+        //orbitModel.parent = new ModelRef<OrbitTestModel>(sunModel);
+        //InstanceModels();
         
 	}
 	
@@ -53,9 +53,9 @@ public class OrbitTest : MonoBehaviour {
         if (models.Count > 1)
         {
             date.AddTime(Time.deltaTime * timeScale);
-            text.text = date.GetFormatedDateTime() + "\nTimescale: " + timeScale + "\ndeltaTime: "+ Time.deltaTime + "\nTime: " + date.time
-                + "\nPosition: " + models[1].orbit.Radius(date.time).x + " - " + models[1].orbit.Radius(date.time).y
-                + "\n" + models[1].orbit.GetOrbitalInfo(date.time);
+            //text.text = date.GetFormatedDateTime() + "\nTimescale: " + timeScale + "\ndeltaTime: "+ Time.deltaTime + "\nTime: " + date.time
+            //    + "\nPosition: " + models[1].GamePosition(date.time).x + " - " + models[1].GamePosition(date.time).y
+            //    + "\n" + models[1].orbit.GetOrbitalInfo(date.time);
 
             UpdateModelPositions();
 
@@ -79,37 +79,37 @@ public class OrbitTest : MonoBehaviour {
 
     private void UpdateModelPositions()
     {
-        for (var i = 0; i < models.Count; i++)
-        { 
-            modelObjects[i].transform.position = models[i].orbit.Radius(date.time);
+        //for (var i = 0; i < models.Count; i++)
+        //{ 
+        //    modelObjects[i].transform.position = models[i].GamePosition(date.time);
 
-            if (showOrbit)
-            {
-                LineRenderer line = modelObjects[i].GetComponent<LineRenderer>();
+        //    if (showOrbit)
+        //    {
+        //        LineRenderer line = modelObjects[i].GetComponent<LineRenderer>();
 
-                Vector3[] positions = new Vector3[101];
+        //        Vector3[] positions = new Vector3[101];
 
-                double timeInc = (double)(orbit.OrbitalPeriod / 100);
-                double time = date.time;
+        //        double timeInc = (double)(orbit.OrbitalPeriod / 100);
+        //        double time = date.time;
 
-                for (var b = 0; b < 101; b++)
-                {
-                    positions[b] = orbit.Radius(time);
-                    time += timeInc;
-                }
-                line.positionCount = 101;
-                line.SetPositions(positions);
-            }
-        }
+        //        for (var b = 0; b < 101; b++)
+        //        {
+        //            positions[b] = orbit.GamePosition(time);
+        //            time += timeInc;
+        //        }
+        //        line.positionCount = 101;
+        //        line.SetPositions(positions);
+        //    }
+        //}
     }
 
     private void InstanceModels()
     {
         foreach (var model in models)
         {
-            GameObject planet = Instantiate(planetObject);
-            planet.transform.position = model.orbit.Radius(date.time);
-            modelObjects.Add(planet);
+            //GameObject planet = Instantiate(planetObject);
+            //planet.transform.position = model.GamePosition(date.time);
+            //modelObjects.Add(planet);
         }
     }
     private void DeleteModelObjs()
@@ -123,9 +123,9 @@ public class OrbitTest : MonoBehaviour {
 
     public void ChangeParam()
     {
-        models[0].orbit = new Orbit() { Mass = SunMass * Mathd.Pow(10, 30) };
-        models[1].orbit = new Orbit(Mass * Orbit.massConversion, SemiMajor * Orbit.distanceConversion, ECC, MeanAnom, 0, Longitude, models[0].orbit.Mass);
-        models[1].orbit.G = G * Mathd.Pow(10, -11);
+        //models[0].orbit = new Orbit() { mass = SunMass * Mathd.Pow(10, 30) };
+        //models[1].orbit = new Orbit(Mass * Orbit.massConversion, SemiMajor * Orbit.distanceConversion, ECC, MeanAnom, 0, Longitude, models[0].orbit.mass);
+        //models[1].orbit.G = G * Mathd.Pow(10, -11);
     }
     public void SaveOrbitTest()
     {
