@@ -7,8 +7,9 @@ using CodeControl;
 /// </summary>
 public class GameDataModel : Model {
 
-    public Date date = new Date();
-    internal ModelRefs<SolarModel> stars = new ModelRefs<SolarModel>();
+    public Dated date = new Dated();
+    public static float G = Mathf.Pow(6.67f, -11);
+    public ModelRefs<SolarModel> stars = new ModelRefs<SolarModel>();
     public ModelRefs<ShipModel> ships = new ModelRefs<ShipModel>();
     public ModelRefs<StationModel> stations = new ModelRefs<StationModel>();
     public ModelRefs<CreatureModel> creatures = new ModelRefs<CreatureModel>();

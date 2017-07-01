@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>1e43c101-2368-49fc-8093-b61f4444ad59</Id>
-  <name>Torricholm Aska</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

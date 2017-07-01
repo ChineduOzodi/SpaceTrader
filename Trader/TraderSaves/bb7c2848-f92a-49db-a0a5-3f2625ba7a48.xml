@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>bb7c2848-f92a-49db-a0a5-3f2625ba7a48</Id>
-  <name>Glickley Wyvern Chiller </name>
-  <money>3791.66626</money>
-  <stations />
-  <ships />
-</CreatureModel>

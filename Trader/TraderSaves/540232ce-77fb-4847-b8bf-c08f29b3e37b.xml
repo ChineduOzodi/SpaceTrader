@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>540232ce-77fb-4847-b8bf-c08f29b3e37b</Id>
-  <name>Allahander Bane</name>
-  <money>563804.563</money>
-  <stations />
-  <ships />
-</CreatureModel>

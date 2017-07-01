@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>88e742bc-d7e5-4e3d-b7cc-3a9cf813beb2</Id>
-  <name>Crammerson Balm</name>
-  <money>63540.6758</money>
-  <stations />
-  <ships />
-</CreatureModel>

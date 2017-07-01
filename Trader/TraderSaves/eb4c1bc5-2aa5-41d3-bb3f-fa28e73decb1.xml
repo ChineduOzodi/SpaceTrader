@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>eb4c1bc5-2aa5-41d3-bb3f-fa28e73decb1</Id>
-  <name>Billingell Charah Oerstem</name>
-  <money>95036.37</money>
-  <stations />
-  <ships />
-</CreatureModel>

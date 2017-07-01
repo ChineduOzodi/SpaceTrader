@@ -58,7 +58,8 @@ namespace CodeControl.Editor {
             hasInit = true;
             instance = EditorWindow.GetWindow(typeof(CodeControlMonitorWindow)) as CodeControlMonitorWindow;
             
-            instance.titleContent = new GUIContent("Code Monitors");
+            //instance.title = "Code Monitors";
+            instance.titleContent.text = "Code Monitors";
             instance.minSize = new Vector2(320, 200);
 
             previousTimeSinceStartup = EditorApplication.timeSinceStartup;

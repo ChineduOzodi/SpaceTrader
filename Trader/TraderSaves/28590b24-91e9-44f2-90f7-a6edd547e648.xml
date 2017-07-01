@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>28590b24-91e9-44f2-90f7-a6edd547e648</Id>
-  <name>Anderson Steam</name>
-  <money>9590</money>
-  <stations />
-  <ships />
-</CreatureModel>

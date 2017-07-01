@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>b2cb6fc7-3d7f-45b0-b0d1-583345689775</Id>
-  <name>Gephardt Ooze</name>
-  <money>64784.02</money>
-  <stations />
-  <ships />
-</CreatureModel>

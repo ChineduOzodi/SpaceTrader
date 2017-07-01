@@ -76,9 +76,6 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -88,9 +85,42 @@
     <Reference Include="ConditionalExpression">
       <HintPath>Assets\PlayMaker\ConditionalExpression.dll</HintPath>
     </Reference>
+    <Reference Include="PlayMaker">
+      <HintPath>Assets\Plugins\PlayMaker\PlayMaker.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Advanced INI Parser\INIParser.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Behaviours\AbstractMode.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Behaviours\CameraRotator.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Behaviours\DeleteMode.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Behaviours\ModeChanger.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Behaviours\SpawnMode.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Behaviours\TargetMode.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Config.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Controllers\GameController.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Controllers\LevelController.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Controllers\RocketController.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Controllers\TurretController.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\GameManager2.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Messages\GameModeMessage.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Messages\PlaceTurretMessage.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Messages\TurretMessage.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Models\GameModel.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Models\LevelModel.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Models\RocketModel.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Models\TurretModel.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Other\Colorer.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Other\Grid.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Other\Hoverable.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Other\MathHelper.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Other\MeshButton.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Other\OneShotParticle.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Other\TurretColors.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Other\TurretCursor.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Types\GameMode.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Types\TurretCursorType.cs" />
+    <Compile Include="Assets\CodeControl\Example\Scripts\Views\TurretView.cs" />
     <Compile Include="Assets\CodeControl\Scripts\Source\Controller.cs" />
     <Compile Include="Assets\CodeControl\Scripts\Source\Coroutiner.cs" />
     <Compile Include="Assets\CodeControl\Scripts\Source\Helpers\ListHelper.cs" />
@@ -106,15 +136,6 @@
     <Compile Include="Assets\CodeControl\Scripts\Source\ModelReferencing\ModelRef.cs" />
     <Compile Include="Assets\CodeControl\Scripts\Source\ModelReferencing\ModelReferencer.cs" />
     <Compile Include="Assets\CodeControl\Scripts\Source\ModelReferencing\ModelRefs.cs" />
-    <Compile Include="Assets\Easy Save 2\ES2Init.cs" />
-    <Compile Include="Assets\Easy Save 2\Examples\Creating an Automatic Save Structure\ES2UniqueID.cs" />
-    <Compile Include="Assets\Easy Save 2\Examples\Creating an Automatic Save Structure\UniqueGameLogic.cs" />
-    <Compile Include="Assets\Easy Save 2\Examples\Creating an Automatic Save Structure\UniqueObjectManager.cs" />
-    <Compile Include="Assets\Easy Save 2\Examples\Creating an Automatic Save Structure\UniqueSaveManager.cs" />
-    <Compile Include="Assets\Easy Save 2\Examples\Save and Load Prefabs Instantiated at Runtime\PrefabManager.cs" />
-    <Compile Include="Assets\Easy Save 2\Examples\Shared Assets\Scripts\MyExampleScript.cs" />
-    <Compile Include="Assets\Easy Save 2\Examples\Upload and Download a Texture\UploadDownloadTexture.cs" />
-    <Compile Include="Assets\Easy Save 2\Types\ES2_AudioClip.cs" />
     <Compile Include="Assets\GOAP\AI\FSM\FSM.cs" />
     <Compile Include="Assets\GOAP\AI\FSM\FSMState.cs" />
     <Compile Include="Assets\GOAP\AI\GOAP\GoapAction.cs" />
@@ -122,7 +143,6 @@
     <Compile Include="Assets\GOAP\AI\GOAP\GoapPlanner.cs" />
     <Compile Include="Assets\GOAP\AI\GOAP\IGoap.cs" />
     <Compile Include="Assets\GOAP\Actions\ChopWoodAction.cs" />
-    <Compile Include="Assets\GOAP\Actions\CollectSticksAction.cs" />
     <Compile Include="Assets\GOAP\GameData\Actions\ChopFirewoodAction.cs" />
     <Compile Include="Assets\GOAP\GameData\Actions\ChopTreeAction.cs" />
     <Compile Include="Assets\GOAP\GameData\Actions\DropOffFirewoodAction.cs" />
@@ -703,35 +723,6 @@
     <Compile Include="Assets\PlayMaker\Actions\WakeAllRigidBodies.cs" />
     <Compile Include="Assets\PlayMaker\Actions\WakeUp.cs" />
     <Compile Include="Assets\PlayMaker\Actions\WorldToScreenPoint.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenFsmAction.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenLookFrom.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenLookTo.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenLookUpdate.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenMoveAdd.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenMoveBy.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenMoveFrom.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenMoveTo.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenMoveUpdate.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenPause.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenPunchPosition.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenPunchRotation.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenPunchScale.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenResume.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenRotateAdd.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenRotateBy.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenRotateFrom.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenRotateTo.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenRotateUpdate.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenScaleAdd.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenScaleBy.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenScaleFrom.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenScaleTo.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenScaleUpdate.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenShakePosition.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenShakeRotation.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenShakeScale.cs" />
-    <Compile Include="Assets\PlayMaker\Actions\iTween\iTweenStop.cs" />
-    <Compile Include="Assets\PlayMaker\Include\iTweenFSMEvents.cs" />
     <Compile Include="Assets\PlayMaker\UpdateHelper.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
@@ -794,7 +785,8 @@
     <Compile Include="Assets\_Game\Scripts\Helpers\ColorTypeConverter.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Coord.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\DataGraph.cs" />
-    <Compile Include="Assets\_Game\Scripts\Helpers\Date.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\Dated.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\Datef.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Factory.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\FresNoise.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Heap.cs" />
@@ -804,6 +796,7 @@
     <Compile Include="Assets\_Game\Scripts\Helpers\NamesStrings.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Orbit.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Polar2.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\Polar2d.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\ProductionItem.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\ShipCreator.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\SolarBody.cs" />
@@ -825,9 +818,12 @@
     <Compile Include="Assets\_Game\Scripts\Models\StationModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Models\StructureModel.cs" />
     <Compile Include="Assets\_Game\Scripts\Node.cs" />
+    <Compile Include="Assets\_Game\Scripts\OrbitTest.cs" />
+    <Compile Include="Assets\_Game\Scripts\OrbitTestModel.cs" />
     <Compile Include="Assets\_Game\Scripts\PathRequestManager.cs" />
     <Compile Include="Assets\_Game\Scripts\Pathfinding.cs" />
     <Compile Include="Assets\_Game\Scripts\Research.cs" />
+    <Compile Include="Assets\_Game\Scripts\SaveLoadOrbitTest.cs" />
     <Compile Include="Assets\_Game\Scripts\TradeRouteFinding.cs" />
     <Compile Include="Assets\_Game\Scripts\TradeRouteRequestManager.cs" />
     <Compile Include="Assets\_Game\Scripts\UI\CreateGameManager.cs" />
@@ -965,10 +961,11 @@
     <Compile Include="Assets\unity-ui-extensions\Scripts\VR Extensions\VRInputModule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\CodeControl\Example\Visuals\Shaders\VertexColor.shader" />
+    <None Include="Assets\CodeControl\Example\Visuals\Shaders\VertexColorDiffuse.shader" />
+    <None Include="Assets\CodeControl\Example\example_readme.txt" />
     <None Include="Assets\CodeControl\changelog.txt" />
     <None Include="Assets\CodeControl\readme.txt" />
-    <None Include="Assets\Easy Save 2\changelog.txt" />
-    <None Include="Assets\Easy Save 2\readme.txt" />
     <None Include="Assets\Hierarchy2\Help\ChangeLog.txt" />
     <None Include="Assets\Hierarchy2\Help\FAQ.txt" />
     <None Include="Assets\Hierarchy2\Help\ReleaseNotes.txt" />

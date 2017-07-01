@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>2159bae6-f0f9-4ac2-8cd6-ad1047908694</Id>
-  <name>Fawellohan Ghoul Armaid</name>
-  <money>3008.02368</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -11,10 +11,10 @@ public class StationController : Controller<StationModel> {
     internal GameManager game;
     internal GalaxyManager galaxy;
     internal SpriteRenderer sprite;
-    internal float timeUpdate;
+    internal double timeUpdate;
     internal LineRenderer line;
     internal StationModel Model;
-    internal float money
+    internal double money
     {
         get
         {
@@ -29,14 +29,14 @@ public class StationController : Controller<StationModel> {
         sprite = GetComponent<SpriteRenderer>();
         line = GetComponent<LineRenderer>();
         name = model.name;
-        timeUpdate = model.age.time + Date.Hour;
+        timeUpdate = model.age.time + Dated.Hour;
         sprite.color = model.color;
 
         background.color = model.backgroundColor;
-        transform.position = model.solar.GetWorldPosition(game.data.date.time);
+        transform.position = (Vector2) model.orbit.Radius(game.data.date.time);
 
 
-        if (!game.data.stars[model.solar.starIndex].isActive)
+        if (!game.data.stars[model.solarIndex].isActive)
         {
             sprite.enabled = false;
             background.enabled = false;
@@ -60,7 +60,7 @@ public class StationController : Controller<StationModel> {
     void Update() {
 
         
-        if (!game.data.stars[model.solar.starIndex].isActive)
+        if (!game.data.stars[model.solarIndex].isActive)
         {
             sprite.enabled = false;
             background.enabled = false;
@@ -83,17 +83,17 @@ public class StationController : Controller<StationModel> {
 
             //Creates the line rendering for the orbit of planets
 
-            Vector3[] orbitPos = new Vector3[numPoints + 1];
+            //Vector3[] orbitPos = new Vector3[numPoints + 1];
 
-            for (int b = 0; b < numPoints + 1; b++)
-            {
-                orbitPos[b] = model.solar.parent.solar.GetWorldPosition(game.data.date.time) + new Polar2(model.solar.radius, angleStep * b).cartesian;
-            }
-            line.positionCount = numPoints;
-            line.SetPositions(orbitPos);
+            //for (int b = 0; b < numPoints + 1; b++)
+            //{
+            //    orbitPos[b] = (Vector2) (model.solar.parent.orbit.Radius(game.data.date.time) + new Polar2d(model.solar.radius, angleStep * b).cartesian);
+            //}
+            //line.positionCount = numPoints;
+            //line.SetPositions(orbitPos);
         }
-        transform.position = model.solar.GetWorldPosition(game.data.date.time);
-        transform.localScale = Vector3.one * .1f * (model.money / 1000000f + .5f) * Mathf.Pow(game.localScaleMod, 1.7f);
+        transform.position = (Vector2)model.orbit.Radius(game.data.date.time);
+        transform.localScale = Vector3.one * .1f * (float) (model.money / 1000000f + .5f) * Mathf.Pow(game.localScaleMod, 1.7f);
     }
 
     public string GetInfo()
@@ -109,8 +109,8 @@ public class StationController : Controller<StationModel> {
         moneyStats.Reverse();
         foreach (Stat stat in moneyStats)
         {
-            if (stat.x > (model.age.time - Date.Day))
-                info += string.Format("\n{0}. {1}", (stat.x / Date.Hour).ToString("0"), stat.y.ToString("0.00"));
+            if (stat.x > (model.age.time - Dated.Day))
+                info += string.Format("\n{0}. {1}", (stat.x / Dated.Hour).ToString("0"), stat.y.ToString("0.00"));
         }
 
         return info;

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>f9d18d4c-2539-41c8-a7e1-4a4f499c03ed</Id>
-  <name>Valenelly The Judged Rock</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

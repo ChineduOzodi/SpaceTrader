@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>7d96a539-0923-4db3-b7ae-ebab9108dd58</Id>
-  <name>Hatchellum Aquall</name>
-  <money>4320</money>
-  <stations />
-  <ships />
-</CreatureModel>

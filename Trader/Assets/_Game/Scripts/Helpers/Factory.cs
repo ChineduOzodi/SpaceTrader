@@ -19,7 +19,7 @@ public class Factory {
     /// <summary>
     /// Current cycle time
     /// </summary>
-    public float productionTime = 0;
+    public double productionTime = 0;
     public float supply = 1;
     public float demand = 1;
     private float basePriceProfit = 5;
@@ -119,7 +119,7 @@ public class Factory {
     /// Creates items and uses items based on the elapsed time
     /// </summary>
     /// <param name="elapsedTime">time elapsed (in seconds)</param>
-    public int UpdateProduction(float elapsedTime)
+    public int UpdateProduction(double elapsedTime)
     {
         if (!isProducing)
         {

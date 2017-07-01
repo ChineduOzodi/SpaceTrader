@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>0bde9531-446b-44a0-970a-a4d81ac094fd</Id>
-  <name>Kohl Talon Rocking S</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

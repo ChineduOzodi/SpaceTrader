@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>7db10d5c-ac73-4a3a-aba2-31535e7f35ed</Id>
-  <name>Lott Wise Gryphon</name>
-  <money>234891.016</money>
-  <stations />
-  <ships />
-</CreatureModel>

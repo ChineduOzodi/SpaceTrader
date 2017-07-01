@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>71894afa-a0e1-4711-a58a-9bdca19f9725</Id>
-  <name>Lehtineta Deviros</name>
-  <money>86232.91</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>ab73da58-1961-405d-ad53-e55b010984c2</Id>
-  <name>Archellums Petragon Runner</name>
-  <money>7440</money>
-  <stations />
-  <ships />
-</CreatureModel>

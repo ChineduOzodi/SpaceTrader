@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>e702c4e6-f947-428b-89e1-ac5a86b40b00</Id>
-  <name>Mrazek Cardinergy</name>
-  <money>1437.03381</money>
-  <stations />
-  <ships />
-</CreatureModel>

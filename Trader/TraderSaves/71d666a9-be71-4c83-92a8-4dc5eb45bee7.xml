@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>71d666a9-be71-4c83-92a8-4dc5eb45bee7</Id>
-  <name>Dorgan Zagaery</name>
-  <money>2640</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>7beb8203-1729-4970-97b6-5f86f2dd52ec</Id>
-  <name>Gibbonsenb Hare</name>
-  <money>545884.25</money>
-  <stations />
-  <ships />
-</CreatureModel>

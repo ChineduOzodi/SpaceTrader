@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<OrbitTestModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>e18bf210-5e59-448e-97f6-0d94db613e95</Id>
+  <orbit>
+    <G>6.674079999999999E-11</G>
+    <parent>
+      <Id>f6d2497e-3d4e-42ff-90c4-8cd29eb6dc3e</Id>
+    </parent>
+    <Mass>5.97237E+24</Mass>
+    <sma>1818765279.232</sma>
+    <ecc>0.016708</ecc>
+    <inc>0</inc>
+    <lpe>5.0282928490000005</lpe>
+    <lan>0</lan>
+    <mna>6.25904649993</mna>
+    <eph>0</eph>
+  </orbit>
+</OrbitTestModel>

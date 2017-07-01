@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>11b7b4f7-d5f6-41b1-8ee9-8cf72bcd9b58</Id>
-  <name>Campbellum Wheeze</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>99bb9c47-578a-42e5-a377-b928e28e2ced</Id>
-  <name>Udallonest Sephief</name>
-  <money>7750</money>
-  <stations />
-  <ships />
-</CreatureModel>

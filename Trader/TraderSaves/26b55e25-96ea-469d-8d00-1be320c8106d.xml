@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>26b55e25-96ea-469d-8d00-1be320c8106d</Id>
-  <name>Warney Auto Repair Uni</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

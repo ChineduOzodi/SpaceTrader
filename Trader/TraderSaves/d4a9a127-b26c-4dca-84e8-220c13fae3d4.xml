@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>d4a9a127-b26c-4dca-84e8-220c13fae3d4</Id>
-  <name>Fish Goblingel Sword</name>
-  <money>3000</money>
-  <stations />
-  <ships />
-</CreatureModel>

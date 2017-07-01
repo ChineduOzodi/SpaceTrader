@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>73fe1f7c-c392-48f6-be68-fa110eaa4ff2</Id>
-  <name>Matterts Eartz</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

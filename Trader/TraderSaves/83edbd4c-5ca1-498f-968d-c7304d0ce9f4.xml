@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>83edbd4c-5ca1-498f-968d-c7304d0ce9f4</Id>
-  <name>Gary Spiked Magicoid</name>
-  <money>376426.375</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>f03a9850-4e2c-4cd8-8919-99768a9ea95d</Id>
-  <name>Emerschmid Wild Worm Claw</name>
-  <money>86144.42</money>
-  <stations />
-  <ships />
-</CreatureModel>

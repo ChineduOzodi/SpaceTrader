@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>1b11a46f-15b3-4c0d-8e42-40d8c55e1143</Id>
-  <name>Pursellums Teddy</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

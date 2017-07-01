@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>74066d4c-26b7-4a5a-a46a-10dcef787856</Id>
-  <name>Wylietta Mithost Mummy</name>
-  <money>5480</money>
-  <stations />
-  <ships />
-</CreatureModel>

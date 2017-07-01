@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>0a635009-f258-46d7-9489-399c5c469725</Id>
-  <name>Lugar Raptorm Clay Ga</name>
-  <money>110</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>350c48bc-0bd8-4dbf-9668-0e05da3a2845</Id>
-  <name>Bryantorum Smog</name>
-  <money>167652.016</money>
-  <stations />
-  <ships />
-</CreatureModel>

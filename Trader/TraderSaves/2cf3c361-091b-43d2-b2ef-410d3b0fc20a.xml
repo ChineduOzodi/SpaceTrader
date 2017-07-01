@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>2cf3c361-091b-43d2-b2ef-410d3b0fc20a</Id>
-  <name>Senson Scarletone</name>
-  <money>8110</money>
-  <stations />
-  <ships />
-</CreatureModel>

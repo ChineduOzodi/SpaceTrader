@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>601f85d1-3cfd-45b0-8c6d-ccabe732f493</Id>
-  <name>Ernesterso Mimic</name>
-  <money>125924.328</money>
-  <stations />
-  <ships />
-</CreatureModel>

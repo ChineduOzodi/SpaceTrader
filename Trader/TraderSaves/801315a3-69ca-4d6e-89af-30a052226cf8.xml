@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>801315a3-69ca-4d6e-89af-30a052226cf8</Id>
-  <name>Volkmeryl Systalanta</name>
-  <money>189197.375</money>
-  <stations />
-  <ships />
-</CreatureModel>

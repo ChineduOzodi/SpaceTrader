@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>672f9450-3f9c-4379-85ff-dd7f9d6028ca</Id>
-  <name>Waterson Uniter Bat</name>
-  <money>353156.563</money>
-  <stations />
-  <ships />
-</CreatureModel>

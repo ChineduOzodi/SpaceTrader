@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>d5a59cbb-a104-4a04-be9f-f79143ae3664</Id>
-  <name>Hunteryl O' Wargold</name>
-  <money>61368.0664</money>
-  <stations />
-  <ships />
-</CreatureModel>

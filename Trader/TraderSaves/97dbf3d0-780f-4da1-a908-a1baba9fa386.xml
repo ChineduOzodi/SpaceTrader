@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>97dbf3d0-780f-4da1-a908-a1baba9fa386</Id>
-  <name>Donaldon Procne</name>
-  <money>3520</money>
-  <stations />
-  <ships />
-</CreatureModel>

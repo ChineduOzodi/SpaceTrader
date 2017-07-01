@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>9503593d-0f09-4b85-9656-0c8533c4290f</Id>
-  <name>Seymondit Arachnid</name>
-  <money>505507.438</money>
-  <stations />
-  <ships />
-</CreatureModel>

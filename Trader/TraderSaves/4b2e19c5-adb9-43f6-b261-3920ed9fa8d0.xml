@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>4b2e19c5-adb9-43f6-b261-3920ed9fa8d0</Id>
-  <name>Fawelly Ghoul Arch Ant</name>
-  <money>3660</money>
-  <stations />
-  <ships />
-</CreatureModel>

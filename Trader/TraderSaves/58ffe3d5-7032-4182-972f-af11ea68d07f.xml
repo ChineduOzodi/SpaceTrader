@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>58ffe3d5-7032-4182-972f-af11ea68d07f</Id>
-  <name>Burns Blitz</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

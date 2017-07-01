@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>fa4eee96-c817-4e1f-aff8-c817a0b3ef59</Id>
-  <name>Susan Adulocidra</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

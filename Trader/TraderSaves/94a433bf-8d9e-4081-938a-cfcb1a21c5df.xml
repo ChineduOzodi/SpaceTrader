@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>94a433bf-8d9e-4081-938a-cfcb1a21c5df</Id>
-  <name>Prichelly Doller Knuckle</name>
-  <money>2655.59448</money>
-  <stations />
-  <ships />
-</CreatureModel>

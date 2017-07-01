@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>02d71635-bf9c-4da5-8f29-744edc2bbc6e</Id>
-  <name>Hochrabach Alec Gole </name>
-  <money>3980</money>
-  <stations />
-  <ships />
-</CreatureModel>

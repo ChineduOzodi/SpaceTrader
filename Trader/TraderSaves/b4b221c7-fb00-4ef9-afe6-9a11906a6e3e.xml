@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>b4b221c7-fb00-4ef9-afe6-9a11906a6e3e</Id>
-  <name>Waxmantos Aurior</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

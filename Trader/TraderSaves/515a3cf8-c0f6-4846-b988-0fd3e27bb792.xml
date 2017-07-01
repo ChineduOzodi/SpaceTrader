@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>515a3cf8-c0f6-4846-b988-0fd3e27bb792</Id>
-  <name>Majorski Aka Mander Knig</name>
-  <money>72738.9141</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>1e5d5181-e8ee-48f1-afa7-5884090dbdd2</Id>
-  <name>Shusterson Super Balm</name>
-  <money>97492.3047</money>
-  <stations />
-  <ships />
-</CreatureModel>

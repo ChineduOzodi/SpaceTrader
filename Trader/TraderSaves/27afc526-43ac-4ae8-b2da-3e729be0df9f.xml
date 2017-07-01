@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>27afc526-43ac-4ae8-b2da-3e729be0df9f</Id>
-  <name>Gaydos Gnome Draken</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

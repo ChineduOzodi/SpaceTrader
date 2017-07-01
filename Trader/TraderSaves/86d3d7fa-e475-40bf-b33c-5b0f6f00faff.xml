@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>86d3d7fa-e475-40bf-b33c-5b0f6f00faff</Id>
-  <name>Hatfieldon Aquall</name>
-  <money>2675.91919</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>7237cc85-3b61-444a-ac28-973f898dc14e</Id>
-  <name>Goss Mad Horror</name>
-  <money>7990</money>
-  <stations />
-  <ships />
-</CreatureModel>

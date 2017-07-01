@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>2ae3a6c2-c26b-4421-b9d0-a4e1280dc4bc</Id>
-  <name>Pallingsto Basillmander Kn</name>
-  <money>47202.01</money>
-  <stations />
-  <ships />
-</CreatureModel>

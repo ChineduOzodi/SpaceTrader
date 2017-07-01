@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>0d3a773f-cbf4-400d-8a2e-f8fb7ca86073</Id>
-  <name>Armeyerson Salant Sna</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>d65f1885-f47a-45b2-9ecf-59e3cb7a7e83</Id>
-  <name>Lindsay Rock Golementle</name>
-  <money>6491.879</money>
-  <stations />
-  <ships />
-</CreatureModel>

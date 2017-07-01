@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>289e1268-b91b-4394-9390-cdc375b95a1f</Id>
-  <name>Joan Hounder Iris</name>
-  <money>62085.57</money>
-  <stations />
-  <ships />
-</CreatureModel>

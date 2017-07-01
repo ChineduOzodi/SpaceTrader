@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>93a46323-a082-480e-ac96-63ba2d321d56</Id>
-  <name>Mrazek Carnivorou</name>
-  <money>2450</money>
-  <stations />
-  <ships />
-</CreatureModel>

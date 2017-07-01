@@ -46,16 +46,16 @@ public abstract class Labourer : MonoBehaviour, IGoap
 		worldData.Add(new KeyValuePair<string, object>("hasFirewood", (backpack.numFirewood > 0) ));
 		worldData.Add(new KeyValuePair<string, object>("hasTool", (backpack.tool != null) ));
 
-        TreeController[] trees = FindObjectsOfType(typeof(TreeController)) as TreeController[];
+        //TreeController[] trees = FindObjectsOfType(typeof(TreeController)) as TreeController[];
 
-        foreach (TreeController tree in trees)
-        {
-            if (tree.model.treeState == TreeState.Fell)
-            {
-                worldData.Add(new KeyValuePair<string, object>("felledTree", true));
-                break;
-            }
-        }
+        //foreach (TreeController tree in trees)
+        //{
+        //    if (tree.model.treeState == TreeState.Fell)
+        //    {
+        //        worldData.Add(new KeyValuePair<string, object>("felledTree", true));
+        //        break;
+        //    }
+        //}
 
         return worldData;
 	}
@@ -98,7 +98,7 @@ public abstract class Labourer : MonoBehaviour, IGoap
         //float step = moveSpeed * Time.deltaTime;
         //gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
 
-        unit.target = nextAction.target.transform;
+        //unit.target = nextAction.target.transform;
 		
 		if ((gameObject.transform.position - nextAction.target.transform.position).sqrMagnitude < 5 ) {
 			// we are at the target location, we are done

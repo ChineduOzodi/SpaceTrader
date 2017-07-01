@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>ef86cb7d-7e06-4707-9a7e-37c16315b0c8</Id>
-  <name>Gibbonsenb Creetle Plantic</name>
-  <money>2149.81665</money>
-  <stations />
-  <ships />
-</CreatureModel>

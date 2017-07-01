@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>1cc774f6-3deb-414e-b2e3-0f861b99a2b1</Id>
-  <name>Rittenkows Ridewinder</name>
-  <money>676356.6</money>
-  <stations />
-  <ships />
-</CreatureModel>

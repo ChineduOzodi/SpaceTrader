@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>7e5ec271-c3e8-42d5-9af1-8cf20e873df0</Id>
-  <name>Poshardson Samare</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

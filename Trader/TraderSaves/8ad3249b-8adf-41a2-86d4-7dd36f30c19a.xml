@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>8ad3249b-8adf-41a2-86d4-7dd36f30c19a</Id>
-  <name>Stokes Dark Command Sn</name>
-  <money>4026.29761</money>
-  <stations />
-  <ships />
-</CreatureModel>

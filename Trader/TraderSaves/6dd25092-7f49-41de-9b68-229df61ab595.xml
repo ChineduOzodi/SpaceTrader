@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>6dd25092-7f49-41de-9b68-229df61ab595</Id>
-  <name>Rostenkows Mastera Wolfkin</name>
-  <money>1010480.88</money>
-  <stations />
-  <ships />
-</CreatureModel>

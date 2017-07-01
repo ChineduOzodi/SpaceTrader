@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>db187652-c9d7-4693-9aae-9ae8efa12fa0</Id>
-  <name>Ventinen Defense Gryphon</name>
-  <money>69060.93</money>
-  <stations />
-  <ships />
-</CreatureModel>

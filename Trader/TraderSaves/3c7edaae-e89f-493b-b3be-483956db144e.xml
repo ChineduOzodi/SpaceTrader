@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>3c7edaae-e89f-493b-b3be-483956db144e</Id>
-  <name>Stumperson Exbone Fightnin</name>
-  <money>10280</money>
-  <stations />
-  <ships />
-</CreatureModel>

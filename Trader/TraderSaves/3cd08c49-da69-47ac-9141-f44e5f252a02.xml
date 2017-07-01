@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>3cd08c49-da69-47ac-9141-f44e5f252a02</Id>
-  <name>Savage Lightmare</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

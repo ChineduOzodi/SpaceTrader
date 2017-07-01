@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>7e7667e2-39b1-4200-bb7b-fb67e8dfb0c5</Id>
-  <name>Cassley Aroma</name>
-  <money>2520</money>
-  <stations />
-  <ships />
-</CreatureModel>

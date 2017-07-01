@@ -14,29 +14,31 @@ public class IdentityModel : Model {
     /// Used to Track how many ships it has bought. Will change later
     /// </summary>
     internal int itemsBought = 0;
-    public Date lastUpdated;
+    public Dated lastUpdated;
 
     public ModelRef<StructureModel> location = new ModelRef<StructureModel>();
-    public Orbit solar;
+    public Orbit orbit;
+    public int solarIndex { get; set; }
+    public int parentIndex { get; set; }
     public ModelRefs<StationModel> stations = new ModelRefs<StationModel>();
     public ModelRefs<ShipModel> ships = new ModelRefs<ShipModel>();
 
-    public Date age = new Date(0);
-    public Date dateCreated = new Date(0);
+    public Dated age = new Dated(0);
+    public Dated dateCreated = new Dated(0);
 
     /// <summary>
     /// Used to update money at a given interval;
     /// </summary>
-    public float timeUpdate;
-    public float money = 0;
+    public double timeUpdate;
+    public double money = 0;
 
     public DataGraph moneyStats = new DataGraph("Money Over Time", "Time (hours)", "Money");
-    public float moneyChange;
+    public double moneyChange;
 
     public IdentityModel()
     {
-        dateCreated = new Date(GameManager.instance.data.date.time);
-        lastUpdated = new Date(GameManager.instance.data.date.time);
+        dateCreated = new Dated(GameManager.instance.data.date.time);
+        lastUpdated = new Dated(GameManager.instance.data.date.time);
         spriteColor = UnityEngine.Random.ColorHSV(.5f, 1f, .5f, 1f);
         spriteColor.a = 1;
     }

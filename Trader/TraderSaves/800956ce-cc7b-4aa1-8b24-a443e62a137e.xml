@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>800956ce-cc7b-4aa1-8b24-a443e62a137e</Id>
-  <name>Cooperson Chimerandinal S</name>
-  <money>65127.2</money>
-  <stations />
-  <ships />
-</CreatureModel>

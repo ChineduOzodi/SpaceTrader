@@ -112,17 +112,11 @@
     <Reference Include="UnityEditor.iOS.Extensions">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.WSA.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.WSA.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>Library\UnityAssemblies\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -144,6 +138,9 @@
     </Reference>
     <Reference Include="PlayMakerEditor.es-ES.resources">
       <HintPath>Assets\PlayMaker\Editor\es-ES\PlayMakerEditor.es-ES.resources.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayMaker">
+      <HintPath>Assets\Plugins\PlayMaker\PlayMaker.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-UnityScript">
       <HintPath>Library\ScriptAssemblies\Assembly-UnityScript.dll</HintPath>
@@ -321,10 +318,11 @@
     <Compile Include="Assets\unity-ui-extensions\Editor\uGUITools.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\CodeControl\Example\Visuals\Shaders\VertexColor.shader" />
+    <None Include="Assets\CodeControl\Example\Visuals\Shaders\VertexColorDiffuse.shader" />
+    <None Include="Assets\CodeControl\Example\example_readme.txt" />
     <None Include="Assets\CodeControl\changelog.txt" />
     <None Include="Assets\CodeControl\readme.txt" />
-    <None Include="Assets\Easy Save 2\changelog.txt" />
-    <None Include="Assets\Easy Save 2\readme.txt" />
     <None Include="Assets\Hierarchy2\Help\ChangeLog.txt" />
     <None Include="Assets\Hierarchy2\Help\FAQ.txt" />
     <None Include="Assets\Hierarchy2\Help\ReleaseNotes.txt" />

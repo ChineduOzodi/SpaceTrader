@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>1c98e4d2-1802-46e4-a445-f725a7dbba52</Id>
-  <name>Abertelly Yggdragon Knigh</name>
-  <money>66899.79</money>
-  <stations />
-  <ships />
-</CreatureModel>

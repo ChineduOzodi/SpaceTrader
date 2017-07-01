@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>4cc87ad6-f218-48ed-b5a2-30d67f6b7a85</Id>
-  <name>Dantos Ramses</name>
-  <money>7500</money>
-  <stations />
-  <ships />
-</CreatureModel>

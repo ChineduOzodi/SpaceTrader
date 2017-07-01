@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>606d33ca-b256-4fb3-9a89-d4bf37108a07</Id>
-  <name>Swift Amphitrago</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

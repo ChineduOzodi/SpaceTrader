@@ -67,28 +67,28 @@ public class CreateGameManager : MonoBehaviour {
                 GovernmentModel gov = new GovernmentModel(names.GenerateWorldName() + " Government", leaders);
 
                 //Location
-                int starIndex = FindGovernmentStar(gov);
-                int planetIndex = Random.Range(0, game.data.stars[starIndex].planets.Length);
+                int solarIndex = FindGovernmentStar(gov);
+                int planetIndex = Random.Range(0, game.data.stars[solarIndex].planets.Length);
                 SolarBody parent;
-                if (game.data.stars[starIndex].planets.Length > 0)
-                    parent = game.data.stars[starIndex].planets[planetIndex];
+                if (game.data.stars[solarIndex].planets.Length > 0)
+                    parent = game.data.stars[solarIndex].planets[planetIndex];
                 else
-                    parent = game.data.stars[starIndex].sun;
-                Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+                    parent = game.data.stars[solarIndex].sun;
+                Polar2d position = new Polar2d(UnityEngine.Random.Range((float)parent.orbit.bodyRadius + 2, (float)parent.orbit.soi), UnityEngine.Random.Range(0, 2 * Mathf.PI));
                 if (parent.planetType == PlanetType.Regular)
                 {
-                    position = new Polar2(0, 0);
+                    position = new Polar2d(0, 0);
                     parent.population = UnityEngine.Random.Range(1000, 100000);
                 }
 
                 //Add Government Capital
 
-                StationModel station = StationCreator.CreateStation(gov.name + " Capital", game.data.stars[starIndex], parent, position, gov, leader);
+                StationModel station = StationCreator.CreateStation(gov.name + " Capital", game.data.stars[solarIndex], parent.index, parent.orbit, gov, leader);
                 station.population = 5;
 
                 //location
                 gov.location.Model = station;
-                gov.solar = station.solar;
+                gov.orbit = station.orbit;
                 gov.stations.Add(station);
                 for (int c = 0; c < numComp; c++)
                 {
@@ -99,16 +99,16 @@ public class CreateGameManager : MonoBehaviour {
                     game.data.creatures.Add(owner);
                     game.data.companies.Add(comp);
                     //Add Company Headquarter Station
-                    starIndex = UnityEngine.Random.Range(0, gov.stars.Count);
-                    planetIndex = UnityEngine.Random.Range(0, gov.stars[starIndex].planets.Length);
-                    if (gov.stars[starIndex].planets.Length > 0)
-                        parent = gov.stars[starIndex].planets[planetIndex];
+                    solarIndex = UnityEngine.Random.Range(0, gov.stars.Count);
+                    planetIndex = UnityEngine.Random.Range(0, gov.stars[solarIndex].planets.Length);
+                    if (gov.stars[solarIndex].planets.Length > 0)
+                        parent = gov.stars[solarIndex].planets[planetIndex];
                     else
-                        parent = gov.stars[starIndex].sun;
+                        parent = gov.stars[solarIndex].sun;
 
-                    position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+                    position = new Polar2d(UnityEngine.Random.Range( (float) parent.orbit.bodyRadius * 1.2f, (float) parent.orbit.soi), UnityEngine.Random.Range(0, 2 * Mathf.PI));
                     CreatureModel manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
-                    station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", gov.stars[starIndex], parent, position, comp, manager);
+                    station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", gov.stars[solarIndex], parent.index, parent.orbit, comp, manager);
                     comp.stations.Add(station);
                     game.data.creatures.Add(manager);
                     game.data.stations.Add(station);
@@ -118,7 +118,7 @@ public class CreateGameManager : MonoBehaviour {
                     {
                         StationModel startStation = station;
                         manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000);
-                        ShipModel ship = ShipCreator.CreateShip(comp.name + " Ship " + i, startStation.solar.starIndex, startStation.solar.parent, startStation.solar.GetLocalPosition(game.data.date.time), comp, manager);
+                        ShipModel ship = ShipCreator.CreateShip(comp.name + " Ship " + i, startStation.solarIndex, startStation.parentIndex, startStation.orbit, comp, manager);
                         game.data.ships.Add(ship);
                         game.data.creatures.Add(manager);
                         //loadingText.text = string.Format("Creating ships: {0} of {1}", i, numShip);
@@ -149,8 +149,8 @@ public class CreateGameManager : MonoBehaviour {
             game.data.stars.Add(star);
             for (int c = 0; c < i; c++) //Checking the distance to each already generated star and then adding it to a list of near stars if close enough
             {
-                float maxDist = Mathf.Pow(sunMass + game.data.stars[c].sun.mass, .5f);
-                float actualDist = Vector3.Distance(position, game.data.stars[c].position.location[0]);
+                double maxDist = Mathd.Pow(sunMass + game.data.stars[c].sun.orbit.Mass, .5f);
+                float actualDist = Vector3.Distance(position, game.data.stars[c].galacticPosition);
                 if (actualDist < maxDist)
                 {
                     star.nearStars.Add(game.data.stars[c]);
@@ -168,7 +168,7 @@ public class CreateGameManager : MonoBehaviour {
             {
                 if (c != i)
                 {
-                    float actualDist = Vector3.Distance(game.data.stars[i].position[0], game.data.stars[c].position[0]);
+                    float actualDist = Vector3.Distance(game.data.stars[i].galacticPosition, game.data.stars[c].galacticPosition);
                     if (actualDist < closestStarDist)
                     {
                         closestStarDist = actualDist;

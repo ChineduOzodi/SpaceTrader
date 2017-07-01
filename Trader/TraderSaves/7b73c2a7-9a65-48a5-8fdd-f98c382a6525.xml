@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>7b73c2a7-9a65-48a5-8fdd-f98c382a6525</Id>
-  <name>Perkinsoel Lamia</name>
-  <money>166944.719</money>
-  <stations />
-  <ships />
-</CreatureModel>

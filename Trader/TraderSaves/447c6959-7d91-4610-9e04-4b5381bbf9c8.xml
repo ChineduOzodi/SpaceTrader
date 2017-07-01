@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>447c6959-7d91-4610-9e04-4b5381bbf9c8</Id>
-  <name>Bingamarsi Coatlicue</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

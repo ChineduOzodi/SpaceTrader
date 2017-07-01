@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>7a98cb0d-e922-4975-838f-554f3200ec18</Id>
-  <name>Lindsay Rockatragon Rop</name>
-  <money>7440</money>
-  <stations />
-  <ships />
-</CreatureModel>

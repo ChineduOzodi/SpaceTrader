@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>c94e5338-ca56-48f3-ac46-a1b2cfb7fda6</Id>
-  <name>Palloneste Basillahan</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

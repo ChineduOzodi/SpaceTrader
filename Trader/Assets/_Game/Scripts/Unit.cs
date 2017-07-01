@@ -21,8 +21,8 @@ public class Unit : MonoBehaviour {
         line = GetComponent<LineRenderer>();
         galaxy = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GalaxyManager>();
         ship = GetComponent<ShipController>();
-        target = ship.starIndex;
-        oldTarget = ship.starIndex;
+        target = ship.solarIndex;
+        oldTarget = ship.solarIndex;
     }
     void Update()
     {

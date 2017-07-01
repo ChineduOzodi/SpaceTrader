@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>a1aedf32-92a9-403c-bc5b-b7d34c638ad6</Id>
-  <name>Stokes Dark Dragon Run</name>
-  <money>6070</money>
-  <stations />
-  <ships />
-</CreatureModel>

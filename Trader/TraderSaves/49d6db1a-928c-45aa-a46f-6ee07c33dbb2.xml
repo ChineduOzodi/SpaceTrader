@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>49d6db1a-928c-45aa-a46f-6ee07c33dbb2</Id>
-  <name>Dymallings Azul</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

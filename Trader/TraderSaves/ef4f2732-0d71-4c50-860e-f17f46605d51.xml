@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>ef4f2732-0d71-4c50-860e-f17f46605d51</Id>
-  <name>Tonyerson Luna</name>
-  <money>88386.75</money>
-  <stations />
-  <ships />
-</CreatureModel>

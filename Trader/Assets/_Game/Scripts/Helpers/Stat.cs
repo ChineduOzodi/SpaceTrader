@@ -5,10 +5,10 @@ using UnityEngine;
 public struct Stat {
 
     public string groupName;
-    public float x;
-    public float y;
+    public double x;
+    public double y;
 
-    public Stat(float x, float y)
+    public Stat(double x, double y)
     {
         groupName = "";
         this.x = x;

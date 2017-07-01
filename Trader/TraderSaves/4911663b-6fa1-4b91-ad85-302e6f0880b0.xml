@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>4911663b-6fa1-4b91-ad85-302e6f0880b0</Id>
-  <name>Wilson Seletone Fugue</name>
-  <money>3807.51123</money>
-  <stations />
-  <ships />
-</CreatureModel>

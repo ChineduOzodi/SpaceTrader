@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>bc349c9c-c94a-4b76-9777-d705e0a1c43e</Id>
-  <name>Stumperson Exbone Beaster </name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>d53e6dd4-2063-4010-b0d1-91774f22319f</Id>
-  <name>Floyd Sold Slime</name>
-  <money>282855.875</money>
-  <stations />
-  <ships />
-</CreatureModel>

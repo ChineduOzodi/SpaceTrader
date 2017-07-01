@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>a38ddc52-1cac-4634-85b8-c326f5d21f04</Id>
-  <name>Metzenbren Wonder Swordine</name>
-  <money>815397</money>
-  <stations />
-  <ships />
-</CreatureModel>

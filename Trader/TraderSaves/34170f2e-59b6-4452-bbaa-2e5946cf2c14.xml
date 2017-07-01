@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>34170f2e-59b6-4452-bbaa-2e5946cf2c14</Id>
-  <name>Myerson Seedle Dragon L</name>
-  <money>5650</money>
-  <stations />
-  <ships />
-</CreatureModel>

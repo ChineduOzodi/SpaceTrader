@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>724d738e-bfcf-4433-a304-b370328b786b</Id>
-  <name>Sonnementi Bacura</name>
-  <money>7970</money>
-  <stations />
-  <ships />
-</CreatureModel>

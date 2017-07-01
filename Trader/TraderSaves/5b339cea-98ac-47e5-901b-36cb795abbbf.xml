@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>5b339cea-98ac-47e5-901b-36cb795abbbf</Id>
-  <name>Inouye Dragon Lordiant</name>
-  <money>88809</money>
-  <stations />
-  <ships />
-</CreatureModel>

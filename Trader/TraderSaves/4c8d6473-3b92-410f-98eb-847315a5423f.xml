@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>4c8d6473-3b92-410f-98eb-847315a5423f</Id>
-  <name>Murkowski Carnivorou</name>
-  <money>189211.391</money>
-  <stations />
-  <ships />
-</CreatureModel>

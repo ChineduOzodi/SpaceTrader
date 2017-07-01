@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>6291f183-d663-4025-8aa8-7de0dbd423c3</Id>
-  <name>Gepharly Ooze</name>
-  <money>5283.26563</money>
-  <stations />
-  <ships />
-</CreatureModel>

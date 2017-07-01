@@ -14,15 +14,15 @@ public class ShipController : Controller<ShipModel>
     internal GameManager game;
     internal SpriteRenderer sprite;
     internal LineRenderer line;
-    internal float timeUpdate = 0;
+    internal double timeUpdate = 0;
     private GalaxyManager galaxy;
     private Unit unit;
 
-    internal int starIndex
+    internal int solarIndex
     {
         get
         {
-            return model.solar.starIndex;
+            return model.solarIndex;
         }
     }
     internal bool hyperspace
@@ -47,13 +47,13 @@ public class ShipController : Controller<ShipModel>
         model.moneyStats.data.Add("Money Change", new List<Stat>());
 
         transform.localScale = Vector3.one * (model.capacity / 200f + .5f);
-        timeUpdate = model.age.time + Date.Hour;
+        timeUpdate = model.age.time + Dated.Hour;
     }
     protected override void OnModelChanged()
     {
-        if (model.solar.starIndex != model.target.Model.solar.starIndex)
+        if (model.solarIndex != model.target.Model.solarIndex)
         {
-            HyperSpaceTravel(model.target.Model.solar.starIndex);
+            HyperSpaceTravel(model.target.Model.solarIndex);
         }
         
 
@@ -73,7 +73,7 @@ public class ShipController : Controller<ShipModel>
         else
         {
             gameObject.layer = solarMask;
-            if (!game.data.stars[model.solar.starIndex].isActive)
+            if (!game.data.stars[model.solarIndex].isActive)
             {
                 sprite.enabled = false;
                 line.enabled = false;
@@ -87,7 +87,7 @@ public class ShipController : Controller<ShipModel>
                 //Set orbit outline
                 line.startWidth = transform.localScale.x * .3f;
                 line.endWidth = transform.localScale.x * .3f;
-                Vector3 targetPosition = model.target.Model.solar.GetWorldPosition(game.data.date.time);
+                Vector3 targetPosition = (Vector2) model.target.Model.orbit.Radius(game.data.date.time);
                 line.SetPositions(new Vector3[] { transform.position, targetPosition });
                 line.startColor = sprite.color;
                 line.endColor = ((StationModel)model.target.Model).color;
@@ -95,10 +95,10 @@ public class ShipController : Controller<ShipModel>
         }
     }
 
-    private void HyperSpaceTravel(int starIndex)
+    private void HyperSpaceTravel(int solarIndex)
     {
         StopCoroutine("SolarTravel");
-        if (model.solar.starIndex == starIndex)
+        if (model.solarIndex == solarIndex)
         {
             HyperSpaceDone();
         }
@@ -106,13 +106,14 @@ public class ShipController : Controller<ShipModel>
         {
             model.hyperSpace = true;
             gameObject.layer = mapMask;
-            transform.position = game.data.stars[model.solar.starIndex].position[0];
-            unit.HyperSpaceTravel(model.solar.starIndex, starIndex, model.speed);
+            transform.position = game.data.stars[model.solarIndex].galacticPosition;
+            unit.HyperSpaceTravel(model.solarIndex, solarIndex, model.speed);
 
-            SolarBody parent = game.data.stars[starIndex].sun;
-            Polar2 position = new Polar2(UnityEngine.Random.Range(parent.bodyRadius + 2, parent.SOI), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-            model.solar = new Orbit(starIndex, parent, position);
-            model.position = game.data.stars[starIndex].position;
+            SolarBody parent = game.data.stars[solarIndex].sun;
+            Polar2d position = new Polar2d(UnityEngine.Random.Range((float) parent.orbit.bodyRadius + 2, (float) parent.orbit.soi), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+            model.solarIndex = solarIndex;
+            model.orbit.parentMass = parent.orbit.Mass;
+            model.position = game.data.stars[solarIndex].galacticPosition;
         }
         
         
@@ -121,7 +122,7 @@ public class ShipController : Controller<ShipModel>
     public void HyperSpaceDone()
     {
         model.hyperSpace = false;
-        transform.position = model.solar.GetWorldPosition(game.data.date.time);
+        transform.position = (Vector2) model.orbit.Radius(game.data.date.time);
         StartCoroutine("SolarTravel");
     }
 
@@ -140,8 +141,8 @@ public class ShipController : Controller<ShipModel>
         moneyStats.Reverse();
         foreach (Stat stat in moneyStats)
         {
-            if (stat.x > (model.age.time - Date.Day))
-                info += string.Format("\n{0}. {1}", (stat.x / Date.Hour).ToString("0"), stat.y.ToString("0.00"));
+            if (stat.x > (model.age.time - Dated.Day))
+                info += string.Format("\n{0}. {1}", (stat.x / Dated.Hour).ToString("0"), stat.y.ToString("0.00"));
         }
 
         return info;

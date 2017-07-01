@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>6d186d89-6b57-433c-a9d8-e4bb5bd527da</Id>
-  <name>Jefferson Wightmare</name>
-  <money>18373.4473</money>
-  <stations />
-  <ships />
-</CreatureModel>

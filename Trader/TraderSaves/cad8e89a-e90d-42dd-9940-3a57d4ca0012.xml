@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>cad8e89a-e90d-42dd-9940-3a57d4ca0012</Id>
-  <name>Daschmidt Judgehog</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

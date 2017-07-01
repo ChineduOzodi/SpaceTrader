@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>102ed7cd-eb80-40e3-a8d2-0ee1bc0b2c5d</Id>
-  <name>Whittersch Botta</name>
-  <money>3413.00244</money>
-  <stations />
-  <ships />
-</CreatureModel>

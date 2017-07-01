@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>3fac4ead-64bc-400e-af41-299dc0c91b84</Id>
-  <name>Seymour Slimerachnid</name>
-  <money>4221.44727</money>
-  <stations />
-  <ships />
-</CreatureModel>

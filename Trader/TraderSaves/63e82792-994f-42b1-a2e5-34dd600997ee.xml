@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>63e82792-994f-42b1-a2e5-34dd600997ee</Id>
-  <name>Hanstonest Demonga</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

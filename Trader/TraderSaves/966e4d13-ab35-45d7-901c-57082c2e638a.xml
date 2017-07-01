@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>966e4d13-ab35-45d7-901c-57082c2e638a</Id>
-  <name>Shelby Beetle Dir</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

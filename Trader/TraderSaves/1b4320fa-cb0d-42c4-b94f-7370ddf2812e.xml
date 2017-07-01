@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>1b4320fa-cb0d-42c4-b94f-7370ddf2812e</Id>
-  <name>Hunterson Mant Bearmander</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

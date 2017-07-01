@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 /// <summary>
-/// Manages the main aspects of the game, including player interaction, main ai, game ui, and view changes. Anything specific should be moved to a more specific file
+/// Manages the main aspects of the game, including player interaction, main ai, game ui, and view changes. Anything else should be moved to a more specific file
 /// </summary>
 public class GameManager : MonoBehaviour {
 
@@ -252,7 +252,7 @@ public class GameManager : MonoBehaviour {
             
             foreach (SolarModel star in model.stars)
             {
-                float deltaTime = data.date.time - model.age.time - model.dateCreated.time;
+                double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
                 model.age.AddTime(deltaTime);
                 int totalPop = 0;
                 foreach (SolarBody body in star.planets)
@@ -268,12 +268,12 @@ public class GameManager : MonoBehaviour {
                     totalPop += station.population;
                 }
 
-                star.governmentInfluence += (totalPop * .001f * data.date.deltaTime) - (star.governmentInfluence * .1f * data.date.deltaTime);
+                star.governmentInfluence += (totalPop * .001f * (float) data.date.deltaTime) - (star.governmentInfluence * .1f * (float)data.date.deltaTime);
 
                 foreach (SolarModel nearStar in star.nearStars)
                 {
-                    nearStar.governmentInfluence += star.governmentInfluence * .1f * data.date.deltaTime;
-                    star.governmentInfluence -= star.governmentInfluence *.1f * data.date.deltaTime;
+                    nearStar.governmentInfluence += star.governmentInfluence * .1f * (float) data.date.deltaTime;
+                    star.governmentInfluence -= star.governmentInfluence *.1f * (float) data.date.deltaTime;
                     if (galaxy.mapButtonCanvases.Count > 0 && galaxyView)
                         nearStar.localScale = Mathf.Pow(nearStar.governmentInfluence, .6f) + 1f;
                     if (nearStar.governmentInfluence > 250 && nearStar.government.Model == null)
@@ -312,7 +312,7 @@ public class GameManager : MonoBehaviour {
     private void StationControl(int stationIndex)
     {
         StationModel model = data.stations[stationIndex];
-        float deltaTime = data.date.time - model.age.time - model.dateCreated.time;
+        double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
         model.age.AddTime(deltaTime);
         int factoryStatus = model.factory.UpdateProduction(deltaTime);
 
@@ -326,7 +326,7 @@ public class GameManager : MonoBehaviour {
 
         if (model.timeUpdate < model.age.time)
         {
-            model.timeUpdate = model.age.time + Date.Hour;
+            model.timeUpdate = model.age.time + Dated.Hour;
 
             //Money Evaluation
             model.money -= model.runningCost;
@@ -338,7 +338,7 @@ public class GameManager : MonoBehaviour {
                 model.money -= 85;
             }
 
-            float moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+            double moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
 
             if (moneyEarned > 0)
             {
@@ -371,7 +371,7 @@ public class GameManager : MonoBehaviour {
         //    int starIndex;
         //    if (UnityEngine.Random.Range(0, 2) == 1)
         //        starIndex = UnityEngine.Random.Range(0, galaxy.starCount);
-        //    else starIndex = model.solar.starIndex;
+        //    else starIndex = model.solarIndex;
         //    int planetIndex = UnityEngine.Random.Range(0, game.data.stars[starIndex].planets.Length);
         //    SolarBody parent;
         //    if (game.data.stars[starIndex].planets.Length > 0)
@@ -396,12 +396,12 @@ public class GameManager : MonoBehaviour {
     private void ShipControl(int shipIndex)
     {
         ShipModel model = data.ships[shipIndex];
-        float deltaTime = data.date.time - model.age.time - model.dateCreated.time;
+        double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
         model.age.AddTime(deltaTime);
 
         if (model.timeUpdate < model.age.time)
         {
-            model.timeUpdate += Date.Hour;
+            model.timeUpdate += Dated.Hour;
 
             //Money Evaluation
             model.money -= model.runningCost;
@@ -413,7 +413,7 @@ public class GameManager : MonoBehaviour {
                 model.money -= 35;
             }
 
-            float moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+            double moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
 
             if (moneyEarned > 0)
             {
@@ -463,7 +463,7 @@ public class GameManager : MonoBehaviour {
                 for (int i = 0; i < item.amount; i++)
                 {
                     CreatureModel captain = new CreatureModel(model.owner.Model.name + " Ship Captain " + model.owner.Model.itemsBought, 1000);
-                    ShipModel ship = ShipCreator.CreateShip(model.owner.Model.name + "." + model.owner.Model.itemsBought, model.solar.starIndex, model.solar.parent, model.solar.GetLocalPosition(data.date.time), model.owner.Model, captain);
+                    ShipModel ship = ShipCreator.CreateShip(model.owner.Model.name + "." + model.owner.Model.itemsBought, model.solarIndex, model.parentIndex, model.orbit, model.owner.Model, captain);
                     data.ships.Add(ship);
                     data.creatures.Add(captain);
                     model.owner.Model.itemsBought++;
@@ -517,7 +517,7 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     /// <param name="model">ship model</param>
     /// <param name="deltaTime">time since the ship was last called</param>
-    private void ShipTravel(ShipModel model, float deltaTime)
+    private void ShipTravel(ShipModel model, double deltaTime)
     {
         if (model.target != null && model.target.Model != null && !model.hyperSpace)
         {
@@ -526,79 +526,79 @@ public class GameManager : MonoBehaviour {
             //float rotateAmount = angleOfAttack.angle * Mathf.Rad2Deg - transform.eulerAngles.z;
             //transform.Rotate(0, 0, rotateAmount * model.rotateSpeed * Time.deltaTime);
             //distance.Normalize();
-            Vector2 targetPosition = model.target.Model.solar.GetWorldPosition(data.date.time);
-            model.solar.SetWorldPosition( Vector3.MoveTowards(model.solar.GetWorldPosition(data.date.time), targetPosition, model.speed * deltaTime), data.date.time);
-            model.fuel.amount -= deltaTime / model.fuelEfficiency;
+            Vector2 targetPosition = model.target.Model.orbit.Radius(data.date.time);
+            //model.orbit.SetWorldPosition( Vector3d.MoveTowards((Vector3d) model.orbit.Radius(data.date.time), (Vector2d) targetPosition, model.speed * deltaTime), data.date.time);
+            model.fuel.amount -= (float) (deltaTime / model.fuelEfficiency);
 
-            Vector2 distance = targetPosition - model.solar.GetWorldPosition(data.date.time);
+            //Vector2d distance = targetPosition - model.orbit.Radius(data.date.time);
             
 
-            if (distance.sqrMagnitude < 1)
-            {
+            //if (distance.sqrMagnitude < 1)
+            //{
 
-                StationModel station = (StationModel)model.target.Model;
-                model.target = null;
-                if (model.mode == ShipMode.Buy)
-                {
-                    station.incomingShips.Remove(model);
+            //    StationModel station = (StationModel)model.target.Model;
+            //    model.target = null;
+            //    if (model.mode == ShipMode.Buy)
+            //    {
+            //        station.incomingShips.Remove(model);
 
-                    foreach (Items item in model.items)
-                    {
-                        foreach (Items buyItem in station.factory.outputItems)
-                        {
-                            if (item.name == ItemTypes.Fuel.ToString())
-                            {
-                                model.fuel.amount += item.pendingAmount;
-                                model.mode = ShipMode.Idle;
-                                //yield break;
-                            }
-                            else if (item.name == ItemTypes.Ship.ToString())
-                            {
-                                item.amount += (item.pendingAmount - item.amount);
-                                buyItem.amount -= (item.pendingAmount - item.amount);
-                                model.mode = ShipMode.Idle;
-                                //yield break;
-                            }
-                            else if (item.name == buyItem.name)
-                            {
-                                item.amount += (item.pendingAmount - item.amount);
-                                buyItem.amount -= (item.pendingAmount - item.amount);
-                                //new WaitForSeconds(item.amount * .1f);
-                            }
-                        }
+            //        foreach (Items item in model.items)
+            //        {
+            //            foreach (Items buyItem in station.factory.outputItems)
+            //            {
+            //                if (item.name == ItemTypes.Fuel.ToString())
+            //                {
+            //                    model.fuel.amount += item.pendingAmount;
+            //                    model.mode = ShipMode.Idle;
+            //                    //yield break;
+            //                }
+            //                else if (item.name == ItemTypes.Ship.ToString())
+            //                {
+            //                    item.amount += (item.pendingAmount - item.amount);
+            //                    buyItem.amount -= (item.pendingAmount - item.amount);
+            //                    model.mode = ShipMode.Idle;
+            //                    //yield break;
+            //                }
+            //                else if (item.name == buyItem.name)
+            //                {
+            //                    item.amount += (item.pendingAmount - item.amount);
+            //                    buyItem.amount -= (item.pendingAmount - item.amount);
+            //                    //new WaitForSeconds(item.amount * .1f);
+            //                }
+            //            }
 
-                    }
-                    if (model.sellTarget != null && model.sellTarget.Model != null)
-                    {
-                        model.mode = ShipMode.Sell;
-                        model.target = model.sellTarget;
-                        model.sellTarget.Model = null;
-                        station = (StationModel)model.target.Model;
-                        foreach (Items item in model.items)
-                        {
-                            item.amount -= station.Sell(item, model).amount;
-                        }
-                        //sprite.color = Color.green; //Used to color the ship
-                    }
-                }
-                else if (model.mode == ShipMode.Sell)
-                {
-                    foreach (Items item in model.items)
-                    {
-                        foreach (Items sellItem in station.factory.inputItems)
-                        {
-                            if (item.name == sellItem.name)
-                            {
-                                item.amount -= (item.amount - item.pendingAmount);
-                                sellItem.amount += (item.amount - item.pendingAmount);
-                                //new WaitForSeconds(item.amount * .1f);
-                            }
-                        }
-                    }
-                    station.incomingShips.Remove(model);
-                    model.mode = ShipMode.Idle;
-                }
-            }
+            //        }
+            //        if (model.sellTarget != null && model.sellTarget.Model != null)
+            //        {
+            //            model.mode = ShipMode.Sell;
+            //            model.target = model.sellTarget;
+            //            model.sellTarget.Model = null;
+            //            station = (StationModel)model.target.Model;
+            //            foreach (Items item in model.items)
+            //            {
+            //                item.amount -= station.Sell(item, model).amount;
+            //            }
+            //            //sprite.color = Color.green; //Used to color the ship
+            //        }
+            //    }
+            //    else if (model.mode == ShipMode.Sell)
+            //    {
+            //        foreach (Items item in model.items)
+            //        {
+            //            foreach (Items sellItem in station.factory.inputItems)
+            //            {
+            //                if (item.name == sellItem.name)
+            //                {
+            //                    item.amount -= (item.amount - item.pendingAmount);
+            //                    sellItem.amount += (item.amount - item.pendingAmount);
+            //                    //new WaitForSeconds(item.amount * .1f);
+            //                }
+            //            }
+            //        }
+            //        station.incomingShips.Remove(model);
+            //        model.mode = ShipMode.Idle;
+            //    }
+            //}
 
         }
     }
@@ -612,7 +612,7 @@ public class GameManager : MonoBehaviour {
         {
             galaxyView = true;
             galaxy.GalaxyView();
-            transform.position = new Vector3(data.stars[model.solar.starIndex].position[0].x, data.stars[model.solar.starIndex].position[0].y, -10);
+            transform.position = new Vector3(data.stars[model.solarIndex].galacticPosition.x, data.stars[model.solarIndex].galacticPosition.y, -10);
 
         }
     }
@@ -620,7 +620,7 @@ public class GameManager : MonoBehaviour {
     {
         galaxyView = true;
         galaxy.GalaxyView();
-        transform.position = new Vector3(model.position[0].x, model.position[0].y, -10);
+        transform.position = new Vector3(model.galacticPosition.x, model.galacticPosition.y, -10);
     }
     private void OnFindRouteFinished(ShipModel model, Items buyItem, StructureModel[] targets, bool success)
     {
@@ -642,14 +642,14 @@ public class GameManager : MonoBehaviour {
 
     private StationModel FindClosestStation(string itemName, ShipModel model)
     {
-        float distance = 100000000;
+        double distance = 100000000;
         StationModel foundStation = null;
         foreach (StationModel station in data.stations)
         {
             foreach (Items outputItem in station.factory.outputItems)
             {
-                float closestDistance = Vector2.Distance(data.stars[station.solar.starIndex].position[0], model.position[0]) * 1000;
-                closestDistance += Vector2.Distance(station.solar.GetWorldPosition(data.date.time), model.solar.GetWorldPosition(data.date.time));
+                double closestDistance = Vector2.Distance(data.stars[station.solarIndex].galacticPosition, model.position) * 1000;
+                closestDistance += Vector2.Distance(station.orbit.Radius(data.date.time), model.orbit.Radius(data.date.time));
                 if (outputItem.name == itemName && closestDistance < distance && outputItem.amount > 0)
                 {
                     distance = closestDistance;

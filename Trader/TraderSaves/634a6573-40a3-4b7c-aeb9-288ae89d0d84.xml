@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>634a6573-40a3-4b7c-aeb9-288ae89d0d84</Id>
-  <name>Dingrichar Neptune</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

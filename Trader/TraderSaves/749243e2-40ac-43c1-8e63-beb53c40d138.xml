@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>749243e2-40ac-43c1-8e63-beb53c40d138</Id>
-  <name>Deconcini Kiritz</name>
-  <money>172969.625</money>
-  <stations />
-  <ships />
-</CreatureModel>

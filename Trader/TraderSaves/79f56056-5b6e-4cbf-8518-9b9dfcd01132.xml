@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>79f56056-5b6e-4cbf-8518-9b9dfcd01132</Id>
-  <name>Fish Gobling Roper B</name>
-  <money>1801.31165</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>1b60e600-9818-4140-915e-3e5e22de4692</Id>
-  <name>Carley Wheeze</name>
-  <money>4400</money>
-  <stations />
-  <ships />
-</CreatureModel>

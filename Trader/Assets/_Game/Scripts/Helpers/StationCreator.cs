@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class StationCreator {
 
-    public static StationModel CreateStation(string name, SolarModel star, SolarBody parent, Polar2 position, IdentityModel owner, CreatureModel captain)
+    public static StationModel CreateStation(string name, SolarModel star, int parentIndex, Orbit orbit, IdentityModel owner, CreatureModel captain)
     {
         StationModel model = new StationModel();
         
@@ -17,8 +17,8 @@ public class StationCreator {
         model.workerCapacity = 50;
 
         model.name = name;
-        model.dateCreated = new Date(GameManager.instance.data.date.time);
-        model.lastUpdated = new Date(GameManager.instance.data.date.time);
+        model.dateCreated = new Dated(GameManager.instance.data.date.time);
+        model.lastUpdated = new Dated(GameManager.instance.data.date.time);
         model.capacity = 10000;
         System.Random rand = new System.Random(model.name.GetHashCode());
         float a = rand.Next(1000)/1000f;
@@ -29,16 +29,17 @@ public class StationCreator {
         b = rand.Next(1000) / 1000f;
         c = rand.Next(1000) / 1000f;
         model.backgroundColor = new Color(a, b, c);
-        model.solar = new Orbit(star.index, parent, position);
+        model.parentIndex = parentIndex;
+        model.orbit = orbit;
         star.stations.Add(model);
-        if (position.radius == 0 && parent.rawResource != RawResources.None)
-        {
-            model.factory = new Factory(parent.rawResource,model);
-        }
-        else
-        {
-            model.factory = new Factory(true, model);
-        }
+        //if (position.radius == 0 && parent.rawResource != RawResources.None)
+        //{
+        //    model.factory = new Factory(parent.rawResource,model);
+        //}
+        //else
+        //{
+        //    model.factory = new Factory(true, model);
+        //}
         
 
         foreach (Items item in model.factory.inputItems)

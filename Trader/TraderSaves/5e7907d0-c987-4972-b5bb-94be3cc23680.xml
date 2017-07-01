@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>5e7907d0-c987-4972-b5bb-94be3cc23680</Id>
-  <name>Chandley Whorse</name>
-  <money>6001.98047</money>
-  <stations />
-  <ships />
-</CreatureModel>

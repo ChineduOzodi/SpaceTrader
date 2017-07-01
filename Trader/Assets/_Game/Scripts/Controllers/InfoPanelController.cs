@@ -35,7 +35,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button = Instantiate(uiButtonInstance, contentPosition.transform);
             mainInfo.Add(button);
             button.GetComponentInChildren<Text>().text = "Star Count:" + gov.stars.Count;
-            float totalInfluence = 0;
+            double totalInfluence = 0;
             foreach (SolarModel star in gov.stars)
             {
                 totalInfluence += star.governmentInfluence;
@@ -94,7 +94,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
         {
             GovernmentModel gov = (GovernmentModel)model.target.Model;
             Button button = mainInfo[mainInfo.Count - 1];
-            float totalInfluence = 0;
+            double totalInfluence = 0;
             foreach (SolarModel star in gov.stars)
             {
                 totalInfluence += star.governmentInfluence;

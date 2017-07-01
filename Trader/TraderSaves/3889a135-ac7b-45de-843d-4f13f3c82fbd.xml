@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>3889a135-ac7b-45de-843d-4f13f3c82fbd</Id>
-  <name>Anthonyers Flora</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

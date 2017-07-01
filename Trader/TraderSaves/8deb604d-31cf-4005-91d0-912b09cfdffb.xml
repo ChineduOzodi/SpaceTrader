@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>8deb604d-31cf-4005-91d0-912b09cfdffb</Id>
-  <name>Bateryl Flame Magicoid</name>
-  <money>74341.57</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>33d04b71-2edf-42d7-8d40-d7ab2be072f8</Id>
-  <name>Chapmanovi Whorse</name>
-  <money>7340</money>
-  <stations />
-  <ships />
-</CreatureModel>

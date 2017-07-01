@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>2211e997-dffa-4e5c-9579-f445746fd61f</Id>
-  <name>Fortney Heavy Armor</name>
-  <money>317577.375</money>
-  <stations />
-  <ships />
-</CreatureModel>

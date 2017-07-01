@@ -138,7 +138,7 @@ public class GalaxyManager : MonoBehaviour {
                 star.localScale = Mathf.Pow(star.governmentInfluence, .6f) + .5f;
                 if (star.isCapital)
                 {
-                    Canvas textCanvas = Instantiate(buttonInstanceCanvas, star.position[0], Quaternion.identity);
+                    Canvas textCanvas = Instantiate(buttonInstanceCanvas, star.galacticPosition, Quaternion.identity);
                     Button textButton = textCanvas.GetComponentInChildren<Button>();
                     Text text = textCanvas.GetComponentInChildren<Text>();
                     mapButtonCanvases.Add(textCanvas);
@@ -154,7 +154,7 @@ public class GalaxyManager : MonoBehaviour {
         foreach (SolarModel star in game.data.stars)
         {
             star.color = star.sun.color;
-            star.localScale = Mathf.Pow(star.sun.mass / Mathf.PI, .3f) * 2;
+            star.localScale = (float)(star.sun.orbit.bodyRadius /1000000);
             star.NotifyChange();
         }
 

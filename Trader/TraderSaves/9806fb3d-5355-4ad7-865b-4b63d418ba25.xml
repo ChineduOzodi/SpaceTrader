@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>9806fb3d-5355-4ad7-865b-4b63d418ba25</Id>
-  <name>Quillingam Brown Pot</name>
-  <money>3102.29224</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>e627b39e-c8df-4add-a891-eb2a09d934bd</Id>
-  <name>Downs Meagaery</name>
-  <money>2650.10815</money>
-  <stations />
-  <ships />
-</CreatureModel>

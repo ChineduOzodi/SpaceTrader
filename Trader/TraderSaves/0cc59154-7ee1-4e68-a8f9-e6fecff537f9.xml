@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>0cc59154-7ee1-4e68-a8f9-e6fecff537f9</Id>
-  <name>Wylietta Mithost Armor</name>
-  <money>3342.01758</money>
-  <stations />
-  <ships />
-</CreatureModel>

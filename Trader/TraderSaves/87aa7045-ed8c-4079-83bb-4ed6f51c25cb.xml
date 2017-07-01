@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>87aa7045-ed8c-4079-83bb-4ed6f51c25cb</Id>
-  <name>Randerson Ice Worm Claw</name>
-  <money>416038</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>f8c1c662-08ae-4f54-9a6e-319db2a50bec</Id>
-  <name>Gary Spider Beetle B</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

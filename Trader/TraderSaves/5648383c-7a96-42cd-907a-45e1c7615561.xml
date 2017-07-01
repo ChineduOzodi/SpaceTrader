@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>5648383c-7a96-42cd-907a-45e1c7615561</Id>
-  <name>Sprath Cutlasshop</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

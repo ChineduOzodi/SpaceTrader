@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>41db3e77-9ba2-48c3-ad25-ae049321f349</Id>
-  <name>Newt Poison Knighter</name>
-  <money>65625.91</money>
-  <stations />
-  <ships />
-</CreatureModel>

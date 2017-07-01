@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>a346fa30-d862-495c-8ca7-171c78c423a2</Id>
-  <name>Hobson Numb Plantix</name>
-  <money>8080</money>
-  <stations />
-  <ships />
-</CreatureModel>

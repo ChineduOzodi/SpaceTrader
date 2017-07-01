@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>0e88331e-3338-4a64-9682-48e238755213</Id>
-  <name>Franks Dronyma</name>
-  <money>682903.8</money>
-  <stations />
-  <ships />
-</CreatureModel>

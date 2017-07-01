@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>5f81f07f-960f-4f9e-99cb-14c95ba80ad4</Id>
-  <name>Mcewenson Pupper Swordian</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

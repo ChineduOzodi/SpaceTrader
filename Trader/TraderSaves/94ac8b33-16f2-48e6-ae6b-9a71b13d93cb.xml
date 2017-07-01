@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>94ac8b33-16f2-48e6-ae6b-9a71b13d93cb</Id>
-  <name>Schustaman Cockin Balm</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

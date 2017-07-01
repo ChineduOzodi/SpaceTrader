@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>fb838f90-6395-4547-806f-73e4e1ce9f30</Id>
-  <name>Defazio Tiamand Element</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

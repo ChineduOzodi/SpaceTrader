@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>f72d781d-18a1-4140-bd7d-b0199e091391</Id>
-  <name>Smith Roller Iris</name>
-  <money>173489.547</money>
-  <stations />
-  <ships />
-</CreatureModel>

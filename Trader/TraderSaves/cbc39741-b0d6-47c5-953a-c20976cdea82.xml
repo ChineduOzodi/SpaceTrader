@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>cbc39741-b0d6-47c5-953a-c20976cdea82</Id>
-  <name>Mccolm Hedgement </name>
-  <money>5150</money>
-  <stations />
-  <ships />
-</CreatureModel>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>114213be-aab1-4801-888a-614d9814bf19</Id>
-  <name>Dornestell Zagan</name>
-  <money>40560</money>
-  <stations />
-  <ships />
-</CreatureModel>

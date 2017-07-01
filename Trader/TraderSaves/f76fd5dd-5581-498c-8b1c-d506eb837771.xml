@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<CreatureModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>f76fd5dd-5581-498c-8b1c-d506eb837771</Id>
-  <name>Kentinez Turtle Dir</name>
-  <money>3741.06934</money>
-  <stations />
-  <ships />
-</CreatureModel>
