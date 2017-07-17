@@ -35,27 +35,24 @@ public class SolarModel : Model {
         index = _index;
         
         // Create star
-        Units sunMass = new Units(Random.Range(.1f, 100), GameDataModel.sunMassMultiplication, GameDataModel.sunMassUnit);  ; // Sun Mass in solar masses
-        float sunColorValue = (float) sunMass.number / 100;
+        double sunMass = Random.Range(.1f, 100) * GameDataModel.sunMassMultiplication; // Sun Mass in solar masses
+        float sunColorValue = (float) (sunMass / 100 / GameDataModel.sunMassMultiplication);
         Color color = sunSizeColor.Evaluate(sunColorValue);
         float sunDensity = Random.Range(.5f, 4) * Units.k;
         double sunRadius = Mathd.Pow(((sunMass / sunDensity) * 3) / (4 * Mathd.PI), 1 / 3d); // In meters
         var solarIndex = new List<int>();
         solarIndex.Add(_index);
 
-        
+        solar = new SolarBody(_name + " Sun", solarIndex, SolarType.Star, sunMass , sunRadius, new Orbit(), color);
 
-        solar = new SolarBody(_name + " Sun", solarIndex, SolarType.Star, sunMass , new Units(sunRadius,1,"m"), new Orbit(), color);
-
-        int numPlanets = (int)Random.Range(0, (float)Mathd.Pow(sunMass.number, .25f) * 20);
+        int numPlanets = (int)Random.Range(0, (float)Mathd.Pow(sunMass / GameDataModel.sunMassMultiplication, .25f) * 20);
+        double sunSoi = solar.SOI(sunMass);
 
         for (int i = 0; i < numPlanets; i++)
         {
-            Units sunSoi = solar.SOI(sunMass);
-            Units sma = new Units(Random.Range((float) (solar.bodyRadius / GameDataModel.solarDistanceMultiplication) * 1.2f, (float) ( sunSoi/ GameDataModel.solarDistanceMultiplication)),
-                GameDataModel.solarDistanceMultiplication, GameDataModel.solarDistanceUnit);
+            double sma = Random.Range((float) (solar.bodyRadius) * 1.1f, (float) (sunSoi * .5));
             float lpe = Random.Range(0, 2 * Mathf.PI);
-            Units planetMass = new Units(Random.Range(.0001f, 500f) * 5.972e+24, 1, "kg");
+            double planetMass = Random.Range(.0001f, 500f) * 5.972e+24;
             float planetDensity = Random.Range(3.5f, 7) * Units.k;
             double planetRadius = Mathd.Pow((((planetMass) / planetDensity) * 3) / (4 * Mathd.PI), 1 / 3d); // In meters
 
@@ -83,17 +80,19 @@ public class SolarModel : Model {
 
             color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
 
-            solar.satelites.Add(i, new SolarBody(name + " Planet " + (i + 1), planetIndex, planetType, planetMass,new Units(planetRadius, 1, "m"), new Orbit(sma,ecc,lpe,0,lpe),color));
+            solar.satelites.Add(i, new SolarBody(name + " Planet " + (i + 1), planetIndex, planetType, planetMass, planetRadius, new Orbit(sma,ecc,lpe,0,lpe),color));
 
             int numMoonRange = (int)(solar.satelites[i].SOI(solar.mass) / Units.G);
             numMoonRange = 3;
             int numMoon = Random.Range(0, numMoonRange);
 
+            double soi = solar.satelites[i].SOI(solar.mass);
+
             for (int m = 0; m < numMoon; m++)
             {
-                Units moonMass = new Units(Random.Range(.0001f, 50) * 1e+22, 1, "kg");
-                Units soi = solar.satelites[i].SOI(solar.mass);
-                sma = new Units(Random.Range((float)solar.satelites[i].bodyRadius * 1.2f, (float)(soi * .75f)) / GameDataModel.solarDistanceMultiplication, GameDataModel.solarDistanceMultiplication, GameDataModel.solarDistanceUnit);
+                double moonMass = Random.Range(.0001f, 50) * 1e+22;
+                
+                sma = Random.Range((float)solar.satelites[i].bodyRadius * 1.2f, (float)(soi * .75f));
                 lpe = Random.Range(0, 2 * Mathf.PI);
                 color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
                 float moonDensity = Random.Range(3.5f, 7) * Units.k;
@@ -110,7 +109,7 @@ public class SolarModel : Model {
                 moonIndex.AddRange(planetIndex);
                 moonIndex.Add(m);
 
-                solar.satelites[i].satelites.Add(m,new SolarBody(name + "Moon " + (i + 1), moonIndex, moonType, moonMass, new Units(moonRadius,1,"m"),  new Orbit(sma,ecc,lpe,0,lpe), color));
+                solar.satelites[i].satelites.Add(m,new SolarBody(name + "Moon " + (i + 1), moonIndex, moonType, moonMass, moonRadius,  new Orbit(sma,ecc,lpe,0,lpe), color));
             }
         }
     }

@@ -8,10 +8,10 @@ using CodeControl;
 public class GameDataModel : Model {
 
     public Dated date = new Dated();
-    public static double G = Mathf.Pow(6.67f, -11);
+    public static double G = Mathd.Pow(6.67f, -11);
     public static double galaxyDistanceMultiplication = 9.461e+15; // Lightyear.
     public static string galaxyDistanceUnit = "ly";
-    public static double solarDistanceMultiplication = Units.M;
+    public static double solarDistanceMultiplication = Units.M * 100;
     public static string solarDistanceUnit = "Mm";
     public static double sunMassMultiplication = 1.969e+30;
     public static string sunMassUnit = @"M\u+0298";

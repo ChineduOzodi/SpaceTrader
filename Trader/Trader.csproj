@@ -798,6 +798,7 @@
     <Compile Include="Assets\_Game\Scripts\Helpers\NameGen.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\NamesStrings.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Orbit.cs" />
+    <Compile Include="Assets\_Game\Scripts\Helpers\PlanetInfo.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Polar2.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Polar2d.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\ProductionItem.cs" />

@@ -254,7 +254,7 @@ public class GameManager : MonoBehaviour {
             {
                 double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
                 model.age.AddTime(deltaTime);
-                Units totalPop = new Units(0,1,"people");
+                double totalPop = 0;
                 //foreach (SolarBody body in star.solar.satelites)
                 //{
                 //    totalPop += body.population;

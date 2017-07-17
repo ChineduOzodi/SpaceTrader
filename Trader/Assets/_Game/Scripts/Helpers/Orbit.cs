@@ -7,7 +7,7 @@ public struct Orbit {
     //public static double massConversion = Mathd.Pow(10, 24);
     //public static double distanceConversion = Units.G * 100; // Multiplication factor to used to view orbits. Base unit will be meters
 
-    public Units sma { get; set; } // Semi-major axis.
+    public double sma { get; set; } // Semi-major axis.
     public double ecc { get; set; }
     public double inc { get; set; } // Not used
     public double lpe { get; set; } // Longitude of periapsis. Angle in radians
@@ -23,7 +23,7 @@ public struct Orbit {
     /// <param name="MNA">Mean anomaly at epoch. Between -2pi and 2pi.</param>
     /// <param name="EPH">Epoch, a reference time.</param>
     /// <param name="LPE">Longitude of periapsis. Angle in radians</param>
-    public Orbit(Units SMA, double ECC, double MNA, double EPH, double LPE)
+    public Orbit(double SMA, double ECC, double MNA, double EPH, double LPE)
     {
         sma = SMA;
         ecc = ECC;
@@ -38,7 +38,7 @@ public struct Orbit {
     public string GetOrbitalInfo()
     {
         return string.Format("Semi-major Axis:{0}\nEcc: {1}\nMean Anomaly at Epoch: {2}\nEpoch: {3}\nLong of Periapsis: {4}",
-        sma.ReadMetric(),
+        Units.ReadDistance(sma),
         ecc, // 1
         mna,
         eph,

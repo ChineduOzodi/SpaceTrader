@@ -27,7 +27,7 @@ public class SolarController : Controller<SolarModel> {
         name = model.name;
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = model.solar.color;
-        transform.localScale = Vector3.one * (float)Mathd.Pow((model.solar.bodyRadius.number), .01f);
+        transform.localScale = Vector3.one * (float)Mathd.Pow((model.solar.bodyRadius), .02f);
 
         if (model.isActive)
         {
@@ -40,8 +40,8 @@ public class SolarController : Controller<SolarModel> {
         ToggleSystem();
         if (model.isActive)
         {            
-            game.localScaleMod = Mathf.Pow(Camera.main.orthographicSize, .5f) / 90;
-            sun.transform.localScale = Vector3.one * (float)Mathd.Pow((model.solar.bodyRadius.number), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
+            game.localScaleMod = Mathf.Pow(Camera.main.orthographicSize, .6f) / 90;
+            sun.transform.localScale = Vector3.one * (float)Mathd.Pow((model.solar.bodyRadius), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
 
             for ( int i = 0; i < model.solar.satelites.Count; i++)
             {
@@ -49,7 +49,7 @@ public class SolarController : Controller<SolarModel> {
                 Vector3 position = (Vector2) body.GamePosition(game.data.date.time,model.solar.mass);
                 planets[i].transform.position = sun.transform.position + position;
                 //planets[i].transform.localScale = Vector3.one * Mathf.Sqrt(body.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, 1.3f);
-                planets[i].transform.localScale = Vector3.one * (float)Mathd.Pow((body.bodyRadius.number), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
+                planets[i].transform.localScale = Vector3.one * (float)Mathd.Pow((body.bodyRadius), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
 
                 LineRenderer line = planets[i].GetComponent<LineRenderer>();
 
@@ -63,7 +63,7 @@ public class SolarController : Controller<SolarModel> {
                 Vector3 position = (Vector2) moon.GamePosition(game.data.date.time,model.solar.satelites[moon.solarIndex[1]].mass);
                 moons[i].transform.position = position + model.solar.satelites[moon.solarIndex[1]].GamePosition(game.data.date.time, model.solar.mass);
                 //moons[i].transform.localScale = Vector3.one * Mathf.Sqrt(moon.mass / Mathf.PI) * Mathf.Pow(game.localScaleMod, 1.1f);
-                moons[i].transform.localScale = Vector3.one * (float)Mathd.Pow((moon.bodyRadius.number), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
+                moons[i].transform.localScale = Vector3.one * (float)Mathd.Pow((moon.bodyRadius), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
 
                 LineRenderer line = moons[i].GetComponent<LineRenderer>();
 
@@ -126,9 +126,13 @@ public class SolarController : Controller<SolarModel> {
         sun = Instantiate(sunObj, transform);
         sun.name = model.name + " Sun";
         sun.transform.position = Vector3.zero;
-        sun.transform.localScale = Vector3.one * (float)Mathd.Pow((model.solar.bodyRadius.number), solarSpriteScale);
+        sun.transform.localScale = Vector3.one * (float)Mathd.Pow((model.solar.bodyRadius / GameDataModel.solarDistanceMultiplication), solarSpriteScale);
         sun.GetComponent<SpriteRenderer>().color = model.solar.color;
         sun.GetComponent<SpriteRenderer>().sortingOrder = 5;
+
+        var info = sun.GetComponent<PlanetInfo>();
+        info.planetName = sun.name;
+        info.planetInfo = model.solar.GetInfo(model.solar.mass);
 
         planets = new List<GameObject>();
         for (int i = 0; i < model.solar.satelites.Count; i++)
@@ -140,7 +144,11 @@ public class SolarController : Controller<SolarModel> {
             planets[i].transform.localPosition = position;
             planets[i].GetComponent<SpriteRenderer>().color = body.color;
             planets[i].GetComponent<SpriteRenderer>().sortingOrder = 4;
-            planets[i].transform.localScale = Vector3.one * (float)Mathd.Pow((body.bodyRadius.number), solarSpriteScale);
+            planets[i].transform.localScale = Vector3.one * (float)Mathd.Pow((body.bodyRadius), solarSpriteScale);
+
+            info = planets[i].GetComponent<PlanetInfo>();
+            info.planetName = body.name;
+            info.planetInfo = body.GetInfo(model.solar.mass);
 
             //Creates the line rendering for the orbit of planets
 
@@ -171,9 +179,11 @@ public class SolarController : Controller<SolarModel> {
                 moons[moons.Count - 1].transform.localPosition = position;
                 moons[moons.Count - 1].GetComponent<SpriteRenderer>().color = moon.color;
                 moons[moons.Count - 1].GetComponent<SpriteRenderer>().sortingOrder = 3;
-                moons[moons.Count - 1].transform.localScale = Vector3.one * (float)Mathd.Pow((moon.bodyRadius.number), solarSpriteScale);
+                moons[moons.Count - 1].transform.localScale = Vector3.one * (float)Mathd.Pow((moon.bodyRadius), solarSpriteScale);
 
-
+                info = moons[moons.Count - 1].GetComponent<PlanetInfo>();
+                info.planetName = moon.name;
+                info.planetInfo = moon.GetInfo(body.mass);
             }
         }
 
@@ -194,8 +204,8 @@ public class SolarController : Controller<SolarModel> {
         //{
         //    nameButton.enabled = false;
         //}
-        transform.localScale = Vector3.one * (float) Mathd.Pow((model.solar.bodyRadius.number), .01f);
-        model.localScale = (float) Mathd.Pow((model.solar.bodyRadius.number), .01f);
+        transform.localScale = Vector3.one * (float) Mathd.Pow((model.solar.bodyRadius), .01f);
+        model.localScale = (float) Mathd.Pow((model.solar.bodyRadius), .01f);
         Destroy(sun);
         for (int i = 0; i < planets.Count; i++)
         {
