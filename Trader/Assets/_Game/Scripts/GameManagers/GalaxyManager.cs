@@ -114,7 +114,7 @@ public class GalaxyManager : MonoBehaviour {
         mapCanvas.enabled = false;
         cam.cullingMask = solarMask;
         transform.position = new Vector3(0, 0, -10);
-        cam.orthographicSize = 1000;
+        cam.orthographicSize = 800000;
     }
 
     

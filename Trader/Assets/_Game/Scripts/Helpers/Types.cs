@@ -34,13 +34,50 @@ public enum RawResources
 public enum SolarType
 {
     Star,
-    RockyPlanet,
-    GasGiant,
+    Planet,
     DwarfPlanet,
     Moon,
-    Meteor,
+    Comet,
     Asteroid,
     Structure
+}
+
+public enum SolarSubType
+{
+    SuperGiant,
+    WhiteDwarf,
+    MainSequence,
+    Rocky,
+    GasGiant,
+    Desert,
+    Ocean,
+    EarthLike,
+    Volcanic,
+    Ice
+}
+
+public enum PlanetTileType
+{
+    Rocky,
+    Desert,
+    Ocean,
+    Grasslands,
+    Volcanic,
+    Ice
+}
+
+public enum RawResourceType
+{
+    Silvite,
+    Goldium,
+    Quananoid,
+    Horizorium,
+    Dodite,
+    Uronimum,
+    Doronimum,
+    Astodium,
+    Limoite,
+    Galiditum
 }
 
 public enum ShipMode

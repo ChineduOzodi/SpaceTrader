@@ -10,13 +10,16 @@ public class LoadGameManager : MonoBehaviour {
     public Slider progressBar;
     public Text loadingText;
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+    internal GameManager game;
+    internal GalaxyManager galaxy;
 
     public void LoadGame()
     {
+        galaxy = GalaxyManager.instance;
+        game = GameManager.instance;
+
+        loadingPanel.SetActive(true);
+
         GameManager.instance.setup = true;
         Model.DeleteAll();
         Model.Load("TraderSaves", OnStart, OnProgress, OnDone, OnError);
@@ -32,13 +35,29 @@ public class LoadGameManager : MonoBehaviour {
 
     private void OnDone()
     {
-        loadingText.text = "Done";
+        game.galaxy.gameObject.SetActive(true); //Sets the galaxy manager to active
+        game.pathfindingManager.SetActive(true); //Sets pathfinding to active
+
         GameManager.instance.data = Model.First<GameDataModel>();
+        LoadStars();
+        loadingText.text = "Done";
         GameManager.instance.setup = false;
+
+        loadingPanel.SetActive(false);
+        gameObject.SetActive(false);
+        game.StartGame();
     }
 
     private void OnError(string obj)
     {
         loadingText.text= "Error: " + obj;
+    }
+
+    public void LoadStars()
+    {
+        foreach (SolarModel star in game.data.stars)
+        {
+            Controller.Instantiate<SolarController>("solar", star);
+        }
     }
 }

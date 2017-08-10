@@ -14,9 +14,10 @@ public class Research {
         get { return _requiredResearch; }
     }
 
-
     private string[] _requiredResearch;
 
+    public Research() { }
+    
     public Research(string _name, string _description, int _totalResearchPoints, string[] _requiredResearch)
     {
         name = _name;

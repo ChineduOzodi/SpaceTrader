@@ -26,6 +26,7 @@ public class CreateGameManager : MonoBehaviour {
     internal GalaxyManager galaxy;
 
     internal static float G = .01f;
+    internal NameGen names;
 
     public void Awake()
     {
@@ -36,6 +37,7 @@ public class CreateGameManager : MonoBehaviour {
     {
         galaxy = GalaxyManager.instance;
         game = GameManager.instance;
+        names = new NameGen();
 
         GameManager.instance.setup = true;
         loadingPanel.SetActive(true);
@@ -48,7 +50,6 @@ public class CreateGameManager : MonoBehaviour {
         game.galaxy.gameObject.SetActive(true); //Sets the galaxy manager to active
         game.pathfindingManager.SetActive(true); //Sets pathfinding to active
         loadingProgress.value = 0;
-        NameGen names = new NameGen();
         while (GameManager.instance.setup)
         {
             //CreateStarSystem
@@ -144,8 +145,10 @@ public class CreateGameManager : MonoBehaviour {
 
         for (int i = 0; i < count; i++)
         {
+            var random = new System.Random();
             Vector2 position = new Vector2(UnityEngine.Random.Range(-mapField.x * .5f, mapField.x * .5f), UnityEngine.Random.Range(-mapField.y * .5f, mapField.y * .5f));
-            SolarModel star = new SolarModel("Solar " + (i + 1),i , position, sunSizeColor);
+            position = new Vector2((float)NormalizedRandom(-mapField.x * .5f, mapField.x * .5f), (float)NormalizedRandom(-mapField.y * .5f, mapField.y * .5f));
+            SolarModel star = new SolarModel(names.GenerateWorldName() + " " + (i + 1),i , position, sunSizeColor);
             game.data.stars.Add(star);
         }
 
@@ -249,5 +252,45 @@ public class CreateGameManager : MonoBehaviour {
                 return -1;
             }
         }
+    }
+
+    public static double NextGaussianDouble()
+    {
+        double U, u, v, S;
+
+        do
+        {
+            u = 2.0 * Random.value - 1.0;
+            v = 2.0 * Random.value - 1.0;
+            S = u * u + v * v;
+        }
+        while (S >= 1.0);
+
+        double fac = Mathd.Sqrt(-2.0 * Mathd.Log(S) / S);
+        return u * fac;
+    }
+
+    public static double NormalizedRandom(double minValue, double maxValue)
+    {
+        var mean = (minValue + maxValue) / 2;
+        var sigma = (maxValue - mean) / 3;
+        return nextRandom(mean, sigma);
+    }
+
+    private static double nextRandom(double mean, double sigma)
+    {
+        var standard = NextGaussianDouble() + mean;
+
+        var value = standard * sigma;
+
+        if (value < mean - 3 * sigma)
+        {
+            return mean - 3 * sigma;
+        }
+        if (value > mean + 3 * sigma)
+        {
+            return mean + 3 * sigma;
+        }
+        return value;
     }
 }

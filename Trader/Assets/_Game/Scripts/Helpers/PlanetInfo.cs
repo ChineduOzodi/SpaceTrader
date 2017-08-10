@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlanetInfo : MonoBehaviour {
 
+    internal SolarBody solar;
     internal string planetName;
     internal string planetInfo;
 
@@ -19,10 +20,22 @@ public class PlanetInfo : MonoBehaviour {
 
     public void OnMouseEnter()
     {
-        ToolTip.instance.SetTooltip(planetName, planetInfo);
+        ToolTip.instance.SetTooltip(solar.name, solar.GetInfo(GameManager.instance.data.date.time));
+    }
+    public void OnMouseOver()
+    {
+        ToolTip.instance.SetTooltip(solar.name, solar.GetInfo(GameManager.instance.data.date.time));
     }
     public void OnMouseExit()
     {
         ToolTip.instance.CancelTooltip();
+    }
+    public void OnMouseDown()
+    {
+        if (solar.solarType != SolarType.Star && solar.solarSubType != SolarSubType.GasGiant)
+        {
+            PlanetPanel.instance.SelectPlanet(solar);
+        }
+        
     }
 }

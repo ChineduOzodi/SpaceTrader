@@ -10,12 +10,6 @@ public class Dated
     private static int Hours = 24;
     private static int Minutes = 60;
     private static int Seconds = 60;
-
-    
-
-    
-    
-    
     
     public static int Minute = Seconds;
     /// <summary>
@@ -47,7 +41,7 @@ public class Dated
     public int minute { get; private set; }
     public double seconds { get; private set; }
 
-    private int yr;
+    public int yr { get; private set; }
     
     public Dated() { }
     public Dated(int year, int month, int day, int hour, int minute, double seconds)

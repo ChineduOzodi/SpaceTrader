@@ -8,7 +8,7 @@ using CodeControl;
 public class GameDataModel : Model {
 
     public Dated date = new Dated();
-    public static double G = Mathd.Pow(6.67f, -11);
+    public static double G = 6.67e-11;
     public static double galaxyDistanceMultiplication = 9.461e+15; // Lightyear.
     public static string galaxyDistanceUnit = "ly";
     public static double solarDistanceMultiplication = Units.M * 100;
@@ -26,4 +26,6 @@ public class GameDataModel : Model {
         new Research("Quarium Material","More durable ship building material", 2500, new string[] { }),
         new Research("Micro-Quarium Material","Allows ships to travel at faster than light speeds", 5000, new string[] {"Quarium Material" })
     };
+
+    //----------------------------Solar Display Settings-------------------//
 }

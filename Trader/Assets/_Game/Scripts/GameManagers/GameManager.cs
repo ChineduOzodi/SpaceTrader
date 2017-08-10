@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour {
     internal bool gameInitiated = false;
     internal bool setup = false;
 
+    internal float timeScale = 1;
     private void Awake()
     {
         if (instance == null)
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour {
             //Mouse Hit
             if (!setup)
             {
-                data.date.AddTime(Time.deltaTime);
+                data.date.AddTime(Time.deltaTime * timeScale);
                 if (Input.GetMouseButtonDown(0))
                 {
                     Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
@@ -96,11 +97,11 @@ public class GameManager : MonoBehaviour {
 
                 if (Input.GetKeyDown(KeyCode.Comma))
                 {
-                    Time.timeScale *= .5f;
+                    timeScale *= .5f;
                 }
                 if (Input.GetKeyDown(KeyCode.Period))
                 {
-                    Time.timeScale *= 2;
+                    timeScale *= 2;
                 }
                 if (Input.GetKeyDown(KeyCode.F))
                 {
@@ -112,7 +113,7 @@ public class GameManager : MonoBehaviour {
                     else transform.parent = null;
                 }
 
-                dateInfo.text = data.date.GetDateTime() + "\nTimescale: " + Time.timeScale + "\n";
+                dateInfo.text = data.date.GetDateTime() + "\nTimescale: " + timeScale + "\n";
 
                 //if (selectedObj != null)
                 //{
