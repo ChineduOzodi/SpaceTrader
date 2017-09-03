@@ -23,6 +23,38 @@ public enum ItemTypes
     Food,
 }
 
+public enum BlueprintType
+{
+    Ship,
+    Factory,
+    Driller,
+    Storage,
+    LivingQuarters
+}
+
+public enum GroundStructureType
+{
+    Factory,
+    Driller,
+    Storage,
+    LivingQuarters
+}
+
+public enum ConstructionComponentType
+{
+    BuildingMaterial,
+    Fuel,
+    Engine,
+    Shield,
+    Weapon,
+    Container,
+    FuelTank,
+    CommandCapsule,
+    Sensor,
+    Machinary,
+    AI
+}
+
 public enum RawResources
 {
     CoalRock,

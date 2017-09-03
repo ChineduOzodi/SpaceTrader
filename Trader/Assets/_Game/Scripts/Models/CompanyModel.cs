@@ -9,6 +9,8 @@ public class CompanyModel : StructureModel {
 
     public ModelRefs<GovernmentModel> governmentAccess = new ModelRefs<GovernmentModel>();
 
+    public List<List<int>> solarBodiesWithStructures;
+
     public CompanyModel() { }
     public CompanyModel(string _name, GovernmentModel[] govs, CreatureModel _ceo)
     {
