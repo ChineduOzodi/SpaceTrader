@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     public GameObject galaxyManager;
     public GameObject pathfindingManager;
     public LoadingPanel loadingPanel;
+    public GameObject exitPanel;
     internal float localScaleMod = 1;
     internal bool galaxyView = true;
     public int numShipsPerFrame;
@@ -64,6 +65,17 @@ public class GameManager : MonoBehaviour {
     void Update () {
         if (gameInitiated)
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (exitPanel.activeSelf)
+                {
+                    ExitGame();
+                }
+                else
+                {
+                    OpenExitPanel();
+                }
+            }
             //Mouse Hit
             if (!setup)
             {
@@ -188,6 +200,14 @@ public class GameManager : MonoBehaviour {
         setup = false;
     }
 
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+    public void OpenExitPanel()
+    {
+        exitPanel.SetActive(true);
+    }
     internal void OpenInfoPanel(IdentityModel model)
     {
         InfoPanelModel infoModel = new InfoPanelModel(model);
