@@ -2,30 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConstructionComponent {
+/// <summary>
+/// Stores a list of Construction components.
+/// </summary>
+public class ConstructionComponents
+{
+    private List<ConstructionComponent> contructionComponents;
+
+    public ConstructionComponents() { }
+
+    public ConstructionComponents(List<ConstructionComponent> components)
+    {
+        contructionComponents = components;
+    }
+
+    /// <summary>
+    /// Finds amount of raw resouce in list. Returns 0 if not found or amount = 0.
+    /// </summary>
+    /// <param name="comp"></param>
+    /// <returns></returns>
+    public float FindAmount(ConstructionComponentType comp)
+    {
+        foreach (ConstructionComponent component in contructionComponents)
+        {
+            if (component.componentType == comp)
+            {
+                return component.amount;
+            }
+        }
+        return 0;
+    }
+
+    public void AddAmount(ConstructionComponentType comp, int amount)
+    {
+        if (FindAmount(comp) > 0)
+        {
+            foreach(ConstructionComponent component in contructionComponents)
+            {
+                if (component.componentType == comp)
+                {
+                    component.AddAmount(amount);
+                }
+            }
+        }
+    }
+}
+
+public struct ConstructionComponent {
 
     public string name;
     public string description;
 
     public ConstructionComponentType componentType;
-
-    public List<RawResource> rawResources;
-
-    public List<ConstructionComponent> components;
+    /// <summary>
+    /// Required resources to create one component.
+    /// </summary>
+    public RawResources rawResources;
 
     public int amount;
 
     public float baseArmor;
 
-    public float GetArmor()
+    public void AddAmount(int amnt)
     {
-        float armor = 0;
-        foreach (ConstructionComponent comp in components)
-        {
-            armor += comp.GetArmor();
-        }
-
-        return armor + baseArmor;
+        amount += amnt;
     }
 
     /// <summary>

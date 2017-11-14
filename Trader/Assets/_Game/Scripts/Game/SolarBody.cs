@@ -22,7 +22,7 @@ public class SolarBody
     public double greenhouse { get; private set; }
     public double surfaceGravity { get; private set; }
     public List<PlanetTile> planetTiles;
-    public List<int[]> groundStructureLocations;
+    public List<GroundStructure> groundStructures;
 
 
     public double population;

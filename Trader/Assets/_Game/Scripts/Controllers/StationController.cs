@@ -101,7 +101,7 @@ public class StationController : Controller<StationModel> {
         string info = "";
         info += "Factory Name: <color=" + ColorTypeConverter.ToRGBHex(model.color) + ">" + model.factory.name + "</color>\nMoney: " + model.money + "\n";
         info += string.Format("Owner: {0}\nCaptain: {1}\n Number Workers: {2}/{3}\n", model.owner.Model.name, model.manager.Model.name, model.workers, model.workerCapacity);
-        info += "Progress: " + (model.factory.productionTime / model.factory.unitTime).ToString("0.00") + " - " + model.factory.unitTime + "\n\n";
+        info += "Progress: " + (model.factory.productionProgress).ToString("0.00") + " - " + model.factory.produtionTime + " Day(s)\n\n";
 
         info += "\n\n";
         List<Stat> moneyStats = new List<Stat>();
@@ -118,14 +118,14 @@ public class StationController : Controller<StationModel> {
 
     
 
-    internal Items[] GetInputItems()
-    {
-        return model.factory.inputItems;
-    }
+    //internal Items[] GetInputItems()
+    //{
+    //    return model.factory.inputItems;
+    //}
 
-    internal Items[] GetOutputItems()
-    {
-        return model.factory.outputItems;
-    }
+    //internal Items[] GetOutputItems()
+    //{
+    //    return model.factory.outputItems;
+    //}
 
 }

@@ -42,15 +42,15 @@ public class StationCreator {
         //}
         
 
-        foreach (Items item in model.factory.inputItems)
-        {
-            item.pendingAmount = item.amount;
+        //foreach (Items item in model.factory.inputItems)
+        //{
+        //    item.pendingAmount = item.amount;
             
-        }
-        foreach (Items item in model.factory.outputItems)
-        {
-            item.pendingAmount = item.amount;
-        }
+        //}
+        //foreach (Items item in model.factory.outputItems)
+        //{
+        //    item.pendingAmount = item.amount;
+        //}
 
         //Money Setup
         model.money = 1000000f;

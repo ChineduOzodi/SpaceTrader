@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 using CodeControl;
 
-public class Factory : GroundStructure {
+public class ComponentFactory : GroundStructure {
 
     public ConstructionComponent productionItem;
-    public double productionAmount { get; private set; }
-    public double productionEfficiency { get; private set; }
+    /// <summary>
+    /// Time to complete one cycle in days.
+    /// </summary>
+    public float produtionTime { get; private set; }
+    public float productionProgress { get; private set; }
 
-    public double workers;
+    public int workers;
 
     public bool isProducing;
 
-    public Factory() { }
+    public ComponentFactory() { }
 
-    public Factory(CompanyModel owner, FactoryBlueprintModel blueprint, ConstructionComponent item)
+    public ComponentFactory(CompanyModel owner, FactoryBlueprintModel blueprint, ConstructionComponent item)
     {
         this.owner = new ModelRef<CompanyModel>(owner);
 
@@ -23,43 +26,96 @@ public class Factory : GroundStructure {
 
         productionItem = item;
 
-        maxArmor = blueprint.structureComponent.GetArmor();
+        maxArmor = blueprint.structureComponent.baseArmor * blueprint.structureComponent.amount;
         currentArmor = maxArmor;
 
-        productionAmount = blueprint.machinaryComponent.amount;
-        productionEfficiency = (productionAmount * .9 + blueprint.aiComponent.amount * 1.1) / (productionAmount + blueprint.aiComponent.amount);
+        var productionEfficiency = (produtionTime * .9f + blueprint.aiComponent.amount * 1.1f) / (produtionTime + blueprint.aiComponent.amount);
+        produtionTime = 100/blueprint.machinaryComponent.amount * productionEfficiency;
+        
 
-        workers = blueprint.machinaryComponent.workers * productionAmount + blueprint.aiComponent.amount * blueprint.aiComponent.workers;
+        workers = (int) (blueprint.machinaryComponent.workers * produtionTime + blueprint.aiComponent.amount * blueprint.aiComponent.workers);
     }
 
     /// <summary>
     /// Creates items and uses items based on the elapsed time
     /// </summary>
     /// <param name="elapsedTime">time elapsed (in seconds)</param>
-    public void UpdateProduction(SolarBody parentBody)
+    public void UpdateProduction(SolarBody parentBody, float daysPassed)
     {
         if (isProducing)
         {
-            if (RequiredComponentsAvailable(parentBody))
+            productionProgress += daysPassed / produtionTime;
+            if (productionProgress > 1)
             {
-
+                
+                
             }
+        }
+        else if (RequiredComponentsAvailable(parentBody))
+        {
+            isProducing = true;
+            UseRawResources(parentBody);
         }
 
     }
 
     private bool RequiredComponentsAvailable(SolarBody parentBody)
     {
-        foreach (RawResource raw in productionItem.rawResources)
+        var requiredResouces = productionItem.rawResources.GetResources();
+        foreach ( KeyValuePair<RawResourceType,float> raw in requiredResouces)
         {
-            foreach(int[] location in parentBody.groundStructureLocations)
+            var found = false;
+            foreach(RawResourcesGroundStorage groundStruct in parentBody.groundStructures)
             {
-                var groundStruct = parentBody.planetTiles[location[0]].structures[location[1]];
-                if (groundStruct.groundStructureType == GroundStructureType.Storage)
+                if (groundStruct.groundStructureType == GroundStructureType.RawResourceStorage &&
+                    groundStruct.owner == owner &&
+                    groundStruct.rawResources.FindAmount(raw.Key) >= raw.Value)
                 {
-                    if (groundStruct.)
+                    found = true;
+                    break;
                 }
             }
+            if (!found)
+                return found;
         }
+        return true;
+    }
+    private void UseRawResources(SolarBody parentBody)
+    {
+        var requiredResouces = productionItem.rawResources.GetResources();
+        foreach (KeyValuePair<RawResourceType, float> raw in requiredResouces)
+        {
+            var found = false;
+            foreach (RawResourcesGroundStorage groundStruct in parentBody.groundStructures)
+            {
+                if (groundStruct.groundStructureType == GroundStructureType.ComponentStorage &&
+                    groundStruct.owner == owner &&
+                    groundStruct.rawResources.FindAmount(raw.Key) >= raw.Value)
+                {
+                    groundStruct.rawResources.RemoveAmount(raw.Key, raw.Value);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                throw new Exception("Raw resource not found in correct amount");
+        }
+    }
+    private void StoreComponents(SolarBody parentBody)
+    {
+        var found = false;
+        foreach (ComponentsGroundStorage groundStruct in parentBody.groundStructures)
+        {
+            if (groundStruct.groundStructureType == GroundStructureType.ComponentStorage &&
+                groundStruct.owner == owner &&
+                groundStruct.EnoughSpace(productionItem.componentType, productionItem.amount))
+            {
+                groundStruct.constructionComponents.AddAmount(productionItem.componentType, productionItem.amount);
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            throw new Exception("Component storage not found or nearly full");
     }
 }

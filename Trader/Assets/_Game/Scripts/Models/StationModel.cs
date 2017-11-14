@@ -17,7 +17,7 @@ public class StationModel: StructureModel {
     public int population;
     public float runningCost = 10f;
 
-    public Factory factory;
+    public ComponentFactory factory;
 
     public StationModel() {
         identityType = IdentityType.Station;
@@ -31,61 +31,61 @@ public class StationModel: StructureModel {
     /// <param name="itemAmount"></param>
     /// <param name="buyer"></param>
     /// <returns></returns>
-    internal Items Buy(Items buyItem, IdentityModel buyer)
-    {
-        foreach (ProductionItem item in factory.outputItems)
-        {
-            if (item.name == buyItem.name)
-            {
-                if (buyItem.amount > item.amount)
-                {
-                    buyItem.amount = item.amount;
-                }
-                ProductionItem soldItem = (ProductionItem) buyItem;
-                soldItem.price = item.price;
-                soldItem.totalPrice = soldItem.price * soldItem.amount;
+    //internal Items Buy(Items buyItem, IdentityModel buyer)
+    //{
+    //    foreach (ProductionItem item in factory.outputItems)
+    //    {
+    //        if (item.name == buyItem.name)
+    //        {
+    //            if (buyItem.amount > item.amount)
+    //            {
+    //                buyItem.amount = item.amount;
+    //            }
+    //            ProductionItem soldItem = (ProductionItem) buyItem;
+    //            soldItem.price = item.price;
+    //            soldItem.totalPrice = soldItem.price * soldItem.amount;
 
-                money += soldItem.totalPrice;
-                item.amount -= buyItem.amount;
-                buyer.money -= soldItem.totalPrice;
-                buyItem.amount = 0;
-                buyItem.pendingAmount = soldItem.amount;
-                return buyItem;
-            }
+    //            money += soldItem.totalPrice;
+    //            item.amount -= buyItem.amount;
+    //            buyer.money -= soldItem.totalPrice;
+    //            buyItem.amount = 0;
+    //            buyItem.pendingAmount = soldItem.amount;
+    //            return buyItem;
+    //        }
 
-        }
+    //    }
 
-        return buyItem * 0;
-    }
-    /// <summary>
-    /// Item is being sold to station
-    /// </summary>
-    /// <param name="sellItem"></param>
-    /// <returns>Return much item that was actually sold to station</returns>
-    internal Items Sell(Items sellItem, IdentityModel seller)
-    {
-        foreach (ProductionItem item in factory.inputItems)
-        {
-            if (item.name == sellItem.name)
-            {
-                item.pendingAmount += sellItem.amount;
-                float price = item.price * sellItem.amount;
-                money -= price;
-                return sellItem;
-            }
-        }
+    //    return buyItem * 0;
+    //}
+    ///// <summary>
+    ///// Item is being sold to station
+    ///// </summary>
+    ///// <param name="sellItem"></param>
+    ///// <returns>Return much item that was actually sold to station</returns>
+    //internal Items Sell(Items sellItem, IdentityModel seller)
+    //{
+    //    foreach (ProductionItem item in factory.inputItems)
+    //    {
+    //        if (item.name == sellItem.name)
+    //        {
+    //            item.pendingAmount += sellItem.amount;
+    //            float price = item.price * sellItem.amount;
+    //            money -= price;
+    //            return sellItem;
+    //        }
+    //    }
 
-        return sellItem * 0;
-    }
-    internal void SellIncomplete(Items sellItem)
-    {
-        foreach (ProductionItem item in factory.inputItems)
-        {
-            if (item.name == sellItem.name)
-            {
-                item.pendingAmount -= sellItem.amount;
-                money += item.price * sellItem.amount;
-            }
-        }
-    }
+    //    return sellItem * 0;
+    //}
+    //internal void SellIncomplete(Items sellItem)
+    //{
+    //    foreach (ProductionItem item in factory.inputItems)
+    //    {
+    //        if (item.name == sellItem.name)
+    //        {
+    //            item.pendingAmount -= sellItem.amount;
+    //            money += item.price * sellItem.amount;
+    //        }
+    //    }
+    //}
 }

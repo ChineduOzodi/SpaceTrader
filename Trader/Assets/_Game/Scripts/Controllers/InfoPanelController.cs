@@ -65,21 +65,21 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button = Instantiate(uiButtonInstance, contentPosition.transform);
             mainInfo.Add(button);
             button.GetComponentInChildren<Text>().text = "Input Goods:";
-            foreach (Items item in station.factory.inputItems)
-            {
-                button = Instantiate(uiButtonInstance, contentPosition.transform);
-                mainInfo.Add(button);
-                button.GetComponentInChildren<Text>().text = item.name + ": "+ item.amount+" ("+item.pendingAmount+")";
-                button.GetComponent<Image>().color = item.color;
-            }
-            button.GetComponentInChildren<Text>().text = "Output Goods:";
-            foreach (Items item in station.factory.outputItems)
-            {
-                button = Instantiate(uiButtonInstance, contentPosition.transform);
-                mainInfo.Add(button);
-                button.GetComponentInChildren<Text>().text = item.name + ": " + item.amount + " (" + item.pendingAmount + ")";
-                button.GetComponent<Image>().color = item.color;
-            }
+            //foreach (Items item in station.factory.inputItems)
+            //{
+            //    button = Instantiate(uiButtonInstance, contentPosition.transform);
+            //    mainInfo.Add(button);
+            //    button.GetComponentInChildren<Text>().text = item.name + ": "+ item.amount+" ("+item.pendingAmount+")";
+            //    button.GetComponent<Image>().color = item.color;
+            //}
+            //button.GetComponentInChildren<Text>().text = "Output Goods:";
+            //foreach (Items item in station.factory.outputItems)
+            //{
+            //    button = Instantiate(uiButtonInstance, contentPosition.transform);
+            //    mainInfo.Add(button);
+            //    button.GetComponentInChildren<Text>().text = item.name + ": " + item.amount + " (" + item.pendingAmount + ")";
+            //    button.GetComponent<Image>().color = item.color;
+            //}
 
         }
     }

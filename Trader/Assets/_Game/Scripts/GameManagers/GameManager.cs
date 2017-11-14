@@ -315,15 +315,15 @@ public class GameManager : MonoBehaviour {
         StationModel model = data.stations[stationIndex];
         double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
         model.age.AddTime(deltaTime);
-        int factoryStatus = model.factory.UpdateProduction(deltaTime);
+        //int factoryStatus = model.factory.UpdateProduction(deltaTime);
 
-        foreach (ProductionItem item in model.factory.inputItems)
-        {
-            if (model.factory.outputItems.Length == 0 && factoryStatus > 0)
-            {
-                model.money += item.productionAmount * factoryStatus * item.price;
-            }
-        }
+        //foreach (ProductionItem item in model.factory.inputItems)
+        //{
+        //    if (model.factory.outputItems.Length == 0 && factoryStatus > 0)
+        //    {
+        //        model.money += item.productionAmount * factoryStatus * item.price;
+        //    }
+        //}
 
         if (model.timeUpdate < model.age.time)
         {
@@ -442,12 +442,12 @@ public class GameManager : MonoBehaviour {
 
         if ((float)model.fuel.amount / model.fuelCapacity < .25f && model.target.Model == null)
         {
-            model.target = new ModelRef<StructureModel>(FindClosestStation( ItemTypes.Fuel.ToString() , model));
+            //model.target = new ModelRef<StructureModel>(FindClosestStation( ItemTypes.Fuel.ToString() , model));
             if (model.target.Model != null)
             {
                 StationModel station = (StationModel) model.target.Model;
                 Items buyItem = new Items(ItemTypes.Fuel, model.fuelCapacity);
-                model.items.Add(station.Buy(buyItem, model));
+                //model.items.Add(station.Buy(buyItem, model));
                 model.spriteColor = Color.yellow;
                 model.mode = ShipMode.Buy;
                 station.incomingShips.Add(model);
@@ -631,7 +631,7 @@ public class GameManager : MonoBehaviour {
             model.sellTarget.Model = targets[1];
             model.mode = ShipMode.Buy;
             StationModel station = (StationModel)model.target.Model;
-            model.items.Add(station.Buy(buyItem, model));
+            //model.items.Add(station.Buy(buyItem, model));
             station.incomingShips.Add(model);
             model.NotifyChange();
         }
@@ -641,62 +641,62 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private StationModel FindClosestStation(string itemName, ShipModel model)
-    {
-        double distance = 100000000;
-        StationModel foundStation = null;
-        foreach (StationModel station in data.stations)
-        {
-            foreach (Items outputItem in station.factory.outputItems)
-            {
-                //double closestDistance = Vector2.Distance(data.stars[station.solarIndex].galacticPosition, model.position) * 1000;
-                //closestDistance += Vector2.Distance(station.GamePosition(data.date.time), model.GamePosition(data.date.time));
-                //if (outputItem.name == itemName && closestDistance < distance && outputItem.amount > 0)
-                //{
-                //    distance = closestDistance;
-                //    foundStation = station;
+    //private StationModel FindClosestStation(string itemName, ShipModel model)
+    //{
+    //    double distance = 100000000;
+    //    StationModel foundStation = null;
+    //    foreach (StationModel station in data.stations)
+    //    {
+    //        foreach (Items outputItem in station.factory.outputItems)
+    //        {
+    //            //double closestDistance = Vector2.Distance(data.stars[station.solarIndex].galacticPosition, model.position) * 1000;
+    //            //closestDistance += Vector2.Distance(station.GamePosition(data.date.time), model.GamePosition(data.date.time));
+    //            //if (outputItem.name == itemName && closestDistance < distance && outputItem.amount > 0)
+    //            //{
+    //            //    distance = closestDistance;
+    //            //    foundStation = station;
 
-                //}
-            }
-        }
+    //            //}
+    //        }
+    //    }
 
-        return foundStation;
-    }
-    private void SetStationLinks()
-    {
-        StationController thisStation = selectedObj.GetComponent<StationController>();
+    //    return foundStation;
+    //}
+    //private void SetStationLinks()
+    //{
+    //    StationController thisStation = selectedObj.GetComponent<StationController>();
 
-        foreach (StationModel station in data.stations)
-        {
-            foreach (Items item in station.factory.inputItems)
-            {
-                foreach (Items thisItem in thisStation.GetOutputItems())
-                {
-                    if (thisItem.name == item.name)
-                    {
-                        station.lineTarget = thisStation.transform.position;
-                        station.lineColor = item.color;
-                        station.NotifyChange();
-                    }
-                }
+    //    foreach (StationModel station in data.stations)
+    //    {
+    //        foreach (Items item in station.factory.inputItems)
+    //        {
+    //            foreach (Items thisItem in thisStation.GetOutputItems())
+    //            {
+    //                if (thisItem.name == item.name)
+    //                {
+    //                    station.lineTarget = thisStation.transform.position;
+    //                    station.lineColor = item.color;
+    //                    station.NotifyChange();
+    //                }
+    //            }
                 
 
-            }
-            foreach (Items item in station.factory.outputItems)
-            {
-                foreach (Items thisItem in thisStation.GetInputItems())
-                {
-                    if (thisItem.name == item.name)
-                    {
-                        station.lineTarget = thisStation.transform.position;
-                        station.lineColor = item.color;
-                        station.NotifyChange();
-                    }
-                }
+    //        }
+    //        foreach (Items item in station.factory.outputItems)
+    //        {
+    //            foreach (Items thisItem in thisStation.GetInputItems())
+    //            {
+    //                if (thisItem.name == item.name)
+    //                {
+    //                    station.lineTarget = thisStation.transform.position;
+    //                    station.lineColor = item.color;
+    //                    station.NotifyChange();
+    //                }
+    //            }
 
-            }
-        }
-    }
+    //        }
+    //    }
+    //}
 
     private string BasicStats()
     {
@@ -797,7 +797,7 @@ public class GameManager : MonoBehaviour {
         sortedStations.Sort(delegate (StationModel c1, StationModel c2) { return c2.money.CompareTo(c1.money); });
         for (int i = 0; i < sortedStations.Count; i++)
         {
-            stats += string.Format("\n{0}. {1} - {2} | {3}/{4}", i+1, "<color=" + ColorTypeConverter.ToRGBHex(sortedStations[i].color) + ">" + sortedStations[i].name + "</color>", sortedStations[i].money.ToString("0.00"), sortedStations[i].factory.productionTime.ToString("0.00"), sortedStations[i].factory.unitTime.ToString("0.00"));
+            stats += string.Format("\n{0}. {1} - {2} | {3}/{4}", i+1, "<color=" + ColorTypeConverter.ToRGBHex(sortedStations[i].color) + ">" + sortedStations[i].name + "</color>", sortedStations[i].money.ToString("0.00"), (sortedStations[i].factory.productionProgress * sortedStations[i].factory.produtionTime).ToString("0.00"), sortedStations[i].factory.produtionTime.ToString("0.00"));
         }
 
         return stats;

@@ -36,7 +36,8 @@ public enum GroundStructureType
 {
     Factory,
     Driller,
-    Storage,
+    RawResourceStorage,
+    ComponentStorage,
     LivingQuarters
 }
 
@@ -53,14 +54,6 @@ public enum ConstructionComponentType
     Sensor,
     Machinary,
     AI
-}
-
-public enum RawResources
-{
-    CoalRock,
-    IronRock,
-    UnrefinedFuel,
-    None
 }
 
 public enum SolarType
