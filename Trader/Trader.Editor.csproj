@@ -377,6 +377,9 @@
     <None Include="Assets\SFSoftShadows\Shaders\SFShadowMask.shader" />
     <None Include="Assets\SFSoftShadows\Shaders\SFSoftShadow.shader" />
     <None Include="Assets\_Game\Fonts\license.txt" />
+    <None Include="Assets\_Game\Shaders\BackgroundEffect.shader" />
+    <None Include="Assets\_Game\Shaders\StarLightEffect.shader" />
+    <None Include="Assets\_Game\Shaders\StarTemperatureEffect.shader" />
     <None Include="Assets\unity-ui-extensions\Scripts\Utilities\Serialization\Surrogates\SurrogatesReadMe.txt" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />
     <None Include="Assets\unity-ui-extensions\Shaders\UIAdditive.shader" />

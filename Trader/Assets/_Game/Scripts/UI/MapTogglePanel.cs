@@ -23,6 +23,10 @@ public class MapTogglePanel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        //if (instance != null)
+        //{
+        //    Destroy(gameObject);
+        //}
         instance = this;
 
         subtypes = new Dictionary<SolarSubType, Toggle>();

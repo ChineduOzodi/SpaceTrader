@@ -779,6 +779,7 @@
     <Compile Include="Assets\_Game\Scripts\Controllers\SolarController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\StationController.cs" />
     <Compile Include="Assets\_Game\Scripts\CoordinatesTest.cs" />
+    <Compile Include="Assets\_Game\Scripts\CustomImageEffect.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\ConstructionComponent.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\Factory.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\GroundStorage.cs" />
@@ -1034,6 +1035,9 @@
     <None Include="Assets\SFSoftShadows\Shaders\SFShadowMask.shader" />
     <None Include="Assets\SFSoftShadows\Shaders\SFSoftShadow.shader" />
     <None Include="Assets\_Game\Fonts\license.txt" />
+    <None Include="Assets\_Game\Shaders\BackgroundEffect.shader" />
+    <None Include="Assets\_Game\Shaders\StarLightEffect.shader" />
+    <None Include="Assets\_Game\Shaders\StarTemperatureEffect.shader" />
     <None Include="Assets\unity-ui-extensions\Scripts\Utilities\Serialization\Surrogates\SurrogatesReadMe.txt" />
     <None Include="Assets\unity-ui-extensions\Shaders\SoftMaskShader.shader" />
     <None Include="Assets\unity-ui-extensions\Shaders\UIAdditive.shader" />
