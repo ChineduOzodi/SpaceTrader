@@ -6,7 +6,7 @@ using CodeControl;
 /// Holds all the game data to be saved in a save file
 /// </summary>
 public class GameDataModel : Model {
-
+    public string galaxyName;
     public Dated date = new Dated();
     public static double G = 6.67e-11;
     public static double galaxyDistanceMultiplication = 9.461e+15; // Lightyear.

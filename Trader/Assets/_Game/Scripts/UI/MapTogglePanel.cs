@@ -18,8 +18,11 @@ public class MapTogglePanel : MonoBehaviour {
     public Toggle comet;
     public Toggle asteroid;
     public Toggle ocean;
+    public Toggle normalVisual;
+    public Toggle temperatureVisual;
 
     internal Dictionary<SolarSubType, Toggle> subtypes;
+    internal Dictionary<VisualDisplay, Toggle> visualDisplay;
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +40,10 @@ public class MapTogglePanel : MonoBehaviour {
         subtypes.Add(SolarSubType.Rocky, rocky);
         subtypes.Add(SolarSubType.GasGiant, gasGiant);
         subtypes.Add(SolarSubType.Ocean, ocean);
+
+        visualDisplay = new Dictionary<VisualDisplay, Toggle>();
+        visualDisplay.Add(VisualDisplay.Normal, normalVisual);
+        visualDisplay.Add(VisualDisplay.Temperature, temperatureVisual);
     }
 	
 	// Update is called once per frame

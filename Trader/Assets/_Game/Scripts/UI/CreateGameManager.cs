@@ -9,6 +9,7 @@ public class CreateGameManager : MonoBehaviour {
     public GameObject loadingPanel;
     public Text loadingText;
     public Slider loadingProgress;
+    public Text galaxyNameText;
 
     //Galaxy Parameters
     public int starCount;
@@ -17,6 +18,7 @@ public class CreateGameManager : MonoBehaviour {
     public Gradient planetSizeColor;
 
     //Game Parameters
+    public string galaxyName;
     public int numGov;
     public int numComp;
     public int numStation;
@@ -54,7 +56,9 @@ public class CreateGameManager : MonoBehaviour {
         {
             //CreateStarSystem
             loadingText.text = "Creating Stars...";
-            CreateStars(starCount);
+            game.data.galaxyName = galaxyName;
+            galaxyNameText.text = galaxyName;
+            CreateStars(starCount, game.data.galaxyName);
             LoadStars();
             loadingProgress.value = .5f;
 
@@ -140,15 +144,16 @@ public class CreateGameManager : MonoBehaviour {
         }
     }
 
-    public void CreateStars(int count)
+    public void CreateStars(int count, string seed)
     {
-
+        Random.InitState(seed.GetHashCode());
+        var random = new System.Random(seed.GetHashCode());
         for (int i = 0; i < count; i++)
         {
-            var random = new System.Random();
-            Vector2 position = new Vector2(UnityEngine.Random.Range(-mapField.x * .5f, mapField.x * .5f), UnityEngine.Random.Range(-mapField.y * .5f, mapField.y * .5f));
-            position = new Vector2((float)NormalizedRandom(-mapField.x * .5f, mapField.x * .5f), (float)NormalizedRandom(-mapField.y * .5f, mapField.y * .5f));
-            SolarModel star = new SolarModel(names.GenerateWorldName() + " " + (i + 1),i , position, sunSizeColor);
+
+            Vector2 position = new Vector2((float) random.NextDouble() * mapField.x * 2 - mapField.x * .5f, (float)random.NextDouble() * mapField.y * 2 - mapField.y * .5f);
+            position = new Vector2((float)NormalizedRandom(-mapField.x * .5f, mapField.x * .5f, random.NextDouble()), (float)NormalizedRandom(-mapField.y * .5f, mapField.y * .5f, random.NextDouble()));
+            SolarModel star = new SolarModel(names.GenerateWorldName(random.Next().ToString()) + " " + (i + 1),i , position, sunSizeColor);
             game.data.stars.Add(star);
         }
 
@@ -204,9 +209,10 @@ public class CreateGameManager : MonoBehaviour {
     /// </summary>
     public void LoadStars()
     {
+        var stars = new GameObject("Stars");
         foreach (SolarModel star in game.data.stars)
         {
-            Controller.Instantiate<SolarController>("solar", star);
+            Controller.Instantiate<SolarController>("solar", star,stars.transform);
         }
     }
     /// <summary>
@@ -254,14 +260,14 @@ public class CreateGameManager : MonoBehaviour {
         }
     }
 
-    public static double NextGaussianDouble()
+    public static double NextGaussianDouble(double seed)
     {
         double U, u, v, S;
-
+        var random = new System.Random(seed.GetHashCode());
         do
         {
-            u = 2.0 * Random.value - 1.0;
-            v = 2.0 * Random.value - 1.0;
+            u = 2.0 * random.NextDouble() - 1.0;
+            v = 2.0 * random.NextDouble() - 1.0;
             S = u * u + v * v;
         }
         while (S >= 1.0);
@@ -270,16 +276,16 @@ public class CreateGameManager : MonoBehaviour {
         return u * fac;
     }
 
-    public static double NormalizedRandom(double minValue, double maxValue)
+    public static double NormalizedRandom(double minValue, double maxValue, double seed)
     {
         var mean = (minValue + maxValue) / 2;
         var sigma = (maxValue - mean) / 3;
-        return nextRandom(mean, sigma);
+        return nextRandom(mean, sigma, seed);
     }
 
-    private static double nextRandom(double mean, double sigma)
+    private static double nextRandom(double mean, double sigma, double seed)
     {
-        var standard = NextGaussianDouble() + mean;
+        var standard = NextGaussianDouble(seed) + mean;
 
         var value = standard * sigma;
 

@@ -31,6 +31,7 @@ public class SolarController : Controller<SolarModel> {
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = model.solar.color;
         transform.localScale = Vector3.one * (float)Mathd.Pow((model.solar.bodyRadius), .02f);
+        sprite.enabled = false;
 
         if (model.isActive)
         {
@@ -44,6 +45,27 @@ public class SolarController : Controller<SolarModel> {
         {
             game.localScaleMod = Mathf.Pow(Camera.main.orthographicSize, .7f) / 90;
             sun.transform.localScale = Vector3.one * (float)Mathd.Pow((model.solar.bodyRadius), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
+
+            for (int i = 0; i < model.solar.satelites.Count; i++)
+            {
+                //planets[i].transform.localScale = Vector3.one * (float)Mathd.Pow((body.bodyRadius), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
+                planets[i].transform.localScale = sun.transform.localScale * .5f;
+
+                LineRenderer line = planets[i].GetComponent<LineRenderer>();
+
+                line.widthMultiplier = planets[i].transform.localScale.x * .3f;
+            }
+            for (int i = 0; i < moons.Count; i++)
+            {
+                SolarBody moon = moonModels[i];
+
+                var visible = CheckVisibility(moon);
+                moons[i].SetActive(visible);
+                LineRenderer line = moons[i].GetComponent<LineRenderer>();
+
+                line.widthMultiplier = moons[i].transform.localScale.x * .3f;
+                moons[i].transform.localScale = sun.transform.localScale * .15f;
+            }
         }
         
         ToggleSystem();
@@ -54,8 +76,6 @@ public class SolarController : Controller<SolarModel> {
     {
         while (model.isActive)
         {
-            
-
             for (int i = 0; i < model.solar.satelites.Count; i++)
             {
                 SolarBody body = model.solar.satelites[i];
@@ -71,17 +91,8 @@ public class SolarController : Controller<SolarModel> {
                     planets[i].SetActive(visible);
 
                     planets[i].transform.position = sun.transform.position + position;
-                    //planets[i].transform.localScale = Vector3.one * (float)Mathd.Pow((body.bodyRadius), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
-                    planets[i].transform.localScale = sun.transform.localScale * .5f;
-
-                    LineRenderer line = planets[i].GetComponent<LineRenderer>();
-
-                    line.widthMultiplier = planets[i].transform.localScale.x * .3f;
                     yield return null;
                 }
-
-                
-
             }
 
             for (int i = 0; i < moons.Count; i++)
@@ -99,15 +110,9 @@ public class SolarController : Controller<SolarModel> {
                     moons[i].SetActive(visible);
                     LineRenderer line = moons[i].GetComponent<LineRenderer>();
 
-                    line.widthMultiplier = moons[i].transform.localScale.x * .3f;
-
                     moons[i].transform.position = position;
-                    //moons[i].transform.localScale = Vector3.one * (float)Mathd.Pow((moon.bodyRadius), solarSpriteScale) * Mathf.Pow(game.localScaleMod, .9f);
-                    moons[i].transform.localScale = sun.transform.localScale * .15f;
 
                     //Creates the line rendering for the orbit of moons
-
-                    line = moons[i].GetComponent<LineRenderer>();
 
                     var positions = new Vector3[361];
 

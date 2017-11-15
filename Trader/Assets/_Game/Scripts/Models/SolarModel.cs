@@ -80,7 +80,7 @@ public class SolarModel : Model {
 
         for (int i = 0; i < numPlanets; i++)
         {
-            double sma = Random.Range((float) (solar.bodyRadius) * 1.1f, (float) (sunSoi * .25));
+            double sma = Random.Range((float) (solar.bodyRadius) * 1.1f, (float) (sunSoi * .1));
             float lpe = Random.Range(0, 2 * Mathf.PI);
 
             float satType = Random.value;
@@ -90,26 +90,26 @@ public class SolarModel : Model {
             SolarSubType planetSubType = SolarSubType.Rocky;
             float ecc = Random.Range(0, .01f);
 
-            if (satType < .4f) //Rock planets
+            if (satType < .3f) //Rock planets
             {
                 
                 planetMass = Random.Range(1f, 100f) * 1e+23;
                 planetDensity = Random.Range(3.5f, 7) * Units.k;
             }
-            else if (satType < .5f) //Gas Giants
+            else if (satType < .4f) //Gas Giants
             {
                 planetDensity = Random.Range(.5f, 3) * Units.k;
                 planetSubType = SolarSubType.GasGiant;
                 planetMass = Random.Range(1, 400) * 1e+25;
             }
-            else if (satType < .7f) //Dwarf Planets
+            else if (satType < .6f) //Dwarf Planets
             {
                 planetType = SolarType.DwarfPlanet;
                 planetDensity = Random.Range(3.5f, 7) * Units.k;
                 planetMass = Random.Range(1, 40) * 1e+21;
                 ecc = Random.Range(0.01f, .5f);
             }
-            else //Meteors
+            else //Comets
             {
                 planetDensity = Random.Range(3.5f, 7) * Units.k;
                 planetType = SolarType.Comet;

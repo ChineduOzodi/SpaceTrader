@@ -60,6 +60,9 @@ public class SolarBody
         surfaceGravity = GameDataModel.G * mass / (radius * radius) / 9.81;
         solarType = SolarType.Star;
         solarSubType = _solarSubType;
+        bondAlebo = .5;
+        surfacePressure = 1;
+        greenhouse = .0137328 * Mathd.Pow(surfacePressure, 2) + .0986267 * surfacePressure;
     }
 
     public SolarBody(string _name, List<int> _solarIndex, SolarType _solarType, SolarSubType _solarSubType, double mass, double radius, Orbit orbit, Color _color, SolarBody star)
@@ -90,7 +93,14 @@ public class SolarBody
             {
                 greenhouse = 0;
             }
-            surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(orbit.sma, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
+            if (solarType == SolarType.Moon)
+            {
+                surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(star.satelites[solarIndex[1]].orbit.sma + orbit.sma, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
+            }
+            else
+            {
+                surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(orbit.sma, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
+            }
 
             var rand = Random.value;
 

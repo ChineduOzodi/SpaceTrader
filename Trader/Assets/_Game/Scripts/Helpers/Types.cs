@@ -81,6 +81,12 @@ public enum SolarSubType
     Ice
 }
 
+public enum VisualDisplay
+{
+    Normal,
+    Temperature
+}
+
 public enum PlanetTileType
 {
     Rocky,

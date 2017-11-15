@@ -779,7 +779,6 @@
     <Compile Include="Assets\_Game\Scripts\Controllers\SolarController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\StationController.cs" />
     <Compile Include="Assets\_Game\Scripts\CoordinatesTest.cs" />
-    <Compile Include="Assets\_Game\Scripts\CustomImageEffect.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\ConstructionComponent.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\Factory.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\GroundStorage.cs" />
@@ -835,6 +834,7 @@
     <Compile Include="Assets\_Game\Scripts\Pathfinding.cs" />
     <Compile Include="Assets\_Game\Scripts\Research.cs" />
     <Compile Include="Assets\_Game\Scripts\SaveLoadOrbitTest.cs" />
+    <Compile Include="Assets\_Game\Scripts\ShaderScripts\NormalGalaxyStarsEffect.cs" />
     <Compile Include="Assets\_Game\Scripts\TradeRouteFinding.cs" />
     <Compile Include="Assets\_Game\Scripts\TradeRouteRequestManager.cs" />
     <Compile Include="Assets\_Game\Scripts\UI\CreateGameManager.cs" />
