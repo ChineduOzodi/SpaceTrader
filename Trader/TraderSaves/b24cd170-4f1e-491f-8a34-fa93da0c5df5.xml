@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b24cd170-4f1e-491f-8a34-fa93da0c5df5</Id>
+  <name>Stion UOY 272</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>1029.4858999815667</x>
+    <y>293.76905116938877</y>
+  </galacticPosition>
+  <color>
+    <r>0.5</r>
+    <g>0.5</g>
+    <b>0.5</b>
+    <a>1</a>
+  </color>
+  <solar>
+    <name>Stion UOY 272 WhiteDwarf</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <population>0</population>
+    <color>
+      <r>1</r>
+      <g>0.9768805</g>
+      <b>0.9480999</b>
+      <a>1</a>
+    </color>
+    <satelites />
+    <solarType>Star</solarType>
+    <solarSubType>WhiteDwarf</solarSubType>
+    <mass>2.1410517617315054E+29</mass>
+    <bodyRadius>47668054.861354135</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>6181</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>3.1348572276165153E+36</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>640.662246677033</surfaceGravity>
+    <solarIndex>
+      <int>271</int>
+    </solarIndex>
+  </solar>
+  <stations />
+  <ships />
+  <nearStars>
+    <Id>c20b85e3-bf7a-4e4b-a2da-62bb3e0d4d45</Id>
+    <Id>ea12f2c9-42e7-439b-8be4-4d7837412ec3</Id>
+    <Id>ea12f2c9-42e7-439b-8be4-4d7837412ec3</Id>
+    <Id>c20b85e3-bf7a-4e4b-a2da-62bb3e0d4d45</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>159.30030513618667</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>271</index>
+</SolarModel>

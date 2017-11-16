@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<GovernmentModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>82668d94-6f6d-4d4f-a817-2ce3701b166c</Id>
+  <name>Stion UOY Government</name>
+  <identityType>Government</identityType>
+  <lineTarget>
+    <x>0</x>
+    <y>0</y>
+    <z>0</z>
+  </lineTarget>
+  <lineColor>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </lineColor>
+  <spriteColor>
+    <r>0.211251467</r>
+    <g>0.066243</g>
+    <b>0.28256622</b>
+    <a>1</a>
+  </spriteColor>
+  <lastUpdated>
+    <time>0.49546011909842491</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.49546011909842491</seconds>
+    <yr>0</yr>
+  </lastUpdated>
+  <location />
+  <orbit>
+    <sma>0</sma>
+    <ecc>0</ecc>
+    <inc>0</inc>
+    <lpe>0</lpe>
+    <lan>0</lan>
+    <mna>0</mna>
+    <eph>0</eph>
+  </orbit>
+  <stations />
+  <ships />
+  <age>
+    <time>17990344.55785827</time>
+    <deltaTime>0.032199893146753311</deltaTime>
+    <season>2</season>
+    <month>6</month>
+    <day>208</day>
+    <hour>5</hour>
+    <minute>19</minute>
+    <seconds>4.557858269661665</seconds>
+    <yr>0</yr>
+  </age>
+  <dateCreated>
+    <time>0.49546011909842491</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.49546011909842491</seconds>
+    <yr>0</yr>
+  </dateCreated>
+  <timeUpdate>0</timeUpdate>
+  <money>0</money>
+  <moneyStats>
+    <title>Money Over Time</title>
+    <xLabel>Time (hours)</xLabel>
+    <yLabel>Money</yLabel>
+  </moneyStats>
+  <moneyChange>0</moneyChange>
+  <solarIndex>0</solarIndex>
+  <parentIndex>0</parentIndex>
+  <owner />
+  <workers>0</workers>
+  <workerCapacity>0</workerCapacity>
+  <capital />
+  <leaders>
+    <Id>72e36b31-67b6-4716-b57e-81c192fa4d95</Id>
+  </leaders>
+  <stars>
+    <Id>296309a7-5d08-42a3-a98f-b051c657bf4b</Id>
+    <Id>379fbb85-bdba-4f45-9923-a2958bb1e636</Id>
+    <Id>e4610447-6814-4081-89ab-bca4ccf1ce9c</Id>
+    <Id>e4610447-6814-4081-89ab-bca4ccf1ce9c</Id>
+    <Id>379fbb85-bdba-4f45-9923-a2958bb1e636</Id>
+    <Id>d8abf01e-9c30-4a69-8713-3d24eebb3226</Id>
+  </stars>
+  <companyAcess />
+  <enemyGovernments />
+</GovernmentModel>

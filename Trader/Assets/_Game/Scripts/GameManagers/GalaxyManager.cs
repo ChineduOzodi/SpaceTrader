@@ -16,6 +16,13 @@ public class GalaxyManager : MonoBehaviour {
     public Canvas buttonInstanceCanvas;
     
     internal List<Canvas> mapButtonCanvases;
+    public float mapButtonCanvasScaleMod = 10;
+    public float galaxyInfluenceMod = .6f;
+    private List<Vector2d> mapButtonStarPositions;
+    public GameObject solarVisualOptions;
+    public GameObject galaxyVisualOptions;
+    public GameObject solarDisplayOptions;
+    public GameObject galaxyDisplayOptions;
 
     
 
@@ -30,6 +37,7 @@ public class GalaxyManager : MonoBehaviour {
     {
         instance = this;
         mapButtonCanvases = new List<Canvas>();
+        
         hyperSpaceShips = new ModelRefs<ShipModel>();
         game = GameManager.instance;
         cam = game.GetComponent<Camera>();
@@ -73,9 +81,10 @@ public class GalaxyManager : MonoBehaviour {
         }
         if (mapCanvas.enabled)
         {
-            foreach (Canvas canvas in mapButtonCanvases)
+            for(int i = 0; i < mapButtonCanvases.Count; i++)
             {
-                canvas.transform.localScale = Vector3.one * Mathf.Pow(cam.orthographicSize, .5f) * 1f;
+                mapButtonCanvases[i].transform.localScale = Vector3.one * (float) Mathd.Pow(game.data.cameraScaleMod, 1f) * mapButtonCanvasScaleMod;
+                mapButtonCanvases[i].transform.position = CameraController.CameraOffsetPoistion(mapButtonStarPositions[i]);
             }
         }
     }
@@ -90,6 +99,11 @@ public class GalaxyManager : MonoBehaviour {
         mapCanvas.enabled = true;
         cam.cullingMask = mapMask;
         game.data.cameraOrth = 100;
+
+        solarDisplayOptions.SetActive(false);
+        solarVisualOptions.SetActive(false);
+        galaxyDisplayOptions.SetActive(true);
+        galaxyVisualOptions.SetActive(true);
 
         if (mapButtonCanvases.Count > 0)
         {
@@ -116,6 +130,10 @@ public class GalaxyManager : MonoBehaviour {
         }
         GameManager.instance.galaxyView = false;
         mapCanvas.enabled = false;
+        solarDisplayOptions.SetActive(true);
+        solarVisualOptions.SetActive(true);
+        galaxyDisplayOptions.SetActive(false);
+        galaxyVisualOptions.SetActive(false);
         cam.cullingMask = solarMask;
     }
 
@@ -126,6 +144,17 @@ public class GalaxyManager : MonoBehaviour {
         SolarView();        
     }
 
+    public void CheckDisplayGovernment()
+    {
+        if (MapTogglePanel.instance.galaxyTerritory.isOn)
+        {
+            SetStarsGovernment();
+        }
+        else
+        {
+            SetStarsRegularColor();
+        }
+    }
 
     public void SetStarsGovernment()
     {
@@ -134,23 +163,23 @@ public class GalaxyManager : MonoBehaviour {
             Destroy(mapButtonCanvases[i].gameObject);
         }
         mapButtonCanvases = new List<Canvas>();
+        mapButtonStarPositions = new List<Vector2d>();
         foreach (SolarModel star in game.data.stars)
         {
             if (star.government.Model == null)
             {
                 star.color = Color.grey;
-                star.localScale = Mathf.Pow(star.governmentInfluence, .6f) + .5f;
             }
             else
             {
                 star.color = star.government.Model.spriteColor;
-                star.localScale = Mathf.Pow(star.governmentInfluence, .6f) + .5f;
                 if (star.isCapital)
                 {
                     Canvas textCanvas = Instantiate(buttonInstanceCanvas, CameraController.CameraOffsetPoistion(star.galacticPosition), Quaternion.identity);
                     Button textButton = textCanvas.GetComponentInChildren<Button>();
                     Text text = textCanvas.GetComponentInChildren<Text>();
                     mapButtonCanvases.Add(textCanvas);
+                    mapButtonStarPositions.Add(star.galacticPosition);
                     text.text = star.government.Model.name;
                     textButton.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(star.government.Model));
                 }

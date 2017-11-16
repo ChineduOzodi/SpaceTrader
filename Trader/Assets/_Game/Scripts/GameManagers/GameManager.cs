@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour {
     {
         //StartCoroutine("UpdateShips", numShipsPerFrame);
         //StartCoroutine("UpdateStations", numStationsPerFrame);
-        //StartCoroutine("UpdateGovernments");
+        StartCoroutine("UpdateGovernments");
         setup = false;
     }
 
@@ -276,27 +276,26 @@ public class GameManager : MonoBehaviour {
                 double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
                 model.age.AddTime(deltaTime);
                 double totalPop = 0;
-                //foreach (SolarBody body in star.solar.satelites)
-                //{
-                //    totalPop += body.population;
-                //    foreach (SolarBody moon in body.satelites)
-                //    {
-                //        totalPop += moon.population;
-                //    }
-                //}
-                //foreach (StationModel station in star.stations)
-                //{
-                //    totalPop += station.population;
-                //}
+                foreach (SolarBody body in star.solar.satelites)
+                {
+                    totalPop += body.population;
+                    foreach (SolarBody moon in body.satelites)
+                    {
+                        totalPop += moon.population;
+                    }
+                }
+                foreach (StationModel station in star.stations)
+                {
+                    totalPop += station.population;
+                }
 
-                //star.governmentInfluence += (totalPop * .001f * (float) data.date.deltaTime) - (star.governmentInfluence * .1f * (float)data.date.deltaTime);
+                star.governmentInfluence += (totalPop * .000000001f * (float) data.date.deltaTime) - (star.governmentInfluence * .0000001f * (float)data.date.deltaTime);
 
                 foreach (SolarModel nearStar in star.nearStars)
                 {
-                    nearStar.governmentInfluence += star.governmentInfluence * .1f * (float) data.date.deltaTime;
-                    star.governmentInfluence -= star.governmentInfluence *.1f * (float) data.date.deltaTime;
-                    if (galaxy.mapButtonCanvases.Count > 0 && galaxyView)
-                        nearStar.localScale = Mathf.Pow(nearStar.governmentInfluence, .6f) + 1f;
+                    nearStar.governmentInfluence += star.governmentInfluence * .0000001f * (float) data.date.deltaTime;
+                    star.governmentInfluence -= star.governmentInfluence *.0000001f * (float) data.date.deltaTime;
+
                     if (nearStar.governmentInfluence > 250 && nearStar.government.Model == null)
                     {
                         nearStar.government.Model = star.government.Model;

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>17229ab6-3772-48ce-bb6c-d8a5d8961b93</Id>
+  <name>Blara 8 199</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>1381.4641778830228</x>
+    <y>-115.85008970995965</y>
+  </galacticPosition>
+  <color>
+    <r>0.07683666</r>
+    <g>0.122599736</g>
+    <b>0.165047541</b>
+    <a>1</a>
+  </color>
+  <solar>
+    <name>Blara 8 199 WhiteDwarf</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <population>0</population>
+    <color>
+      <r>0.6742658</r>
+      <g>0.781169951</g>
+      <b>1</b>
+      <a>1</a>
+    </color>
+    <satelites />
+    <solarType>Star</solarType>
+    <solarSubType>WhiteDwarf</solarSubType>
+    <mass>1.6208312486410139E+30</mass>
+    <bodyRadius>98755635.00383307</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>19263</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>7.2257987865257421E+33</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>1129.9802576329062</surfaceGravity>
+    <solarIndex>
+      <int>198</int>
+    </solarIndex>
+  </solar>
+  <stations />
+  <ships />
+  <nearStars>
+    <Id>cc2a6f0b-7280-4671-8c9b-306b3ba0bf4e</Id>
+    <Id>ae9126ae-0b51-4fcc-9799-9cfe9b9dee78</Id>
+    <Id>dd21f94f-19d8-4dfd-8d31-0b61193e9ddf</Id>
+    <Id>ae9126ae-0b51-4fcc-9799-9cfe9b9dee78</Id>
+  </nearStars>
+  <government>
+    <Id>428c03d1-fe13-4fc2-801d-0d352e777085</Id>
+  </government>
+  <governmentInfluence>6557.1179274945844</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>198</index>
+</SolarModel>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>83e7c21a-7670-4651-a78a-4bf1f97f4eb5</Id>
+  <name>Swosie T7 292</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>-128.85422047039751</x>
+    <y>48.61845518852008</y>
+  </galacticPosition>
+  <color>
+    <r>0.5</r>
+    <g>0.5</g>
+    <b>0.5</b>
+    <a>1</a>
+  </color>
+  <solar>
+    <name>Swosie T7 292 GasGiant</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <population>0</population>
+    <color>
+      <r>0.625799835</r>
+      <g>0.7488247</g>
+      <b>1</b>
+      <a>1</a>
+    </color>
+    <satelites />
+    <solarType>Star</solarType>
+    <solarSubType>GasGiant</solarSubType>
+    <mass>1.7896792197418211E+32</mass>
+    <bodyRadius>6288140351.4234858</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>29219</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>5.3675201133508838E+27</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>30.77425646692695</surfaceGravity>
+    <solarIndex>
+      <int>291</int>
+    </solarIndex>
+  </solar>
+  <stations />
+  <ships />
+  <nearStars>
+    <Id>a1af2851-2e9d-4045-b380-f786054d513b</Id>
+    <Id>0e6c9b36-8e41-49d5-8453-23371a4da2be</Id>
+    <Id>2015ae46-bb9c-4d23-a43b-c542afacc0d5</Id>
+    <Id>0e6c9b36-8e41-49d5-8453-23371a4da2be</Id>
+    <Id>a1af2851-2e9d-4045-b380-f786054d513b</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>291</index>
+</SolarModel>

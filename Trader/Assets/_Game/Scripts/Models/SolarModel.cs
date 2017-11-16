@@ -21,7 +21,7 @@ public class SolarModel : Model {
     public ModelRefs<ShipModel> ships = new ModelRefs<ShipModel>();
     public ModelRefs<SolarModel> nearStars = new ModelRefs<SolarModel>();
     public ModelRef<GovernmentModel> government = new ModelRef<GovernmentModel>();
-    public float governmentInfluence;
+    public double governmentInfluence;
     public bool isCapital;
     public int index;
     internal float localScale;

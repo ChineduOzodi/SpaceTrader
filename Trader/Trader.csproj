@@ -88,6 +88,9 @@
     <Reference Include="PlayMaker">
       <HintPath>Assets\Plugins\PlayMaker\PlayMaker.dll</HintPath>
     </Reference>
+    <Reference Include="Vectrosity">
+      <HintPath>Assets\Plugins\Vectrosity\Vectrosity.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Advanced INI Parser\INIParser.cs" />
@@ -1034,8 +1037,11 @@
     <None Include="Assets\SFSoftShadows\Shaders\SFLightBlendSoft.shader" />
     <None Include="Assets\SFSoftShadows\Shaders\SFShadowMask.shader" />
     <None Include="Assets\SFSoftShadows\Shaders\SFSoftShadow.shader" />
+    <None Include="Assets\Vectrosity 5\Vectrosity 5 Documentation\Vectrosity changelog.txt" />
+    <None Include="Assets\Vectrosity 5\Vectrosity 5 Documentation\Vectrosity5 Upgrade Guide.txt" />
     <None Include="Assets\_Game\Fonts\license.txt" />
     <None Include="Assets\_Game\Shaders\BackgroundEffect.shader" />
+    <None Include="Assets\_Game\Shaders\GalaxyTerritoryEffect.shader" />
     <None Include="Assets\_Game\Shaders\StarLightEffect.shader" />
     <None Include="Assets\_Game\Shaders\StarTemperatureEffect.shader" />
     <None Include="Assets\unity-ui-extensions\Scripts\Utilities\Serialization\Surrogates\SurrogatesReadMe.txt" />

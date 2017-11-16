@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<GovernmentModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>573508ef-78cc-4669-850a-eb23f872e934</Id>
+  <name>Vaiter Government</name>
+  <identityType>Government</identityType>
+  <lineTarget>
+    <x>0</x>
+    <y>0</y>
+    <z>0</z>
+  </lineTarget>
+  <lineColor>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </lineColor>
+  <spriteColor>
+    <r>0.0291864686</r>
+    <g>0.06048331</g>
+    <b>0.224541575</b>
+    <a>1</a>
+  </spriteColor>
+  <lastUpdated>
+    <time>0.42929060198366642</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.42929060198366642</seconds>
+    <yr>0</yr>
+  </lastUpdated>
+  <location />
+  <orbit>
+    <sma>0</sma>
+    <ecc>0</ecc>
+    <inc>0</inc>
+    <lpe>0</lpe>
+    <lan>0</lan>
+    <mna>0</mna>
+    <eph>0</eph>
+  </orbit>
+  <stations />
+  <ships />
+  <age>
+    <time>17990344.017335095</time>
+    <deltaTime>0.040068773552775383</deltaTime>
+    <season>2</season>
+    <month>6</month>
+    <day>208</day>
+    <hour>5</hour>
+    <minute>19</minute>
+    <seconds>4.0173350274562836</seconds>
+    <yr>0</yr>
+  </age>
+  <dateCreated>
+    <time>0.42929060198366642</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.42929060198366642</seconds>
+    <yr>0</yr>
+  </dateCreated>
+  <timeUpdate>0</timeUpdate>
+  <money>0</money>
+  <moneyStats>
+    <title>Money Over Time</title>
+    <xLabel>Time (hours)</xLabel>
+    <yLabel>Money</yLabel>
+  </moneyStats>
+  <moneyChange>0</moneyChange>
+  <solarIndex>0</solarIndex>
+  <parentIndex>0</parentIndex>
+  <owner />
+  <workers>0</workers>
+  <workerCapacity>0</workerCapacity>
+  <capital />
+  <leaders>
+    <Id>130f5073-bd48-4dc0-92c3-221610569f1d</Id>
+  </leaders>
+  <stars>
+    <Id>35a2b1af-1a64-4a42-9ddb-cacb865f0354</Id>
+    <Id>6f986c28-6936-4826-ac51-d30ddf7ed65b</Id>
+    <Id>99355aab-1688-47a7-923b-ed645d7012fc</Id>
+    <Id>6f986c28-6936-4826-ac51-d30ddf7ed65b</Id>
+    <Id>613a830b-4d81-4c5e-83d4-2f521b6ee93e</Id>
+    <Id>c4c9c04c-a5ed-44be-94bb-5ea257851c16</Id>
+  </stars>
+  <companyAcess />
+  <enemyGovernments />
+</GovernmentModel>

@@ -196,7 +196,7 @@ public class Dated
     private string GetSeason()
     {
         string[] seasonNames = new string[4] { "Spring", "Summer", "Fall", "Winter" };
-        return seasonNames[season];
+        return ""; // seasonNames[season];
     }
 
     public static Dated operator -(Dated date1, Dated date2)

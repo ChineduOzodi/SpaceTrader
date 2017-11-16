@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using CodeControl;
 using System;
+using Vectrosity;
 
 public class SolarController : Controller<SolarModel> {
 
@@ -21,6 +22,9 @@ public class SolarController : Controller<SolarModel> {
     private CircleCollider2D circleCollider;
     private float solarSpriteScale = .02f;
     private float moonViewOrthoSize = .001f;
+    //private VectorObject3D line;
+    private VectorLine vectorLine;
+    public Texture lineTexture;
 
     private Vector3 lastCamPosition = Vector3.zero;
     protected override void OnInitialize()
@@ -34,8 +38,16 @@ public class SolarController : Controller<SolarModel> {
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = model.solar.color;
         transform.localScale = Vector3.one;
+        var points = new List<Vector3>();
+        foreach (SolarModel solar in model.nearStars)
+        {
+            points.Add(transform.position);
+            points.Add(CameraController.CameraOffsetPoistion(solar.galacticPosition));
+        }
+        vectorLine = new VectorLine("model.name Connections", points, (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraScaleMod));
+        //line.SetVectorLine(vectorLine, lineTexture, sprite.material);
+        vectorLine.Draw3D();
         sprite.enabled = false;
-
         if (model.isActive)
         {
             CreateSystem();
@@ -116,6 +128,57 @@ public class SolarController : Controller<SolarModel> {
             if (game.data.cameraOrth > 15)
             {
                 galaxy.GalaxyView();
+            }
+        }
+        else
+        {
+            if (transform.position.sqrMagnitude < 40000)
+            {
+                if (MapTogglePanel.instance.galaxyConnections.isOn)
+                {
+                    var points = new List<Vector3>();
+                    foreach (SolarModel solar in model.nearStars)
+                    {
+                        points.Add(transform.position);
+                        points.Add(CameraController.CameraOffsetPoistion(solar.galacticPosition));
+                    }
+                    vectorLine.points3 = points;
+                    vectorLine.SetWidth((float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraScaleMod) * 5);
+                    if (MapTogglePanel.instance.galaxyTerritory.isOn)
+                    {
+                        if (model.government.Model != null)
+                        {
+                            var govModel = model.government.Model;
+                            vectorLine.color = new Color32((byte)(govModel.spriteColor.r * 255), (byte)(govModel.spriteColor.g * 255), (byte)(govModel.spriteColor.b * 255), 50);
+                        }
+                        else
+                        {
+                            vectorLine.color = new Color32((byte)(50), (byte)(50), (byte)(50), 10);
+                        }
+                        
+                    }
+                    else
+                    {
+                        vectorLine.color = new Color32((byte)(model.solar.color.r * 255), (byte)(model.solar.color.g * 255), (byte)(model.solar.color.b * 255), 10);
+                    }
+                    vectorLine.Draw3D();
+                }
+                else
+                {
+                    if (vectorLine.lineWidth != 0)
+                    {
+                        vectorLine.SetWidth(0);
+                        vectorLine.Draw3D();
+                    }
+                }
+            }
+            else
+            {
+                if (vectorLine.lineWidth != 0)
+                {
+                    vectorLine.SetWidth(0);
+                    vectorLine.Draw3D();
+                }
             }
         }
         

@@ -64,78 +64,80 @@ public class CreateGameManager : MonoBehaviour {
 
             GameManager.instance.setup = false;
             yield return null;
-            //for (int a = 0; a < numGov; a++)
-            //{
-            //    //Create Government
-            //    loadingText.text = "Creating Governments...";
-            //    ModelRefs<CreatureModel> leaders = new ModelRefs<CreatureModel>();
-            //    CreatureModel leader = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
-            //    leaders.Add(leader);
-            //    GovernmentModel gov = new GovernmentModel(names.GenerateWorldName() + " Government", leaders);
+            for (int a = 0; a < numGov; a++)
+            {
+                //Create Government
+                loadingText.text = "Creating Governments...";
+                ModelRefs<CreatureModel> leaders = new ModelRefs<CreatureModel>();
+                CreatureModel leader = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
+                leaders.Add(leader);
+                GovernmentModel gov = new GovernmentModel(names.GenerateWorldName() + " Government", leaders);
 
-            //    //Location
-            //    int solarIndex = FindGovernmentStar(gov);
-            //    int planetIndex = Random.Range(0, game.data.stars[solarIndex].planets.Length);
-            //    SolarBody parent;
-            //    if (game.data.stars[solarIndex].planets.Length > 0)
-            //        parent = game.data.stars[solarIndex].planets[planetIndex];
-            //    else
-            //        parent = game.data.stars[solarIndex].sun;
-            //    Polar2d position = new Polar2d(UnityEngine.Random.Range((float)parent.bodyRadius + 2, (float)parent.orbit.soi), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-            //    if (parent.planetType == PlanetType.Regular)
-            //    {
-            //        position = new Polar2d(0, 0);
-            //        parent.population = UnityEngine.Random.Range(1000, 100000);
-            //    }
+                //Location
+                int solarIndex = FindGovernmentStar(gov);
+                int planetIndex = 0;
+                SolarBody parent;
+                foreach (SolarBody body in game.data.stars[solarIndex].solar.satelites)
+                {
+                    if (body.solarSubType != SolarSubType.GasGiant)
+                    {
+                        parent = game.data.stars[solarIndex].solar.satelites[planetIndex];
+                        parent.population = UnityEngine.Random.Range(1000000, 1000000000);
+                        break; //TODO: Fix the possible bug where there is only a gas giant in the system and no suitable alternatives
+                    }
+                    
+                }
 
-            //    //Add Government Capital
+                
 
-            //    StationModel station = StationCreator.CreateStation(gov.name + " Capital", game.data.stars[solarIndex], parent.index, parent.orbit, gov, leader);
-            //    station.population = 5;
+                //    //Add Government Capital
 
-            //    //location
-            //    gov.location.Model = station;
-            //    gov.orbit = station.orbit;
-            //    gov.stations.Add(station);
-            //    for (int c = 0; c < numComp; c++)
-            //    {
-            //        CreatureModel owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
-            //        CompanyModel comp = new CompanyModel(names.GenerateRegionName() + " Company", gov, owner);
-            //        gov.companyAcess.Add(comp);
-            //        comp.governmentAccess.Add(gov);
-            //        game.data.creatures.Add(owner);
-            //        game.data.companies.Add(comp);
-            //        //Add Company Headquarter Station
-            //        solarIndex = UnityEngine.Random.Range(0, gov.stars.Count);
-            //        planetIndex = UnityEngine.Random.Range(0, gov.stars[solarIndex].planets.Length);
-            //        if (gov.stars[solarIndex].planets.Length > 0)
-            //            parent = gov.stars[solarIndex].planets[planetIndex];
-            //        else
-            //            parent = gov.stars[solarIndex].sun;
+                //    StationModel station = StationCreator.CreateStation(gov.name + " Capital", game.data.stars[solarIndex], parent.index, parent.orbit, gov, leader);
+                //    station.population = 5;
 
-            //        position = new Polar2d(UnityEngine.Random.Range( (float) parent.bodyRadius * 1.2f, (float) parent.orbit.soi), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-            //        CreatureModel manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
-            //        station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", gov.stars[solarIndex], parent.index, parent.orbit, comp, manager);
-            //        comp.stations.Add(station);
-            //        game.data.creatures.Add(manager);
-            //        game.data.stations.Add(station);
+                //    //location
+                //    gov.location.Model = station;
+                //    gov.orbit = station.orbit;
+                //    gov.stations.Add(station);
+                //    for (int c = 0; c < numComp; c++)
+                //    {
+                //        CreatureModel owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
+                //        CompanyModel comp = new CompanyModel(names.GenerateRegionName() + " Company", gov, owner);
+                //        gov.companyAcess.Add(comp);
+                //        comp.governmentAccess.Add(gov);
+                //        game.data.creatures.Add(owner);
+                //        game.data.companies.Add(comp);
+                //        //Add Company Headquarter Station
+                //        solarIndex = UnityEngine.Random.Range(0, gov.stars.Count);
+                //        planetIndex = UnityEngine.Random.Range(0, gov.stars[solarIndex].planets.Length);
+                //        if (gov.stars[solarIndex].planets.Length > 0)
+                //            parent = gov.stars[solarIndex].planets[planetIndex];
+                //        else
+                //            parent = gov.stars[solarIndex].sun;
 
-            //        //--------------Create Ships---------------------------//
-            //        for (int i = 0; i < numShip; i++)
-            //        {
-            //            StationModel startStation = station;
-            //            manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000);
-            //            ShipModel ship = ShipCreator.CreateShip(comp.name + " Ship " + i, startStation.solarIndex, startStation.parentIndex, startStation.orbit, comp, manager);
-            //            game.data.ships.Add(ship);
-            //            game.data.creatures.Add(manager);
-            //            //loadingText.text = string.Format("Creating ships: {0} of {1}", i, numShip);
+                //        position = new Polar2d(UnityEngine.Random.Range( (float) parent.bodyRadius * 1.2f, (float) parent.orbit.soi), UnityEngine.Random.Range(0, 2 * Mathf.PI));
+                //        CreatureModel manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
+                //        station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", gov.stars[solarIndex], parent.index, parent.orbit, comp, manager);
+                //        comp.stations.Add(station);
+                //        game.data.creatures.Add(manager);
+                //        game.data.stations.Add(station);
 
-            //        }
-            //        yield return null;
-            //    }
-            //    loadingProgress.value = .5f + a / numGov * .5f;
-            //    yield return null;
-            //}
+                //        //--------------Create Ships---------------------------//
+                //        for (int i = 0; i < numShip; i++)
+                //        {
+                //            StationModel startStation = station;
+                //            manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000);
+                //            ShipModel ship = ShipCreator.CreateShip(comp.name + " Ship " + i, startStation.solarIndex, startStation.parentIndex, startStation.orbit, comp, manager);
+                //            game.data.ships.Add(ship);
+                //            game.data.creatures.Add(manager);
+                //            //loadingText.text = string.Format("Creating ships: {0} of {1}", i, numShip);
+
+                //        }
+                //        yield return null;
+                //    }
+                loadingProgress.value = .5f + a / numGov * .5f;
+                yield return null;
+            }
             //Sets menu and loading panel to inactive and starts the game
             loadingText.text = "Done";
             loadingPanel.SetActive(false);
@@ -157,23 +159,54 @@ public class CreateGameManager : MonoBehaviour {
             game.data.stars.Add(star);
         }
 
+        //for (int i = 0; i < game.data.stars.Count; i++) //Checking the distance to each already generated star and then adding it to a list of near stars if close enough
+        //{
+
+        //    for (int c = 0; c < game.data.stars.Count; c++) //Checking the distance to each already generated star and then adding it to a list of near stars if close enough
+        //    {
+        //        if (c != i)
+        //        {
+        //            double maxDist = 200;
+        //            double actualDist = Vector3d.Distance(game.data.stars[i].galacticPosition, game.data.stars[c].galacticPosition);
+        //            if (actualDist < maxDist)
+        //            {
+        //                game.data.stars[i].nearStars.Add(game.data.stars[c]);
+        //                game.data.stars[c].nearStars.Add(game.data.stars[i]);
+        //            }
+        //        }
+
+        //    }
+        //}
+
+       
+
         for (int i = 0; i < game.data.stars.Count; i++) //Checking the distance to each already generated star and then adding it to a list of near stars if close enough
         {
-
+            SolarModel closestStar1 = new SolarModel();
+            double distance1 = 0;
+            SolarModel closestStar2 = new SolarModel();
             for (int c = 0; c < game.data.stars.Count; c++) //Checking the distance to each already generated star and then adding it to a list of near stars if close enough
             {
                 if (c != i)
                 {
-                    double maxDist = 20 * GameDataModel.galaxyDistanceMultiplication;
                     double actualDist = Vector3d.Distance(game.data.stars[i].galacticPosition, game.data.stars[c].galacticPosition);
-                    if (actualDist < maxDist)
+                    if (distance1 == 0)
                     {
-                        game.data.stars[i].nearStars.Add(game.data.stars[c]);
-                        game.data.stars[c].nearStars.Add(game.data.stars[i]);
+                        closestStar1 = game.data.stars[c];
+                        distance1 = actualDist;
+                    }
+                    else if (actualDist < distance1)
+                    {
+                        closestStar2 = closestStar1;
+                        closestStar1 = game.data.stars[c];
+                        distance1 = actualDist;
                     }
                 }
-                
             }
+            game.data.stars[i].nearStars.Add(closestStar1);
+            closestStar1.nearStars.Add(game.data.stars[i]);
+            game.data.stars[i].nearStars.Add(closestStar2);
+            closestStar2.nearStars.Add(game.data.stars[i]);
         }
         float connectedness = 0;
         for (int i = 0; i < count; i++)
@@ -216,7 +249,7 @@ public class CreateGameManager : MonoBehaviour {
         }
     }
     /// <summary>
-    /// Finds a space in the galazy for a new government,and then sets the stars as that government's space
+    /// Finds a space in the galaxy for a new government,and then sets the stars as that government's space
     /// </summary>
     /// <param name="model">The government model to set</param>
     /// <returns></returns>
@@ -227,7 +260,7 @@ public class CreateGameManager : MonoBehaviour {
         {
             int index = UnityEngine.Random.Range(0, game.data.stars.Count);
 
-            if (game.data.stars[index].government.Model == null)
+            if (game.data.stars[index].government.Model == null && game.data.stars[index].solar.satelites.Count > 0)
             {
                 bool freeSpace = true;
                 foreach (SolarModel star in game.data.stars[index].nearStars)
@@ -254,8 +287,7 @@ public class CreateGameManager : MonoBehaviour {
             outTime++;
             if (outTime > 1000)
             {
-                print("Find Star timed out");
-                return -1;
+                throw new System.Exception("Could not find solar sytem to put government");
             }
         }
     }

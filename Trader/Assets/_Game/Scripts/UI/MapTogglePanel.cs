@@ -18,8 +18,15 @@ public class MapTogglePanel : MonoBehaviour {
     public Toggle comet;
     public Toggle asteroid;
     public Toggle ocean;
-    public Toggle normalVisual;
+    public Toggle solarNormalVisual;
     public Toggle temperatureVisual;
+
+    //Toggle Options for Galaxy
+    public Toggle galaxyNormalVisual;
+    public Toggle galaxyTerritory;
+    public Toggle galaxyShips;
+    public Toggle galaxyConnections;
+
 
     internal Dictionary<SolarSubType, Toggle> subtypes;
     internal Dictionary<VisualDisplay, Toggle> visualDisplay;
@@ -42,7 +49,7 @@ public class MapTogglePanel : MonoBehaviour {
         subtypes.Add(SolarSubType.Ocean, ocean);
 
         visualDisplay = new Dictionary<VisualDisplay, Toggle>();
-        visualDisplay.Add(VisualDisplay.Normal, normalVisual);
+        visualDisplay.Add(VisualDisplay.Normal, solarNormalVisual);
         visualDisplay.Add(VisualDisplay.Temperature, temperatureVisual);
     }
 	
