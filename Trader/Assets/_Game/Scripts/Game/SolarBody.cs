@@ -11,7 +11,8 @@ public class SolarBody
     public Orbit orbit;
     public double mass { get; set; }
     public double bodyRadius { get; set; }
-    
+    public Vector2d lastKnownPosition { get; private set; }
+    public Vector2d[] approximatePositions {get; private set;}
     //-----------------Star Properties---------------------//
     public double surfaceTemp { get; private set; }
     public double surfacePressure { get; private set; }
@@ -307,11 +308,11 @@ public class SolarBody
 
     public SolarBody() { }
 
-    public Vector3 GamePosition(double time)
+    public Vector2d GamePosition(double time)
     {
         if (orbit.sma == 0)
         {
-            return Vector3.zero;
+            return Vector3d.zero;
         }
 
         double parentMass;
@@ -332,9 +333,24 @@ public class SolarBody
         var pos = new Vector3d(orbit.sma * (Mathd.Cos(ena) - orbit.ecc), orbit.sma * Mathd.Sqrt(1 - (orbit.ecc * orbit.ecc)) * Mathd.Sin(ena));
         var pol = new Polar2d(pos);
         pol.angle += orbit.lpe;
-        var pos2 = (Vector2)(pol.cartesian / GameDataModel.solarDistanceMultiplication);
+        var pos2 = (pol.cartesian / GameDataModel.galaxyDistanceMultiplication); //Used to set the scale of the positioning of the solar systems
+        lastKnownPosition = pos2;
         return pos2;
+    }
 
+    public Vector2d SetOrbit(double time, double orbitedObjectMass)
+    {
+        approximatePositions = new Vector2d[361];
+
+        double timeInc = (OrbitalPeriod(orbitedObjectMass) / 360);
+
+        for (var b = 0; b < 361; b++)
+        {
+            approximatePositions[b] = GamePosition(time);
+            time += timeInc;
+        }
+
+        return lastKnownPosition;
     }
 
     private Vector3d Position(double time)

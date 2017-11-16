@@ -8,6 +8,7 @@ Shader "Solar/StarTemperatureEffect"
 		_StarPosition ("Star Position", Vector) = (0,0,0,0)
 		_StarTemperature ("Star Temperature", float) = 0.0
 		_StarLum ("Star Luminosity", float) = 0.0
+		_CameraOrtho ("Camera OrthoParams", float) = 0.0
 		_BondAlebo ("Bond Alebo", float) = 0.0
 		_Greenhouse ("Greenhouse Effect", float) = 0.0
 		_DistanceMod ("Distance Modifier", float) = 0.0
@@ -55,6 +56,7 @@ Shader "Solar/StarTemperatureEffect"
 			float _BondAlebo;
 			float _Greenhouse;
 			float _DistanceMod;
+			float _CameraOrtho;
 			float4 _HotColor;
 			float4 _SafeColor;
 			float4 _ColdColor;
@@ -62,11 +64,16 @@ Shader "Solar/StarTemperatureEffect"
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, i.uv);
-				float distance = sqrt(
-				pow((_StarPosition.x - (_WorldSpaceCameraPos.x + ((i.uv.x - .5) * unity_OrthoParams.x * 2))), 2)
-				+ pow((_StarPosition.y - (_WorldSpaceCameraPos.y + ((i.uv.y - .5) * unity_OrthoParams.y * 2))), 2));
+				float distance = _StarPosition.x - ((_WorldSpaceCameraPos.x + ((i.uv.x - .5) * unity_OrthoParams.x * 2)));
+				distance = pow(distance, 2);
+				distance += pow(_StarPosition.y - ((_WorldSpaceCameraPos.y + ((i.uv.y - .5) * unity_OrthoParams.y * 2))), 2);
+				distance = sqrt(distance);
 
-				float temp = pow(((1 - _BondAlebo) * _StarLum) / ((16 * 3.14159 * 5.6705e-8) * pow(distance * _DistanceMod, 2)), .25) * pow((1 + .438 * _Greenhouse * .9), .25) - 273.15;
+				float temp = pow(((1 - _BondAlebo) * _StarLum) / ((16 * 3.14159 * 5.6705e-8) * pow(distance *  _DistanceMod * _CameraOrtho *.01, 2) ), .25) * pow((1 + .438 * _Greenhouse * .9), .25) - 273.15;
+				float4 tempColor = (_HotColor * (1 - col) * temp / 120);
+				tempColor += (_SafeColor * (1 - col));
+				tempColor += (_ColdColor * (1 - col) * temp / -50);
+				return col + tempColor;
 				if (temp > 120){
 					return col + (_HotColor * (1 - col));
 				}

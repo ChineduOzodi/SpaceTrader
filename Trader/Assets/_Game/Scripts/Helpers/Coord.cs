@@ -20,6 +20,11 @@ public struct Coord
         x = (int) vect.x;
         y = (int) vect.y;
     }
+    public Coord(Vector2d vect)
+    {
+        x = (int)vect.x;
+        y = (int)vect.y;
+    }
 
     /// <summary>
     /// Creates Coord from Vector

@@ -93,7 +93,7 @@ public class StationController : Controller<StationModel> {
             //line.SetPositions(orbitPos);
         }
         //transform.position = (Vector2)model.GamePosition(game.data.date.time);
-        transform.localScale = Vector3.one * .1f * (float) (model.money / 1000000f + .5f) * Mathf.Pow(game.localScaleMod, 1.7f);
+        transform.localScale = Vector3.one * .1f * (float) ((model.money / 1000000f + .5f) * Mathd.Pow(game.data.cameraScaleMod, 1.7f));
     }
 
     public string GetInfo()

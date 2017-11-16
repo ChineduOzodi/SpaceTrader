@@ -9,12 +9,21 @@ public class GameDataModel : Model {
     public string galaxyName;
     public Dated date = new Dated();
     public static double G = 6.67e-11;
-    public static double galaxyDistanceMultiplication = 9.461e+15; // Lightyear.
+    public static double galaxyDistanceMultiplication = 9.461e+15 / 10; // Lightyear.
     public static string galaxyDistanceUnit = "ly";
     public static double solarDistanceMultiplication = Units.M * 100;
     public static string solarDistanceUnit = "Mm";
     public static double sunMassMultiplication = 1.969e+30;
     public static string sunMassUnit = @"M\u+0298";
+
+    //Camera
+    public Vector2d cameraPosition = Vector2d.zero;
+    public double cameraOrth = 100;
+    public double cameraScaleMod = 1;
+    public double distanceDivision = 9.461e+15; // Lightyear.
+
+    public static float galaxyCameraScaleMax = 5000;
+
     public ModelRefs<SolarModel> stars = new ModelRefs<SolarModel>();
     public ModelRefs<ShipModel> ships = new ModelRefs<ShipModel>();
     public ModelRefs<StationModel> stations = new ModelRefs<StationModel>();

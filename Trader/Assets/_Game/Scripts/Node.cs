@@ -5,7 +5,7 @@ using UnityEngine;
 public class Node : IHeapItem<Node>
 {
     public float walkSpeed;
-    public Vector3 worldPosition;
+    public Vector3d worldPosition;
     public Coord coord;
     /// <summary>
     /// Used to trace back path
@@ -13,7 +13,7 @@ public class Node : IHeapItem<Node>
     public Node parent;
     public List<Node> neighbors;
     public int index;
-    public float distance;
+    public double distance;
     public float gCost; //cost from node position to the start node
     public float hCost; //cost from the node position to the target node
     int heapIndex;
@@ -35,7 +35,7 @@ public class Node : IHeapItem<Node>
             heapIndex = value;
         }
     }
-    public Node(int _index, float _walkSpeed, Vector3 _worldPosition)
+    public Node(int _index, float _walkSpeed, Vector3d _worldPosition)
     {
         index = _index;
         walkSpeed = _walkSpeed;
@@ -55,14 +55,14 @@ public class Node : IHeapItem<Node>
 
     internal static Node NodeFromStar(int index, ModelRefs<SolarModel> stars)
     {
-        Node node = new Node(index, 1, stars[index].galacticPosition);
+        Node node = new Node(index, 1, stars[index].galacticPosition * GameDataModel.galaxyDistanceMultiplication);
         node.index = index;
         return node;
     }
 
-    public static float GetDistance(Node nodeA, Node nodeB)
+    public static double GetDistance(Node nodeA, Node nodeB)
     {
 
-        return Vector3.Distance(nodeA.worldPosition, nodeB.worldPosition);
+        return Vector3d.Distance(nodeA.worldPosition, nodeB.worldPosition);
     }
 }

@@ -14,7 +14,7 @@ public class SolarModel : Model {
     /// <summary>
     /// position in galaxy in light years
     /// </summary>
-    public Vector3 galacticPosition;
+    public Vector2d galacticPosition;
     public Color color;
     public SolarBody solar;
     public ModelRefs<StationModel> stations = new ModelRefs<StationModel>();
@@ -28,10 +28,10 @@ public class SolarModel : Model {
 
     public SolarModel() { }
 
-    public SolarModel(string _name, int _index, Vector3 _position, Gradient sunSizeColor)
+    public SolarModel(string _name, int _index, Vector2d _position, Gradient sunSizeColor)
     {
         name = _name;
-        galacticPosition = _position;
+        galacticPosition = _position * 10;
         index = _index;
 
         // Create star
@@ -180,5 +180,9 @@ public class SolarModel : Model {
             }
             
         }
+    }
+    public double GetModifiedRadius(float scale)
+    {
+        return (Mathd.Pow((solar.bodyRadius),scale) * Camera.main.orthographicSize / GameManager.instance.data.cameraOrth);
     }
 }

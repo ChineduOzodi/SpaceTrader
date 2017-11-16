@@ -21,7 +21,7 @@ public class GalaxyManager : MonoBehaviour {
 
     private GameObject selectedObj;
     private Camera cam;
-    internal SolarController solar;
+    internal SolarModel solarModel;
 
     internal ModelRefs<ShipModel> hyperSpaceShips;
     internal static GalaxyManager instance;
@@ -49,8 +49,8 @@ public class GalaxyManager : MonoBehaviour {
                     selectedObj = hit.transform.gameObject;
                     if (selectedObj.tag == "solar")
                     {
-                        solar = selectedObj.GetComponent<SolarController>();
-                        SolarView();
+                        solarModel = selectedObj.GetComponent<SolarController>().GetModel();
+                        GoToSolarView();
                         
                         
                     }
@@ -58,12 +58,18 @@ public class GalaxyManager : MonoBehaviour {
                 }
             }
         }
+        if (game.data.cameraOrth < 10 && CameraController.ClosestSolar() != solarModel)
+        {
+            solarModel = CameraController.ClosestSolar();
+            SolarView();
+        }
+
         if (Input.GetKeyDown(KeyCode.M))
         {
             if (cam.cullingMask == solarMask)
                 GalaxyView();
             else
-                SolarView();         
+                GoToSolarView();         
         }
         if (mapCanvas.enabled)
         {
@@ -83,9 +89,7 @@ public class GalaxyManager : MonoBehaviour {
         GameManager.instance.galaxyView = true;
         mapCanvas.enabled = true;
         cam.cullingMask = mapMask;
-        if (solar != null)
-            transform.position = new Vector3(solar.transform.position.x, solar.transform.position.y, -10);
-        cam.orthographicSize = 100;
+        game.data.cameraOrth = 100;
 
         if (mapButtonCanvases.Count > 0)
         {
@@ -113,12 +117,17 @@ public class GalaxyManager : MonoBehaviour {
         GameManager.instance.galaxyView = false;
         mapCanvas.enabled = false;
         cam.cullingMask = solarMask;
-        transform.position = new Vector3(0, 0, -10);
-        cam.orthographicSize = 800000;
     }
 
-    
-	public void SetStarsGovernment()
+    public void GoToSolarView()
+    {
+        game.data.cameraPosition = solarModel.galacticPosition;
+        game.data.cameraOrth = .01;
+        SolarView();        
+    }
+
+
+    public void SetStarsGovernment()
     {
         for (int i = 0; i < mapButtonCanvases.Count; i++)
         {
@@ -138,7 +147,7 @@ public class GalaxyManager : MonoBehaviour {
                 star.localScale = Mathf.Pow(star.governmentInfluence, .6f) + .5f;
                 if (star.isCapital)
                 {
-                    Canvas textCanvas = Instantiate(buttonInstanceCanvas, star.galacticPosition, Quaternion.identity);
+                    Canvas textCanvas = Instantiate(buttonInstanceCanvas, CameraController.CameraOffsetPoistion(star.galacticPosition), Quaternion.identity);
                     Button textButton = textCanvas.GetComponentInChildren<Button>();
                     Text text = textCanvas.GetComponentInChildren<Text>();
                     mapButtonCanvases.Add(textCanvas);

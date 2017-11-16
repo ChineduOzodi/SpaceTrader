@@ -44,7 +44,7 @@ public class Pathfinding : MonoBehaviour
                 if (n != null)
                 {
                     Gizmos.color = new Color(n.fCost / 100f, 1, 1, .8f);
-                    Gizmos.DrawCube(n.worldPosition, Vector3.one);
+                    Gizmos.DrawCube(CameraController.CameraOffsetPoistion(n.worldPosition / GameDataModel.galaxyDistanceMultiplication), Vector3.one);
                 }
 
 
@@ -105,11 +105,11 @@ public class Pathfinding : MonoBehaviour
                         continue;
                     }
 
-                    float newMovementCostToNeighbor = currentNode.gCost + Node.GetDistance(currentNode, neighbor) / (currentNode.walkSpeed);
+                    double newMovementCostToNeighbor = currentNode.gCost + Node.GetDistance(currentNode, neighbor) / (currentNode.walkSpeed);
                     if (newMovementCostToNeighbor < neighbor.gCost || !openSet.Contains(neighbor))
                     {
-                        neighbor.gCost = newMovementCostToNeighbor;
-                        neighbor.hCost = Node.GetDistance(neighbor, targetNode);
+                        neighbor.gCost = (float) newMovementCostToNeighbor;
+                        neighbor.hCost = (float) Node.GetDistance(neighbor, targetNode);
                         neighbor.parent = currentNode;
 
                         if (!openSet.Contains(neighbor))

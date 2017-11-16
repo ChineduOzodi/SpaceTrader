@@ -151,8 +151,8 @@ public class CreateGameManager : MonoBehaviour {
         for (int i = 0; i < count; i++)
         {
 
-            Vector2 position = new Vector2((float) random.NextDouble() * mapField.x * 2 - mapField.x * .5f, (float)random.NextDouble() * mapField.y * 2 - mapField.y * .5f);
-            position = new Vector2((float)NormalizedRandom(-mapField.x * .5f, mapField.x * .5f, random.NextDouble()), (float)NormalizedRandom(-mapField.y * .5f, mapField.y * .5f, random.NextDouble()));
+            Vector2d position = new Vector2d((float) random.NextDouble() * mapField.x * 2 - mapField.x * .5f, (float)random.NextDouble() * mapField.y * 2 - mapField.y * .5f);
+            position = new Vector2d((float)NormalizedRandom(-mapField.x * .5f, mapField.x * .5f, random.NextDouble()), (float)NormalizedRandom(-mapField.y * .5f, mapField.y * .5f, random.NextDouble()));
             SolarModel star = new SolarModel(names.GenerateWorldName(random.Next().ToString()) + " " + (i + 1),i , position, sunSizeColor);
             game.data.stars.Add(star);
         }
@@ -165,7 +165,7 @@ public class CreateGameManager : MonoBehaviour {
                 if (c != i)
                 {
                     double maxDist = 20 * GameDataModel.galaxyDistanceMultiplication;
-                    double actualDist = Vector3.Distance(game.data.stars[i].galacticPosition, game.data.stars[c].galacticPosition);
+                    double actualDist = Vector3d.Distance(game.data.stars[i].galacticPosition, game.data.stars[c].galacticPosition);
                     if (actualDist < maxDist)
                     {
                         game.data.stars[i].nearStars.Add(game.data.stars[c]);
@@ -184,7 +184,7 @@ public class CreateGameManager : MonoBehaviour {
             {
                 if (c != i)
                 {
-                    float actualDist = Vector3.Distance(game.data.stars[i].galacticPosition, game.data.stars[c].galacticPosition);
+                    float actualDist = (float) Vector3d.Distance(game.data.stars[i].galacticPosition, game.data.stars[c].galacticPosition);
                     if (actualDist < closestStarDist)
                     {
                         closestStarDist = actualDist;

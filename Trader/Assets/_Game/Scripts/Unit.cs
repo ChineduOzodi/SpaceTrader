@@ -45,7 +45,7 @@ public class Unit : MonoBehaviour {
             
             for (int i = 0; i < path.Length; i++)
             {
-                line.SetPosition(1 + i, path[i].worldPosition);
+                //line.SetPosition(1 + i, path[i].worldPosition);
             }
 
             StopCoroutine("FollowPath");
@@ -64,30 +64,30 @@ public class Unit : MonoBehaviour {
         targetIndex = 0;
         while (true)
         {
-            if (transform.position == currentWaypoint.worldPosition)
-            {
-                currentIndex = currentWaypoint.index;
-                targetIndex++;
-                if (targetIndex >= path.Length)
-                {
-                    ship.HyperSpaceDone();
-                    yield break;
-                }
-                currentWaypoint = path[targetIndex];
+            //if (transform.position == currentWaypoint.worldPosition)
+            //{
+            //    currentIndex = currentWaypoint.index;
+            //    targetIndex++;
+            //    if (targetIndex >= path.Length)
+            //    {
+            //        ship.HyperSpaceDone();
+            //        yield break;
+            //    }
+            //    currentWaypoint = path[targetIndex];
                 
-                //update linerenderer
-                line.positionCount--;
-                line.SetPosition(0, transform.position);
+            //    //update linerenderer
+            //    line.positionCount--;
+            //    line.SetPosition(0, transform.position);
 
-                for (int i = targetIndex; i < path.Length; i++)
-                {
-                    line.SetPosition(1 + i - targetIndex, path[i].worldPosition);
-                }
-                yield return new WaitForSeconds(5);
-            }
+            //    for (int i = targetIndex; i < path.Length; i++)
+            //    {
+            //        line.SetPosition(1 + i - targetIndex, path[i].worldPosition);
+            //    }
+            //    yield return new WaitForSeconds(5);
+            //}
 
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.worldPosition, speed * Time.deltaTime);
-            line.SetPosition(0, transform.position);
+            //transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.worldPosition, speed * Time.deltaTime);
+            //line.SetPosition(0, transform.position);
             yield return null;
         }
     }

@@ -83,7 +83,7 @@ public class ShipController : Controller<ShipModel>
                 sprite.enabled = true;
                 line.enabled = true;
 
-                transform.localScale = Vector3.one * (model.capacity / 200f + .5f) * Mathf.Pow(game.localScaleMod, 1.7f) * .1f;
+                transform.localScale = Vector3.one *(float)( (model.capacity / 200f + .5f) * Mathd.Pow(game.data.cameraScaleMod, 1.7f) * .1f);
                 //Set orbit outline
                 //line.startWidth = transform.localScale.x * .3f;
                 //line.endWidth = transform.localScale.x * .3f;
@@ -106,7 +106,7 @@ public class ShipController : Controller<ShipModel>
         {
             model.hyperSpace = true;
             gameObject.layer = mapMask;
-            transform.position = game.data.stars[model.solarIndex].galacticPosition;
+            transform.position = CameraController.CameraOffsetPoistion(game.data.stars[model.solarIndex].galacticPosition);
             unit.HyperSpaceTravel(model.solarIndex, solarIndex, model.speed);
 
             SolarBody parent = game.data.stars[solarIndex].solar;

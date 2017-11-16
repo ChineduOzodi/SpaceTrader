@@ -633,7 +633,7 @@ public class GameManager : MonoBehaviour {
         {
             galaxyView = true;
             galaxy.GalaxyView();
-            transform.position = new Vector3(data.stars[model.solarIndex].galacticPosition.x, data.stars[model.solarIndex].galacticPosition.y, -10);
+            //transform.position = new Vector3(CameraController.CameraOffsetPoistion(data.stars[model.solarIndex].galacticPosition).x, CameraController.CameraOffsetPoistion(data.stars[model.solarIndex].galacticPosition).y, -10);
 
         }
     }
@@ -641,7 +641,7 @@ public class GameManager : MonoBehaviour {
     {
         galaxyView = true;
         galaxy.GalaxyView();
-        transform.position = new Vector3(model.galacticPosition.x, model.galacticPosition.y, -10);
+        //transform.position = new Vector3(CameraController.CameraOffsetPoistion(model.galacticPosition).x, CameraController.CameraOffsetPoistion(model.galacticPosition).y, -10);
     }
     private void OnFindRouteFinished(ShipModel model, Items buyItem, StructureModel[] targets, bool success)
     {
