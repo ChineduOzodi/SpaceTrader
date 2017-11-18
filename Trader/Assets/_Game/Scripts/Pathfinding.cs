@@ -44,7 +44,7 @@ public class Pathfinding : MonoBehaviour
                 if (n != null)
                 {
                     Gizmos.color = new Color(n.fCost / 100f, 1, 1, .8f);
-                    Gizmos.DrawCube(CameraController.CameraOffsetPoistion(n.worldPosition / GameDataModel.galaxyDistanceMultiplication), Vector3.one);
+                    Gizmos.DrawCube(CameraController.CameraOffsetGalaxyPosition(n.worldPosition / GameDataModel.galaxyDistanceMultiplication), Vector3.one);
                 }
 
 

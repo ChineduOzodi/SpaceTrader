@@ -5,10 +5,6 @@ using UnityEngine.UI;
 
 public class PlanetGridPanel : MonoBehaviour {
 
-    public Text tileInfo;
-    public Text title;
-    internal PlanetTile tile;
-
     public GameObject waterButton;
     public GameObject iceButton;
     public GameObject volcanicButton;
@@ -16,31 +12,14 @@ public class PlanetGridPanel : MonoBehaviour {
     public GameObject rockyButton;
     public GameObject desertButton;
 
-    public List<GameObject> tileButtons;
-
 	// Use this for initialization
 	void Start () {
-        tileButtons = new List<GameObject>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (tile != null)
-        {
-            tileInfo.text = tile.GetInfo();
-        }
-	}
-
-    public void GetInfo(PlanetTile _tile)
-    {
-        tile = _tile;
-    }
 
     public void SelectPlanet(SolarBody body)
     {
-        DestroyTiles();
-        tileInfo.text = "";
-        title.text = body.name;
+        if (body.planetTiles == null)
+            return;
 
         foreach (PlanetTile tile in body.planetTiles)
         {
@@ -76,17 +55,11 @@ public class PlanetGridPanel : MonoBehaviour {
                 throw new System.Exception("Unknown planet tile type");
             }
 
-            GameObject button = Instantiate(prefab, transform);
-            button.GetComponent<TileButton>().tile = tile;
-            tileButtons.Add(button);
-        }
-    }
-
-    private void DestroyTiles()
-    {
-        foreach(GameObject tile in tileButtons)
-        {
-            Destroy(tile);
+            for(int i = 0; i < tile.count; i++)
+            {
+                GameObject button = Instantiate(prefab, transform);
+            }
+            
         }
     }
 }

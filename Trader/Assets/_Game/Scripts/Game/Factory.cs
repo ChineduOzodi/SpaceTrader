@@ -3,37 +3,45 @@ using System.Collections.Generic;
 using System;
 using CodeControl;
 
-public class ComponentFactory : GroundStructure {
+public class Factory : Structure {
 
-    public ConstructionComponent productionItem;
+    public int productionItemId { get; private set; }
     /// <summary>
     /// Time to complete one cycle in days.
     /// </summary>
     public float produtionTime { get; private set; }
     public float productionProgress { get; private set; }
 
-    public int workers;
+    
 
     public bool isProducing;
 
-    public ComponentFactory() { }
+    public Factory() { structureType = StructureTypes.Factory; }
 
-    public ComponentFactory(CompanyModel owner, FactoryBlueprintModel blueprint, ConstructionComponent item)
+    /// <summary>
+    /// Creates an itemFactory, the factory blueprint must have ai and machinery
+    /// </summary>
+    /// <param name="owner"></param>
+    /// <param name="factoryBlueprint"></param>
+    /// <param name="_productionItemId"></param>
+    public Factory(IdentityModel owner, ItemBluePrint factoryBlueprint, int _productionItemId)
     {
-        this.owner = new ModelRef<CompanyModel>(owner);
+        this.owner = new ModelRef<IdentityModel>(owner);
 
-        groundStructureType = GroundStructureType.Factory;
-
-        productionItem = item;
-
-        maxArmor = blueprint.structureComponent.baseArmor * blueprint.structureComponent.amount;
-        currentArmor = maxArmor;
-
-        var productionEfficiency = (produtionTime * .9f + blueprint.aiComponent.amount * 1.1f) / (produtionTime + blueprint.aiComponent.amount);
-        produtionTime = 100/blueprint.machinaryComponent.amount * productionEfficiency;
+        structureType = StructureTypes.Factory;
         
+        productionItemId = _productionItemId;
 
-        workers = (int) (blueprint.machinaryComponent.workers * produtionTime + blueprint.aiComponent.amount * blueprint.aiComponent.workers);
+        maxArmor = factoryBlueprint.baseArmor;
+        currentArmor = maxArmor;
+        int aiAmount = (int) factoryBlueprint.contstructionParts.Find(x => x.itemType == ItemType.AI).amount;
+        int machineryAmount = (int) factoryBlueprint.contstructionParts.Find(x => x.itemType == ItemType.FactoryMachinery).amount;
+        produtionTime = factoryBlueprint.productionTime / machineryAmount;
+
+        var productionEfficiency = (produtionTime * .9f + aiAmount * 1.1f) / (produtionTime + aiAmount);
+        produtionTime /= productionEfficiency;
+
+        workers = factoryBlueprint.workers;
     }
 
     /// <summary>
@@ -54,63 +62,66 @@ public class ComponentFactory : GroundStructure {
         else if (RequiredComponentsAvailable(parentBody))
         {
             isProducing = true;
-            UseRawResources(parentBody);
+            useRequiredItems(parentBody);
         }
 
     }
 
     private bool RequiredComponentsAvailable(SolarBody parentBody)
     {
-        var requiredResouces = productionItem.rawResources.GetResources();
-        foreach ( KeyValuePair<RawResourceType,float> raw in requiredResouces)
+        var requiredItems = GameManager.instance.data.items.Model.GetItem(productionItemId).contstructionParts;
+
+        foreach ( Item item in requiredItems)
         {
             var found = false;
-            foreach(RawResourcesGroundStorage groundStruct in parentBody.groundStructures)
+            foreach(GroundStorage groundStruct in parentBody.groundStructures)
             {
-                if (groundStruct.groundStructureType == GroundStructureType.RawResourceStorage &&
+                if (groundStruct.structureType == StructureTypes.RawResourceStorage &&
                     groundStruct.owner == owner &&
-                    groundStruct.rawResources.FindAmount(raw.Key) >= raw.Value)
+                    groundStruct.items.Find(x => x.itemType == item.itemType && x.amount >= item.amount).name != "")
                 {
                     found = true;
                     break;
                 }
             }
             if (!found)
-                return found;
+                return false;
         }
         return true;
     }
-    private void UseRawResources(SolarBody parentBody)
+    private void useRequiredItems(SolarBody parentBody)
     {
-        var requiredResouces = productionItem.rawResources.GetResources();
-        foreach (KeyValuePair<RawResourceType, float> raw in requiredResouces)
+        var requiredItems = GameManager.instance.data.items.Model.GetItem(productionItemId).contstructionParts;
+
+        foreach (Item item in requiredItems)
         {
             var found = false;
-            foreach (RawResourcesGroundStorage groundStruct in parentBody.groundStructures)
+            foreach (GroundStorage groundStruct in parentBody.groundStructures)
             {
-                if (groundStruct.groundStructureType == GroundStructureType.ComponentStorage &&
+                if (groundStruct.structureType == StructureTypes.ComponentStorage &&
                     groundStruct.owner == owner &&
-                    groundStruct.rawResources.FindAmount(raw.Key) >= raw.Value)
+                    groundStruct.items.Contains(item))
                 {
-                    groundStruct.rawResources.RemoveAmount(raw.Key, raw.Value);
+                    groundStruct.RemoveItem(item);
                     found = true;
                     break;
                 }
             }
             if (!found)
-                throw new Exception("Raw resource not found in correct amount");
+                throw new Exception("Item is not found in correct amount");
         }
     }
-    private void StoreComponents(SolarBody parentBody)
+    private void StoreCreatedItem(SolarBody parentBody)
     {
         var found = false;
-        foreach (ComponentsGroundStorage groundStruct in parentBody.groundStructures)
+        Item item = new Item(productionItemId, 1);
+        foreach (GroundStorage groundStruct in parentBody.groundStructures)
         {
-            if (groundStruct.groundStructureType == GroundStructureType.ComponentStorage &&
+            if (groundStruct.structureType == StructureTypes.ComponentStorage &&
                 groundStruct.owner == owner &&
-                groundStruct.EnoughSpace(productionItem.componentType, productionItem.amount))
+                groundStruct.CanAddItem(item))
             {
-                groundStruct.constructionComponents.AddAmount(productionItem.componentType, productionItem.amount);
+                groundStruct.AddItem(item);
                 found = true;
                 break;
             }

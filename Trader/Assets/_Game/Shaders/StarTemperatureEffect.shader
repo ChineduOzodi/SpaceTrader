@@ -69,7 +69,7 @@ Shader "Solar/StarTemperatureEffect"
 				distance += pow(_StarPosition.y - ((_WorldSpaceCameraPos.y + ((i.uv.y - .5) * unity_OrthoParams.y * 2))), 2);
 				distance = sqrt(distance);
 
-				float temp = pow(((1 - _BondAlebo) * _StarLum) / ((16 * 3.14159 * 5.6705e-8) * pow(distance *  _DistanceMod * _CameraOrtho *.01, 2) ), .25) * pow((1 + .438 * _Greenhouse * .9), .25) - 273.15;
+				float temp = pow(((1 - _BondAlebo) * _StarLum) / ((16 * 3.14159 * 5.6705e-8) * pow(distance *  _DistanceMod * _CameraOrtho *.01 * 1000, 2) ), .25) * pow((1 + .438 * _Greenhouse * .9), .25) - 273.15;
 				float4 tempColor = (_HotColor * (1 - col) * temp / 120);
 				tempColor += (_SafeColor * (1 - col));
 				tempColor += (_ColdColor * (1 - col) * temp / -50);

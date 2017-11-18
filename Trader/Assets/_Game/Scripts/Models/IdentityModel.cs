@@ -16,15 +16,12 @@ public class IdentityModel : Model {
     internal int itemsBought = 0;
     public Dated lastUpdated;
 
-    public ModelRef<StructureModel> location = new ModelRef<StructureModel>();
-    public Orbit orbit;
-    public int solarIndex { get; set; }
-    public int parentIndex { get; set; }
-    public ModelRefs<StationModel> stations = new ModelRefs<StationModel>();
-    public ModelRefs<ShipModel> ships = new ModelRefs<ShipModel>();
+    public List<int> solarIndex { get; protected set; }
+    public List<List<int>> stations = new List<List<int>>();
+    public List<int> ships = new List<int>();
 
-    public Dated age = new Dated(0);
-    public Dated dateCreated = new Dated(0);
+    public Dated age { get; private set; }
+    public Dated dateCreated { get; private set; }
 
     /// <summary>
     /// Used to update money at a given interval;
@@ -37,9 +34,15 @@ public class IdentityModel : Model {
 
     public IdentityModel()
     {
+        age = new Dated(0);
         dateCreated = new Dated(GameManager.instance.data.date.time);
         lastUpdated = new Dated(GameManager.instance.data.date.time);
         spriteColor = UnityEngine.Random.ColorHSV(.5f, 1f, .5f, 1f);
         spriteColor.a = 1;
+    }
+
+    public void SetLocation(List<int> _solarIndex)
+    {
+        solarIndex = _solarIndex;
     }
 }

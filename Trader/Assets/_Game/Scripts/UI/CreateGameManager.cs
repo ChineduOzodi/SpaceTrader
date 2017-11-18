@@ -40,7 +40,6 @@ public class CreateGameManager : MonoBehaviour {
         galaxy = GalaxyManager.instance;
         game = GameManager.instance;
         names = new NameGen();
-
         GameManager.instance.setup = true;
         loadingPanel.SetActive(true);
         StartCoroutine("CreatingGame"); //Creates a new Game
@@ -58,6 +57,15 @@ public class CreateGameManager : MonoBehaviour {
             loadingText.text = "Creating Stars...";
             game.data.galaxyName = galaxyName;
             galaxyNameText.text = galaxyName;
+
+            foreach (RawResourceBlueprint raw in game.data.rawResources.Model.rawResources)
+            {
+                var item = new ItemBluePrint(raw);
+                GameManager.instance.data.items.Model.items.Add(item);
+            }
+            game.data.items.Model.items.Add(new ItemBluePrint("Fuel Cell", ItemType.Fuel, "A normal fuel cell.", .25f, new List<Item>() { new Item(defaultRawResources.Fuelodite.ToString(), (int)defaultRawResources.Fuelodite, ItemType.RawMaterial, 1) }));
+
+
             CreateStars(starCount, game.data.galaxyName);
             LoadStars();
             loadingProgress.value = .5f;
@@ -68,9 +76,9 @@ public class CreateGameManager : MonoBehaviour {
             {
                 //Create Government
                 loadingText.text = "Creating Governments...";
-                ModelRefs<CreatureModel> leaders = new ModelRefs<CreatureModel>();
-                CreatureModel leader = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
-                leaders.Add(leader);
+                List<int> leaders = new List<int>();
+
+                
                 GovernmentModel gov = new GovernmentModel(names.GenerateWorldName() + " Government", leaders);
 
                 //Location
@@ -82,59 +90,48 @@ public class CreateGameManager : MonoBehaviour {
                     if (body.solarSubType != SolarSubType.GasGiant)
                     {
                         parent = game.data.stars[solarIndex].solar.satelites[planetIndex];
-                        parent.population = UnityEngine.Random.Range(1000000, 1000000000);
+                        parent.AddPopulation(UnityEngine.Random.Range(1000000, 1000000000));
                         break; //TODO: Fix the possible bug where there is only a gas giant in the system and no suitable alternatives
                     }
                     
                 }
 
+                //Add leader
+
+                Creature leader = new Creature(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000, game.data.stars[solarIndex].solar.satelites[planetIndex].solarIndex,game.data.date, new Dated(30 * Dated.Year), CreatureType.Human);
+                leaders.Add(leader.id);
                 
 
-                //    //Add Government Capital
+                //Add Government Capital
+                Station station = new Station(gov.name + " Station", gov, game.data.stars[solarIndex].solar.satelites[planetIndex]);
 
-                //    StationModel station = StationCreator.CreateStation(gov.name + " Capital", game.data.stars[solarIndex], parent.index, parent.orbit, gov, leader);
-                //    station.population = 5;
+                //location
+                gov.SetLocation(game.data.stars[solarIndex].solar.satelites[planetIndex].solarIndex);
 
-                //    //location
-                //    gov.location.Model = station;
-                //    gov.orbit = station.orbit;
-                //    gov.stations.Add(station);
-                //    for (int c = 0; c < numComp; c++)
-                //    {
-                //        CreatureModel owner = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 1000000);
-                //        CompanyModel comp = new CompanyModel(names.GenerateRegionName() + " Company", gov, owner);
-                //        gov.companyAcess.Add(comp);
-                //        comp.governmentAccess.Add(gov);
-                //        game.data.creatures.Add(owner);
-                //        game.data.companies.Add(comp);
-                //        //Add Company Headquarter Station
-                //        solarIndex = UnityEngine.Random.Range(0, gov.stars.Count);
-                //        planetIndex = UnityEngine.Random.Range(0, gov.stars[solarIndex].planets.Length);
-                //        if (gov.stars[solarIndex].planets.Length > 0)
-                //            parent = gov.stars[solarIndex].planets[planetIndex];
-                //        else
-                //            parent = gov.stars[solarIndex].sun;
+                for (int c = 0; c < numComp; c++)
+                {
+                    Creature owner = new Creature(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000, station, game.data.date, new Dated(30 * Dated.Year), CreatureType.Human);
+                    CompanyModel comp = new CompanyModel(names.GenerateRegionName() + " Company", gov, owner);
+                    if (c == 0)
+                    {
+                        owner.isPlayer = true;
+                        GameManager.instance.data.playerCreatureId = owner.id;
+                    }
 
-                //        position = new Polar2d(UnityEngine.Random.Range( (float) parent.bodyRadius * 1.2f, (float) parent.orbit.soi), UnityEngine.Random.Range(0, 2 * Mathf.PI));
-                //        CreatureModel manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000);
-                //        station = StationCreator.CreateStation(names.GenerateRegionName() + " Station", gov.stars[solarIndex], parent.index, parent.orbit, comp, manager);
-                //        comp.stations.Add(station);
-                //        game.data.creatures.Add(manager);
-                //        game.data.stations.Add(station);
+                    //--------------Create Ships---------------------------//
+                    for (int i = 0; i < numShip; i++)
+                    {
+                        if (i != 0)
+                        {
+                            owner = new Creature(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000, station, game.data.date, new Dated(30 * Dated.Year), CreatureType.Human);
+                        }
 
-                //        //--------------Create Ships---------------------------//
-                //        for (int i = 0; i < numShip; i++)
-                //        {
-                //            StationModel startStation = station;
-                //            manager = new CreatureModel(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000);
-                //            ShipModel ship = ShipCreator.CreateShip(comp.name + " Ship " + i, startStation.solarIndex, startStation.parentIndex, startStation.orbit, comp, manager);
-                //            game.data.ships.Add(ship);
-                //            game.data.creatures.Add(manager);
-                //            //loadingText.text = string.Format("Creating ships: {0} of {1}", i, numShip);
+                        Ship ship = new Ship(comp.name + " Ship " + (i+1), comp, owner);
+                        loadingText.text = string.Format("Creating ships: {0} of {1}", i, numShip);
 
-                //        }
-                //        yield return null;
-                //    }
+                    }
+                    yield return null;
+                }
                 loadingProgress.value = .5f + a / numGov * .5f;
                 yield return null;
             }

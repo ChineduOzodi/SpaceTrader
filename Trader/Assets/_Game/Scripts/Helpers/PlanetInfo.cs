@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CodeControl;
 
 public class PlanetInfo : MonoBehaviour {
 
@@ -32,10 +33,6 @@ public class PlanetInfo : MonoBehaviour {
     }
     public void OnMouseDown()
     {
-        if (solar.solarType != SolarType.Star && solar.solarSubType != SolarSubType.GasGiant)
-        {
-            PlanetPanel.instance.SelectPlanet(solar);
-        }
-        
+        GameManager.instance.OpenInfoPanel(solar.solarIndex);
     }
 }

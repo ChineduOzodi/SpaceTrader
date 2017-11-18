@@ -13,17 +13,17 @@ public class SolarController : Controller<SolarModel> {
     public GameObject moonObj;
     internal GameObject sun;
     internal List<GameObject> planets;
-    internal StationController[] stations;
     internal List<GameObject> moons = new List<GameObject>();
     internal List<SolarBody> moonModels = new List<SolarBody>();
     internal GameManager game;
     internal GalaxyManager galaxy;
     private SpriteRenderer sprite;
     private CircleCollider2D circleCollider;
+    public float totalPopulationStatSize = .01f;
     private float solarSpriteScale = .02f;
     private float moonViewOrthoSize = .001f;
     //private VectorObject3D line;
-    private VectorLine vectorLine;
+    private VectorLine solarLine;
     public Texture lineTexture;
 
     private Vector3 lastCamPosition = Vector3.zero;
@@ -32,7 +32,7 @@ public class SolarController : Controller<SolarModel> {
         lastCamPosition.z = -10;
         game = GameManager.instance;
         galaxy = GalaxyManager.instance;
-        transform.position = CameraController.CameraOffsetPoistion(model.galacticPosition);
+        transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition);
         name = model.name;
         circleCollider = GetComponent<CircleCollider2D>();
         sprite = GetComponent<SpriteRenderer>();
@@ -42,11 +42,11 @@ public class SolarController : Controller<SolarModel> {
         foreach (SolarModel solar in model.nearStars)
         {
             points.Add(transform.position);
-            points.Add(CameraController.CameraOffsetPoistion(solar.galacticPosition));
+            points.Add(CameraController.CameraOffsetGalaxyPosition(solar.galacticPosition));
         }
-        vectorLine = new VectorLine("model.name Connections", points, (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraScaleMod));
+        solarLine = new VectorLine("model.name Connections", points, (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod));
         //line.SetVectorLine(vectorLine, lineTexture, sprite.material);
-        vectorLine.Draw3D();
+        solarLine.Draw3D();
         sprite.enabled = false;
         if (model.isActive)
         {
@@ -56,65 +56,121 @@ public class SolarController : Controller<SolarModel> {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = CameraController.CameraOffsetPoistion(model.galacticPosition);
-        circleCollider.radius = (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraScaleMod * 5);
-
+        transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition);
+        circleCollider.radius = (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod * 5);
+        List<Vector3> statDisplayPoints = new List<Vector3>();
         if (model.isActive)
         {
             sun.transform.position = transform.position;
-            sun.transform.localScale = Vector3.one * (float)(Mathd.Pow((model.solar.bodyRadius), solarSpriteScale) * Mathd.Pow(game.data.cameraScaleMod, .9f));
+            var localScale = (float)(Mathd.Pow((model.solar.bodyRadius), solarSpriteScale) * Mathd.Pow(game.data.cameraGalCameraScaleMod, .9f));
+            if (localScale * game.data.cameraGalaxyOrtho / Camera.main.orthographicSize * GameDataModel.galaxyDistanceMultiplication < model.solar.bodyRadius)
+            {
+                localScale = (float)(model.solar.bodyRadius / GameDataModel.galaxyDistanceMultiplication * Camera.main.orthographicSize / game.data.cameraGalaxyOrtho);
+            }
+            sun.transform.localScale = Vector3.one * localScale;
 
             for (int i = 0; i < model.solar.satelites.Count; i++)
             {
                 SolarBody body = model.solar.satelites[i];
-                //planets[i].transform.localScale = Vector3.one * (float)Mathd.Pow((body.bodyRadius), solarSpriteScale) * Mathf.Pow(game.data.cameraScaleMod, .9f);
-                planets[i].transform.localScale = sun.transform.localScale * .5f;
+                //planets[i].transform.localScale = sun.transform.localScale * .5f;
+                localScale = (float)(Mathd.Pow((body.bodyRadius), solarSpriteScale) * Mathd.Pow(game.data.cameraGalCameraScaleMod, .9f));
+                if (localScale * game.data.cameraGalaxyOrtho / Camera.main.orthographicSize * GameDataModel.galaxyDistanceMultiplication < body.bodyRadius)
+                {
+                    localScale = (float)(body.bodyRadius / GameDataModel.galaxyDistanceMultiplication * Camera.main.orthographicSize / game.data.cameraGalaxyOrtho);
+                }
+                planets[i].transform.localScale = Vector3.one * localScale;
+                planets[i].transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.lastKnownPosition);
 
+                //Orbit Line Rendering
                 LineRenderer line = planets[i].GetComponent<LineRenderer>();
 
-                line.widthMultiplier = planets[i].transform.localScale.x * .3f;
-                planets[i].transform.position = CameraController.CameraOffsetPoistion(model.galacticPosition + body.lastKnownPosition);
-
-                //Creates the line rendering for the orbit of planets
-
-                Vector3[] positions = new Vector3[36];
-
-                for (var b = 0; b < 36; b++)
+                if (MapTogglePanel.instance.solarOrbits.isOn && !canSeeMoons())
                 {
+                    line.widthMultiplier = planets[i].transform.localScale.x * .3f;
                     
-                    positions[b] = CameraController.CameraOffsetPoistion(model.galacticPosition + body.approximatePositions[b * 10]);
+                    //Creates the line rendering for the orbit of planets
+
+                    Vector3[] positions = new Vector3[36];
+
+                    for (var b = 0; b < 36; b++)
+                    {
+
+                        positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.approximatePositions[b * 10]);
+                    }
+                    line.positionCount = 36;
+                    line.SetPositions(positions);
                 }
-                line.positionCount = 36;
-                line.SetPositions(positions);
+                else
+                {
+                    line.widthMultiplier = 0;
+                }
+
+                //Population rendering
+                if (MapTogglePanel.instance.populations.isOn)
+                {
+                    statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x);
+
+                    if (canSeeMoons())
+                    {
+                        
+                        statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(body.totalPopulation, totalPopulationStatSize));
+                    }
+                    else
+                    {
+                        statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(body.population, totalPopulationStatSize));
+                    }
+                }
             }
             for (int i = 0; i < moons.Count; i++)
             {
                 SolarBody moon = moonModels[i];
-                moons[i].transform.position = CameraController.CameraOffsetPoistion(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                moons[i].transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
                         + moon.lastKnownPosition);
 
-                if (game.data.cameraOrth < moonViewOrthoSize && moons[i].transform.position.sqrMagnitude < 62500)
+                if (canSeeMoons() && moons[i].transform.position.sqrMagnitude < 62500)
                 {
                     var visible = CheckVisibility(moon);
                     moons[i].SetActive(visible);
                     LineRenderer line = moons[i].GetComponent<LineRenderer>();
 
-                    line.widthMultiplier = moons[i].transform.localScale.x * .3f;
-                    moons[i].transform.localScale = sun.transform.localScale * .15f;
-
-
+                    //moons[i].transform.localScale = sun.transform.localScale * .15f;
+                    localScale = (float)(Mathd.Pow((moon.bodyRadius), solarSpriteScale) * Mathd.Pow(game.data.cameraGalCameraScaleMod, .5f));
+                    if (localScale * game.data.cameraGalaxyOrtho / Camera.main.orthographicSize * GameDataModel.galaxyDistanceMultiplication < moon.bodyRadius)
+                    {
+                        localScale = (float)(moon.bodyRadius / GameDataModel.galaxyDistanceMultiplication * Camera.main.orthographicSize / game.data.cameraGalaxyOrtho);
+                    }
+                    moons[i].transform.localScale = Vector3.one * localScale;
 
                     //Creates the line rendering for the orbit of moons
 
-                    var positions = new Vector3[36];
-
-                    for (var b = 0; b < 36; b++)
+                    if (MapTogglePanel.instance.solarOrbits.isOn)
                     {
-                        positions[b] = CameraController.CameraOffsetPoistion(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
-                    + moon.approximatePositions[b * 10]);
+                        line.widthMultiplier = moons[i].transform.localScale.x * .3f;
+
+                        var positions = new Vector3[36];
+                        for (var b = 0; b < 36; b++)
+                        {
+                            positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                        + moon.approximatePositions[b * 10]);
+                        }
+                        line.positionCount = 36;
+                        line.SetPositions(positions);
                     }
-                    line.positionCount = 36;
-                    line.SetPositions(positions);
+                    else
+                    {
+                        line.widthMultiplier = 0;
+                    }
+
+                    if (moons[i].activeSelf)
+                    {
+                        //Population rendering
+                        if (MapTogglePanel.instance.populations.isOn)
+                        {
+                            statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x);
+                            statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(moon.population, totalPopulationStatSize));
+                        }
+                    }
+                    
                 }
                 else
                 {
@@ -125,7 +181,13 @@ public class SolarController : Controller<SolarModel> {
 
             }
 
-            if (game.data.cameraOrth > 15)
+            //Stats Display
+            solarLine.points3 = statDisplayPoints;
+            solarLine.SetWidth(planets[0].transform.localScale.x * .5f);
+            solarLine.SetColor(new Color32(100, 100, 255, 100));
+            solarLine.Draw3D();
+
+            if (game.data.cameraGalaxyOrtho * GameDataModel.galaxyDistanceMultiplication > 1.5 * Units.ly)
             {
                 galaxy.GalaxyView();
             }
@@ -140,44 +202,44 @@ public class SolarController : Controller<SolarModel> {
                     foreach (SolarModel solar in model.nearStars)
                     {
                         points.Add(transform.position);
-                        points.Add(CameraController.CameraOffsetPoistion(solar.galacticPosition));
+                        points.Add(CameraController.CameraOffsetGalaxyPosition(solar.galacticPosition));
                     }
-                    vectorLine.points3 = points;
-                    vectorLine.SetWidth((float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraScaleMod) * 5);
+                    solarLine.points3 = points;
+                    solarLine.SetWidth((float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod) * 5);
                     if (MapTogglePanel.instance.galaxyTerritory.isOn)
                     {
                         if (model.government.Model != null)
                         {
                             var govModel = model.government.Model;
-                            vectorLine.color = new Color32((byte)(govModel.spriteColor.r * 255), (byte)(govModel.spriteColor.g * 255), (byte)(govModel.spriteColor.b * 255), 50);
+                            solarLine.color = new Color32((byte)(govModel.spriteColor.r * 255), (byte)(govModel.spriteColor.g * 255), (byte)(govModel.spriteColor.b * 255), 50);
                         }
                         else
                         {
-                            vectorLine.color = new Color32((byte)(50), (byte)(50), (byte)(50), 10);
+                            solarLine.color = new Color32((byte)(50), (byte)(50), (byte)(50), 10);
                         }
                         
                     }
                     else
                     {
-                        vectorLine.color = new Color32((byte)(model.solar.color.r * 255), (byte)(model.solar.color.g * 255), (byte)(model.solar.color.b * 255), 10);
+                        solarLine.color = new Color32((byte)(model.solar.color.r * 255), (byte)(model.solar.color.g * 255), (byte)(model.solar.color.b * 255), 10);
                     }
-                    vectorLine.Draw3D();
+                    solarLine.Draw3D();
                 }
                 else
                 {
-                    if (vectorLine.lineWidth != 0)
+                    if (solarLine.lineWidth != 0)
                     {
-                        vectorLine.SetWidth(0);
-                        vectorLine.Draw3D();
+                        solarLine.SetWidth(0);
+                        solarLine.Draw3D();
                     }
                 }
             }
             else
             {
-                if (vectorLine.lineWidth != 0)
+                if (solarLine.lineWidth != 0)
                 {
-                    vectorLine.SetWidth(0);
-                    vectorLine.Draw3D();
+                    solarLine.SetWidth(0);
+                    solarLine.Draw3D();
                 }
             }
         }
@@ -186,6 +248,11 @@ public class SolarController : Controller<SolarModel> {
 		
 	}
 
+    private bool canSeeMoons()
+    {
+        return game.data.cameraGalaxyOrtho < moonViewOrthoSize;
+    }
+
     public IEnumerator UpdateSolarObjects()
     {
         while (model.isActive)
@@ -193,7 +260,7 @@ public class SolarController : Controller<SolarModel> {
             for (int i = 0; i < model.solar.satelites.Count; i++)
             {
                 SolarBody body = model.solar.satelites[i];
-                Vector2 position = CameraController.CameraOffsetPoistion(model.galacticPosition + body.GamePosition(game.data.date.time));
+                Vector2 position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.GamePosition(game.data.date.time));
 
                 Vector3 screenPoint = Camera.main.WorldToViewportPoint(position);
                 bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
@@ -217,7 +284,7 @@ public class SolarController : Controller<SolarModel> {
 
                     for (var b = 0; b < 360; b++)
                     {
-                        positions[b] = CameraController.CameraOffsetPoistion(model.galacticPosition + body.approximatePositions[b]);
+                        positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.approximatePositions[b]);
                     }
                     line.positionCount = 360;
                     line.SetPositions(positions);
@@ -229,7 +296,7 @@ public class SolarController : Controller<SolarModel> {
             for (int i = 0; i < moons.Count; i++)
             {
                 SolarBody moon = moonModels[i];
-                Vector3 position = CameraController.CameraOffsetPoistion(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                Vector3 position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
                     + moon.GamePosition(game.data.date.time));
 
                 Vector3 screenPoint = Camera.main.WorldToViewportPoint(position);
@@ -249,7 +316,7 @@ public class SolarController : Controller<SolarModel> {
 
                     for (var b = 0; b < 360; b++)
                     {
-                        positions[b] = CameraController.CameraOffsetPoistion(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                        positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
                     + moon.approximatePositions[b]);
                     }
                     line.positionCount = 360;
@@ -376,7 +443,7 @@ public class SolarController : Controller<SolarModel> {
         sun = Instantiate(sunObj, transform);
         sun.name = model.name + " Sun";
         sun.transform.localPosition = Vector3.zero;
-        sun.transform.localScale = Vector3.one * (float)(Mathd.Pow((model.solar.bodyRadius), solarSpriteScale) * Mathd.Pow(game.data.cameraScaleMod, .9f));
+        sun.transform.localScale = Vector3.one * (float)(Mathd.Pow((model.solar.bodyRadius), solarSpriteScale) * Mathd.Pow(game.data.cameraGalCameraScaleMod, .9f));
         sun.GetComponent<SpriteRenderer>().color = model.solar.color;
         sun.GetComponent<SpriteRenderer>().sortingOrder = 5;
 
@@ -387,7 +454,7 @@ public class SolarController : Controller<SolarModel> {
         for (int i = 0; i < model.solar.satelites.Count; i++)
         {
             SolarBody body = model.solar.satelites[i];
-            Vector3 position = CameraController.CameraOffsetPoistion(model.galacticPosition + body.GamePosition(game.data.date.time));
+            Vector3 position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.GamePosition(game.data.date.time));
             planets.Add(Instantiate(planetObj, transform));
             planets[i].name = body.name;
             planets[i].transform.position = position;
@@ -409,7 +476,7 @@ public class SolarController : Controller<SolarModel> {
 
             for (var b = 0; b < 360; b++)
             {
-                positions[b] = CameraController.CameraOffsetPoistion(model.galacticPosition + body.approximatePositions[b]);
+                positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.approximatePositions[b]);
             }
             line.positionCount = 360;
             line.SetPositions(positions);
@@ -448,7 +515,7 @@ public class SolarController : Controller<SolarModel> {
             for (int m = 0; m < model.solar.satelites[i].satelites.Count; m++)
             {
                 SolarBody moon = model.solar.satelites[i].satelites[m];
-                position = CameraController.CameraOffsetPoistion(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
                     + moon.GamePosition(game.data.date.time));
                 moonModels.Add(moon);
 
@@ -470,21 +537,12 @@ public class SolarController : Controller<SolarModel> {
 
                 for (var b = 0; b < 360; b++)
                 {
-                    positions[b] = CameraController.CameraOffsetPoistion(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                    positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
                 + moon.approximatePositions[b]);
                 }
                 line.positionCount = 360;
                 line.SetPositions(positions);
             }
-        }
-
-        //Create Stations
-        stations = new StationController[model.stations.Count];
-        int c = 0;
-        foreach (StationModel station in model.stations)
-        {
-            stations[c] = Controller.Instantiate<StationController>("station", station);
-            c++;
         }
 
         StartCoroutine("UpdateSolarObjects");
@@ -512,12 +570,6 @@ public class SolarController : Controller<SolarModel> {
             
         }
         moons = new List<GameObject>();
-        for (int i = 0; i < stations.Length; i++)
-        {
-            Destroy(stations[i].gameObject);
-
-        }
-        stations = new StationController[0];
     }
 
     public void OnMouseEnter()

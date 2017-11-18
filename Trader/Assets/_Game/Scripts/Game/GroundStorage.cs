@@ -2,56 +2,69 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RawResourcesGroundStorage : GroundStructure {
-
-    public float totalStorageAmount;
-
-    public RawResources rawResources;
-
-    public RawResourcesGroundStorage() { }
-
-    public RawResourcesGroundStorage(StorageBlueprintModel blueprint)
-    {
-
-    }
-
-    public RawResourcesGroundStorage(StorageBlueprintModel blueprint, List<RawResource> rawResources, List<ConstructionComponent> components)
-    {
-
-    }
-}
-
-public class ComponentsGroundStorage : GroundStructure
-{
+public class GroundStorage : Structure {
 
     public float totalStorageAmount;
     public float currentStorageAmount;
 
-    public ConstructionComponents constructionComponents;
+    public List<Item> items;
 
-    public ComponentsGroundStorage() { }
+    public GroundStorage() { }
 
-    public ComponentsGroundStorage(StorageBlueprintModel blueprint)
+    public GroundStorage(ItemBluePrint blueprint)
     {
 
     }
 
-    public ComponentsGroundStorage(StorageBlueprintModel blueprint, List<RawResource> rawResources, List<ConstructionComponent> components)
+    public GroundStorage(ItemBluePrint blueprint, List<Item> _items)
     {
-
+        items = _items;
     }
 
-    public bool AddComponent(ConstructionComponentType comp, int amount)
+    public bool AddItem(Item item)
     {
-        if (currentStorageAmount + amount > totalStorageAmount)
+        if (currentStorageAmount + item.amount > totalStorageAmount)
             return false;
-        constructionComponents.AddAmount(comp, amount);
-        currentStorageAmount += amount;
+        int itemIndex = items.FindIndex(x => x.id == item.id);
+        if (itemIndex >= 0)
+        {
+            items[itemIndex] += item.amount;
+        }
+        else
+        {
+            items.Add(item);
+        }
+        currentStorageAmount += item.amount;
         return true;
     }
 
-    public bool EnoughSpace(ConstructionComponentType comp, int amount)
+    public bool RemoveItem(Item item)
     {
-        return currentStorageAmount + amount < totalStorageAmount;
+        int itemIndex = items.FindIndex(x => x.id == item.id);
+        if (itemIndex >= 0)
+        {
+            if (items[itemIndex].amount < item.amount)
+            {
+                return false;
+            }
+            items[itemIndex] -= item.amount;
+            if (items[itemIndex].amount == 0)
+            {
+                items.RemoveAt(itemIndex);
+            }
+            currentStorageAmount -= item.amount;
+            return true;
+        }
+        return false;
+    }
+
+    public bool ContainsItem(Item item)
+    {
+        return items.Find(x => x.id == item.id && x.amount >= item.amount).name != "";
+    }
+
+    public bool CanAddItem(Item item)
+    {
+        return currentStorageAmount + item.amount < totalStorageAmount;
     }
 }

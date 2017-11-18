@@ -5,7 +5,7 @@ using UnityEngine;
 public class SolarBody
 {
     public string name;
-
+    public int totalPopulation { get; private set; }
     public SolarType solarType { get; private set; }
     public SolarSubType solarSubType { get; private set; }
     public Orbit orbit;
@@ -13,6 +13,7 @@ public class SolarBody
     public double bodyRadius { get; set; }
     public Vector2d lastKnownPosition { get; private set; }
     public Vector2d[] approximatePositions {get; private set;}
+
     //-----------------Star Properties---------------------//
     public double surfaceTemp { get; private set; }
     public double surfacePressure { get; private set; }
@@ -22,11 +23,13 @@ public class SolarBody
     public double bondAlebo { get; private set; } 
     public double greenhouse { get; private set; }
     public double surfaceGravity { get; private set; }
-    public List<PlanetTile> planetTiles;
-    public List<GroundStructure> groundStructures;
+    public List<PlanetTile> planetTiles { get; private set; }
+    public List<RawResource> rawResources { get; private set; }
+    public List<Structure> groundStructures = new List<Structure>();
+    public List<Structure> spaceStructures = new List<Structure>();
 
 
-    public double population;
+    public int population { get; private set; }
     //public Dictionary<RawResources, double> rawResources;
     public Color color;
 
@@ -48,6 +51,9 @@ public class SolarBody
     /// <param name="_surfaceTemp"></param>
     public SolarBody(string _name, List<int> _solarIndex, SolarSubType _solarSubType, double mass, double radius, Orbit orbit, Color _color, double _surfaceTemp)
     {
+        rawResources = new List<RawResource>();
+        planetTiles = new List<PlanetTile>();
+
         this.orbit = orbit;
         this.mass = mass;
         this.bodyRadius = radius;
@@ -58,7 +64,7 @@ public class SolarBody
         surfaceTemp = _surfaceTemp;
         surfacePressure = 1; // In atm
         luminosity = 3.846e33 / Mathd.Pow(mass / 2e30, 3); // in ergs per sec
-        surfaceGravity = GameDataModel.G * mass / (radius * radius) / 9.81;
+        surfaceGravity = GameDataModel.G * mass / Mathd.Pow(Units.convertToMeters * radius, 2) / 9.81;
         solarType = SolarType.Star;
         solarSubType = _solarSubType;
         bondAlebo = .5;
@@ -76,7 +82,7 @@ public class SolarBody
         this.solarSubType = _solarSubType;
         solarIndex = _solarIndex;
         color = _color;
-        surfaceGravity = GameDataModel.G * mass / (radius * radius) / 9.81;
+        surfaceGravity = GameDataModel.G * mass / Mathd.Pow(Units.convertToMeters * radius, 2) / 9.81;
         surfacePressure = 0; // In atm
         bondAlebo = Random.value;
 
@@ -96,11 +102,11 @@ public class SolarBody
             }
             if (solarType == SolarType.Moon)
             {
-                surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(star.satelites[solarIndex[1]].orbit.sma + orbit.sma, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
+                surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(star.satelites[solarIndex[1]].orbit.sma * Units.convertToMeters + orbit.sma * Units.convertToMeters, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
             }
             else
             {
-                surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(orbit.sma, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
+                surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(orbit.sma * Units.convertToMeters, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
             }
 
             var rand = Random.value;
@@ -172,7 +178,7 @@ public class SolarBody
             {
                 greenhouse = 0;
             }
-            surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(orbit.sma, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
+            surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(orbit.sma * Units.convertToMeters, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
         }
         else if (solarType == SolarType.Planet && solarSubType == SolarSubType.Rocky)
         {
@@ -191,7 +197,7 @@ public class SolarBody
             {
                 greenhouse = 0;
             }
-            surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(orbit.sma, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
+            surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(orbit.sma * Units.convertToMeters, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
 
             rand = Random.value;
             if (surfaceTemp - 273.15 < -50)
@@ -286,6 +292,13 @@ public class SolarBody
         {
             color = Color.red;
         }
+        else if (solarSubType == SolarSubType.GasGiant)
+        {
+            color = new Color(1, .5f, 0);
+        }
+
+        rawResources = new List<RawResource>();
+        planetTiles = new List<PlanetTile>();
 
         if (solarType != SolarType.Star && solarSubType != SolarSubType.GasGiant)
         {
@@ -295,18 +308,88 @@ public class SolarBody
 
     private void GeneratePlanetTiles()
     {
-        planetTiles = new List<PlanetTile>();
-
-        int numTiles = (int)(2 * Mathd.PI * bodyRadius / 4e7 * 15) + 1;
-
+        int numTiles = (int)(2 * Mathd.PI * bodyRadius * Units.convertToMeters / 4e7 * 15) + 1;
+        System.Random rand = new System.Random(GameManager.instance.data.id);
         for(int i = 0; i < numTiles; i++)
         {
-            planetTiles.Add(new PlanetTile(solarSubType));
+            PlanetTile tile = new PlanetTile(solarSubType);
+            var index = planetTiles.FindIndex(x =>x.planetTileType == tile.planetTileType);
+            if (index >= 0)
+            {
+                planetTiles[index].count += 1;
+            }
+            else
+                planetTiles.Add(tile);
+
+            foreach (RawResourceBlueprint raw in GameManager.instance.data.rawResources.Model.rawResources)
+            {
+                RawResourceInfo info = raw.GetInfo(tile.planetTileType);
+
+                if (rand.NextDouble() < info.probability)
+                {
+                    RawResource resource = new RawResource(raw.name, raw.id, rand.Next(info.maxAmount), Random.Range(info.accessibility.x, info.accessibility.y));
+
+                    index = rawResources.FindIndex(x => x.id == resource.id);
+
+                    if (index >= 0)
+                    {
+                        rawResources[index].AddAmount(resource.amount);
+                    }
+                    else
+                    {
+                        rawResources.Add(resource);
+                    }
+                }
+                
+            }
+           
+            
+
         }
         
     }
 
     public SolarBody() { }
+
+    public void AddPopulation(int people)
+    {
+        population += people;
+        totalPopulation += people;
+        if (solarIndex.Count > 1)
+        {
+            GameManager.instance.data.stars[solarIndex[0]].solar.AddTotalPopulation(people);
+        }
+        if (solarIndex.Count >2)
+        {
+            GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].AddTotalPopulation(people);
+        }
+
+    }
+
+    protected void AddTotalPopulation(int people)
+    {
+        totalPopulation += people;
+    }
+
+    public void SubtractPopulation(int people)
+    {
+        population -= people;
+        totalPopulation -= people;
+        if (solarIndex.Count > 1)
+        {
+            GameManager.instance.data.stars[solarIndex[0]].solar.SuntractTotalPopulation(people);
+        }
+        if (solarIndex.Count > 2)
+        {
+            GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].SuntractTotalPopulation(people);
+        }
+
+    }
+
+    protected void SuntractTotalPopulation(int people)
+    {
+        totalPopulation -= people;
+    }
 
     public Vector2d GamePosition(double time)
     {
@@ -397,7 +480,7 @@ public class SolarBody
         }
         var distance = position.magnitude;
         //(Mathd.Pow(solar.bodyRadius, 2) / Mathd.Pow(position.magnitude, 2)) * solar.surfaceTemp * 2314;
-        surfaceTemp = Mathd.Pow(((1 - bondAlebo) * solar.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(distance, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
+        surfaceTemp = Mathd.Pow(((1 - bondAlebo) * solar.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(distance * Units.convertToMeters, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
 
         return surfaceTemp;
     }
@@ -424,7 +507,7 @@ public class SolarBody
 
     public double MM(double parentMass) // Mean motion of orbit in radians per second.
     {
-        return Mathd.Sqrt((GameDataModel.G * parentMass) / (Mathd.Pow((double) orbit.sma, 3)));
+        return Mathd.Sqrt((GameDataModel.G * parentMass) / (Mathd.Pow((double) orbit.sma *Units.convertToMeters, 3)));
     }
 
     public double SOI(double parentMass)
@@ -454,7 +537,7 @@ public class SolarBody
            mass.ToString("G4") + " kg",
            Units.ReadDistance(bodyRadius),
            satelites.Count,
-           surfaceTemp.ToString(), 
+           surfaceTemp.ToString("0.00"), 
            (surfaceGravity).ToString("0.00"));
         }
         else
@@ -464,16 +547,15 @@ public class SolarBody
 
         var sTemp = temp(time) - 273.15;
 
-        return string.Format("Type: {9}\nSubType: {10}\nMass: {0}\nRadius: {1}\nOrbital Period: {2}\nSatelite Count: {3}\n{4}\nSurfaceTemp: {5} C\nSurface Gravity: {6} g\nSurfacePressure: {7} atm\nGreenhouse: {8}",
+        return string.Format("Type: {8}\nSubType: {9}\nMass: {0}\nRadius: {1}\nOrbital Period: {2}\nSatelite Count: {3}\nSemi-Major Axis: {4}\nSurfaceTemp: {5} C\nSurface Gravity: {6} g\nSurfacePressure: {7} atm\n",
             mass.ToString("G4") + " kg",
             Units.ReadDistance(bodyRadius),
             Dated.ReadTime(OrbitalPeriod(parentMass)),
             satelites.Count,
-            orbit.GetOrbitalInfo(),
+            Units.ReadDistance(orbit.sma),
             (GameManager.instance.data.stars[solarIndex[0]].solar == this)?surfaceTemp.ToString():sTemp.ToString("0.0"),
             (surfaceGravity).ToString("0.00"),
-            surfacePressure,
-            greenhouse,
+            surfacePressure.ToString("0.00"),
             solarType.ToString(),
             solarSubType.ToString());
     }

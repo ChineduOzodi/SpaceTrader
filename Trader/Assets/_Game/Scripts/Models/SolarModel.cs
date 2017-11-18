@@ -17,8 +17,7 @@ public class SolarModel : Model {
     public Vector2d galacticPosition;
     public Color color;
     public SolarBody solar;
-    public ModelRefs<StationModel> stations = new ModelRefs<StationModel>();
-    public ModelRefs<ShipModel> ships = new ModelRefs<ShipModel>();
+    public List<Ship> items { get; private set; }
     public ModelRefs<SolarModel> nearStars = new ModelRefs<SolarModel>();
     public ModelRef<GovernmentModel> government = new ModelRef<GovernmentModel>();
     public double governmentInfluence;
@@ -31,7 +30,7 @@ public class SolarModel : Model {
     public SolarModel(string _name, int _index, Vector2d _position, Gradient sunSizeColor)
     {
         name = _name;
-        galacticPosition = _position * 10;
+        galacticPosition = _position * Units.ly / GameDataModel.galaxyDistanceMultiplication;
         index = _index;
 
         // Create star
@@ -69,7 +68,7 @@ public class SolarModel : Model {
         //float sunColorValue = (float) (sunMass / 100 / GameDataModel.sunMassMultiplication);
         //Color color = sunSizeColor.Evaluate(sunColorValue);
         Color color = ColorTempToRGB.TempToRGB((float)temp);
-        double sunRadius = Mathd.Pow(((sunMass / sunDensity) * 3) / (4 * Mathd.PI), 1 / 3d); // In meters
+        double sunRadius = Mathd.Pow(((sunMass / sunDensity) * 3) / (4 * Mathd.PI), 1 / 3d) / Units.convertToMeters; // In km
         var solarIndex = new List<int>();
         solarIndex.Add(_index);
 
@@ -94,30 +93,30 @@ public class SolarModel : Model {
             {
                 
                 planetMass = Random.Range(1f, 100f) * 1e+23;
-                planetDensity = Random.Range(3.5f, 7) * Units.k;
+                planetDensity = Random.Range(3.5f, 7) * Units.k * Units.convertToMeters;
             }
             else if (satType < .4f) //Gas Giants
             {
-                planetDensity = Random.Range(.5f, 3) * Units.k;
+                planetDensity = Random.Range(.5f, 3) * Units.k * Units.convertToMeters;
                 planetSubType = SolarSubType.GasGiant;
                 planetMass = Random.Range(1, 400) * 1e+25;
             }
             else if (satType < .6f) //Dwarf Planets
             {
                 planetType = SolarType.DwarfPlanet;
-                planetDensity = Random.Range(3.5f, 7) * Units.k;
+                planetDensity = Random.Range(3.5f, 7) * Units.k * Units.convertToMeters;
                 planetMass = Random.Range(1, 40) * 1e+21;
                 ecc = Random.Range(0.01f, .5f);
             }
             else //Comets
             {
-                planetDensity = Random.Range(3.5f, 7) * Units.k;
+                planetDensity = Random.Range(3.5f, 7) * Units.k * Units.convertToMeters;
                 planetType = SolarType.Comet;
                 planetMass = Random.Range(1, 100) * 1e+13;
                 ecc = Random.Range(0.5f, 1);
             }
 
-            double planetRadius = Mathd.Pow((((planetMass) / planetDensity) * 3) / (4 * Mathd.PI), 1 / 3d); // In meters
+            double planetRadius = Mathd.Pow((((planetMass) / planetDensity) * 3) / (4 * Mathd.PI), 1 / 3d) / Units.convertToMeters; // In meters
             
             
 
@@ -160,8 +159,8 @@ public class SolarModel : Model {
                     sma = Random.Range((float)solar.satelites[i].bodyRadius * 1.2f, (float)(soi * .75f));
                     lpe = Random.Range(0, 2 * Mathf.PI);
                     color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
-                    float moonDensity = Random.Range(3.5f, 7) * Units.k;
-                    double moonRadius = Mathd.Pow((((moonMass) / moonDensity) * 3) / (4 * Mathd.PI), 1 / 3d); // In meters
+                    float moonDensity = Random.Range(3.5f, 7) * Units.k * Units.convertToMeters;
+                    double moonRadius = Mathd.Pow((((moonMass) / moonDensity) * 3) / (4 * Mathd.PI), 1 / 3d) / Units.convertToMeters; // In meters
                     SolarType moonType = SolarType.Moon;
                     SolarSubType moonSubType = SolarSubType.Rocky;
                     ecc = Random.Range(0, .02f);
@@ -183,6 +182,6 @@ public class SolarModel : Model {
     }
     public double GetModifiedRadius(float scale)
     {
-        return (Mathd.Pow((solar.bodyRadius),scale) * Camera.main.orthographicSize / GameManager.instance.data.cameraOrth);
+        return (Mathd.Pow((solar.bodyRadius),scale) * Camera.main.orthographicSize / GameManager.instance.data.cameraGalaxyOrtho);
     }
 }

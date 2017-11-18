@@ -17,4 +17,9 @@ public class UIManager: MonoBehaviour
     {
         
     }
+
+    public void OnGUI()
+    {
+        GUI.Box(new Rect(20, 20, 100, 90), Units.ReadDistance(GameManager.instance.data.cameraGalaxyOrtho * GameDataModel.galaxyDistanceMultiplication));
+    }
 }
