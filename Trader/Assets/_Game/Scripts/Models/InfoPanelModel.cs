@@ -10,6 +10,8 @@ public class InfoPanelModel : Model {
     public int targetId;
     public TargetType targetType; 
     public List<int> solarIndex;
+    public Structure structure;
+    public Creature creature;
 
     public InfoPanelModel() { }
     public InfoPanelModel(IdentityModel _target)
@@ -28,6 +30,28 @@ public class InfoPanelModel : Model {
         this.solarIndex = solarIndex;
         targetType = TargetType.SolarBody;
     }
+    public InfoPanelModel(Structure structure)
+    {
+        this.solarIndex = structure.solarIndex;
+        targetType = TargetType.Structure;
+        this.structure = structure;
+    }
+    public InfoPanelModel(Creature creature)
+    {
+        this.solarIndex = creature.solarIndex;
+        targetType = TargetType.Creature;
+        this.creature = creature;
+    }
+    public InfoPanelModel(Item item)
+    {
+        this.targetId = item.id;
+        targetType = TargetType.Item;
+    }
+    public InfoPanelModel(RawResource raw)
+    {
+        this.targetId = raw.id;
+        targetType = TargetType.RawResource;
+    }
 }
 
 public enum TargetType
@@ -35,5 +59,8 @@ public enum TargetType
     Identity,
     Creature,
     SolarBody,
-    Ship
+    Ship,
+    Structure,
+    Item,
+    RawResource
 }

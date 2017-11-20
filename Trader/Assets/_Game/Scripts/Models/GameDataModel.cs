@@ -8,7 +8,7 @@ using CodeControl;
 public class GameDataModel : Model {
     public string galaxyName;
     public Dated date = new Dated();
-    public int id = 0;
+    public int id = 1000;
     public int playerCreatureId;
 
     public static double G = 6.67e-11;
@@ -32,7 +32,7 @@ public class GameDataModel : Model {
 
     public ModelRef<ShipsModel> ships = new ModelRef<ShipsModel>(new ShipsModel());
     public ModelRef<CreatureModel> creatures = new ModelRef<CreatureModel>(new CreatureModel());
-    public ModelRef<ItemsModel> items = new ModelRef<ItemsModel>(new ItemsModel());
+    public ModelRef<ItemsModel> itemsData = new ModelRef<ItemsModel>(new ItemsModel());
     public ModelRef<RawResourcesModel> rawResources = new ModelRef<RawResourcesModel>(new RawResourcesModel());
 
     public ModelRefs<SolarModel> stars = new ModelRefs<SolarModel>();

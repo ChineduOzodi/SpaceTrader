@@ -16,74 +16,82 @@ public class ItemsModel: Model{
     }
     
 }
-public struct Item
+public class Item
 {
     public string name { get; private set; }
     public ItemType itemType { get; private set; }
     public int id { get; private set; }
-    public float amount { get; private set; }
+    public double amount { get; private set; }
+    public ModelRef<IdentityModel> owner;
+    public int structureId;
+    public double price;
 
-    public Item(int _itemId, int _amount)
+    public Item(int _itemId, double _amount, double _price, IdentityModel owner, int _structureId = -1)
     {
-        
+
         id = _itemId;
-        name = GameManager.instance.data.items.Model.GetItem(id).name;
+        name = GameManager.instance.data.itemsData.Model.GetItem(id).name;
         amount = _amount;
+        structureId = _structureId;
+        if (owner != null)
+            this.owner = new ModelRef<IdentityModel>(owner);
+        price = _price;
         itemType = ItemType.AI;
         itemType = GetItemType();
+
     }
-    public Item(string _name, int _itemId, ItemType type, int _amount)
+    public Item(int _itemId, double _amount, double _price)
+    {
+
+        id = _itemId;
+        name = GameManager.instance.data.itemsData.Model.GetItem(id).name;
+        amount = _amount;
+        this.owner = null;
+        price = _price;
+        itemType = ItemType.AI;
+        itemType = GetItemType();
+
+    }
+
+    public Item(string _name, int _itemId, ItemType type, int _amount, double _price, IdentityModel owner)
     {
 
         id = _itemId;
         name = _name;
         amount = _amount;
+        this.owner = new ModelRef<IdentityModel>(owner);
+        price = _price;
         itemType = ItemType.AI;
         itemType = type;
     }
-    //Operators
-    public static Item operator *(Item item, int num)
+
+    public Item(ItemType type, int _amount, double _price, IdentityModel owner)
     {
-        item.amount *= num;
-        return item;
-    }
-    public static Item operator /(Item item, int num)
-    {
-        item.amount /= num;
-        return item;
-    }
-    public static Item operator +(Item item, int num)
-    {
-        item.amount += num;
-        return item;
-    }
-    public static Item operator -(Item item, float num)
-    {
-        item.amount -= num;
-        return item;
-    }
-    public static Item operator *(Item item, float num)
-    {
-        item.amount *= num;
-        return item;
-    }
-    public static Item operator /(Item item, float num)
-    {
-        item.amount /= num;
-        return item;
-    }
-    public static Item operator +(Item item, float num)
-    {
-        item.amount += num;
-        return item;
-    }
-    public static Item operator -(Item item, int num)
-    {
-        item.amount -= num;
-        return item;
+        var itemBlueprint = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == type);
+        id = itemBlueprint.id;
+        name = itemBlueprint.name;
+        amount = _amount;
+        this.owner = new ModelRef<IdentityModel>(owner);
+        price = _price;
+        itemType = type;
     }
 
-    public bool RemoveAmount(float _amount)
+    public void SetAmount(double _amount, double _price)
+    {
+        price = _price;
+        amount = _amount;
+    }
+
+    public void AddAmount(double _amount, double _price)
+    {
+        if (_amount <= 0)
+            return;
+        price = amount * price + _amount * _price;
+        amount = amount + _amount;
+        price /= amount;
+    }
+
+    public bool RemoveAmount(double _amount)
     {
         if (amount - _amount < 0)
         {
@@ -95,18 +103,60 @@ public struct Item
 
     public float GetBaseArmor()
     {
-        return GameManager.instance.data.items.Model.GetItem(id).baseArmor;
+        return GameManager.instance.data.itemsData.Model.GetItem(id).baseArmor;
     }
 
     public int GetWorkers()
     {
-        return GameManager.instance.data.items.Model.GetItem(id).workers;
+        return GameManager.instance.data.itemsData.Model.GetItem(id).workers;
     }
 
     private ItemType GetItemType()
     {
-        return GameManager.instance.data.items.Model.GetItem(id).itemType;
+        return GameManager.instance.data.itemsData.Model.GetItem(id).itemType;
     }
+
+    //Operators
+    //public static Item operator *(Item item, int num)
+    //{
+    //    item.amount *= num;
+    //    return item;
+    //}
+    //public static Item operator /(Item item, int num)
+    //{
+    //    item.amount /= num;
+    //    return item;
+    //}
+    //public static Item operator +(Item item, int num)
+    //{
+    //    item.amount += num;
+    //    return item;
+    //}
+    //public static Item operator -(Item item, float num)
+    //{
+    //    item.amount -= num;
+    //    return item;
+    //}
+    //public static Item operator *(Item item, float num)
+    //{
+    //    item.amount *= num;
+    //    return item;
+    //}
+    //public static Item operator /(Item item, float num)
+    //{
+    //    item.amount /= num;
+    //    return item;
+    //}
+    //public static Item operator +(Item item, float num)
+    //{
+    //    item.amount += num;
+    //    return item;
+    //}
+    //public static Item operator -(Item item, int num)
+    //{
+    //    item.amount -= num;
+    //    return item;
+    //}
 }
 
 public struct ItemBluePrint
@@ -119,7 +169,7 @@ public struct ItemBluePrint
     public string coloredName;
 
     public ItemType itemType { get; private set; }
-    public float productionTime { get; private set; }
+    public double productionTime { get; private set; }
     /// <summary>
     /// Required resources to create one component.
     /// </summary>
@@ -160,7 +210,7 @@ public struct ItemBluePrint
         description = raw.description;
         id = raw.id;
         itemType = ItemType.RawMaterial;
-        productionTime = .1f;
+        productionTime = raw.miningTime;
         contstructionParts = new List<Item>();
         float armor = .1f;
         int workers = 0;
@@ -173,6 +223,111 @@ public struct ItemBluePrint
         float c = (float)rand.NextDouble();
         color = new Color(a, b, c);
         coloredName = "<color=" + ColorTypeConverter.ToRGBHex(color) + ">" + name + "</color>";
+    }
+}
+
+public class ItemsList
+{
+    public List<Item> items;
+
+    public ItemsList()
+    {
+        items = new List<Item>();
+    }
+    public bool SetAmount(Item item)
+    {
+        int itemIndex = -1;
+        if (item.structureId == -1)
+        {
+            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+        }
+        if (itemIndex >= 0)
+        {
+            items[itemIndex].SetAmount(item.amount, item.price);
+        }
+        else
+        {
+            items.Add(item);
+        }
+        return true;
+    }
+    public bool AddItem(Item item)
+    {
+        int itemIndex = -1;
+        if (item.structureId == -1)
+        {
+            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+        }
+        if (itemIndex >= 0)
+        {
+            items[itemIndex].AddAmount(item.amount, item.price);
+        }
+        else
+        {
+            items.Add(item);
+        }
+        return true;
+    }
+
+    public bool RemoveItem(Item item)
+    {
+        int itemIndex = -1;
+        if (item.structureId == -1)
+        {
+            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        }
+        else if (item.owner == null || item.owner.Model == null)
+            itemIndex = items.FindIndex(x => x.id == item.id);
+        else itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+
+        if (itemIndex >= 0)
+        {
+            if (items[itemIndex].amount < item.amount)
+            {
+                return false;
+            }
+            items[itemIndex].RemoveAmount(item.amount);
+            if (items[itemIndex].amount == 0)
+            {
+                items.RemoveAt(itemIndex);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public bool ContainsItem(Item item)
+    {
+        int itemIndex = -1;
+        if (item.owner == null || item.owner.Model == null)
+            itemIndex = items.FindIndex(x => x.id == item.id);
+        else itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+
+        return itemIndex != -1;
+    }
+
+    public bool ContainsItem(int itemId, IdentityModel owner)
+    {
+        return items.Find(x => x.id == itemId && owner == x.owner.Model).name != "";
+    }
+
+    public Item Find(Item item)
+    {
+        if (item.owner == null || item.owner.Model == null)
+            return items.Find(x => x.id == item.id);
+        else return items.Find(x => x.id == item.id && item.owner.Model == x.owner.Model);
+    }
+    public Item Find(int itemId)
+    {
+        return items.Find(x => x.id == itemId);
     }
 }
 
@@ -189,5 +344,9 @@ public enum ItemType
     Sensor,
     FactoryMachinery,
     AI,
-    RawMaterial
+    RawMaterial,
+    Storage,
+    Driller,
+    Factory,
+    SpaceStation,
 }

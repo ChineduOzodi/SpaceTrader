@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CompanyModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>eba9e672-a5e0-4d7d-8248-6c7b3ef8a617</Id>
+  <name>Ooze Company</name>
+  <identityType>Government</identityType>
+  <lineTarget>
+    <x>0</x>
+    <y>0</y>
+    <z>0</z>
+  </lineTarget>
+  <lineColor>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </lineColor>
+  <spriteColor>
+    <r>0.00620196573</r>
+    <g>0.7779518</g>
+    <b>0.9341544</b>
+    <a>1</a>
+  </spriteColor>
+  <lastUpdated>
+    <time>0.62566983699798584</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.62566983699798584</seconds>
+    <yr>0</yr>
+  </lastUpdated>
+  <stations />
+  <ships>
+    <int>60</int>
+    <int>62</int>
+  </ships>
+  <timeUpdate>0</timeUpdate>
+  <money>0</money>
+  <moneyStats>
+    <title>Money Over Time</title>
+    <xLabel>Time (hours)</xLabel>
+    <yLabel>Money</yLabel>
+  </moneyStats>
+  <moneyChange>0</moneyChange>
+  <solarIndex>
+    <int>161</int>
+    <int>0</int>
+  </solarIndex>
+  <age>
+    <time>0</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0</seconds>
+    <yr>0</yr>
+  </age>
+  <dateCreated>
+    <time>0.62566983699798584</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.62566983699798584</seconds>
+    <yr>0</yr>
+  </dateCreated>
+  <owner />
+  <workers>0</workers>
+  <workerCapacity>0</workerCapacity>
+  <ceo>59</ceo>
+  <governmentAccess>
+    <Id>5fff010c-e6d9-4c0d-9370-d85dcac50475</Id>
+  </governmentAccess>
+</CompanyModel>

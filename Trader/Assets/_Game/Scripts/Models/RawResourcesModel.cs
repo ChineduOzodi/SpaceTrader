@@ -15,7 +15,7 @@ public class RawResourcesModel: Model
         int common = 100000;
         int abundant = 1000000;
         rawResources.Add(new RawResourceBlueprint(defaultRawResources.Warium.ToString(), (int)defaultRawResources.Warium,
-            "Gaseous material mainly used for weapons",
+            "Gaseous material mainly used for weapons", 1000 * Dated.Day / common,
             new List<RawResourceInfo>()
         {
             new RawResourceInfo(PlanetTileType.Desert, .1f, Vector2.up, common),
@@ -27,7 +27,7 @@ public class RawResourcesModel: Model
         }));
 
         rawResources.Add(new RawResourceBlueprint(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid,
-            "Main material used to build structures",
+            "Main material used to build structures", 1000 * Dated.Day / abundant,
             new List<RawResourceInfo>()
         {
             new RawResourceInfo(PlanetTileType.Desert, .1f, Vector2.up, abundant),
@@ -39,7 +39,7 @@ public class RawResourcesModel: Model
         }));
 
         rawResources.Add(new RawResourceBlueprint(defaultRawResources.Fuelodite.ToString(), (int)defaultRawResources.Fuelodite,
-            "Used to create ship fuel",
+            "Used to create ship fuel", 1000 * Dated.Day / abundant,
             new List<RawResourceInfo>()
         {
             new RawResourceInfo(PlanetTileType.Desert, .1f, Vector2.up, scarce),
@@ -51,7 +51,7 @@ public class RawResourcesModel: Model
         }));
 
         rawResources.Add(new RawResourceBlueprint(defaultRawResources.Glassitum.ToString(), (int)defaultRawResources.Glassitum,
-            "Used to create glass like structure",
+            "Used to create glass like structure", 1000 * Dated.Day / common,
             new List<RawResourceInfo>()
         {
             new RawResourceInfo(PlanetTileType.Desert, .95f, Vector2.up, abundant),
@@ -63,7 +63,7 @@ public class RawResourcesModel: Model
         }));
 
         rawResources.Add(new RawResourceBlueprint(defaultRawResources.Goldium.ToString(), (int)defaultRawResources.Goldium,
-            "Rare gold like material",
+            "Rare gold like material", 1000 * Dated.Day / rare,
             new List<RawResourceInfo>()
         {
             new RawResourceInfo(PlanetTileType.Desert, .02f, Vector2.up, rare),
@@ -75,7 +75,7 @@ public class RawResourcesModel: Model
         }));
 
         rawResources.Add(new RawResourceBlueprint(defaultRawResources.Coppode.ToString(), (int)defaultRawResources.Coppode,
-            "Used to make intricate machinery",
+            "Used to make intricate machinery", 1000 * Dated.Day / scarce,
             new List<RawResourceInfo>()
         {
             new RawResourceInfo(PlanetTileType.Desert, .1f, Vector2.up, scarce),
@@ -137,7 +137,7 @@ public struct RawResource
 {
     public string name { get; private set; }
     public int id { get; private set; }
-    public float amount { get; private set; }
+    public double amount { get; private set; }
     public double accessibility { get; private set; }
 
     public RawResource(string _name, int _resourceId, int _amount, float accessibility)
@@ -149,16 +149,37 @@ public struct RawResource
         this.accessibility = accessibility;
     }
 
-    public void RemoveAmount(float removeAmount)
-    {
-        amount -= removeAmount;
-        if (amount < 0)
+    public double RemoveAmount(double removeAmount)
+    {        
+        if (removeAmount < amount)
         {
-            throw new System.Exception("Amount bellow 0");
+            amount -= removeAmount;
         }
+        else
+        {
+            removeAmount = amount;
+            amount = 0;
+        }
+
+        return removeAmount;
     }
 
-    public void AddAmount(float amount)
+    public int RemoveAmount(int removeAmount)
+    {
+        if (removeAmount < amount)
+        {
+            amount -= removeAmount;
+        }
+        else
+        {
+            removeAmount = (int) amount;
+            amount = 0;
+        }
+
+        return removeAmount;
+    }
+
+    public void AddAmount(double amount)
     {
         this.amount += amount;
     }
@@ -204,20 +225,23 @@ public struct RawResourceBlueprint
     public string description;
     public List<RawResourceInfo> rawResourceInfos { get; private set; }
     public int id { get; private set; }
+    public double miningTime;
 
-    public RawResourceBlueprint(string _name, string _description, List<RawResourceInfo> resourcesInfo)
+    public RawResourceBlueprint(string _name, string _description, double _miningTime, List<RawResourceInfo> resourcesInfo)
     {
         name = _name;
         description = _description;
         rawResourceInfos = resourcesInfo;
         id = GameManager.instance.data.id++;
+        miningTime = _miningTime;
     }
-    public RawResourceBlueprint(string _name, int _id, string _description, List<RawResourceInfo> resourcesInfo)
+    public RawResourceBlueprint(string _name, int _id, string _description, double _miningTime, List<RawResourceInfo> resourcesInfo)
     {
         name = _name;
         description = _description;
         rawResourceInfos = resourcesInfo;
         id = _id;
+        miningTime = _miningTime;
     }
 
     public RawResourceInfo GetInfo(PlanetTileType planetTile)

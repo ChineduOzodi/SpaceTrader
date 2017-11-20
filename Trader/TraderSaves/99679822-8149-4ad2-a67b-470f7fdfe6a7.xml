@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>99679822-8149-4ad2-a67b-470f7fdfe6a7</Id>
+  <name>Plecohines 387</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>-46.032192832596962</x>
+    <y>-95.213029543065886</y>
+  </galacticPosition>
+  <color>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </color>
+  <solar>
+    <name>Plecohines 387 WhiteDwarf</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <groundStructures />
+    <spaceStructures />
+    <color>
+      <r>0.659072161</r>
+      <g>0.7711417</g>
+      <b>1</b>
+      <a>1</a>
+    </color>
+    <satelites>
+      <SolarBody>
+        <name>Plecohines 387 Comet 1</name>
+        <orbit>
+          <sma>7887038976</sma>
+          <ecc>0.65402591228485107</ecc>
+          <inc>0</inc>
+          <lpe>5.8971076011657715</lpe>
+          <lan>0</lan>
+          <mna>5.8971076011657715</mna>
+          <eph>0</eph>
+        </orbit>
+        <groundStructures />
+        <spaceStructures />
+        <color>
+          <r>0.5</r>
+          <g>0.5</g>
+          <b>0.5</b>
+          <a>1</a>
+        </color>
+        <satelites />
+        <totalPopulation>0</totalPopulation>
+        <solarType>Comet</solarType>
+        <solarSubType>Rocky</solarSubType>
+        <mass>920000000000000</mass>
+        <bodyRadius>3.1563218391955874</bodyRadius>
+        <lastKnownPosition>
+          <x>0</x>
+          <y>0</y>
+        </lastKnownPosition>
+        <surfaceTemp>0</surfaceTemp>
+        <surfacePressure>0</surfacePressure>
+        <luminosity>0</luminosity>
+        <bondAlebo>0.78897535800933838</bondAlebo>
+        <greenhouse>0</greenhouse>
+        <surfaceGravity>0.00062788787024186407</surfaceGravity>
+        <planetTiles>
+          <PlanetTile>
+            <planetTileType>Rocky</planetTileType>
+            <count>1</count>
+          </PlanetTile>
+        </planetTiles>
+        <rawResources>
+          <RawResource>
+            <name>Armoroid</name>
+            <id>1</id>
+            <amount>953416</amount>
+            <accessibility>0.61949926614761353</accessibility>
+          </RawResource>
+        </rawResources>
+        <population>0</population>
+        <solarIndex>
+          <int>386</int>
+          <int>0</int>
+        </solarIndex>
+      </SolarBody>
+    </satelites>
+    <totalPopulation>0</totalPopulation>
+    <solarType>Star</solarType>
+    <solarSubType>WhiteDwarf</solarSubType>
+    <mass>1.9293545657396315E+30</mass>
+    <bodyRadius>633320.75923837745</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>21738</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>4.2841347810212378E+33</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>32.705547684928725</surfaceGravity>
+    <planetTiles />
+    <rawResources />
+    <population>0</population>
+    <solarIndex>
+      <int>386</int>
+    </solarIndex>
+  </solar>
+  <nearStars>
+    <Id>53601bfe-a667-4f68-afce-3ea0c6c22066</Id>
+    <Id>53601bfe-a667-4f68-afce-3ea0c6c22066</Id>
+    <Id>0db8d640-2b1c-41ac-bb22-daff50a5b513</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>386</index>
+</SolarModel>

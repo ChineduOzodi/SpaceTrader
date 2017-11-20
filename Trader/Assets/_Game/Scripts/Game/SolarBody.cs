@@ -28,6 +28,10 @@ public class SolarBody
     public List<Structure> groundStructures = new List<Structure>();
     public List<Structure> spaceStructures = new List<Structure>();
 
+    //----------------Commerce-----------------------------//
+    public ItemsList buyList { get; private set; }
+    public ItemsList sellList { get; private set; }
+
 
     public int population { get; private set; }
     //public Dictionary<RawResources, double> rawResources;
@@ -53,7 +57,8 @@ public class SolarBody
     {
         rawResources = new List<RawResource>();
         planetTiles = new List<PlanetTile>();
-
+        totalPopulation = 0;
+        population = 0;
         this.orbit = orbit;
         this.mass = mass;
         this.bodyRadius = radius;
@@ -70,6 +75,9 @@ public class SolarBody
         bondAlebo = .5;
         surfacePressure = 1;
         greenhouse = .0137328 * Mathd.Pow(surfacePressure, 2) + .0986267 * surfacePressure;
+
+        buyList = new ItemsList();
+        sellList = new ItemsList();
     }
 
     public SolarBody(string _name, List<int> _solarIndex, SolarType _solarType, SolarSubType _solarSubType, double mass, double radius, Orbit orbit, Color _color, SolarBody star)
@@ -78,6 +86,8 @@ public class SolarBody
         this.mass = mass;
         this.bodyRadius = radius;
         name = _name;
+        totalPopulation = 0;
+        population = 0;
         this.solarType = _solarType;
         this.solarSubType = _solarSubType;
         solarIndex = _solarIndex;
@@ -85,6 +95,9 @@ public class SolarBody
         surfaceGravity = GameDataModel.G * mass / Mathd.Pow(Units.convertToMeters * radius, 2) / 9.81;
         surfacePressure = 0; // In atm
         bondAlebo = Random.value;
+
+        buyList = new ItemsList();
+        sellList = new ItemsList();
 
         var dist = orbit.sma;
         if (solarIndex.Count == 3)
@@ -351,6 +364,94 @@ public class SolarBody
 
     public SolarBody() { }
 
+    public Structure GetStructure(int structureId)
+    {
+        int index = groundStructures.FindIndex(x => x.id == structureId);
+        if (index == -1)
+            index = spaceStructures.FindIndex(x => x.id == structureId);
+        else
+            return groundStructures[index];
+        if (index != -1)
+            return spaceStructures[index];
+        else
+            return null;
+    }
+    #region "Commerce"
+
+    public double GetMarketPrice(int itemId)
+    {
+        return GameManager.instance.data.stars[solarIndex[0]].GetMarketPrice(itemId);
+    }
+
+    public void SetBuying(Item item, double demand)
+    {
+
+        int itemIndex = -1;
+        if (item.structureId == -1)
+        {
+            itemIndex = buyList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = buyList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+        }
+        if (itemIndex >= 0)
+        {
+            buyList.items[itemIndex].SetAmount(item.amount, item.price);
+        }
+        else
+        {
+            buyList.AddItem(item);
+        }
+
+        GameManager.instance.data.stars[solarIndex[0]].SetBuying(item, demand);
+    }
+    public void RemoveBuying(int itemId, IdentityModel owner, int structureId, double demand)
+    {
+
+        int itemIndex = -1;
+        if (structureId == -1)
+        {
+            itemIndex = buyList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = buyList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model && x.structureId == structureId);
+        }
+
+        if (itemIndex >= 0)
+        {
+            buyList.items.RemoveAt(itemIndex);
+        }
+
+        GameManager.instance.data.stars[solarIndex[0]].RemoveBuying(itemId,owner,structureId, demand);
+    }
+
+    public void SetSelling(Item item)
+    {
+        int itemIndex = -1;
+        if (item.structureId == -1)
+        {
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+        }
+        if (itemIndex >= 0)
+        {
+            sellList.items[itemIndex].AddAmount(item.amount, item.price);
+        }
+        else
+        {
+            sellList.AddItem(item);
+        }
+
+        GameManager.instance.data.stars[solarIndex[0]].SetSelling(item);
+    }
+
+    #endregion
+
     public void AddPopulation(int people)
     {
         population += people;
@@ -391,6 +492,8 @@ public class SolarBody
         totalPopulation -= people;
     }
 
+    //-----------------Orbital Functions-------------------//
+    #region "Orbital Functions"
     public Vector2d GamePosition(double time)
     {
         if (orbit.sma == 0)
@@ -518,7 +621,7 @@ public class SolarBody
         }
         return orbit.sma * Mathd.Pow(mass / parentMass, .4f);
     }
-
+#endregion
     public string GetInfo(double time)
     {
         double parentMass;

@@ -39,14 +39,9 @@ public class SolarController : Controller<SolarModel> {
         sprite.color = model.solar.color;
         transform.localScale = Vector3.one;
         var points = new List<Vector3>();
-        foreach (SolarModel solar in model.nearStars)
-        {
-            points.Add(transform.position);
-            points.Add(CameraController.CameraOffsetGalaxyPosition(solar.galacticPosition));
-        }
+        
         solarLine = new VectorLine("model.name Connections", points, (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod));
         //line.SetVectorLine(vectorLine, lineTexture, sprite.material);
-        solarLine.Draw3D();
         sprite.enabled = false;
         if (model.isActive)
         {
@@ -58,7 +53,9 @@ public class SolarController : Controller<SolarModel> {
 	void Update () {
         transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition);
         circleCollider.radius = (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod * 5);
-        List<Vector3> statDisplayPoints = new List<Vector3>();
+        List<Vector3> linePoints = new List<Vector3>();
+        List<Color32> lineColors = new List<Color32>();
+        List<float> lineWidths = new List<float>();
         if (model.isActive)
         {
             sun.transform.position = transform.position;
@@ -108,17 +105,20 @@ public class SolarController : Controller<SolarModel> {
                 //Population rendering
                 if (MapTogglePanel.instance.populations.isOn)
                 {
-                    statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x);
+                    linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x);
 
                     if (canSeeMoons())
                     {
                         
-                        statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(body.totalPopulation, totalPopulationStatSize));
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(body.totalPopulation, totalPopulationStatSize));
                     }
                     else
                     {
-                        statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(body.population, totalPopulationStatSize));
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(body.population, totalPopulationStatSize));
                     }
+
+                    lineColors.Add(new Color32(100, 100, 255, 200));
+                    lineWidths.Add(localScale);
                 }
             }
             for (int i = 0; i < moons.Count; i++)
@@ -166,8 +166,10 @@ public class SolarController : Controller<SolarModel> {
                         //Population rendering
                         if (MapTogglePanel.instance.populations.isOn)
                         {
-                            statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x);
-                            statDisplayPoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(moon.population, totalPopulationStatSize));
+                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x *.5f);
+                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x + Vector3.up * Mathf.Pow(moon.population, totalPopulationStatSize));
+                            lineColors.Add(new Color32(100, 100, 255, 200));
+                            lineWidths.Add(localScale);
                         }
                     }
                     
@@ -181,11 +183,7 @@ public class SolarController : Controller<SolarModel> {
 
             }
 
-            //Stats Display
-            solarLine.points3 = statDisplayPoints;
-            solarLine.SetWidth(planets[0].transform.localScale.x * .5f);
-            solarLine.SetColor(new Color32(100, 100, 255, 100));
-            solarLine.Draw3D();
+            
 
             if (game.data.cameraGalaxyOrtho * GameDataModel.galaxyDistanceMultiplication > 1.5 * Units.ly)
             {
@@ -198,52 +196,74 @@ public class SolarController : Controller<SolarModel> {
             {
                 if (MapTogglePanel.instance.galaxyConnections.isOn)
                 {
-                    var points = new List<Vector3>();
                     foreach (SolarModel solar in model.nearStars)
                     {
-                        points.Add(transform.position);
-                        points.Add(CameraController.CameraOffsetGalaxyPosition(solar.galacticPosition));
-                    }
-                    solarLine.points3 = points;
-                    solarLine.SetWidth((float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod) * 5);
-                    if (MapTogglePanel.instance.galaxyTerritory.isOn)
-                    {
-                        if (model.government.Model != null)
+                        linePoints.Add(transform.position);
+                        linePoints.Add(CameraController.CameraOffsetGalaxyPosition(solar.galacticPosition));
+                        lineWidths.Add((float)circleCollider.radius);
+                        if (MapTogglePanel.instance.galaxyTerritory.isOn)
                         {
-                            var govModel = model.government.Model;
-                            solarLine.color = new Color32((byte)(govModel.spriteColor.r * 255), (byte)(govModel.spriteColor.g * 255), (byte)(govModel.spriteColor.b * 255), 50);
+                            if (model.government.Model != null)
+                            {
+                                var govModel = model.government.Model;
+                                lineColors.Add(new Color32((byte)(govModel.spriteColor.r * 255), (byte)(govModel.spriteColor.g * 255), (byte)(govModel.spriteColor.b * 255), 50));
+                            }
+                            else
+                            {
+                                lineColors.Add(new Color32((byte)(50), (byte)(50), (byte)(50), 10));
+                            }
+
                         }
                         else
                         {
-                            solarLine.color = new Color32((byte)(50), (byte)(50), (byte)(50), 10);
+                            lineColors.Add(new Color32((byte)(model.solar.color.r * 255), (byte)(model.solar.color.g * 255), (byte)(model.solar.color.b * 255), 10));
                         }
-                        
                     }
-                    else
-                    {
-                        solarLine.color = new Color32((byte)(model.solar.color.r * 255), (byte)(model.solar.color.g * 255), (byte)(model.solar.color.b * 255), 10);
-                    }
-                    solarLine.Draw3D();
+                    
                 }
                 else
                 {
-                    if (solarLine.lineWidth != 0)
-                    {
-                        solarLine.SetWidth(0);
-                        solarLine.Draw3D();
-                    }
+                    //if (solarLine.lineWidth != 0)
+                    //{
+                    //    solarLine.SetWidth(0);
+                    //    solarLine.Draw3D();
+                    //}
+                }
+
+                //Population rendering
+                if (MapTogglePanel.instance.populations.isOn && model.solar.totalPopulation > 0)
+                {
+                    linePoints.Add(transform.position + Vector3.up *circleCollider.radius* .5f);
+                    linePoints.Add(transform.position + Vector3.up * circleCollider.radius + Vector3.up * Mathf.Pow(model.solar.totalPopulation, totalPopulationStatSize));
+                    lineColors.Add(new Color32(100, 100, 255, 200));
+                    lineWidths.Add(circleCollider.radius * 2f);
                 }
             }
             else
             {
-                if (solarLine.lineWidth != 0)
-                {
-                    solarLine.SetWidth(0);
-                    solarLine.Draw3D();
-                }
+                //if (solarLine.lineWidth != 0)
+                //{
+                //    solarLine.SetWidth(0);
+                //    solarLine.Draw3D();
+                //}
             }
         }
+        //Stats Display
+        if (linePoints.Count > 0)
+        {
+            solarLine.points3 = linePoints;
+            solarLine.SetWidths(lineWidths);
+            solarLine.SetColors(lineColors);
+            solarLine.Draw3D();
+        }
+        else
+        {
+            solarLine.points3 = new List<Vector3>();
+            solarLine.lineWidth = 0;
+            solarLine.Draw();
+        }
         
+
         ToggleSystem();
 		
 	}

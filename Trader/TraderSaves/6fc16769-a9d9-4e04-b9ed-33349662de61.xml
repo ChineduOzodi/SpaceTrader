@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CompanyModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>6fc16769-a9d9-4e04-b9ed-33349662de61</Id>
+  <name>Raybit Company</name>
+  <identityType>Government</identityType>
+  <lineTarget>
+    <x>0</x>
+    <y>0</y>
+    <z>0</z>
+  </lineTarget>
+  <lineColor>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </lineColor>
+  <spriteColor>
+    <r>0.0140781775</r>
+    <g>0.00797865447</g>
+    <b>0.02087188</b>
+    <a>1</a>
+  </spriteColor>
+  <lastUpdated>
+    <time>0.90730290859937668</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.90730290859937668</seconds>
+    <yr>0</yr>
+  </lastUpdated>
+  <stations />
+  <ships>
+    <int>122</int>
+    <int>124</int>
+  </ships>
+  <timeUpdate>0</timeUpdate>
+  <money>0</money>
+  <moneyStats>
+    <title>Money Over Time</title>
+    <xLabel>Time (hours)</xLabel>
+    <yLabel>Money</yLabel>
+  </moneyStats>
+  <moneyChange>0</moneyChange>
+  <solarIndex>
+    <int>153</int>
+    <int>0</int>
+  </solarIndex>
+  <age>
+    <time>0</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0</seconds>
+    <yr>0</yr>
+  </age>
+  <dateCreated>
+    <time>0.90730290859937668</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.90730290859937668</seconds>
+    <yr>0</yr>
+  </dateCreated>
+  <owner />
+  <workers>0</workers>
+  <workerCapacity>0</workerCapacity>
+  <ceo>121</ceo>
+  <governmentAccess>
+    <Id>3f447e42-0946-42d9-a62c-56f28b0b1a0a</Id>
+  </governmentAccess>
+</CompanyModel>

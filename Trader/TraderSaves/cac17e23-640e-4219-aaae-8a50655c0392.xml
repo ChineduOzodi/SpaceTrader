@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<ItemsModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>cac17e23-640e-4219-aaae-8a50655c0392</Id>
+  <items>
+    <ItemBluePrint>
+      <color>
+        <r>0.7060266</r>
+        <g>0.0617836267</g>
+        <b>0.8158052</b>
+        <a>1</a>
+      </color>
+      <coloredName>&lt;color=#B40FD0&gt;Warium&lt;/color&gt;</coloredName>
+      <name>Warium</name>
+      <id>4</id>
+      <description>Gaseous material mainly used for weapons</description>
+      <itemType>RawMaterial</itemType>
+      <productionTime>0.1</productionTime>
+      <contstructionParts />
+      <baseArmor>0.1</baseArmor>
+      <workers>0</workers>
+    </ItemBluePrint>
+    <ItemBluePrint>
+      <color>
+        <r>0.366854578</r>
+        <g>0.207934737</g>
+        <b>0.9534165</b>
+        <a>1</a>
+      </color>
+      <coloredName>&lt;color=#5D35F3&gt;Armoroid&lt;/color&gt;</coloredName>
+      <name>Armoroid</name>
+      <id>1</id>
+      <description>Main material used to build structures</description>
+      <itemType>RawMaterial</itemType>
+      <productionTime>0.1</productionTime>
+      <contstructionParts />
+      <baseArmor>0.1</baseArmor>
+      <workers>0</workers>
+    </ItemBluePrint>
+    <ItemBluePrint>
+      <color>
+        <r>0.259635925</r>
+        <g>0.110500664</g>
+        <b>0.8616756</b>
+        <a>1</a>
+      </color>
+      <coloredName>&lt;color=#421CDB&gt;Fuelodite&lt;/color&gt;</coloredName>
+      <name>Fuelodite</name>
+      <id>3</id>
+      <description>Used to create ship fuel</description>
+      <itemType>RawMaterial</itemType>
+      <productionTime>0.1</productionTime>
+      <contstructionParts />
+      <baseArmor>0.1</baseArmor>
+      <workers>0</workers>
+    </ItemBluePrint>
+    <ItemBluePrint>
+      <color>
+        <r>0.598807931</r>
+        <g>0.964349568</g>
+        <b>0.7240643</b>
+        <a>1</a>
+      </color>
+      <coloredName>&lt;color=#98F5B8&gt;Glassitum&lt;/color&gt;</coloredName>
+      <name>Glassitum</name>
+      <id>6</id>
+      <description>Used to create glass like structure</description>
+      <itemType>RawMaterial</itemType>
+      <productionTime>0.1</productionTime>
+      <contstructionParts />
+      <baseArmor>0.1</baseArmor>
+      <workers>0</workers>
+    </ItemBluePrint>
+    <ItemBluePrint>
+      <color>
+        <r>0.9204639</r>
+        <g>0.256651759</g>
+        <b>0.999287</b>
+        <a>1</a>
+      </color>
+      <coloredName>&lt;color=#EA41FE&gt;Goldium&lt;/color&gt;</coloredName>
+      <name>Goldium</name>
+      <id>0</id>
+      <description>Rare gold like material</description>
+      <itemType>RawMaterial</itemType>
+      <productionTime>0.1</productionTime>
+      <contstructionParts />
+      <baseArmor>0.1</baseArmor>
+      <workers>0</workers>
+    </ItemBluePrint>
+    <ItemBluePrint>
+      <color>
+        <r>0.813245237</r>
+        <g>0.1592177</g>
+        <b>0.9075461</b>
+        <a>1</a>
+      </color>
+      <coloredName>&lt;color=#CF28E7&gt;Coppode&lt;/color&gt;</coloredName>
+      <name>Coppode</name>
+      <id>2</id>
+      <description>Used to make intricate machinery</description>
+      <itemType>RawMaterial</itemType>
+      <productionTime>0.1</productionTime>
+      <contstructionParts />
+      <baseArmor>0.1</baseArmor>
+      <workers>0</workers>
+    </ItemBluePrint>
+    <ItemBluePrint>
+      <color>
+        <r>0.9204639</r>
+        <g>0.256651759</g>
+        <b>0.999287</b>
+        <a>1</a>
+      </color>
+      <coloredName>&lt;color=#EA41FE&gt;Fuel Cell&lt;/color&gt;</coloredName>
+      <name>Fuel Cell</name>
+      <id>0</id>
+      <description>This is the Fuel Cell</description>
+      <itemType>Fuel</itemType>
+      <productionTime>0.25</productionTime>
+      <contstructionParts>
+        <Item>
+          <name>Fuelodite</name>
+          <itemType>RawMaterial</itemType>
+          <id>3</id>
+          <amount>1</amount>
+        </Item>
+      </contstructionParts>
+      <baseArmor>0.1</baseArmor>
+      <workers>0</workers>
+    </ItemBluePrint>
+  </items>
+</ItemsModel>

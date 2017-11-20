@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>7d6b50bd-78e5-47b3-90ce-bd68a4d95cf7</Id>
+  <name>Stion UOY 89</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>34.305643236805835</x>
+    <y>-603.06468744601523</y>
+  </galacticPosition>
+  <color>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </color>
+  <solar>
+    <name>Stion UOY 89 MainSequence</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <groundStructures />
+    <spaceStructures />
+    <color>
+      <r>0.943626761</r>
+      <g>0.945140958</g>
+      <b>1</b>
+      <a>1</a>
+    </color>
+    <satelites>
+      <SolarBody>
+        <name>Stion UOY 89 Comet 1</name>
+        <orbit>
+          <sma>21008877568</sma>
+          <ecc>0.64280295372009277</ecc>
+          <inc>0</inc>
+          <lpe>4.9043278694152832</lpe>
+          <lan>0</lan>
+          <mna>4.9043278694152832</mna>
+          <eph>0</eph>
+        </orbit>
+        <groundStructures />
+        <spaceStructures />
+        <color>
+          <r>0.5</r>
+          <g>0.5</g>
+          <b>0.5</b>
+          <a>1</a>
+        </color>
+        <satelites />
+        <totalPopulation>0</totalPopulation>
+        <solarType>Comet</solarType>
+        <solarSubType>Rocky</solarSubType>
+        <mass>340000000000000</mass>
+        <bodyRadius>2.597999773133771</bodyRadius>
+        <lastKnownPosition>
+          <x>0</x>
+          <y>0</y>
+        </lastKnownPosition>
+        <surfaceTemp>0</surfaceTemp>
+        <surfacePressure>0</surfacePressure>
+        <luminosity>0</luminosity>
+        <bondAlebo>0.75354647636413574</bondAlebo>
+        <greenhouse>0</greenhouse>
+        <surfaceGravity>0.00034249759476871717</surfaceGravity>
+        <planetTiles>
+          <PlanetTile>
+            <planetTileType>Rocky</planetTileType>
+            <count>1</count>
+          </PlanetTile>
+        </planetTiles>
+        <rawResources>
+          <RawResource>
+            <name>Armoroid</name>
+            <id>1</id>
+            <amount>953416</amount>
+            <accessibility>0.3604615330696106</accessibility>
+          </RawResource>
+        </rawResources>
+        <population>0</population>
+        <solarIndex>
+          <int>88</int>
+          <int>0</int>
+        </solarIndex>
+      </SolarBody>
+      <SolarBody>
+        <name>Stion UOY 89 DwarfPlanet 2</name>
+        <orbit>
+          <sma>8905745408</sma>
+          <ecc>0.36474549770355225</ecc>
+          <inc>0</inc>
+          <lpe>0.20976513624191284</lpe>
+          <lan>0</lan>
+          <mna>0.20976513624191284</mna>
+          <eph>0</eph>
+        </orbit>
+        <groundStructures />
+        <spaceStructures />
+        <color>
+          <r>1</r>
+          <g>0</g>
+          <b>0</b>
+          <a>1</a>
+        </color>
+        <satelites />
+        <totalPopulation>0</totalPopulation>
+        <solarType>DwarfPlanet</solarType>
+        <solarSubType>Volcanic</solarSubType>
+        <mass>1.6E+22</mass>
+        <bodyRadius>828.33626201052357</bodyRadius>
+        <lastKnownPosition>
+          <x>0</x>
+          <y>0</y>
+        </lastKnownPosition>
+        <surfaceTemp>83.655344830008971</surfaceTemp>
+        <surfacePressure>0.492386132478714</surfacePressure>
+        <luminosity>0</luminosity>
+        <bondAlebo>0.4480329155921936</bondAlebo>
+        <greenhouse>0.051891855756097414</greenhouse>
+        <surfaceGravity>0.15854898331700087</surfaceGravity>
+        <planetTiles>
+          <PlanetTile>
+            <planetTileType>Volcanic</planetTileType>
+            <count>2</count>
+          </PlanetTile>
+        </planetTiles>
+        <rawResources>
+          <RawResource>
+            <name>Warium</name>
+            <id>4</id>
+            <amount>20793</amount>
+            <accessibility>0.72681200504302979</accessibility>
+          </RawResource>
+          <RawResource>
+            <name>Fuelodite</name>
+            <id>3</id>
+            <amount>90743</amount>
+            <accessibility>0.69486439228057861</accessibility>
+          </RawResource>
+          <RawResource>
+            <name>Coppode</name>
+            <id>2</id>
+            <amount>83867</amount>
+            <accessibility>0.15410208702087402</accessibility>
+          </RawResource>
+        </rawResources>
+        <population>0</population>
+        <solarIndex>
+          <int>88</int>
+          <int>1</int>
+        </solarIndex>
+      </SolarBody>
+    </satelites>
+    <totalPopulation>0</totalPopulation>
+    <solarType>Star</solarType>
+    <solarSubType>MainSequence</solarSubType>
+    <mass>1.1610921337127686E+32</mass>
+    <bodyRadius>26889661.974227436</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>7063.6945786515935</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>1.9656184439342516E+28</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>1.0918244704682742</surfaceGravity>
+    <planetTiles />
+    <rawResources />
+    <population>0</population>
+    <solarIndex>
+      <int>88</int>
+    </solarIndex>
+  </solar>
+  <nearStars>
+    <Id>54bb0320-7426-4348-83b7-6155056887cf</Id>
+    <Id>7f27b669-e31e-4c6e-9e8a-edd55bf8b765</Id>
+    <Id>5d432410-b069-41d4-ade9-12e5263fc006</Id>
+    <Id>7f27b669-e31e-4c6e-9e8a-edd55bf8b765</Id>
+    <Id>54bb0320-7426-4348-83b7-6155056887cf</Id>
+    <Id>83138725-1e8a-4dbf-8add-32c83e0723cf</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>88</index>
+</SolarModel>

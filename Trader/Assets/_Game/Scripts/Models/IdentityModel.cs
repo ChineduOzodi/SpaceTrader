@@ -17,8 +17,8 @@ public class IdentityModel : Model {
     public Dated lastUpdated;
 
     public List<int> solarIndex { get; protected set; }
-    public List<List<int>> stations = new List<List<int>>();
     public List<int> ships = new List<int>();
+    public List<List<int>> solarBodiesWithStructures { get; protected set; }
 
     public Dated age { get; private set; }
     public Dated dateCreated { get; private set; }
@@ -39,10 +39,19 @@ public class IdentityModel : Model {
         lastUpdated = new Dated(GameManager.instance.data.date.time);
         spriteColor = UnityEngine.Random.ColorHSV(.5f, 1f, .5f, 1f);
         spriteColor.a = 1;
+        solarBodiesWithStructures = new List<List<int>>();
     }
 
     public void SetLocation(List<int> _solarIndex)
     {
         solarIndex = _solarIndex;
+    }
+
+    public void AddSolarBodyWithStructure(SolarBody body)
+    {
+        if (!solarBodiesWithStructures.Contains(body.solarIndex))
+        {
+            solarBodiesWithStructures.Add(body.solarIndex);
+        }
     }
 }

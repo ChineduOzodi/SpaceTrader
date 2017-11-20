@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>c2fe4c50-7964-4985-a208-06db28232d20</Id>
+  <name>Swinda 69 111</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>151.90392661397473</x>
+    <y>-65.0968260262769</y>
+  </galacticPosition>
+  <color>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </color>
+  <solar>
+    <name>Swinda 69 111 MainSequence</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <groundStructures />
+    <spaceStructures />
+    <color>
+      <r>1</r>
+      <g>0.7048443</g>
+      <b>0.451683432</b>
+      <a>1</a>
+    </color>
+    <satelites />
+    <totalPopulation>0</totalPopulation>
+    <solarType>Star</solarType>
+    <solarSubType>MainSequence</solarSubType>
+    <mass>4.168389633417129E+30</mass>
+    <bodyRadius>7175063.9585511265</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>3077.437987981933</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>4.2480962239721871E+32</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>0.55052060723675733</surfaceGravity>
+    <planetTiles />
+    <rawResources />
+    <population>0</population>
+    <solarIndex>
+      <int>110</int>
+    </solarIndex>
+  </solar>
+  <nearStars>
+    <Id>ff820b78-ccc1-415b-b968-ea46b36ff1b5</Id>
+    <Id>4deed9d5-ae52-4497-aeba-82b83afbf959</Id>
+    <Id>ff820b78-ccc1-415b-b968-ea46b36ff1b5</Id>
+    <Id>4deed9d5-ae52-4497-aeba-82b83afbf959</Id>
+    <Id>c617b3f5-4ee9-4fc0-bc98-6db4706285b8</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>110</index>
+</SolarModel>

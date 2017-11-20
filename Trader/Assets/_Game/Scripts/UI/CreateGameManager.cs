@@ -61,10 +61,26 @@ public class CreateGameManager : MonoBehaviour {
             foreach (RawResourceBlueprint raw in game.data.rawResources.Model.rawResources)
             {
                 var item = new ItemBluePrint(raw);
-                GameManager.instance.data.items.Model.items.Add(item);
+                GameManager.instance.data.itemsData.Model.items.Add(item);
             }
-            game.data.items.Model.items.Add(new ItemBluePrint("Fuel Cell", ItemType.Fuel, "A normal fuel cell.", .25f, new List<Item>() { new Item(defaultRawResources.Fuelodite.ToString(), (int)defaultRawResources.Fuelodite, ItemType.RawMaterial, 1) }));
-
+            game.data.itemsData.Model.items.Add(
+                new ItemBluePrint("Fuel Cell", ItemType.Fuel, "A normal fuel cell.", 60, new List<Item>() {
+                    new Item(defaultRawResources.Fuelodite.ToString(), (int)defaultRawResources.Fuelodite, ItemType.RawMaterial, 10,1,null) }));
+            game.data.itemsData.Model.items.Add(
+                new ItemBluePrint("Basic AI", ItemType.AI, "A basic AI unit.", Dated.Hour, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 10,1,null),
+                    new Item(defaultRawResources.Coppode.ToString(), (int)defaultRawResources.Coppode, ItemType.RawMaterial, 5,1,null)
+                }));
+            game.data.itemsData.Model.items.Add(
+                new ItemBluePrint("Basic Machinery", ItemType.FactoryMachinery, "Factory Machinery.", Dated.Hour, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 100,1,null),
+                    new Item(ItemType.AI, 1,1,null)
+                }));
+            game.data.itemsData.Model.items.Add(
+                new ItemBluePrint("Basic Factory", ItemType.Factory, "A usable factory.",2 * Dated.Day, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 1000,1,null),
+                    new Item(ItemType.FactoryMachinery, 1,1,null)
+                }));
 
             CreateStars(starCount, game.data.galaxyName);
             LoadStars();
@@ -82,31 +98,39 @@ public class CreateGameManager : MonoBehaviour {
                 GovernmentModel gov = new GovernmentModel(names.GenerateWorldName() + " Government", leaders);
 
                 //Location
-                int solarIndex = FindGovernmentStar(gov);
-                int planetIndex = 0;
-                SolarBody parent;
-                foreach (SolarBody body in game.data.stars[solarIndex].solar.satelites)
-                {
-                    if (body.solarSubType != SolarSubType.GasGiant)
-                    {
-                        parent = game.data.stars[solarIndex].solar.satelites[planetIndex];
-                        parent.AddPopulation(UnityEngine.Random.Range(1000000, 1000000000));
-                        break; //TODO: Fix the possible bug where there is only a gas giant in the system and no suitable alternatives
-                    }
-                    
-                }
+                SolarBody parent = FindGovernmentStar(gov);
 
                 //Add leader
 
-                Creature leader = new Creature(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000, game.data.stars[solarIndex].solar.satelites[planetIndex].solarIndex,game.data.date, new Dated(30 * Dated.Year), CreatureType.Human);
+                Creature leader = new Creature(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000, parent.solarIndex,game.data.date, new Dated(30 * Dated.Year), CreatureType.Human);
                 leaders.Add(leader.id);
-                
+
 
                 //Add Government Capital
-                Station station = new Station(gov.name + " Station", gov, game.data.stars[solarIndex].solar.satelites[planetIndex]);
+                Station station = new Station(gov.name + " Station", gov, parent);
 
                 //location
-                gov.SetLocation(game.data.stars[solarIndex].solar.satelites[planetIndex].solarIndex);
+                gov.SetLocation(parent.solarIndex);
+
+                //Add Drills and Factories
+
+                foreach(RawResource raw in parent.rawResources)
+                {
+                    Driller driller = new Driller(gov, raw.id, parent);
+                    GroundStorage storage = new GroundStorage(gov, parent);
+                }
+
+                var factoryBlueprint = game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory);
+
+                foreach (ItemBluePrint item in game.data.itemsData.Model.items)
+                {
+                    if (item.itemType != ItemType.RawMaterial)
+                    {
+                        var factory = new Factory(gov, factoryBlueprint.id, item.id, parent.solarIndex);
+                    }
+                }
+                
+                BuildStructure build = new BuildStructure(gov, game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory).id, game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory).id, parent);
 
                 for (int c = 0; c < numComp; c++)
                 {
@@ -126,7 +150,7 @@ public class CreateGameManager : MonoBehaviour {
                             owner = new Creature(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000, station, game.data.date, new Dated(30 * Dated.Year), CreatureType.Human);
                         }
 
-                        Ship ship = new Ship(comp.name + " Ship " + (i+1), comp, owner);
+                        Ship ship = new Ship(comp.name + " Ship " + (i + 1), comp, owner, station.id);
                         loadingText.text = string.Format("Creating ships: {0} of {1}", i, numShip);
 
                     }
@@ -250,13 +274,10 @@ public class CreateGameManager : MonoBehaviour {
     /// </summary>
     /// <param name="model">The government model to set</param>
     /// <returns></returns>
-    private int FindGovernmentStar(GovernmentModel model)
+    private SolarBody FindGovernmentStar(GovernmentModel model)
     {
-        int outTime = 0;
-        while (true)
+        for (int index = 0; index < GameManager.instance.data.stars.Count; index++)
         {
-            int index = UnityEngine.Random.Range(0, game.data.stars.Count);
-
             if (game.data.stars[index].government.Model == null && game.data.stars[index].solar.satelites.Count > 0)
             {
                 bool freeSpace = true;
@@ -269,24 +290,28 @@ public class CreateGameManager : MonoBehaviour {
                 }
                 if (freeSpace) //Found spot
                 {
-
-                    game.data.stars[index].government.Model = model;
-                    model.stars.Add(game.data.stars[index]);
-                    game.data.stars[index].isCapital = true;
-                    foreach (SolarModel star in game.data.stars[index].nearStars)
+                    foreach (SolarBody body in game.data.stars[index].solar.satelites)
                     {
-                        star.government.Model = model;
-                        model.stars.Add(star);
+                        if (body.solarSubType == SolarSubType.EarthLike)
+                        {
+                            game.data.stars[index].government.Model = model;
+                            model.stars.Add(game.data.stars[index]);
+                            game.data.stars[index].isCapital = true;
+                            foreach (SolarModel star in game.data.stars[index].nearStars)
+                            {
+                                star.government.Model = model;
+                                model.stars.Add(star);
+                            }
+                            body.AddPopulation(UnityEngine.Random.Range(1000000, 1000000000));
+                            return body;
+                        }
+
                     }
-                    return index;
                 }
             }
-            outTime++;
-            if (outTime > 1000)
-            {
-                throw new System.Exception("Could not find solar sytem to put government");
-            }
         }
+
+        return null;
     }
 
     public static double NextGaussianDouble(double seed)

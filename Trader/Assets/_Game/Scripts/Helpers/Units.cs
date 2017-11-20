@@ -56,21 +56,25 @@ public class Units
 
     public static string ReadItem(double number)
     {
-        if (number < 1000)
+        if (number < 10000)
         {
-            return (number).ToString("0.0") + " m";
+            if (Mathd.Floor(number) == number)
+            {
+                return ((int)number).ToString() + " ";
+            }
+            return (number).ToString("0.0")+" ";
         }
         else if (number < 1000000)
         {
-            return (number/ 1000).ToString("0.0") + " k";
+            return (number/ 1000).ToString("0.00") + " k";
         }
         else if (number < 1000000000)
         {
-            return (number / 1000000).ToString("0.00") + " M";
+            return (number / 1000000).ToString("0.000") + " M";
         }
         else
         {
-            return (number /1000000000).ToString("0.00") + " B";
+            return (number /1000000000).ToString("0.000") + " B";
         }
     }
 

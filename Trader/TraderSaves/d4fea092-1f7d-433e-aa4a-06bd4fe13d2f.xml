@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>d4fea092-1f7d-433e-aa4a-06bd4fe13d2f</Id>
+  <name>Vaiter 99</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>446.9694740895697</x>
+    <y>-436.81654991845267</y>
+  </galacticPosition>
+  <color>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </color>
+  <solar>
+    <name>Vaiter 99 MainSequence</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <groundStructures />
+    <spaceStructures />
+    <color>
+      <r>1</r>
+      <g>0.9244181</g>
+      <b>0.859737039</b>
+      <a>1</a>
+    </color>
+    <satelites />
+    <totalPopulation>0</totalPopulation>
+    <solarType>Star</solarType>
+    <solarSubType>MainSequence</solarSubType>
+    <mass>6.9479402000427247E+31</mass>
+    <bodyRadius>27151672.995702259</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>5403.18872661304</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>9.1734152127946944E+28</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>0.64079587788931736</surfaceGravity>
+    <planetTiles />
+    <rawResources />
+    <population>0</population>
+    <solarIndex>
+      <int>98</int>
+    </solarIndex>
+  </solar>
+  <nearStars>
+    <Id>86c1df9f-ea2e-4303-bdd2-f21d0bee158a</Id>
+    <Id>22259231-f1ef-4a86-9e80-99fe0803e23f</Id>
+    <Id>22259231-f1ef-4a86-9e80-99fe0803e23f</Id>
+    <Id>86c1df9f-ea2e-4303-bdd2-f21d0bee158a</Id>
+    <Id>889b0474-8a5c-4ad8-86cd-f7d47f536359</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>98</index>
+</SolarModel>

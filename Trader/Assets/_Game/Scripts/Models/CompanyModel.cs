@@ -6,11 +6,10 @@ using CodeControl;
 public class CompanyModel : StructureModel {
 
     public int ceo;
-    public List<int> solarIndex = new List<int>();
 
     public ModelRefs<GovernmentModel> governmentAccess = new ModelRefs<GovernmentModel>();
 
-    public List<List<int>> solarBodiesWithStructures;
+    
 
     public CompanyModel() { }
     public CompanyModel(string _name, GovernmentModel[] govs, Creature _ceo)

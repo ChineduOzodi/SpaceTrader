@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>b21abcd9-c047-4ac9-8339-880cd8500e23</Id>
+  <name>Wiunov 429</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>261.44024060266253</x>
+    <y>-6.8370176002138532</y>
+  </galacticPosition>
+  <color>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </color>
+  <solar>
+    <name>Wiunov 429 MainSequence</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <groundStructures />
+    <spaceStructures />
+    <color>
+      <r>1</r>
+      <g>0.7274577</g>
+      <b>0.497704774</b>
+      <a>1</a>
+    </color>
+    <satelites />
+    <totalPopulation>0</totalPopulation>
+    <solarType>Star</solarType>
+    <solarSubType>MainSequence</solarSubType>
+    <mass>9.3262826242446893E+30</mass>
+    <bodyRadius>11095500.543644551</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>3261.1125781993833</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>3.7929188435892336E+31</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>0.51507633954879817</surfaceGravity>
+    <planetTiles />
+    <rawResources />
+    <population>0</population>
+    <solarIndex>
+      <int>428</int>
+    </solarIndex>
+  </solar>
+  <nearStars>
+    <Id>8680768e-af10-428e-8496-606bc34fee10</Id>
+    <Id>334ddc1d-8cf5-4d96-9493-2e89f8f88151</Id>
+    <Id>803090a8-53a3-4a78-9513-36a7e9e7f294</Id>
+    <Id>509eb0c4-46b1-425b-ba92-9d31382be403</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>428</index>
+</SolarModel>

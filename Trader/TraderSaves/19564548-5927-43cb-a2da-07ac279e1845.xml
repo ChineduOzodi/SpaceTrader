@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CompanyModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>19564548-5927-43cb-a2da-07ac279e1845</Id>
+  <name>Defense Gryphon Company</name>
+  <identityType>Government</identityType>
+  <lineTarget>
+    <x>0</x>
+    <y>0</y>
+    <z>0</z>
+  </lineTarget>
+  <lineColor>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </lineColor>
+  <spriteColor>
+    <r>0.837853432</r>
+    <g>0.384360164</g>
+    <b>0.488172561</b>
+    <a>1</a>
+  </spriteColor>
+  <lastUpdated>
+    <time>0.82446983270347118</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.82446983270347118</seconds>
+    <yr>0</yr>
+  </lastUpdated>
+  <stations />
+  <ships>
+    <int>104</int>
+    <int>106</int>
+  </ships>
+  <timeUpdate>0</timeUpdate>
+  <money>0</money>
+  <moneyStats>
+    <title>Money Over Time</title>
+    <xLabel>Time (hours)</xLabel>
+    <yLabel>Money</yLabel>
+  </moneyStats>
+  <moneyChange>0</moneyChange>
+  <solarIndex>
+    <int>303</int>
+    <int>0</int>
+  </solarIndex>
+  <age>
+    <time>0</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0</seconds>
+    <yr>0</yr>
+  </age>
+  <dateCreated>
+    <time>0.82446983270347118</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0.82446983270347118</seconds>
+    <yr>0</yr>
+  </dateCreated>
+  <owner />
+  <workers>0</workers>
+  <workerCapacity>0</workerCapacity>
+  <ceo>103</ceo>
+  <governmentAccess>
+    <Id>5336e6aa-6121-4575-b590-651f29d69ecf</Id>
+  </governmentAccess>
+</CompanyModel>

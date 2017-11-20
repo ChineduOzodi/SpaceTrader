@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>98237b79-9e71-48e8-af6e-16c2d471b7dc</Id>
+  <name>Owhov 245</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>308.62301986322797</x>
+    <y>328.24946090040589</y>
+  </galacticPosition>
+  <color>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </color>
+  <solar>
+    <name>Owhov 245 GasGiant</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <groundStructures />
+    <spaceStructures />
+    <color>
+      <r>0.7722116</r>
+      <g>0.843605459</g>
+      <b>1</b>
+      <a>1</a>
+    </color>
+    <satelites />
+    <totalPopulation>0</totalPopulation>
+    <solarType>Star</solarType>
+    <solarSubType>GasGiant</solarSubType>
+    <mass>1.6844070024871824E+32</mass>
+    <bodyRadius>28257869.466754947</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>10791</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>6.4381064358375528E+27</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>1.4342505843109166</surfaceGravity>
+    <planetTiles />
+    <rawResources />
+    <population>0</population>
+    <solarIndex>
+      <int>244</int>
+    </solarIndex>
+  </solar>
+  <nearStars>
+    <Id>6a003eac-c676-4a0d-aae0-3496c99156ad</Id>
+    <Id>b0064420-6648-4e97-84ce-bc830332e658</Id>
+    <Id>6a003eac-c676-4a0d-aae0-3496c99156ad</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>244</index>
+</SolarModel>

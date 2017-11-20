@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>164b7c75-813c-41cb-b7da-01b4e66f3412</Id>
+  <name>Uskuna 340</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>-173.041291051187</x>
+    <y>-1067.4319091007949</y>
+  </galacticPosition>
+  <color>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </color>
+  <solar>
+    <name>Uskuna 340 MainSequence</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <groundStructures />
+    <spaceStructures />
+    <color>
+      <r>1</r>
+      <g>0.744698346</g>
+      <b>0.532001853</b>
+      <a>1</a>
+    </color>
+    <satelites />
+    <totalPopulation>0</totalPopulation>
+    <solarType>Star</solarType>
+    <solarSubType>MainSequence</solarSubType>
+    <mass>1.3464565265655517E+31</mass>
+    <bodyRadius>13346383.135789398</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>3408.4784444003353</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>1.2604402394843746E+31</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>0.5139513205441365</surfaceGravity>
+    <planetTiles />
+    <rawResources />
+    <population>0</population>
+    <solarIndex>
+      <int>339</int>
+    </solarIndex>
+  </solar>
+  <nearStars>
+    <Id>35c13830-9529-420b-b44c-75a01556f860</Id>
+    <Id>35c13830-9529-420b-b44c-75a01556f860</Id>
+    <Id>cb9a979d-e102-49db-bd92-46cabd456f0e</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>339</index>
+</SolarModel>

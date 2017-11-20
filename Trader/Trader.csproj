@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>5.6.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -857,19 +859,21 @@
     <Compile Include="Assets\SFSoftShadows\SFLight.cs" />
     <Compile Include="Assets\SFSoftShadows\SFPolygon.cs" />
     <Compile Include="Assets\SFSoftShadows\SFRenderer.cs" />
-    <Compile Include="Assets\_Game\Scripts\Camera\BackgroundManager.cs" />
     <Compile Include="Assets\_Game\Scripts\Camera\CameraController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\InfoPanelController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\ShipController.cs" />
     <Compile Include="Assets\_Game\Scripts\Controllers\SolarController.cs" />
     <Compile Include="Assets\_Game\Scripts\CoordinatesTest.cs" />
+    <Compile Include="Assets\_Game\Scripts\Game\BuildStructure.cs" />
+    <Compile Include="Assets\_Game\Scripts\Game\Driller.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\Factory.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\GroundStorage.cs" />
-    <Compile Include="Assets\_Game\Scripts\Game\GroundStructure.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\Money.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\PlanetTile.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\SolarBody.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\Station.cs" />
+    <Compile Include="Assets\_Game\Scripts\Game\Structure.cs" />
+    <Compile Include="Assets\_Game\Scripts\Game\SupplyDemand.cs" />
     <Compile Include="Assets\_Game\Scripts\GameManagers\GalaxyManager.cs" />
     <Compile Include="Assets\_Game\Scripts\GameManagers\GameManager.cs" />
     <Compile Include="Assets\_Game\Scripts\GameManagers\UIManager.cs" />
@@ -888,9 +892,7 @@
     <Compile Include="Assets\_Game\Scripts\Helpers\PlanetInfo.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Polar2.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Polar2d.cs" />
-    <Compile Include="Assets\_Game\Scripts\Helpers\ShipCreator.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Stat.cs" />
-    <Compile Include="Assets\_Game\Scripts\Helpers\StationCreator.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\SystemPosition.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Types.cs" />
     <Compile Include="Assets\_Game\Scripts\Helpers\Units.cs" />

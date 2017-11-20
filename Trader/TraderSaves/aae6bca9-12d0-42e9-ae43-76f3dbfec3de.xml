@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<GovernmentModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>aae6bca9-12d0-42e9-ae43-76f3dbfec3de</Id>
+  <name>Wetrao Government</name>
+  <identityType>Government</identityType>
+  <lineTarget>
+    <x>0</x>
+    <y>0</y>
+    <z>0</z>
+  </lineTarget>
+  <lineColor>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </lineColor>
+  <spriteColor>
+    <r>0.499509484</r>
+    <g>0.189512208</g>
+    <b>0.880461454</b>
+    <a>1</a>
+  </spriteColor>
+  <lastUpdated>
+    <time>1.2717782743275166</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>1.2717782743275166</seconds>
+    <yr>0</yr>
+  </lastUpdated>
+  <stations>
+    <ArrayOfInt>
+      <int>326</int>
+      <int>0</int>
+    </ArrayOfInt>
+  </stations>
+  <ships />
+  <timeUpdate>0</timeUpdate>
+  <money>99000000</money>
+  <moneyStats>
+    <title>Money Over Time</title>
+    <xLabel>Time (hours)</xLabel>
+    <yLabel>Money</yLabel>
+  </moneyStats>
+  <moneyChange>0</moneyChange>
+  <solarIndex>
+    <int>326</int>
+    <int>0</int>
+  </solarIndex>
+  <age>
+    <time>9.5058391680940986</time>
+    <deltaTime>0.016781318932771683</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>9.5058391680940986</seconds>
+    <yr>0</yr>
+  </age>
+  <dateCreated>
+    <time>1.2717782743275166</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>1.2717782743275166</seconds>
+    <yr>0</yr>
+  </dateCreated>
+  <owner />
+  <workers>0</workers>
+  <workerCapacity>0</workerCapacity>
+  <capital />
+  <leaders>
+    <int>199</int>
+  </leaders>
+  <stars>
+    <Id>3885e1f3-5421-4b9a-aaa4-f1cae0f4cb19</Id>
+    <Id>43318c5c-a90e-4780-bb26-65e47162ad3b</Id>
+    <Id>d0ecde53-8b45-426c-af2e-1e1671e8cea0</Id>
+    <Id>43318c5c-a90e-4780-bb26-65e47162ad3b</Id>
+  </stars>
+  <trustedCompanies>
+    <Id>35f31532-fc61-4f01-b234-6c85f17df2eb</Id>
+    <Id>5d75996a-ebf8-4d9b-af11-f3593ec439c4</Id>
+    <Id>bf23be4d-1ce2-491d-ae5c-0cf783d6f679</Id>
+    <Id>88d9dfc5-3762-4953-9c4a-513379e17899</Id>
+    <Id>e1941574-9348-4fed-801c-af0ea9acd123</Id>
+  </trustedCompanies>
+  <knownCompanies />
+  <bannedCompanies />
+  <enemyGovernments />
+  <alliedGovernments />
+  <knownGovernments />
+</GovernmentModel>

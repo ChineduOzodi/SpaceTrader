@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>e7c0eae1-d59a-4c44-b248-4f75a2077432</Id>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>0</x>
+    <y>0</y>
+  </galacticPosition>
+  <color>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </color>
+  <nearStars />
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>0</index>
+</SolarModel>

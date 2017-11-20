@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using CodeControl;
+using System.Xml.Serialization;
 
 public class Station: Structure {
 
@@ -13,17 +14,16 @@ public class Station: Structure {
 
     public float runningCost = 10f;
 
-    public Station() {
-        structureType = StructureTypes.SpaceStation;
-    }
+    public Station() { }
 
     public Station(string name, IdentityModel owner, SolarBody body)
     {
 
         this.owner = new ModelRef<IdentityModel>(owner);
         structureType = StructureTypes.SpaceStation;
+        id = GameManager.instance.data.id++;
         solarIndex = body.solarIndex;
-
+        this.name = name;
         workers = 250;
         totalDocks = 50;
         usedDocks = 0;
@@ -32,7 +32,7 @@ public class Station: Structure {
 
         //Money Setup
         owner.money -= 1000000;
-        owner.stations.Add(body.solarIndex);
+        owner.AddSolarBodyWithStructure(body);
     }
 
     /// <summary>

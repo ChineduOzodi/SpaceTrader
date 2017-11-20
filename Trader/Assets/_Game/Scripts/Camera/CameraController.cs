@@ -37,17 +37,17 @@ public class CameraController : MonoBehaviour {
             game.data.cameraGalaxyPosition += new Vector2d(transX, transY);
 
             //Solar Camera Settings
-            moveModifier = camMoveSpeed * game.data.cameraSolarOrtho;
-            var solOrthoTransform = Input.GetAxis("Mouse ScrollWheel") * -zoomSpeed * moveModifier;
-            if (game.data.cameraGalaxyOrtho + orthTransform < GameDataModel.galaxyCameraScaleMax)
-            {
-                game.data.cameraSolarOrtho += solOrthoTransform;
-            }
-            game.data.cameraSolCameraScaleMod = Mathd.Pow(mainCam.orthographicSize / game.data.cameraSolarOrtho, cameraScaleModPow) * cameraScaleModMult;
-            transX = Input.GetAxis("Horizontal") * moveModifier * Time.deltaTime / Time.timeScale;
-            transY = Input.GetAxis("Vertical") * moveModifier * Time.deltaTime / Time.timeScale;
+            //moveModifier = camMoveSpeed * game.data.cameraSolarOrtho;
+            //var solOrthoTransform = Input.GetAxis("Mouse ScrollWheel") * -zoomSpeed * moveModifier;
+            //if (game.data.cameraGalaxyOrtho + orthTransform < GameDataModel.galaxyCameraScaleMax)
+            //{
+            //    game.data.cameraSolarOrtho += solOrthoTransform;
+            //}
+            //game.data.cameraSolCameraScaleMod = Mathd.Pow(mainCam.orthographicSize / game.data.cameraSolarOrtho, cameraScaleModPow) * cameraScaleModMult;
+            //transX = Input.GetAxis("Horizontal") * moveModifier * Time.deltaTime / Time.timeScale;
+            //transY = Input.GetAxis("Vertical") * moveModifier * Time.deltaTime / Time.timeScale;
 
-            game.data.cameraSolarPosition += new Vector2d(transX, transY);
+            //game.data.cameraSolarPosition += new Vector2d(transX, transY);
 
         }
     }

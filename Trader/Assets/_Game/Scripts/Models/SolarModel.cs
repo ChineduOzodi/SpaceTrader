@@ -17,13 +17,18 @@ public class SolarModel : Model {
     public Vector2d galacticPosition;
     public Color color;
     public SolarBody solar;
-    public List<Ship> items { get; private set; }
+    public List<Ship> ships { get; private set; }
     public ModelRefs<SolarModel> nearStars = new ModelRefs<SolarModel>();
     public ModelRef<GovernmentModel> government = new ModelRef<GovernmentModel>();
     public double governmentInfluence;
     public bool isCapital;
     public int index;
     internal float localScale;
+
+    //----------------Commerce-----------------------------//
+    public ItemsList buyList { get; private set; }
+    public ItemsList sellList { get; private set; }
+    public List<SupplyDemand> supplyDemand { get; private set; }
 
     public SolarModel() { }
 
@@ -32,6 +37,9 @@ public class SolarModel : Model {
         name = _name;
         galacticPosition = _position * Units.ly / GameDataModel.galaxyDistanceMultiplication;
         index = _index;
+        supplyDemand = new List<SupplyDemand>();
+        buyList = new ItemsList();
+        sellList = new ItemsList();
 
         // Create star
 
@@ -184,4 +192,138 @@ public class SolarModel : Model {
     {
         return (Mathd.Pow((solar.bodyRadius),scale) * Camera.main.orthographicSize / GameManager.instance.data.cameraGalaxyOrtho);
     }
+
+#region "Commerce"
+
+    public double GetMarketPrice(int itemId)
+    {
+        int index = supplyDemand.FindIndex(x => x.itemId == itemId);
+
+        if (index >= 0)
+        {
+            return supplyDemand[index].itemDemand;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public void AddDemand(Item item, double amount)
+    {
+        int index = supplyDemand.FindIndex(x => x.itemId == item.id);
+
+        if (index >= 0)
+        {
+            supplyDemand[index].itemDemand += amount;
+        }
+        else
+        {
+            supplyDemand.Add(new SupplyDemand(item.name, item.id, 0, amount));
+        }
+    }
+
+    public void SubtractDemand(int itemId, double amount)
+    {
+        int index = supplyDemand.FindIndex(x => x.itemId == itemId);
+
+        if (index >= 0)
+        {
+            supplyDemand[index].itemDemand -= amount;
+            if (supplyDemand[index].itemDemand < 0)
+                supplyDemand[index].itemDemand = 0;
+        }
+    }
+
+    public void AddSupply(Item item, double amount)
+    {
+        int index = supplyDemand.FindIndex(x => x.itemId == item.id);
+
+        if (index >= 0)
+        {
+            supplyDemand[index].itemSupply += amount;
+        }
+        else
+        {
+            supplyDemand.Add(new SupplyDemand(item.name, item.id, amount, 0));
+        }
+    }
+
+    public void SubtractSupply(Item item, double amount)
+    {
+        int index = supplyDemand.FindIndex(x => x.itemId == item.id);
+
+        if (index >= 0)
+        {
+            supplyDemand[index].itemSupply -= amount;
+            if (supplyDemand[index].itemSupply < 0)
+                supplyDemand[index].itemSupply = 0;
+        }
+        else
+        {
+            supplyDemand.Add(new SupplyDemand(item.name, item.id, 0, 0));
+        }
+    }
+
+    public void SetBuying(Item item, double demand)
+    {
+        int itemIndex = -1;
+        if (item.structureId == -1)
+        {
+            if (item.owner != null)
+                itemIndex = buyList.items.FindIndex(x => x.id == item.id);
+            else
+            itemIndex = buyList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = buyList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+        }
+        if (itemIndex >= 0)
+        {
+            buyList.items[itemIndex].SetAmount(item.amount, item.price);
+        }
+        else
+        {
+            buyList.AddItem(item);
+        }
+
+        AddDemand(item, demand);
+    }
+
+    public void RemoveBuying(int itemId, IdentityModel owner, int structureId, double demand)
+    {
+
+        int itemIndex = -1;
+        if (structureId == -1)
+        {
+            itemIndex = buyList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = buyList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model && x.structureId == structureId);
+        }
+
+        if (itemIndex >= 0)
+        {
+            buyList.items.RemoveAt(itemIndex);
+        }
+
+        SubtractDemand(itemId,demand);
+    }
+
+    public void SetSelling(Item item)
+    {
+        int itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        if (itemIndex >= 0)
+        {
+            sellList.items[itemIndex].AddAmount(item.amount, item.price);
+        }
+        else
+        {
+            sellList.AddItem(item);
+        }
+    }
+
+    #endregion
 }

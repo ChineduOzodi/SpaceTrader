@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<CompanyModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>02a10934-7d14-4f59-ade8-057c406c9b74</Id>
+  <name>Azardiantis Company</name>
+  <identityType>Government</identityType>
+  <lineTarget>
+    <x>0</x>
+    <y>0</y>
+    <z>0</z>
+  </lineTarget>
+  <lineColor>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </lineColor>
+  <spriteColor>
+    <r>0.686111152</r>
+    <g>0.143798158</g>
+    <b>0.620356143</b>
+    <a>1</a>
+  </spriteColor>
+  <lastUpdated>
+    <time>1.1726300735026598</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>1.1726300735026598</seconds>
+    <yr>0</yr>
+  </lastUpdated>
+  <stations />
+  <ships>
+    <int>180</int>
+    <int>182</int>
+  </ships>
+  <timeUpdate>0</timeUpdate>
+  <money>0</money>
+  <moneyStats>
+    <title>Money Over Time</title>
+    <xLabel>Time (hours)</xLabel>
+    <yLabel>Money</yLabel>
+  </moneyStats>
+  <moneyChange>0</moneyChange>
+  <solarIndex>
+    <int>392</int>
+    <int>0</int>
+  </solarIndex>
+  <age>
+    <time>0</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>0</seconds>
+    <yr>0</yr>
+  </age>
+  <dateCreated>
+    <time>1.1726300735026598</time>
+    <deltaTime>0</deltaTime>
+    <season>0</season>
+    <month>0</month>
+    <day>0</day>
+    <hour>0</hour>
+    <minute>0</minute>
+    <seconds>1.1726300735026598</seconds>
+    <yr>0</yr>
+  </dateCreated>
+  <owner />
+  <workers>0</workers>
+  <workerCapacity>0</workerCapacity>
+  <ceo>179</ceo>
+  <governmentAccess>
+    <Id>476c3a25-266f-4f18-98dc-41f0d17dfdee</Id>
+  </governmentAccess>
+</CompanyModel>

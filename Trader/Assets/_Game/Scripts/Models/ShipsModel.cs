@@ -40,20 +40,19 @@ public class Ship: Structure {
     public float fuelEfficiency = 5;
     public int fuelCapacity = 100;
 
-    public void SetShipAction(ShipAction action)
-    {
-        shipAction = action;
-    }
+    public Ship() { }
 
-    public Ship(string name, IdentityModel owner, Creature captain)
+    public Ship(string name, IdentityModel owner, Creature captain, int _structureId)
     {
         this.owner = new ModelRef<IdentityModel>(owner);
         this.managerId = captain.id;
+        structureId = _structureId;
+        structureType = StructureTypes.Ship;
         //this.captain.Model.location = this;
         shipId = GameManager.instance.data.id++;
         this.owner.Model.ships.Add(shipId);
         GameManager.instance.data.ships.Model.ships.Add(this);
-
+        shipAction = ShipAction.Idle;
         solarIndex = captain.solarIndex;
         galaxyPosition = GameManager.instance.data.stars[solarIndex[0]].galacticPosition + GameManager.instance.data.getSolarBody(solarIndex).lastKnownPosition;
 
@@ -66,9 +65,13 @@ public class Ship: Structure {
         this.speed = Random.Range(2f, 5f) * (1 - this.passangerCapacity / 200f + .5f);
         this.fuelEfficiency = Random.Range(5000f, 1000f) * (1 - this.passangerCapacity / 200f + .5f);
         this.fuelCapacity = (int)(Random.Range(50, 200) * (this.passangerCapacity / 200f + .5f));
-        this.fuel = new Item(GameManager.instance.data.items.Model.items.Find(x => x.itemType == ItemType.Fuel).id,fuelCapacity);
+        var fuelBluePrint = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
+        this.fuel = new Item(fuelBluePrint.id,fuelCapacity, 1, owner);
+    }
 
-        //Money Setup
+    public void SetShipAction(ShipAction action)
+    {
+        shipAction = action;
     }
 
 }

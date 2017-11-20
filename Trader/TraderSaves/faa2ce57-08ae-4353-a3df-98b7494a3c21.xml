@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<SolarModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>faa2ce57-08ae-4353-a3df-98b7494a3c21</Id>
+  <name>Crecarus 143</name>
+  <isActive>false</isActive>
+  <galacticPosition>
+    <x>-1640.7351939461921</x>
+    <y>218.94852377028784</y>
+  </galacticPosition>
+  <color>
+    <r>0</r>
+    <g>0</g>
+    <b>0</b>
+    <a>0</a>
+  </color>
+  <solar>
+    <name>Crecarus 143 WhiteDwarf</name>
+    <orbit>
+      <sma>0</sma>
+      <ecc>0</ecc>
+      <inc>0</inc>
+      <lpe>0</lpe>
+      <lan>0</lan>
+      <mna>0</mna>
+      <eph>0</eph>
+    </orbit>
+    <groundStructures />
+    <spaceStructures />
+    <color>
+      <r>0.674394548</r>
+      <g>0.78125453</g>
+      <b>1</b>
+      <a>1</a>
+    </color>
+    <satelites>
+      <SolarBody>
+        <name>Crecarus 143 Comet 1</name>
+        <orbit>
+          <sma>8087834112</sma>
+          <ecc>0.74202251434326172</ecc>
+          <inc>0</inc>
+          <lpe>4.464418888092041</lpe>
+          <lan>0</lan>
+          <mna>4.464418888092041</mna>
+          <eph>0</eph>
+        </orbit>
+        <groundStructures />
+        <spaceStructures />
+        <color>
+          <r>0.5</r>
+          <g>0.5</g>
+          <b>0.5</b>
+          <a>1</a>
+        </color>
+        <satelites />
+        <totalPopulation>0</totalPopulation>
+        <solarType>Comet</solarType>
+        <solarSubType>Rocky</solarSubType>
+        <mass>600000000000000</mass>
+        <bodyRadius>2.8343251453533291</bodyRadius>
+        <lastKnownPosition>
+          <x>0</x>
+          <y>0</y>
+        </lastKnownPosition>
+        <surfaceTemp>0</surfaceTemp>
+        <surfacePressure>0</surfacePressure>
+        <luminosity>0</luminosity>
+        <bondAlebo>0.32484498620033264</bondAlebo>
+        <greenhouse>0</greenhouse>
+        <surfaceGravity>0.00050781875621284771</surfaceGravity>
+        <planetTiles>
+          <PlanetTile>
+            <planetTileType>Rocky</planetTileType>
+            <count>1</count>
+          </PlanetTile>
+        </planetTiles>
+        <rawResources>
+          <RawResource>
+            <name>Armoroid</name>
+            <id>1</id>
+            <amount>953416</amount>
+            <accessibility>0.45764642953872681</accessibility>
+          </RawResource>
+        </rawResources>
+        <population>0</population>
+        <solarIndex>
+          <int>142</int>
+          <int>0</int>
+        </solarIndex>
+      </SolarBody>
+    </satelites>
+    <totalPopulation>0</totalPopulation>
+    <solarType>Star</solarType>
+    <solarSubType>WhiteDwarf</solarSubType>
+    <mass>1.0996420040130615E+30</mass>
+    <bodyRadius>583386.93548231374</bodyRadius>
+    <lastKnownPosition>
+      <x>0</x>
+      <y>0</y>
+    </lastKnownPosition>
+    <surfaceTemp>19244</surfaceTemp>
+    <surfacePressure>1</surfacePressure>
+    <luminosity>2.3139038304726537E+34</luminosity>
+    <bondAlebo>0.5</bondAlebo>
+    <greenhouse>0.1123595</greenhouse>
+    <surfaceGravity>21.968213911523602</surfaceGravity>
+    <planetTiles />
+    <rawResources />
+    <population>0</population>
+    <solarIndex>
+      <int>142</int>
+    </solarIndex>
+  </solar>
+  <nearStars>
+    <Id>a20a832c-4085-42e5-94d2-02b8e9412d52</Id>
+    <Id>545f1a91-97be-4ce3-b1d0-7979aeac2355</Id>
+    <Id>a20a832c-4085-42e5-94d2-02b8e9412d52</Id>
+    <Id>6195885c-c46c-4d4a-896a-bfe4294f8526</Id>
+  </nearStars>
+  <government />
+  <governmentInfluence>0</governmentInfluence>
+  <isCapital>false</isCapital>
+  <index>142</index>
+</SolarModel>

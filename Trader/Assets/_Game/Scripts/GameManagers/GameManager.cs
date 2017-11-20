@@ -5,6 +5,7 @@ using CodeControl;
 using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
+using Vectrosity;
 /// <summary>
 /// Manages the main aspects of the game, including player interaction, main ai, game ui, and view changes. Anything else should be moved to a more specific file
 /// </summary>
@@ -21,12 +22,18 @@ public class GameManager : MonoBehaviour {
     internal GameObject selectedObj;
     public Text dateInfo;
     public Text nameOfSystem;
+    public GameObject savePanel;
+    public Slider saveSlider;
+    public Image saveFill;
     internal GameDataModel data;
     
     internal int statsDisplay = 0;
     internal GalaxyManager galaxy;
     internal TradeRouteRequestManager tradeRequestManager;
     internal static GameManager instance;
+
+    private VectorLine line;
+    public Texture lineTexture;
 
     //Used to setup the game and make sure nothing is running while things are being configured
     internal bool gameInitiated = false;
@@ -53,6 +60,7 @@ public class GameManager : MonoBehaviour {
         data = new GameDataModel();
         setup = true;
         GetLoadingPanel().LoadAssets();
+        line = new VectorLine("Galaxy line", new List<Vector3>(), 1);
 
     }
 
@@ -126,6 +134,7 @@ public class GameManager : MonoBehaviour {
                 }
 
                 dateInfo.text = data.date.GetDateTime() + "\nTimescale: " + timeScale + "\n";
+                CreateLines();
 
                 //if (selectedObj != null)
                 //{
@@ -179,8 +188,89 @@ public class GameManager : MonoBehaviour {
                 //    }
 
                 //}
+
+             
             }
         }
+    }
+
+    private void CreateLines()
+    {
+
+        //if (MapTogglePanel.instance.galaxyConnections.isOn)
+        //{
+        //    var points = new List<Vector3>();
+        //    var colors = new List<Color32>();
+        //    ModelRefs<SolarModel> models = new ModelRefs<SolarModel>();
+        //    foreach (SolarModel solar in data.stars)
+        //    {
+        //        models.Add(solar);
+        //    }
+
+        //    line.SetWidth((float)(Mathd.Pow((models[0].solar.bodyRadius), .02f) * data.cameraGalCameraScaleMod) * 5);
+
+        //    while (models.Count > 0)
+        //    {
+        //        var model = models[0];
+        //        models.RemoveAt(0);
+        //        if (CameraController.CameraOffsetGalaxyPosition(model.galacticPosition).sqrMagnitude < 40000)
+        //        {
+        //            foreach (SolarModel neighbor in model.nearStars)
+        //            {
+        //                if (models.Contains(neighbor))
+        //                {
+        //                    points.Add(CameraController.CameraOffsetGalaxyPosition(model.galacticPosition));
+        //                    points.Add(CameraController.CameraOffsetGalaxyPosition(neighbor.galacticPosition));
+
+        //                    if (MapTogglePanel.instance.galaxyTerritory.isOn)
+        //                    {
+        //                        if (model.government.Model != null)
+        //                        {
+        //                            var govModel = model.government.Model;
+        //                            colors.Add(new Color32((byte)(govModel.spriteColor.r * 255), (byte)(govModel.spriteColor.g * 255), (byte)(govModel.spriteColor.b * 255), 50));
+        //                        }
+        //                        else
+        //                        {
+        //                            colors.Add(new Color32((byte)(50), (byte)(50), (byte)(50), 10));
+        //                        }
+
+        //                        //if (neighbor.government.Model != null)
+        //                        //{
+        //                        //    var govModel = neighbor.government.Model;
+        //                        //    colors.Add(new Color32((byte)(govModel.spriteColor.r * 255), (byte)(govModel.spriteColor.g * 255), (byte)(govModel.spriteColor.b * 255), 50));
+        //                        //}
+        //                        //else
+        //                        //{
+        //                        //    colors.Add(new Color32((byte)(50), (byte)(50), (byte)(50), 10));
+        //                        //}
+
+        //                    }
+        //                    else
+        //                    {
+        //                        colors.Add(new Color32((byte)(model.solar.color.r * 255), (byte)(model.solar.color.g * 255), (byte)(model.solar.color.b * 255), 10));
+        //                        //colors.Add(new Color32((byte)(neighbor.solar.color.r * 255), (byte)(neighbor.solar.color.g * 255), (byte)(neighbor.solar.color.b * 255), 10));
+        //                    }
+        //                }
+        //            }
+        //        }
+                
+                
+        //    }
+
+        //    line.points3 = points;
+        //    line.SetColors(colors);
+        //    line.Draw3D();
+
+        //}
+        //else
+        //{
+        //    //if (line.lineWidth != 0)
+        //    //{
+        //    //    line.SetWidth(0);
+        //    //    line.Draw3D();
+        //    //}
+        //}
+        
     }
 
     //private void BreakStationLinks()
@@ -192,7 +282,7 @@ public class GameManager : MonoBehaviour {
     //    }
     //}
 
-   public void StartGame()
+    public void StartGame()
     {
         //StartCoroutine("UpdateShips", numShipsPerFrame);
         //StartCoroutine("UpdateStations", numStationsPerFrame);
@@ -208,6 +298,18 @@ public class GameManager : MonoBehaviour {
     {
         exitPanel.SetActive(true);
     }
+
+    internal void OpenInfoPanel(int id,  TargetType targetType)
+    {
+        InfoPanelModel infoModel = new InfoPanelModel(id,targetType);
+        Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
+    }
+
+    internal void OpenInfoPanel(Creature creature)
+    {
+        InfoPanelModel infoModel = new InfoPanelModel(creature);
+        Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
+    }
     internal void OpenInfoPanel(IdentityModel model)
     {
         InfoPanelModel infoModel = new InfoPanelModel(model);
@@ -218,7 +320,21 @@ public class GameManager : MonoBehaviour {
         InfoPanelModel infoModel = new InfoPanelModel(solarIndex);
         Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
     }
-
+    internal void OpenInfoPanel(Structure structure)
+    {
+        InfoPanelModel infoModel = new InfoPanelModel(structure);
+        Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
+    }
+    internal void OpenInfoPanel(Item item)
+    {
+        InfoPanelModel infoModel = new InfoPanelModel(item);
+        Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
+    }
+    internal void OpenInfoPanel(RawResource resource)
+    {
+        InfoPanelModel infoModel = new InfoPanelModel(resource);
+        Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
+    }
 
     /// <summary>
     /// Update all ship positions and actions
@@ -275,52 +391,80 @@ public class GameManager : MonoBehaviour {
         while (true)
         {
             GovernmentModel model = data.governments[govIndex];
-            
+
+            double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
+            model.age.AddTime(deltaTime);
+
             foreach (SolarModel star in model.stars)
             {
-                double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
-                model.age.AddTime(deltaTime);
-                double totalPop = 0;
-                foreach (SolarBody body in star.solar.satelites)
+                if (star.solar == null)
                 {
-                    totalPop += body.population;
-                    foreach (SolarBody moon in body.satelites)
-                    {
-                        totalPop += moon.population;
-                    }
+                    star.Delete();
+                }
+                else
+                {
+                    double totalPop = star.solar.totalPopulation;
+
+                    //star.governmentInfluence += (totalPop * .000000001f * (float)data.date.deltaTime) - (star.governmentInfluence * .0000001f * (float)data.date.deltaTime);
+
+                    //foreach (SolarModel nearStar in star.nearStars)
+                    //{
+                    //    nearStar.governmentInfluence += star.governmentInfluence * .0000001f * (float)data.date.deltaTime;
+                    //    star.governmentInfluence -= star.governmentInfluence * .0000001f * (float)data.date.deltaTime;
+
+                    //    if (nearStar.governmentInfluence > 250 && nearStar.government.Model == null)
+                    //    {
+                    //        nearStar.government.Model = star.government.Model;
+                    //        model.stars.Add(nearStar);
+
+                    //        if (galaxy.mapButtonCanvases.Count > 0)
+                    //        {
+                    //            nearStar.color = star.government.Model.spriteColor;
+                    //        }
+
+                    //    }
+                        //nearStar.NotifyChange();
+
+                    //}
+                    //star.NotifyChange();
                 }
 
-                star.governmentInfluence += (totalPop * .000000001f * (float) data.date.deltaTime) - (star.governmentInfluence * .0000001f * (float)data.date.deltaTime);
-
-                foreach (SolarModel nearStar in star.nearStars)
-                {
-                    nearStar.governmentInfluence += star.governmentInfluence * .0000001f * (float) data.date.deltaTime;
-                    star.governmentInfluence -= star.governmentInfluence *.0000001f * (float) data.date.deltaTime;
-
-                    if (nearStar.governmentInfluence > 250 && nearStar.government.Model == null)
-                    {
-                        nearStar.government.Model = star.government.Model;
-                        model.stars.Add(nearStar);
-                        
-                        if (galaxy.mapButtonCanvases.Count > 0)
-                        {
-                            nearStar.color = star.government.Model.spriteColor;
-                        }
-                        
-                    }
-                    nearStar.NotifyChange();
-
-                }
-                star.NotifyChange();
-                //if (star.governmentInfluence < 250)
-                //{
-                //    star.government.Model = null;
-                //    star.color = Color.grey;
-                //    model.stars.Remove(star);
-                //    
-                //}
-                yield return null;
             }
+            foreach (List<int> solarIndex in model.solarBodiesWithStructures)
+            {
+                var body = data.getSolarBody(solarIndex);
+                bool found = false;
+                foreach (Structure owned in body.groundStructures)
+                {
+                    if (owned.owner.Model == model)
+                    {
+                        found = true;
+                        if (owned.structureType == Structure.StructureTypes.Driller)
+                        {
+                            ((Driller)owned).UpdateProduction(body, deltaTime);
+                        }
+                        if (owned.structureType == Structure.StructureTypes.Factory)
+                        {
+                            ((Factory)owned).UpdateProduction(body, deltaTime);
+                        }
+                        if (owned.structureType == Structure.StructureTypes.BuildStructure)
+                        {
+                            ((BuildStructure)owned).UpdateProduction(body, deltaTime);
+                            //if (((BuildStructure)owned).done)
+                            //{
+                            //    body.groundStructures.Remove(owned);
+                            //}
+                        }
+                    }
+                    
+                }
+                if (!found)
+                {
+                    model.solarBodiesWithStructures.Remove(solarIndex);
+                }
+            }
+            
+            yield return null;
             govIndex++;
             if (govIndex >= data.governments.Count)
                 govIndex = 0;
@@ -857,7 +1001,25 @@ public class GameManager : MonoBehaviour {
     }
     public void SaveGame()
     {
-        Model.Save("TraderSaves", data);
+        //StartCoroutine("Save");
+        Model.SaveAll("TraderSaves");
+    }
+
+    public IEnumerator Save()
+    {
+        savePanel.SetActive(true);
+        int all = Model.GetAll().Count;
+
+        float progress = 0;
+        foreach(Model model in Model.GetAll())
+        {
+            Model.Save("TraderSaves", new List<Model>() { model }, false);
+            progress++;
+            saveSlider.value = progress / all;
+            saveFill.color = Color.HSVToRGB(saveSlider.value * .2f, 1, 1);
+            yield return null;
+        }
+        savePanel.SetActive(false);
         print("Game Saved");
     }
 }

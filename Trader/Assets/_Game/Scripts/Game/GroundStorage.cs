@@ -4,54 +4,58 @@ using UnityEngine;
 
 public class GroundStorage : Structure {
 
-    public float totalStorageAmount;
-    public float currentStorageAmount;
+    public double totalStorageAmount;
+    public double currentStorageAmount;
 
-    public List<Item> items;
+    public ItemsList storage = new ItemsList();
 
     public GroundStorage() { }
 
-    public GroundStorage(ItemBluePrint blueprint)
+    public GroundStorage(ItemBluePrint blueprint, SolarBody body)
     {
-
+        id = GameManager.instance.data.id++;
+        solarIndex = body.solarIndex;
+        body.groundStructures.Add(this);
     }
 
-    public GroundStorage(ItemBluePrint blueprint, List<Item> _items)
+    public GroundStorage(ItemBluePrint blueprint, ItemsList _items, SolarBody body)
     {
-        items = _items;
+        storage = _items;
+        id = GameManager.instance.data.id++;
+        solarIndex = body.solarIndex;
+        body.groundStructures.Add(this);
+    }
+
+    public GroundStorage(IdentityModel owner, SolarBody body)
+    {
+        this.owner = new ModelRef<IdentityModel>(owner);
+        owner.AddSolarBodyWithStructure(body);
+        solarIndex = body.solarIndex;
+        body.groundStructures.Add(this);
+        structureType = StructureTypes.GroundStorage;
+        id = GameManager.instance.data.id++;
+        name = structureType.ToString() + " " + id;
+        maxArmor = 1000;
+        currentArmor = maxArmor;
+        totalStorageAmount = 10000;
+
+        workers = 5;
+        owner.money -= 1000;
     }
 
     public bool AddItem(Item item)
     {
         if (currentStorageAmount + item.amount > totalStorageAmount)
             return false;
-        int itemIndex = items.FindIndex(x => x.id == item.id);
-        if (itemIndex >= 0)
-        {
-            items[itemIndex] += item.amount;
-        }
-        else
-        {
-            items.Add(item);
-        }
+        storage.AddItem(item);
         currentStorageAmount += item.amount;
         return true;
     }
 
     public bool RemoveItem(Item item)
     {
-        int itemIndex = items.FindIndex(x => x.id == item.id);
-        if (itemIndex >= 0)
+        if (storage.RemoveItem(item))
         {
-            if (items[itemIndex].amount < item.amount)
-            {
-                return false;
-            }
-            items[itemIndex] -= item.amount;
-            if (items[itemIndex].amount == 0)
-            {
-                items.RemoveAt(itemIndex);
-            }
             currentStorageAmount -= item.amount;
             return true;
         }
@@ -60,7 +64,7 @@ public class GroundStorage : Structure {
 
     public bool ContainsItem(Item item)
     {
-        return items.Find(x => x.id == item.id && x.amount >= item.amount).name != "";
+        return storage.ContainsItem(item);
     }
 
     public bool CanAddItem(Item item)
