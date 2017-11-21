@@ -17,7 +17,7 @@ public class BuildStructure : Structure {
     public StructureTypes buildStructureType { get; private set; }
 
     public bool isProducing { get; private set; }
-    public bool done { get; private set; }
+    
 
     public BuildStructure() { }
 
@@ -56,7 +56,10 @@ public class BuildStructure : Structure {
         buildStructureType = _structureType;
         
         this.structureItemId = structureItemId;
-        requiredItems = new List<Item>() { new Item(product.id, 1, 1) };
+        requiredItems = new List<Item>() { new Item(product.id, 1, 1, owner) };
+        requiredItems.ForEach(x => { x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);
+            x.owner.Model = owner;
+        });
         storage = new ItemsList();
 
         maxArmor = product.baseArmor * .5f;
@@ -71,11 +74,13 @@ public class BuildStructure : Structure {
     /// <param name="elapsedTime">time elapsed (in seconds)</param>
     public void UpdateProduction(SolarBody parentBody, double deltaTime)
     {
-        if (done)
+        if (deleteStructure)
             return;
         while (true)
         {
             var progress = (float)(deltaTime / produtionTime);
+            info = "Active: " + isProducing.ToString();
+
             if (isProducing)
             {
                 productionProgress += progress;
@@ -86,7 +91,8 @@ public class BuildStructure : Structure {
                         var structure = new Factory(owner.Model, structureItemId, factoryProductionId, solarIndex);
                         
                     }
-                    done = true;
+                    deleteStructure = true;
+                    GameManager.instance.data.getSolarBody(solarIndex).deleteStructure = true;
                     productionProgress = 1;
                     break;
                 }
@@ -125,16 +131,18 @@ public class BuildStructure : Structure {
                 itemCount++;
                 break;
             }
-            var neededItem = new Item(item.id, neededAmount, item.price);
+            var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, id);
             var found = false;
             foreach (Structure structure in parentBody.groundStructures)
             {
                 if (structure.structureType == StructureTypes.GroundStorage)
                 {
                     GroundStorage groundStruct = (GroundStorage)structure;
-                    if (groundStruct.owner.Model == owner.Model && groundStruct.storage.RemoveItem(neededItem))
+                    if (groundStruct.owner.Model == owner.Model && groundStruct.RemoveItem(neededItem))
                     {
                         storage.AddItem(neededItem);
+                        parentBody.RemoveBuying(item.id, owner.Model, id, neededItem.amount);
+                        parentBody.RemoveSelling(item.id, owner.Model, id, neededItem.amount);
                         neededAmount = item.amount - neededItem.amount;
                         if (neededAmount <= 0)
                         {
@@ -149,7 +157,14 @@ public class BuildStructure : Structure {
             }
             //Runs if there are still needed Items
             if (!found)
-                parentBody.SetBuying(new Item(item.id, neededAmount * 2, parentBody.GetMarketPrice(item.id), owner.Model,id), neededAmount * progress);
+            {
+                parentBody.SetBuying(neededItem);
+                item.price += item.price * GameManager.instance.marketPriceMod * progress * produtionTime;
+                if (item.price < .1)
+                {
+                    item.price = .1f;
+                }
+            }
         }
         return (neededItemCount == itemCount);
     }

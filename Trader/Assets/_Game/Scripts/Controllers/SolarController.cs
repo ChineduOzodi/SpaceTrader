@@ -19,12 +19,15 @@ public class SolarController : Controller<SolarModel> {
     internal GalaxyManager galaxy;
     private SpriteRenderer sprite;
     private CircleCollider2D circleCollider;
-    public float totalPopulationStatSize = .01f;
+    public float viewPopulationSize = .01f;
+    public float viewCompanySize = 1;
     private float solarSpriteScale = .02f;
     private float moonViewOrthoSize = .001f;
     //private VectorObject3D line;
     private VectorLine solarLine;
     public Texture lineTexture;
+    internal double supplyDemandProgress = Dated.Hour- 30;
+    public double supplyDemandUpdateTime = Dated.Hour;
 
     private Vector3 lastCamPosition = Vector3.zero;
     protected override void OnInitialize()
@@ -53,6 +56,70 @@ public class SolarController : Controller<SolarModel> {
 	void Update () {
         transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition);
         circleCollider.radius = (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod * 5);
+
+        //Commerce
+        supplyDemandProgress += game.data.date.deltaTime;
+        if (supplyDemandProgress > supplyDemandUpdateTime)
+        {
+            foreach (Item item in model.buyList.items)
+            {
+                int index = model.supplyDemand.FindIndex(x => x.itemId == item.id);
+
+                if (index >= 0)
+                {
+
+                }
+                else
+                {
+                    model.supplyDemand.Add(new SupplyDemand(item.name, item.id, item.estimatedValue, 0, item.amount));
+                }
+            }
+            foreach (Item item in model.sellList.items)
+            {
+                int index = model.supplyDemand.FindIndex(x => x.itemId == item.id);
+
+                if (index >= 0)
+                {
+
+                }
+                else
+                {
+                    model.supplyDemand.Add(new SupplyDemand(item.name, item.id, item.estimatedValue, item.amount, 0));
+                }
+            }
+            foreach (SupplyDemand x in model.supplyDemand)
+            {
+                x.itemDemand = 0;
+                x.averageItemBuyPrice = 0;
+                model.buyList.items.FindAll(d => d.id == x.itemId).ForEach(i => { x.itemDemand += i.amount; x.averageItemBuyPrice += i.price * i.amount; });
+                x.averageItemBuyPrice /= x.itemDemand+1;
+
+                x.itemSupply = 0;
+                x.averageItemSellPrice = 0;
+                model.sellList.items.FindAll(d => d.id == x.itemId).ForEach(i => { x.itemSupply += i.amount; x.averageItemSellPrice += i.price * i.amount; });
+                x.averageItemSellPrice /= x.itemSupply+1;
+
+                if (x.itemSupply == 0 && x.itemDemand == 0) 
+                {
+                    if (x.marketPrice == 0)
+                    model.supplyDemand.Remove(x);
+                    break;
+                }
+
+                x.marketPrice = (x.itemDemand * x.averageItemBuyPrice + x.itemSupply * x.averageItemSellPrice) / (x.itemDemand + x.itemSupply);
+
+                if (x.marketPrice < 0)
+                {
+                    x.marketPrice = 0;
+                }
+
+            };
+            supplyDemandProgress = 0;
+        }
+        
+
+
+
         List<Vector3> linePoints = new List<Vector3>();
         List<Color32> lineColors = new List<Color32>();
         List<float> lineWidths = new List<float>();
@@ -105,39 +172,55 @@ public class SolarController : Controller<SolarModel> {
                 //Population rendering
                 if (MapTogglePanel.instance.populations.isOn)
                 {
-                    linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x);
+                    linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f);
 
                     if (canSeeMoons())
                     {
                         
-                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(body.totalPopulation, totalPopulationStatSize));
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * Mathf.Pow(body.totalPopulation, viewPopulationSize));
                     }
                     else
                     {
-                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x + Vector3.up * Mathf.Pow(body.population, totalPopulationStatSize));
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * Mathf.Pow(body.population, viewPopulationSize));
                     }
 
                     lineColors.Add(new Color32(100, 100, 255, 200));
                     lineWidths.Add(localScale);
                 }
+
+                //Companies rendering
+                if (MapTogglePanel.instance.compines.isOn)
+                {
+                    linePoints.Add(planets[i].transform.position + Vector3.right * planets[i].transform.localScale.x * .5f);
+                    linePoints.Add(planets[i].transform.position + Vector3.right * planets[i].transform.localScale.x * .5f + Vector3.right * Mathf.Pow(body.companies.Count, viewCompanySize));
+
+                    if (!canSeeMoons())
+                    {
+                        var index = linePoints.Count - 1;
+                        body.satelites.ForEach(x => linePoints[index] += Vector3.right * Mathf.Pow(x.companies.Count, viewCompanySize));                        
+                    }
+
+                    lineColors.Add(new Color32(255, 50, 255, 150));
+                    lineWidths.Add(localScale);
+                }
             }
             for (int i = 0; i < moons.Count; i++)
             {
-                SolarBody moon = moonModels[i];
-                moons[i].transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
-                        + moon.lastKnownPosition);
+                SolarBody body = moonModels[i];
+                moons[i].transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[body.solarIndex[1]].lastKnownPosition
+                        + body.lastKnownPosition);
 
                 if (canSeeMoons() && moons[i].transform.position.sqrMagnitude < 62500)
                 {
-                    var visible = CheckVisibility(moon);
+                    var visible = CheckVisibility(body);
                     moons[i].SetActive(visible);
                     LineRenderer line = moons[i].GetComponent<LineRenderer>();
 
                     //moons[i].transform.localScale = sun.transform.localScale * .15f;
-                    localScale = (float)(Mathd.Pow((moon.bodyRadius), solarSpriteScale) * Mathd.Pow(game.data.cameraGalCameraScaleMod, .5f));
-                    if (localScale * game.data.cameraGalaxyOrtho / Camera.main.orthographicSize * GameDataModel.galaxyDistanceMultiplication < moon.bodyRadius)
+                    localScale = (float)(Mathd.Pow((body.bodyRadius), solarSpriteScale) * Mathd.Pow(game.data.cameraGalCameraScaleMod, .5f));
+                    if (localScale * game.data.cameraGalaxyOrtho / Camera.main.orthographicSize * GameDataModel.galaxyDistanceMultiplication < body.bodyRadius)
                     {
-                        localScale = (float)(moon.bodyRadius / GameDataModel.galaxyDistanceMultiplication * Camera.main.orthographicSize / game.data.cameraGalaxyOrtho);
+                        localScale = (float)(body.bodyRadius / GameDataModel.galaxyDistanceMultiplication * Camera.main.orthographicSize / game.data.cameraGalaxyOrtho);
                     }
                     moons[i].transform.localScale = Vector3.one * localScale;
 
@@ -150,8 +233,8 @@ public class SolarController : Controller<SolarModel> {
                         var positions = new Vector3[36];
                         for (var b = 0; b < 36; b++)
                         {
-                            positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
-                        + moon.approximatePositions[b * 10]);
+                            positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[body.solarIndex[1]].lastKnownPosition
+                        + body.approximatePositions[b * 10]);
                         }
                         line.positionCount = 36;
                         line.SetPositions(positions);
@@ -164,11 +247,21 @@ public class SolarController : Controller<SolarModel> {
                     if (moons[i].activeSelf)
                     {
                         //Population rendering
-                        if (MapTogglePanel.instance.populations.isOn)
+                        if (MapTogglePanel.instance.populations.isOn && body.population > 0)
                         {
                             linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x *.5f);
-                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x + Vector3.up * Mathf.Pow(moon.population, totalPopulationStatSize));
+                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x *.5f + Vector3.up * Mathf.Pow(body.population, viewPopulationSize));
                             lineColors.Add(new Color32(100, 100, 255, 200));
+                            lineWidths.Add(localScale);
+                        }
+
+                        //Companies rendering
+                        if (MapTogglePanel.instance.compines.isOn)
+                        {
+                            linePoints.Add(moons[i].transform.position + Vector3.right * moons[i].transform.localScale.x * .5f);
+                            linePoints.Add(moons[i].transform.position + Vector3.right * moons[i].transform.localScale.x * .5f + Vector3.right * Mathf.Pow(body.companies.Count, viewCompanySize));
+
+                            lineColors.Add(new Color32(255, 50, 255, 150));
                             lineWidths.Add(localScale);
                         }
                     }
@@ -234,7 +327,7 @@ public class SolarController : Controller<SolarModel> {
                 if (MapTogglePanel.instance.populations.isOn && model.solar.totalPopulation > 0)
                 {
                     linePoints.Add(transform.position + Vector3.up *circleCollider.radius* .5f);
-                    linePoints.Add(transform.position + Vector3.up * circleCollider.radius + Vector3.up * Mathf.Pow(model.solar.totalPopulation, totalPopulationStatSize));
+                    linePoints.Add(transform.position + Vector3.up * circleCollider.radius + Vector3.up * Mathf.Pow(model.solar.totalPopulation, viewPopulationSize));
                     lineColors.Add(new Color32(100, 100, 255, 200));
                     lineWidths.Add(circleCollider.radius * 2f);
                 }

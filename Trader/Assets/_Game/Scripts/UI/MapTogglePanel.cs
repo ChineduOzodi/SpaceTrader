@@ -22,6 +22,7 @@ public class MapTogglePanel : MonoBehaviour {
     public Toggle temperatureVisual;
     public Toggle solarOrbits;
     public Toggle populations;
+    public Toggle compines;
 
     //Toggle Options for Galaxy
     public Toggle galaxyNormalVisual;

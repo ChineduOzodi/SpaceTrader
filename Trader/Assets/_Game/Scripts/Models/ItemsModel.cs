@@ -22,15 +22,17 @@ public class Item
     public ItemType itemType { get; private set; }
     public int id { get; private set; }
     public double amount { get; private set; }
-    public ModelRef<IdentityModel> owner;
+    public ModelRef<IdentityModel> owner = new ModelRef<IdentityModel>();
     public int structureId;
     public double price;
+    public double estimatedValue { get; private set; }
 
     public Item(int _itemId, double _amount, double _price, IdentityModel owner, int _structureId = -1)
     {
 
         id = _itemId;
         name = GameManager.instance.data.itemsData.Model.GetItem(id).name;
+        estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         amount = _amount;
         structureId = _structureId;
         if (owner != null)
@@ -45,6 +47,7 @@ public class Item
 
         id = _itemId;
         name = GameManager.instance.data.itemsData.Model.GetItem(id).name;
+        estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         amount = _amount;
         this.owner = null;
         price = _price;
@@ -60,6 +63,7 @@ public class Item
         name = _name;
         amount = _amount;
         this.owner = new ModelRef<IdentityModel>(owner);
+        estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         price = _price;
         itemType = ItemType.AI;
         itemType = type;
@@ -70,6 +74,7 @@ public class Item
         var itemBlueprint = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == type);
         id = itemBlueprint.id;
         name = itemBlueprint.name;
+        estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         amount = _amount;
         this.owner = new ModelRef<IdentityModel>(owner);
         price = _price;
@@ -91,14 +96,15 @@ public class Item
         price /= amount;
     }
 
-    public bool RemoveAmount(double _amount)
+    public double RemoveAmount(double _amount)
     {
         if (amount - _amount < 0)
         {
-            return false;
+            amount = 0;
+            return amount;
         }
         amount -= _amount;
-        return true;
+        return amount;
     }
 
     public float GetBaseArmor()
@@ -170,6 +176,7 @@ public struct ItemBluePrint
 
     public ItemType itemType { get; private set; }
     public double productionTime { get; private set; }
+    public double estimatedValue { get; private set; }
     /// <summary>
     /// Required resources to create one component.
     /// </summary>
@@ -192,10 +199,12 @@ public struct ItemBluePrint
         contstructionParts = parts;
         float armor = 0;
         int workers = 0;
-        parts.ForEach(x => { armor += x.GetBaseArmor(); workers += x.GetWorkers(); } );
+        double cost = 0;
+        parts.ForEach(x => { armor += x.GetBaseArmor(); workers += x.GetWorkers(); cost += x.estimatedValue * x.amount; } );
         baseArmor = armor;
         this.workers = workers;
-        
+        cost += (workers + 15) * .00116f * productionTime; //worker pay rate
+        estimatedValue = cost;
         System.Random rand = new System.Random(id);
         float a = (float) rand.NextDouble();
         float b = (float)rand.NextDouble();
@@ -216,7 +225,7 @@ public struct ItemBluePrint
         int workers = 0;
         baseArmor = armor;
         this.workers = workers;
-
+        estimatedValue = (workers + 10) * productionTime * .00116f;
         System.Random rand = new System.Random(id);
         float a = (float)rand.NextDouble();
         float b = (float)rand.NextDouble();
@@ -349,4 +358,7 @@ public enum ItemType
     Driller,
     Factory,
     SpaceStation,
+    SpaceShip,
+    GroundStorage,
+    StorageContainer
 }

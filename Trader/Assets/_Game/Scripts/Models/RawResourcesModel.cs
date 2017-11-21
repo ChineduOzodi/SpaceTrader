@@ -86,7 +86,19 @@ public class RawResourcesModel: Model
             new RawResourceInfo(PlanetTileType.Volcanic, .75f, Vector2.up,common),
         }));
 
-        
+        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Limoite.ToString(), (int)defaultRawResources.Limoite,
+            "Used to make things more heat resistant", 1000 * Dated.Day / scarce,
+            new List<RawResourceInfo>()
+        {
+            new RawResourceInfo(PlanetTileType.Desert, .1f, Vector2.up, common),
+            new RawResourceInfo(PlanetTileType.Grasslands, .25f, Vector2.up,scarce),
+            new RawResourceInfo(PlanetTileType.Ice, .05f, Vector2.up,rare),
+            new RawResourceInfo(PlanetTileType.Ocean, .05f, Vector2.up,rare),
+            new RawResourceInfo(PlanetTileType.Rocky, .5f, Vector2.up,scarce),
+            new RawResourceInfo(PlanetTileType.Volcanic, .75f, Vector2.up,abundant),
+        }));
+
+
     }
 
     public RawResourcesModel(List<RawResourceBlueprint> rawResources)

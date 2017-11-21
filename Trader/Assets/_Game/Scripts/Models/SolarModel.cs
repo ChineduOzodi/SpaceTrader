@@ -201,71 +201,15 @@ public class SolarModel : Model {
 
         if (index >= 0)
         {
-            return supplyDemand[index].itemDemand;
+            return supplyDemand[index].marketPrice;
         }
         else
         {
-            return 0;
+            return GameManager.instance.data.itemsData.Model.GetItem(itemId).estimatedValue;
         }
     }
 
-    public void AddDemand(Item item, double amount)
-    {
-        int index = supplyDemand.FindIndex(x => x.itemId == item.id);
-
-        if (index >= 0)
-        {
-            supplyDemand[index].itemDemand += amount;
-        }
-        else
-        {
-            supplyDemand.Add(new SupplyDemand(item.name, item.id, 0, amount));
-        }
-    }
-
-    public void SubtractDemand(int itemId, double amount)
-    {
-        int index = supplyDemand.FindIndex(x => x.itemId == itemId);
-
-        if (index >= 0)
-        {
-            supplyDemand[index].itemDemand -= amount;
-            if (supplyDemand[index].itemDemand < 0)
-                supplyDemand[index].itemDemand = 0;
-        }
-    }
-
-    public void AddSupply(Item item, double amount)
-    {
-        int index = supplyDemand.FindIndex(x => x.itemId == item.id);
-
-        if (index >= 0)
-        {
-            supplyDemand[index].itemSupply += amount;
-        }
-        else
-        {
-            supplyDemand.Add(new SupplyDemand(item.name, item.id, amount, 0));
-        }
-    }
-
-    public void SubtractSupply(Item item, double amount)
-    {
-        int index = supplyDemand.FindIndex(x => x.itemId == item.id);
-
-        if (index >= 0)
-        {
-            supplyDemand[index].itemSupply -= amount;
-            if (supplyDemand[index].itemSupply < 0)
-                supplyDemand[index].itemSupply = 0;
-        }
-        else
-        {
-            supplyDemand.Add(new SupplyDemand(item.name, item.id, 0, 0));
-        }
-    }
-
-    public void SetBuying(Item item, double demand)
+    public void SetBuying(Item item)
     {
         int itemIndex = -1;
         if (item.structureId == -1)
@@ -287,11 +231,9 @@ public class SolarModel : Model {
         {
             buyList.AddItem(item);
         }
-
-        AddDemand(item, demand);
     }
 
-    public void RemoveBuying(int itemId, IdentityModel owner, int structureId, double demand)
+    public void RemoveBuying(int itemId, IdentityModel owner, int structureId, double amount)
     {
 
         int itemIndex = -1;
@@ -306,22 +248,73 @@ public class SolarModel : Model {
 
         if (itemIndex >= 0)
         {
-            buyList.items.RemoveAt(itemIndex);
+            buyList.items[itemIndex].RemoveAmount(amount);
+            if (buyList.items[itemIndex].amount == 0)
+                buyList.items.RemoveAt(itemIndex);
         }
-
-        SubtractDemand(itemId,demand);
     }
 
     public void SetSelling(Item item)
     {
-        int itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        int itemIndex = -1;
+        if (item.structureId == -1)
+        {
+            if (item.owner != null)
+                itemIndex = sellList.items.FindIndex(x => x.id == item.id);
+            else
+                itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+        }
         if (itemIndex >= 0)
         {
-            sellList.items[itemIndex].AddAmount(item.amount, item.price);
+            sellList.items[itemIndex].SetAmount(item.amount, item.price);
         }
         else
         {
             sellList.AddItem(item);
+        }
+    }
+    public void SetSellingPrice(Item item)
+    {
+        int itemIndex = -1;
+        if (item.structureId == -1)
+        {
+            if (item.owner != null)
+                itemIndex = sellList.items.FindIndex(x => x.id == item.id);
+            else
+                itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+        }
+        if (itemIndex >= 0)
+        {
+            sellList.items[itemIndex].price = item.price;
+        }
+    }
+
+    public void RemoveSelling(int itemId, IdentityModel owner, int structureId, double amount)
+    {
+
+        int itemIndex = -1;
+        if (structureId == -1)
+        {
+            itemIndex = sellList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = sellList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model && x.structureId == structureId);
+        }
+
+        if (itemIndex >= 0)
+        {
+            sellList.items[itemIndex].RemoveAmount(amount);
+            if (sellList.items[itemIndex].amount == 0)
+                sellList.items.RemoveAt(itemIndex);
         }
     }
 

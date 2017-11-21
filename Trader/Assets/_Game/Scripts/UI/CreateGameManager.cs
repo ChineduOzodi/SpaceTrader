@@ -68,20 +68,62 @@ public class CreateGameManager : MonoBehaviour {
                     new Item(defaultRawResources.Fuelodite.ToString(), (int)defaultRawResources.Fuelodite, ItemType.RawMaterial, 10,1,null) }));
             game.data.itemsData.Model.items.Add(
                 new ItemBluePrint("Basic AI", ItemType.AI, "A basic AI unit.", Dated.Hour, new List<Item>() {
-                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 10,1,null),
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 1,1,null),
                     new Item(defaultRawResources.Coppode.ToString(), (int)defaultRawResources.Coppode, ItemType.RawMaterial, 5,1,null)
                 }));
             game.data.itemsData.Model.items.Add(
                 new ItemBluePrint("Basic Machinery", ItemType.FactoryMachinery, "Factory Machinery.", Dated.Hour, new List<Item>() {
-                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 100,1,null),
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 10,1,null),
                     new Item(ItemType.AI, 1,1,null)
                 }));
             game.data.itemsData.Model.items.Add(
                 new ItemBluePrint("Basic Factory", ItemType.Factory, "A usable factory.",2 * Dated.Day, new List<Item>() {
-                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 1000,1,null),
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 250,1,null),
                     new Item(ItemType.FactoryMachinery, 1,1,null)
                 }));
-
+            game.data.itemsData.Model.items.Add(
+               new ItemBluePrint("Basic Driller", ItemType.Driller, "A usable driller.", Dated.Day, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 200,1,null),
+                    new Item(ItemType.FactoryMachinery, 1,1,null)
+               }));
+            game.data.itemsData.Model.items.Add(
+               new ItemBluePrint("Basic Ground Storgae", ItemType.GroundStorage, "Used to store items.", .5f * Dated.Day, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 100,1,null),
+               }));
+            game.data.itemsData.Model.items.Add(
+                new ItemBluePrint("Basic Engine", ItemType.Engine, "A usable engine.", .5f * Dated.Day, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 20,1,null),
+                    new Item(defaultRawResources.Warium.ToString(), (int)defaultRawResources.Warium, ItemType.RawMaterial, 5,1,null)
+                }));
+            game.data.itemsData.Model.items.Add(
+                new ItemBluePrint("Ship fueltank", ItemType.FuelTank, "Ship fueltank.", 3 * Dated.Hour, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 15,1,null),
+                    new Item(defaultRawResources.Limoite.ToString(), (int)defaultRawResources.Limoite, ItemType.RawMaterial, 1,1,null)
+                }));
+            game.data.itemsData.Model.items.Add(
+                new ItemBluePrint("Ship sensor", ItemType.Sensor, "Basic ship sensor.", 5 * Dated.Hour, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 5,1,null),
+                    new Item(defaultRawResources.Goldium.ToString(), (int)defaultRawResources.Goldium, ItemType.RawMaterial, 1,1,null),
+                    new Item(ItemType.AI, 1,1,null)
+                }));
+            game.data.itemsData.Model.items.Add(
+                new ItemBluePrint("Exploration Ship", ItemType.SpaceShip, "Basic ship", 5 * Dated.Day, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 200,1,null),
+                    new Item(defaultRawResources.Glassitum.ToString(), (int)defaultRawResources.Glassitum, ItemType.RawMaterial, 20,1,null),
+                    new Item(ItemType.AI, 1,1,null),
+                    new Item(ItemType.Engine, 1,1,null),
+                    new Item(ItemType.FuelTank, 1,1,null),
+                    new Item(ItemType.Sensor, 1,1,null)
+                }));
+            game.data.itemsData.Model.items.Add(
+                new ItemBluePrint("Combat Ship", ItemType.SpaceShip, "Basic combat ship", 8 * Dated.Day, new List<Item>() {
+                    new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 400,1,null),
+                    new Item(defaultRawResources.Glassitum.ToString(), (int)defaultRawResources.Glassitum, ItemType.RawMaterial, 20,1,null),
+                    new Item(ItemType.AI, 2,1,null),
+                    new Item(ItemType.Engine, 4,1,null),
+                    new Item(ItemType.FuelTank, 2,1,null),
+                    new Item(ItemType.Sensor, 1,1,null)
+                }));
             CreateStars(starCount, game.data.galaxyName);
             LoadStars();
             loadingProgress.value = .5f;
@@ -130,16 +172,33 @@ public class CreateGameManager : MonoBehaviour {
                     }
                 }
                 
-                BuildStructure build = new BuildStructure(gov, game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory).id, game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory).id, parent);
+                //BuildStructure build = new BuildStructure(gov, game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory).id, game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory).id, parent);
+                BuildStructure build = new BuildStructure(gov, Structure.StructureTypes.Ship, game.data.itemsData.Model.items.Find(x => x.name == "Combat Ship").id, parent);
+
+                var solarModel = game.data.stars[parent.solarIndex[0]];
 
                 for (int c = 0; c < numComp; c++)
                 {
-                    Creature owner = new Creature(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000, station, game.data.date, new Dated(30 * Dated.Year), CreatureType.Human);
-                    CompanyModel comp = new CompanyModel(names.GenerateRegionName() + " Company", gov, owner);
-                    if (c == 0)
+                    var random = new System.Random((gov.Id + c + gov.name).GetHashCode());
+                    var body = solarModel.solar.satelites[random.Next(solarModel.solar.satelites.Count)];
+
+                    Creature owner = new Creature(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 100000, body.solarIndex, game.data.date, new Dated(30 * Dated.Year), CreatureType.Human);
+                    CompanyModel comp = new CompanyModel(names.GenerateRegionName() + " Company", body, gov, owner);
+                    //if (c == 0)
+                    //{
+                    //    owner.isPlayer = true;
+                    //    GameManager.instance.data.playerCreatureId = owner.id;
+                    //}
+
+                    var itemBlueprint = game.data.itemsData.Model.items[random.Next(game.data.itemsData.Model.items.Count)];
+                    if (itemBlueprint.itemType != ItemType.RawMaterial)
                     {
-                        owner.isPlayer = true;
-                        GameManager.instance.data.playerCreatureId = owner.id;
+                        var factory = new Factory(comp, factoryBlueprint.id, itemBlueprint.id, body.solarIndex);
+                    }
+                    else if (body.rawResources.Count > 0)
+                    {
+                        Driller driller = new Driller(comp, body.rawResources[random.Next(body.rawResources.Count)].id, body);
+                        GroundStorage storage = new GroundStorage(comp, body);
                     }
 
                     //--------------Create Ships---------------------------//
@@ -150,8 +209,8 @@ public class CreateGameManager : MonoBehaviour {
                             owner = new Creature(names.GenerateMaleFirstName() + " " + names.GenerateWorldName(), 10000, station, game.data.date, new Dated(30 * Dated.Year), CreatureType.Human);
                         }
 
-                        Ship ship = new Ship(comp.name + " Ship " + (i + 1), comp, owner, station.id);
-                        loadingText.text = string.Format("Creating ships: {0} of {1}", i, numShip);
+                        Ship ship = new Ship(comp.name + " Ship " + (i + 1), comp, owner, -1);
+                        //loadingText.text = string.Format("Creating ships: {0} of {1}", i, numShip);
 
                     }
                     yield return null;
@@ -303,6 +362,7 @@ public class CreateGameManager : MonoBehaviour {
                                 model.stars.Add(star);
                             }
                             body.AddPopulation(UnityEngine.Random.Range(1000000, 1000000000));
+                            body.companies.Add(model);
                             return body;
                         }
 

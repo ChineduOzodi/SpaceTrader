@@ -43,10 +43,28 @@ public class GroundStorage : Structure {
         owner.money -= 1000;
     }
 
+    public void UpdateProduction(SolarBody parentBody, double deltaTime)
+    {
+        if (deleteStructure)
+            return;
+        foreach (Item item in storage.items)
+        {
+            item.price -= item.price * GameManager.instance.marketPriceMod * deltaTime;
+            if (item.price < .1)
+            {
+                item.price = .1f;
+            }
+            parentBody.SetSelling(item);
+        }
+
+    }
+
+
     public bool AddItem(Item item)
     {
         if (currentStorageAmount + item.amount > totalStorageAmount)
             return false;
+        item.owner.Model = owner.Model;
         storage.AddItem(item);
         currentStorageAmount += item.amount;
         return true;

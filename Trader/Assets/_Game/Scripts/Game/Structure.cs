@@ -10,8 +10,8 @@ public class Structure {
     public StructureTypes structureType;
 
     public string name;
-
-    public ModelRef<IdentityModel> owner { get; protected set; }
+    public string info;
+    public ModelRef<IdentityModel> owner = new ModelRef<IdentityModel>();
     public int managerId { get; protected set; }
 
     public float maxArmor { get; protected set; }
@@ -25,6 +25,7 @@ public class Structure {
     public Dated dateCreated = new Dated(GameManager.instance.data.date.time);
     public Dated lastUpdated = new Dated(GameManager.instance.data.date.time);
 
+    public bool deleteStructure { get; protected set; }
 
 
     public enum StructureTypes

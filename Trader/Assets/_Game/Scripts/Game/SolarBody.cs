@@ -27,10 +27,12 @@ public class SolarBody
     public List<RawResource> rawResources { get; private set; }
     public List<Structure> groundStructures = new List<Structure>();
     public List<Structure> spaceStructures = new List<Structure>();
-
+    public bool deleteStructure;
     //----------------Commerce-----------------------------//
     public ItemsList buyList { get; private set; }
     public ItemsList sellList { get; private set; }
+
+    public ModelRefs<IdentityModel> companies = new ModelRefs<IdentityModel>();
 
 
     public int population { get; private set; }
@@ -383,7 +385,7 @@ public class SolarBody
         return GameManager.instance.data.stars[solarIndex[0]].GetMarketPrice(itemId);
     }
 
-    public void SetBuying(Item item, double demand)
+    public void SetBuying(Item item)
     {
 
         int itemIndex = -1;
@@ -404,9 +406,9 @@ public class SolarBody
             buyList.AddItem(item);
         }
 
-        GameManager.instance.data.stars[solarIndex[0]].SetBuying(item, demand);
+        GameManager.instance.data.stars[solarIndex[0]].SetBuying(item);
     }
-    public void RemoveBuying(int itemId, IdentityModel owner, int structureId, double demand)
+    public void RemoveBuying(int itemId, IdentityModel owner, int structureId, double amount)
     {
 
         int itemIndex = -1;
@@ -421,10 +423,12 @@ public class SolarBody
 
         if (itemIndex >= 0)
         {
-            buyList.items.RemoveAt(itemIndex);
+            buyList.items[itemIndex].RemoveAmount(amount);
+            if (buyList.items[itemIndex].amount == 0)
+                buyList.items.RemoveAt(itemIndex);
         }
 
-        GameManager.instance.data.stars[solarIndex[0]].RemoveBuying(itemId,owner,structureId, demand);
+        GameManager.instance.data.stars[solarIndex[0]].RemoveBuying(itemId,owner,structureId, amount);
     }
 
     public void SetSelling(Item item)
@@ -432,7 +436,10 @@ public class SolarBody
         int itemIndex = -1;
         if (item.structureId == -1)
         {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+            if (item.owner != null)
+                itemIndex = sellList.items.FindIndex(x => x.id == item.id);
+            else
+                itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
         }
         else
         {
@@ -440,14 +447,38 @@ public class SolarBody
         }
         if (itemIndex >= 0)
         {
-            sellList.items[itemIndex].AddAmount(item.amount, item.price);
+            sellList.items[itemIndex].SetAmount(item.amount, item.price);
         }
         else
         {
             sellList.AddItem(item);
         }
-
         GameManager.instance.data.stars[solarIndex[0]].SetSelling(item);
+    }
+    
+    
+
+    public void RemoveSelling(int itemId, IdentityModel owner, int structureId, double amount)
+    {
+
+        int itemIndex = -1;
+        if (structureId == -1)
+        {
+            itemIndex = sellList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model);
+        }
+        else
+        {
+            itemIndex = sellList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model && x.structureId == structureId);
+        }
+
+        if (itemIndex >= 0)
+        {
+            sellList.items[itemIndex].RemoveAmount(amount);
+            if (sellList.items[itemIndex].amount == 0)
+                sellList.items.RemoveAt(itemIndex);
+        }
+
+        GameManager.instance.data.stars[solarIndex[0]].RemoveSelling(itemId, owner, structureId, amount);
     }
 
     #endregion

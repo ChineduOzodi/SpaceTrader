@@ -143,7 +143,7 @@ public class Dated
     }
     public string GetDateTime()
     {
-        string dateTime = String.Format("{0} - {1}:{2}:{3}\nDay {4}, year {5}",
+        string dateTime = String.Format("{1}:{2}:{3} Day {4}, year {5}",
             GetSeason(),
             hour.ToString().PadLeft(2, '0'),
             minute.ToString().PadLeft(2, '0'),

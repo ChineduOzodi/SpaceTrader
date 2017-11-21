@@ -70,8 +70,19 @@ public class Driller : Structure {
     /// <param name="elapsedTime">time elapsed (in seconds)</param>
     public void UpdateProduction(SolarBody parentBody, double deltaTime)
     {
-        if (isProducing && parentBody.GetMarketPrice(productionItemId) / produtionTime > workers * workerPayRate)
+        if (deleteStructure)
+            return;
+        var price = parentBody.GetMarketPrice(productionItemId) / produtionTime;
+        var cost = workers * workerPayRate;
+        info = "On: " + isProducing.ToString()+ "\nPrice:Cost " + price + " - " + cost;
+        if (isProducing &&  price > cost)
         {
+            if (GameManager.instance.timeScale > 2000)
+            {
+                GameManager.instance.timeScale = 1;
+                GameManager.instance.OpenInfoPanel(this);
+            }
+            
             productionProgress = deltaTime / produtionTime;
             DrillResource(parentBody, productionProgress);
             owner.Model.money -= workerPayRate * workers * deltaTime;
@@ -112,7 +123,7 @@ public class Driller : Structure {
     private void storeCreatedItem(SolarBody parentBody, double amount)
     {
         var found = false;
-        Item item = new Item(productionItemId, amount, parentBody.GetMarketPrice(productionItemId), owner.Model);
+        Item item = new Item(productionItemId, amount, parentBody.GetMarketPrice(productionItemId), owner.Model, id);
         foreach (Structure structure in parentBody.groundStructures)
         {
             if (structure.structureType == StructureTypes.GroundStorage) {
@@ -121,7 +132,7 @@ public class Driller : Structure {
                 groundStruct.CanAddItem(item))
                 {
                     groundStruct.AddItem(item);
-                    parentBody.SetSelling(item);
+                    //parentBody.SetSelling(item);
                     found = true;
                     break;
                 }

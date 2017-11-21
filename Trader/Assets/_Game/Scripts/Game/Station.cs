@@ -12,6 +12,10 @@ public class Station: Structure {
     public float totalDocks { get; private set; }
     public float usedDocks { get; private set; }
 
+    public List<Item> requiredItems { get; private set; }
+    public bool isProducing = true;
+    public ItemsList storage = new ItemsList();
+
     public float runningCost = 10f;
 
     public Station() { }
@@ -27,14 +31,93 @@ public class Station: Structure {
         workers = 250;
         totalDocks = 50;
         usedDocks = 0;
-
+        var fuel = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
+        requiredItems = new List<Item>() { new Item(fuel.id, 100, fuel.estimatedValue,owner)};
+        requiredItems.ForEach(x => {
+            x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);
+            x.owner.Model = owner;
+        });
         body.spaceStructures.Add(this);
-
-        //Money Setup
-        owner.money -= 1000000;
         owner.AddSolarBodyWithStructure(body);
     }
 
+    public void Update(SolarBody parentBody, double deltaTime)
+    {
+        if (deleteStructure)
+            return;
+        if (isProducing)
+        {
+            SearchRequiredItems(parentBody, deltaTime);
+        }
+        
+    }
+
+    private bool SearchRequiredItems(SolarBody parentBody, double deltaTime)
+    {
+        int neededItemCount = requiredItems.Count;
+        int itemCount = 0;
+        foreach (Item item in requiredItems)
+        {
+            double neededAmount = item.amount;
+            if (storage.ContainsItem(item))
+            {
+                neededAmount -= storage.Find(item).amount;
+            }
+            if (neededAmount <= 0)
+            {
+                item.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(item.id);
+                parentBody.RemoveBuying(item.id, owner.Model, id, item.amount);
+                itemCount++;
+            }
+            else
+            {
+                var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, id);
+                var found = false;
+                foreach (Structure structure in parentBody.groundStructures)
+                {
+                    if (structure.structureType == StructureTypes.GroundStorage)
+                    {
+                        GroundStorage groundStruct = (GroundStorage)structure;
+                        if (groundStruct.owner.Model == owner.Model && groundStruct.RemoveItem(neededItem))
+                        {
+                            storage.AddItem(neededItem);
+                            parentBody.RemoveBuying(item.id, owner.Model, id, neededItem.amount);
+                            parentBody.RemoveSelling(item.id, owner.Model, id, neededItem.amount);
+                            neededAmount = item.amount - neededItem.amount;
+                            if (neededAmount <= 0)
+                            {
+                                itemCount++;
+                                found = true;
+                                break;
+                            }
+                            neededItem = new Item(item.id, neededAmount, item.price);
+                        }
+                    }
+                }
+                //Runs if there are still needed Items
+                if (!found)
+                {
+                    parentBody.SetBuying(neededItem);
+                    item.price += item.price * GameManager.instance.marketPriceMod * deltaTime;
+                    if (item.price < .1)
+                    {
+                        item.price = .1f;
+                    }
+                }
+            }
+
+        }
+        return (neededItemCount == itemCount);
+    }
+    private void useRequiredItems(SolarBody parentBody)
+    {
+        foreach (Item item in requiredItems)
+        {
+            var found = storage.RemoveItem(item);
+            if (!found)
+                throw new System.Exception("Item is not found in correct amount");
+        }
+    }
     /// <summary>
     /// Item is Being Baught from station
     /// </summary>

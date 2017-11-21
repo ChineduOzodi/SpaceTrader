@@ -120,6 +120,14 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 button.GetComponentInChildren<Text>().text = "Resource Types Count: " + body.rawResources.Count;
                 button.interactable = false;
 
+                foreach( IdentityModel x in body.companies){
+                    button = Instantiate(uiButtonInstance, position);
+                    text = button.GetComponentInChildren<Text>();
+                    texts.Add("Companies" + x.name, text);
+                    text.text = "Entity: " + x.name + " - " + Units.ReadItem(x.money);
+                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
+                }
+
             }
 
             
@@ -152,7 +160,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     button = Instantiate(uiButtonInstance, position);
                     text = button.GetComponentInChildren<Text>();
                     texts.Add("Resources" + x.id, text);
-                    text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount) + "\n";
+                    text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount);
                     button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
                 });
 
@@ -168,7 +176,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     button = Instantiate(uiButtonInstance, position);
                     text = button.GetComponentInChildren<Text>();
                     texts.Add("SpaceStructure" + x.id, text);
-                    text.text = "Name: " + x.name + " - " + x.owner.Model.name + "\n";
+                    text.text = "Name: " + x.name + " - " + x.owner.Model.name;
                     button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
                 });
                 
@@ -176,7 +184,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     button = Instantiate(uiButtonInstance, position);
                     text = button.GetComponentInChildren<Text>();
                     texts.Add("GroundStructure" + x.id, text);
-                    text.text = "Name: " + x.name + " - " + x.owner.Model.name + "\n";
+                    text.text = "Name: " + x.name + " - " + x.owner.Model.name;
                     button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
                 });
 
@@ -200,7 +208,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                         button = Instantiate(uiButtonInstance, position);
                         text = button.GetComponentInChildren<Text>();
                         texts.Add("BuyList" + x.id + x.owner + x.structureId, text);
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c \n";
+                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                         var structure = body.GetStructure(x.structureId);
                         if (structure != null)
                             button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
@@ -223,7 +231,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                         button = Instantiate(uiButtonInstance, position);
                         text = button.GetComponentInChildren<Text>();
                         texts.Add("SellList" + x.id + x.owner + x.structureId, text);
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c \n";
+                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                         var structure = body.GetStructure(x.structureId);
                         if (structure != null)
                             button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
@@ -246,7 +254,8 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                         button = Instantiate(uiButtonInstance, position);
                         text = button.GetComponentInChildren<Text>();
                         texts.Add("SupplyDemand" + x.itemId, text);
-                        text.text = x.itemName + " - " + Units.ReadItem(x.itemDemand) + " : " + Units.ReadItem(x.itemSupply) + "\n";
+                        text.text = x.itemName + " - " + Units.ReadItem(x.marketPrice) + "c " + Units.ReadItem(x.itemDemand) + " (" + Units.ReadItem(x.averageItemBuyPrice)
+                        + "c) : " + Units.ReadItem(x.itemSupply) + " (" + Units.ReadItem(x.averageItemSellPrice) + "c)";
                         button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x.itemId, TargetType.Item));
                     });
                 }
@@ -267,7 +276,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                         button = Instantiate(uiButtonInstance, position);
                         text = button.GetComponentInChildren<Text>();
                         texts.Add("BuyList" + x.id + x.owner + x.structureId, text);
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c \n";
+                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                         var structure = body.GetStructure(x.structureId);
                         if (structure != null)
                             button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
@@ -290,7 +299,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                         button = Instantiate(uiButtonInstance, position);
                         text = button.GetComponentInChildren<Text>();
                         texts.Add("SellList" + x.id + x.owner + x.structureId, text);
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c \n";
+                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                         var structure = body.GetStructure(x.structureId);
                         if (structure != null)
                             button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
@@ -326,6 +335,11 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button = Instantiate(uiButtonInstance, position);
             button.GetComponentInChildren<Text>().text = "Location: " + body.name;
             button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(body.solarIndex));
+
+            button = Instantiate(uiButtonInstance, position);
+            text = button.GetComponentInChildren<Text>();
+            texts.Add("Info", text);
+            text.text = model.structure.info;
 
             if (model.structure.structureType == Structure.StructureTypes.GroundStorage)
             {
@@ -378,12 +392,48 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     button = Instantiate(uiButtonInstance, position);
                     text = button.GetComponentInChildren<Text>();
                     texts.Add("Items"+ x.id, text);
-                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount) + "\n";
+                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
                     button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
                 });
             }
-            
 
+            if (model.structure.structureType == Structure.StructureTypes.Factory)
+            {
+                button = Instantiate(uiButtonInstance, titleContent.transform);
+                button.GetComponentInChildren<Text>().text = "Items";
+                //name.GetComponent<Image>().color = gov.spriteColor;
+                menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+                index = menuContent.Count - 1;
+                button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+                position = menuContent[index].transform;
+
+                ((Factory)model.structure).storage.items.ForEach(x => {
+                    button = Instantiate(uiButtonInstance, position);
+                    text = button.GetComponentInChildren<Text>();
+                    texts.Add("Items" + x.id, text);
+                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
+                });
+            }
+
+            if (model.structure.structureType == Structure.StructureTypes.SpaceStation)
+            {
+                button = Instantiate(uiButtonInstance, titleContent.transform);
+                button.GetComponentInChildren<Text>().text = "Items";
+                //name.GetComponent<Image>().color = gov.spriteColor;
+                menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+                index = menuContent.Count - 1;
+                button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+                position = menuContent[index].transform;
+
+                ((Station)model.structure).storage.items.ForEach(x => {
+                    button = Instantiate(uiButtonInstance, position);
+                    text = button.GetComponentInChildren<Text>();
+                    texts.Add("Items" + x.id, text);
+                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
+                });
+            }
 
             SelectPanel(0);
         }
@@ -434,7 +484,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 item.contstructionParts.ForEach(x => {
                     button = Instantiate(uiButtonInstance, position);
                     var buttonText = button.GetComponentInChildren<Text>();
-                    buttonText.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount) + "\n";
+                    buttonText.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
                     button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
                 });
             }
@@ -497,6 +547,12 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             {
                 text = texts["Population"];
                 text.text = "Population: " + Units.ReadItem(body.population);
+
+                foreach (IdentityModel x in body.companies)
+                {
+                    text = texts["Companies" + x.name];
+                    text.text = "Entity: " + x.name + " - " + Units.ReadItem(x.money) + "c";
+                }
             }
 
             text = texts["SpaceStructureCount"];
@@ -521,7 +577,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
 
                     solar.buyList.items.ForEach(x => {
                         if (texts.TryGetValue("SellList" + x.id + x.owner + x.structureId, out text))
-                            text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c \n";
+                            text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c";
                     });
                 }
 
@@ -529,7 +585,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 {
                     solar.sellList.items.ForEach(x => {
                         if (texts.TryGetValue("SellList" + x.id + x.owner + x.structureId, out text))
-                            text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c \n";
+                            text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c";
                     });
                 }
 
@@ -537,7 +593,8 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 {
                     solar.supplyDemand.ForEach(x => {
                         if (texts.TryGetValue("SupplyDemand" + x.itemId, out text))
-                            text.text = x.itemName + " - " + Units.ReadItem(x.itemDemand) + " : " + Units.ReadItem(x.itemSupply) + "\n";
+                            text.text = x.itemName + " - " + Units.ReadItem(x.marketPrice) + "c " + Units.ReadItem(x.itemDemand) + " (" + Units.ReadItem(x.averageItemBuyPrice)
+                        + "c) : " + Units.ReadItem(x.itemSupply) + " (" + Units.ReadItem(x.averageItemSellPrice) + "c)";
                     });
                 }
             }
@@ -548,7 +605,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
 
                     body.buyList.items.ForEach(x => {
                         if (texts.TryGetValue("BuyList" + x.id + x.owner + x.structureId, out text))
-                            text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c \n";
+                            text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                     });
                 }
 
@@ -556,7 +613,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 {
                     body.sellList.items.ForEach(x => {
                         if (texts.TryGetValue("SellList" + x.id + x.owner + x.structureId, out text))
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c \n";
+                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                     });
                 }
             }
@@ -571,17 +628,17 @@ public class InfoPanelController : Controller<InfoPanelModel> {
 
                 body.rawResources.ForEach(x => {
                     text = texts["Resources" + x.id];
-                    text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount) + "\n";
+                    text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount);
                 });
 
                 body.spaceStructures.ForEach(x => {
                     text = texts["SpaceStructure" + x.id];
-                    text.text = "Name: " + x.name + " - " + x.owner.Model.name + "\n";
+                    text.text = "Name: " + x.name + " - " + x.owner.Model.name;
                 });
 
                 body.groundStructures.ForEach(x => {
                     text = texts["GroundStructure" + x.id];
-                    text.text = "Name: " + x.name + " - " + x.owner.Model.name + "\n";
+                    text.text = "Name: " + x.name + " - " + x.owner.Model.name;
                 });
 
             }
@@ -590,6 +647,10 @@ public class InfoPanelController : Controller<InfoPanelModel> {
         {
             //SolarBody body = GameManager.instance.data.getSolarBody(model.solarIndex);
             Text text;
+
+            text = texts["Info"];
+            text.text = model.structure.info;
+
             if (model.structure.structureType == Structure.StructureTypes.GroundStorage)
             {
                 text = texts["FillPercent"];
@@ -599,7 +660,18 @@ public class InfoPanelController : Controller<InfoPanelModel> {
 
                 ((GroundStorage)model.structure).storage.items.ForEach(x => {
                     text = texts["Items" + x.id];
-                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount) + "\n";
+                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+                });
+            }
+
+            if (model.structure.structureType == Structure.StructureTypes.SpaceStation)
+            {
+
+                ((Station)model.structure).storage.items.ForEach(x => {
+                    if (texts.TryGetValue("Items" + x.id, out text))
+                    {
+                        text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+                    }
                 });
             }
 
@@ -607,6 +679,11 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             {
                 text = texts["ProductionPercent"];
                 text.text = "Production Percent: " + ((((Factory)model.structure).productionProgress * 100).ToString("0.00") + " %");
+
+                ((Factory)model.structure).storage.items.ForEach(x => {
+                    text = texts["Items" + x.id];
+                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+                });
             }
         }
 

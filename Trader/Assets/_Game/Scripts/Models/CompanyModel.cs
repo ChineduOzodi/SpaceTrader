@@ -12,23 +12,26 @@ public class CompanyModel : StructureModel {
     
 
     public CompanyModel() { }
-    public CompanyModel(string _name, GovernmentModel[] govs, Creature _ceo)
+    public CompanyModel(string _name, SolarBody home, GovernmentModel[] govs, Creature _ceo)
     {
         name = _name;
         ceo = _ceo.id;
-        solarIndex = _ceo.solarIndex;
+        solarIndex = home.solarIndex;
+        home.companies.Add(this);
         foreach (GovernmentModel gov in govs)
         {
             governmentAccess.Add(gov);
         }
     }
-    public CompanyModel(string _name, GovernmentModel gov, Creature _ceo)
+    public CompanyModel(string _name, SolarBody home, GovernmentModel gov, Creature _ceo)
     {
         name = _name;
         ceo = _ceo.id;
-        solarIndex = _ceo.solarIndex;
+        solarIndex = home.solarIndex;
+        home.companies.Add(this);
         gov.trustedCompanies.Add(this);
         governmentAccess.Add(gov);
+        money = 1000000;
         GameManager.instance.data.companies.Add(this);
     }
 }

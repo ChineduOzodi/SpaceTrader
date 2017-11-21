@@ -15,16 +15,19 @@ public class GameManager : MonoBehaviour {
     public GameObject pathfindingManager;
     public LoadingPanel loadingPanel;
     public GameObject exitPanel;
+    public GameObject savePanel;
+    public Slider saveSlider;
+    public Image saveFill;
+    public Text dateInfo;
+    public Text nameOfSystem;
     internal float localScaleMod = 1;
     internal bool galaxyView = true;
     public int numShipsPerFrame;
     public int numStationsPerFrame;
+    public double marketPriceMod = .0001f;
     internal GameObject selectedObj;
-    public Text dateInfo;
-    public Text nameOfSystem;
-    public GameObject savePanel;
-    public Slider saveSlider;
-    public Image saveFill;
+    
+    
     internal GameDataModel data;
     
     internal int statsDisplay = 0;
@@ -38,6 +41,7 @@ public class GameManager : MonoBehaviour {
     //Used to setup the game and make sure nothing is running while things are being configured
     internal bool gameInitiated = false;
     internal bool setup = false;
+    internal bool following = false;
 
     internal float timeScale = 1;
     private void Awake()
@@ -123,14 +127,18 @@ public class GameManager : MonoBehaviour {
                 {
                     timeScale *= 2;
                 }
+                if (Input.GetKeyDown(KeyCode.Slash))
+                {
+                    timeScale = 1;
+                }
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    if (selectedObj != null && transform.parent == null)
+                    if (selectedObj != null && !following)
                     {
-                        transform.parent = selectedObj.transform;
-                        transform.localPosition = new Vector3(0, 0, -10);
+                        following = true;
+                        data.cameraGalaxyPosition += (Vector2d)(Vector2)selectedObj.transform.position * data.cameraGalaxyOrtho / Camera.main.orthographicSize;
                     }
-                    else transform.parent = null;
+                    else following = false;
                 }
 
                 dateInfo.text = data.date.GetDateTime() + "\nTimescale: " + timeScale + "\n";
@@ -287,6 +295,7 @@ public class GameManager : MonoBehaviour {
         //StartCoroutine("UpdateShips", numShipsPerFrame);
         //StartCoroutine("UpdateStations", numStationsPerFrame);
         StartCoroutine("UpdateGovernments");
+        StartCoroutine("UpdateCompanies");
         setup = false;
     }
 
@@ -434,11 +443,34 @@ public class GameManager : MonoBehaviour {
             {
                 var body = data.getSolarBody(solarIndex);
                 bool found = false;
+                //if (body.deleteStructure)
+                //{
+
+                //}
+                foreach (Structure owned in body.spaceStructures)
+                {
+                    if (owned.owner.Model == model)
+                    {
+                        found = true;
+
+                        if (owned.structureType == Structure.StructureTypes.SpaceStation)
+                        {
+                            ((Station)owned).Update(body, deltaTime);
+                        }
+                        if ((owned).deleteStructure)
+                        {
+                            body.groundStructures.Remove(owned);
+                            break;
+                        }
+                    }
+
+                }
                 foreach (Structure owned in body.groundStructures)
                 {
                     if (owned.owner.Model == model)
                     {
                         found = true;
+
                         if (owned.structureType == Structure.StructureTypes.Driller)
                         {
                             ((Driller)owned).UpdateProduction(body, deltaTime);
@@ -450,10 +482,16 @@ public class GameManager : MonoBehaviour {
                         if (owned.structureType == Structure.StructureTypes.BuildStructure)
                         {
                             ((BuildStructure)owned).UpdateProduction(body, deltaTime);
-                            //if (((BuildStructure)owned).done)
-                            //{
-                            //    body.groundStructures.Remove(owned);
-                            //}
+                            if (((BuildStructure)owned).deleteStructure)
+                            {
+                                body.groundStructures.Remove(owned);
+                                break;
+                            }
+                            
+                        }
+                        if (owned.structureType == Structure.StructureTypes.GroundStorage)
+                        {
+                            ((GroundStorage)owned).UpdateProduction(body, deltaTime);
                         }
                     }
                     
@@ -461,6 +499,7 @@ public class GameManager : MonoBehaviour {
                 if (!found)
                 {
                     model.solarBodiesWithStructures.Remove(solarIndex);
+                    break;
                 }
             }
             
@@ -468,6 +507,90 @@ public class GameManager : MonoBehaviour {
             govIndex++;
             if (govIndex >= data.governments.Count)
                 govIndex = 0;
+        }
+    }
+    /// <summary>
+    /// Updates all the government bodies per frame
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator UpdateCompanies()
+    {
+        int compIndex = 0;
+        while (true)
+        {
+            CompanyModel model = data.companies[compIndex];
+
+            double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
+            model.age.AddTime(deltaTime);
+
+            foreach (List<int> solarIndex in model.solarBodiesWithStructures)
+            {
+                var body = data.getSolarBody(solarIndex);
+                bool found = false;
+                //if (body.deleteStructure)
+                //{
+
+                //}
+                foreach (Structure owned in body.spaceStructures)
+                {
+                    if (owned.owner.Model == model)
+                    {
+                        found = true;
+
+                        if (owned.structureType == Structure.StructureTypes.SpaceStation)
+                        {
+                            ((Station)owned).Update(body, deltaTime);
+                        }
+                        if ((owned).deleteStructure)
+                        {
+                            body.groundStructures.Remove(owned);
+                            break;
+                        }
+                    }
+
+                }
+                foreach (Structure owned in body.groundStructures)
+                {
+                    if (owned.owner.Model == model)
+                    {
+                        found = true;
+
+                        if (owned.structureType == Structure.StructureTypes.Driller)
+                        {
+                            ((Driller)owned).UpdateProduction(body, deltaTime);
+                        }
+                        if (owned.structureType == Structure.StructureTypes.Factory)
+                        {
+                            ((Factory)owned).UpdateProduction(body, deltaTime);
+                        }
+                        if (owned.structureType == Structure.StructureTypes.BuildStructure)
+                        {
+                            ((BuildStructure)owned).UpdateProduction(body, deltaTime);
+                            if (((BuildStructure)owned).deleteStructure)
+                            {
+                                body.groundStructures.Remove(owned);
+                                break;
+                            }
+
+                        }
+                        if (owned.structureType == Structure.StructureTypes.GroundStorage)
+                        {
+                            ((GroundStorage)owned).UpdateProduction(body, deltaTime);
+                        }
+                    }
+
+                }
+                if (!found)
+                {
+                    model.solarBodiesWithStructures.Remove(solarIndex);
+                    break;
+                }
+            }
+
+            yield return null;
+            compIndex++;
+            if (compIndex >= data.companies.Count)
+                compIndex = 0;
         }
     }
     /// <summary>
@@ -640,7 +763,7 @@ public class GameManager : MonoBehaviour {
     //        if (item.amount == 0 && item.pendingAmount == 0)
     //            model.items.Remove(item);
     //    }
-        
+
 
     //    //if (model.money > 10000 && model.target.Model == null)
     //    //{
