@@ -6,7 +6,7 @@ using CodeControl;
 /// <summary>
 /// Inherited by all center solar objects.
 /// </summary>
-public class SolarModel : Model {
+public class SolarModel : Model, IPositionEntity {
 
     public string name;
 
@@ -14,7 +14,7 @@ public class SolarModel : Model {
     /// <summary>
     /// position in galaxy in light years
     /// </summary>
-    public Vector2d galacticPosition;
+    public Vector2d galaxyPosition { get; set; }
     public Color color;
     public SolarBody solar;
     public List<Ship> ships { get; private set; }
@@ -30,13 +30,20 @@ public class SolarModel : Model {
     public ItemsList sellList { get; private set; }
     public List<SupplyDemand> supplyDemand { get; private set; }
 
+    public List<int> solarIndex { get; set; }
+    public int structureId { get; set; }
+    public int shipId { get; set; }
+
     public SolarModel() { }
 
     public SolarModel(string _name, int _index, Vector2d _position, Gradient sunSizeColor)
     {
         name = _name;
-        galacticPosition = _position * Units.ly / GameDataModel.galaxyDistanceMultiplication;
+        galaxyPosition = _position * Units.ly / GameDataModel.galaxyDistanceMultiplication;
         index = _index;
+        structureId = -1;
+        shipId = -1;
+        this.solarIndex = new List<int>() { index };
         supplyDemand = new List<SupplyDemand>();
         buyList = new ItemsList();
         sellList = new ItemsList();

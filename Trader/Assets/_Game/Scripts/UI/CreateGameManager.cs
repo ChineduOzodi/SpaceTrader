@@ -173,7 +173,7 @@ public class CreateGameManager : MonoBehaviour {
                 }
                 
                 //BuildStructure build = new BuildStructure(gov, game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory).id, game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory).id, parent);
-                BuildStructure build = new BuildStructure(gov, Structure.StructureTypes.Ship, game.data.itemsData.Model.items.Find(x => x.name == "Combat Ship").id, parent);
+                BuildStructure build = new BuildStructure(gov, StructureTypes.Ship, game.data.itemsData.Model.items.Find(x => x.name == "Combat Ship").id, parent);
 
                 var solarModel = game.data.stars[parent.solarIndex[0]];
 
@@ -269,7 +269,7 @@ public class CreateGameManager : MonoBehaviour {
             {
                 if (c != i)
                 {
-                    double actualDist = Vector3d.Distance(game.data.stars[i].galacticPosition, game.data.stars[c].galacticPosition);
+                    double actualDist = Vector3d.Distance(game.data.stars[i].galaxyPosition, game.data.stars[c].galaxyPosition);
                     if (distance1 == 0)
                     {
                         closestStar1 = game.data.stars[c];
@@ -297,7 +297,7 @@ public class CreateGameManager : MonoBehaviour {
             {
                 if (c != i)
                 {
-                    float actualDist = (float) Vector3d.Distance(game.data.stars[i].galacticPosition, game.data.stars[c].galacticPosition);
+                    float actualDist = (float) Vector3d.Distance(game.data.stars[i].galaxyPosition, game.data.stars[c].galaxyPosition);
                     if (actualDist < closestStarDist)
                     {
                         closestStarDist = actualDist;

@@ -9,13 +9,10 @@ public class ShipsModel: Model
     public ShipsModel() { ships = new List<Ship>(); }
 }
 
-public class Ship: Structure {
+public class Ship: IStructure, IWorkers {
 
     public ShipAction shipAction { get; private set; }
     public bool hyperSpace { get; private set; }
-    public Vector3d galaxyPosition;
-    public int shipId { get; private set; }
-    public int structureId { get; private set; }
 
     public List<int> target { get; private set; }
     public List<int> sellTarget { get; private set; }
@@ -23,6 +20,30 @@ public class Ship: Structure {
     public int structureTargetId { get; private set; }
 
     public List<int> passengerIds { get; private set; }
+
+    //IStructure and IWorkers
+    public StructureTypes structureType { get; set; }
+
+    public string name { get; set; }
+    public string info { get; set; }
+    public ModelRef<IdentityModel> owner { get; set; }
+    public int managerId { get; set; }
+    public float maxArmor { get; set; }
+    public float currentArmor { get; set; }
+    public int id { get; set; }
+    public Dated dateCreated { get; set; }
+    public Dated lastUpdated { get; set; }
+    public bool deleteStructure { get; set; }
+
+    public Vector2d galaxyPosition { get; set; }
+
+    public List<int> solarIndex { get; set; }
+    public int structureId { get; set; }
+    public int shipId { get; set; }
+
+    public int workers { get; set; }
+
+    public double workerPayRate { get; set; }
 
     //Ship Properties
 
@@ -49,12 +70,14 @@ public class Ship: Structure {
         structureId = _structureId;
         structureType = StructureTypes.Ship;
         //this.captain.Model.location = this;
-        shipId = GameManager.instance.data.id++;
-        this.owner.Model.ships.Add(shipId);
+        id = GameManager.instance.data.id++;
+        this.owner.Model.ships.Add(id);
         GameManager.instance.data.ships.Model.ships.Add(this);
         shipAction = ShipAction.Idle;
         solarIndex = captain.solarIndex;
-        galaxyPosition = GameManager.instance.data.stars[solarIndex[0]].galacticPosition + GameManager.instance.data.getSolarBody(solarIndex).lastKnownPosition;
+        galaxyPosition = GameManager.instance.data.stars[solarIndex[0]].galaxyPosition + GameManager.instance.data.getSolarBody(solarIndex).lastKnownPosition;
+        structureId = -1;
+        shipId = -1;
 
         this.workers = 10;
         this.name = name;

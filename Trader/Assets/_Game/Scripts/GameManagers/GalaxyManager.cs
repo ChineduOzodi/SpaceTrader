@@ -139,7 +139,7 @@ public class GalaxyManager : MonoBehaviour {
 
     public void GoToSolarView()
     {
-        game.data.cameraGalaxyPosition = solarModel.galacticPosition;
+        game.data.cameraGalaxyPosition = solarModel.galaxyPosition;
         game.data.cameraGalaxyOrtho = .01;
         SolarView();        
     }
@@ -175,11 +175,11 @@ public class GalaxyManager : MonoBehaviour {
                 star.color = star.government.Model.spriteColor;
                 if (star.isCapital)
                 {
-                    Canvas textCanvas = Instantiate(buttonInstanceCanvas, CameraController.CameraOffsetGalaxyPosition(star.galacticPosition), Quaternion.identity);
+                    Canvas textCanvas = Instantiate(buttonInstanceCanvas, CameraController.CameraOffsetGalaxyPosition(star.galaxyPosition), Quaternion.identity);
                     Button textButton = textCanvas.GetComponentInChildren<Button>();
                     Text text = textCanvas.GetComponentInChildren<Text>();
                     mapButtonCanvases.Add(textCanvas);
-                    mapButtonStarPositions.Add(star.galacticPosition);
+                    mapButtonStarPositions.Add(star.galaxyPosition);
                     text.text = star.government.Model.name;
                     textButton.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(star.government.Model));
                 }

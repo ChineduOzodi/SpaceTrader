@@ -341,7 +341,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             texts.Add("Info", text);
             text.text = model.structure.info;
 
-            if (model.structure.structureType == Structure.StructureTypes.GroundStorage)
+            if (model.structure.structureType == StructureTypes.GroundStorage)
             {
                 button = Instantiate(uiButtonInstance, position);
                 text = button.GetComponentInChildren<Text>();
@@ -350,14 +350,14 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     + Units.ReadItem(((GroundStorage)model.structure).currentStorageAmount) + " - " +
                      Units.ReadItem(((GroundStorage)model.structure).totalStorageAmount);
             }
-            if (model.structure.structureType == Structure.StructureTypes.Driller)
+            if (model.structure.structureType == StructureTypes.Driller)
             {
                 button = Instantiate(uiButtonInstance, position);
                 text = button.GetComponentInChildren<Text>();
                 text.text = "Mining: " + ((Driller)model.structure).productionItemName;
                 button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(((Driller)model.structure).productionItemId, TargetType.RawResource));
             }
-            if (model.structure.structureType == Structure.StructureTypes.Factory)
+            if (model.structure.structureType == StructureTypes.Factory)
             {
                 button = Instantiate(uiButtonInstance, position);
                 button.GetComponentInChildren<Text>().text = "Producing Item: " + ((Factory)model.structure).productionItemName;
@@ -378,7 +378,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button.GetComponentInChildren<Text>().text = "Go to -->";
             button.onClick.AddListener(() => GameManager.instance.GoToTarget(body.solarIndex));
 
-            if (model.structure.structureType == Structure.StructureTypes.GroundStorage)
+            if (model.structure.structureType == StructureTypes.GroundStorage)
             {
                 button = Instantiate(uiButtonInstance, titleContent.transform);
                 button.GetComponentInChildren<Text>().text = "Items";
@@ -397,7 +397,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 });
             }
 
-            if (model.structure.structureType == Structure.StructureTypes.Factory)
+            if (model.structure.structureType == StructureTypes.Factory)
             {
                 button = Instantiate(uiButtonInstance, titleContent.transform);
                 button.GetComponentInChildren<Text>().text = "Items";
@@ -416,7 +416,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 });
             }
 
-            if (model.structure.structureType == Structure.StructureTypes.SpaceStation)
+            if (model.structure.structureType == StructureTypes.SpaceStation)
             {
                 button = Instantiate(uiButtonInstance, titleContent.transform);
                 button.GetComponentInChildren<Text>().text = "Items";
@@ -651,7 +651,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             text = texts["Info"];
             text.text = model.structure.info;
 
-            if (model.structure.structureType == Structure.StructureTypes.GroundStorage)
+            if (model.structure.structureType == StructureTypes.GroundStorage)
             {
                 text = texts["FillPercent"];
                 text.text = "Storage Filled: " + ((((GroundStorage)model.structure).currentStorageAmount / ((GroundStorage)model.structure).totalStorageAmount) * 100).ToString("0.00") + " %  "
@@ -664,7 +664,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 });
             }
 
-            if (model.structure.structureType == Structure.StructureTypes.SpaceStation)
+            if (model.structure.structureType == StructureTypes.SpaceStation)
             {
 
                 ((Station)model.structure).storage.items.ForEach(x => {
@@ -675,7 +675,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 });
             }
 
-            if (model.structure.structureType == Structure.StructureTypes.Factory)
+            if (model.structure.structureType == StructureTypes.Factory)
             {
                 text = texts["ProductionPercent"];
                 text.text = "Production Percent: " + ((((Factory)model.structure).productionProgress * 100).ToString("0.00") + " %");

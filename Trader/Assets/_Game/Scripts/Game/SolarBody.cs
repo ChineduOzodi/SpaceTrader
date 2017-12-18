@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SolarBody
+public class SolarBody: IPositionEntity
 {
     public string name;
     public int totalPopulation { get; private set; }
@@ -25,8 +25,8 @@ public class SolarBody
     public double surfaceGravity { get; private set; }
     public List<PlanetTile> planetTiles { get; private set; }
     public List<RawResource> rawResources { get; private set; }
-    public List<Structure> groundStructures = new List<Structure>();
-    public List<Structure> spaceStructures = new List<Structure>();
+    public List<IStructure> groundStructures = new List<IStructure>();
+    public List<IStructure> spaceStructures = new List<IStructure>();
     public bool deleteStructure;
     //----------------Commerce-----------------------------//
     public ItemsList buyList { get; private set; }
@@ -44,6 +44,35 @@ public class SolarBody
     /// Index of solar body in solarsystem.
     /// </summary>
     public List<int> solarIndex { get; set; }
+    public int structureId { get; set; }
+    public int shipId { get; set; }
+
+    public Vector2d galaxyPosition
+    {
+        get
+        {
+            if (solarIndex.Count == 3)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition
+                        + lastKnownPosition;
+            }
+            else if (solarIndex.Count == 2)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].galaxyPosition
+                        + lastKnownPosition;
+            }
+            else
+            {
+                throw new System.Exception("Solarbody " + name + " solarIndex count incorrect: " + solarIndex.Count);
+            }
+        }
+
+        set
+        {
+            throw new System.Exception("Can't set solarbody galaxyPosition, use GamePosition instead");
+        }
+    }
+
     /// <summary>
     /// Used for creating stars
     /// </summary>
@@ -67,6 +96,8 @@ public class SolarBody
         name = _name;
         this.solarType = solarType;
         solarIndex = _solarIndex;
+        structureId = -1;
+        shipId = -1;
         color = _color;
         surfaceTemp = _surfaceTemp;
         surfacePressure = 1; // In atm
@@ -93,6 +124,8 @@ public class SolarBody
         this.solarType = _solarType;
         this.solarSubType = _solarSubType;
         solarIndex = _solarIndex;
+        structureId = -1;
+        shipId = -1;
         color = _color;
         surfaceGravity = GameDataModel.G * mass / Mathd.Pow(Units.convertToMeters * radius, 2) / 9.81;
         surfacePressure = 0; // In atm
@@ -366,7 +399,7 @@ public class SolarBody
 
     public SolarBody() { }
 
-    public Structure GetStructure(int structureId)
+    public IStructure GetStructure(int structureId)
     {
         int index = groundStructures.FindIndex(x => x.id == structureId);
         if (index == -1)

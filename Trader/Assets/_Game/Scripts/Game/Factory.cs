@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using CodeControl;
 
-public class Factory : Structure {
+public class Factory : IStructure,IWorkers {
 
     public string productionItemName;
     public int productionItemId { get; private set; }
@@ -14,7 +14,51 @@ public class Factory : Structure {
     public float productionProgress { get; private set; }
     public List<Item> requiredItems { get; private set; }
     public ItemsList storage { get; private set; }
-    
+
+    public StructureTypes structureType { get; set; }
+
+    public string name { get; set; }
+    public string info { get; set; }
+    public ModelRef<IdentityModel> owner { get; set; }
+    public int managerId { get; set; }
+    public float maxArmor { get; set; }
+    public float currentArmor { get; set; }
+    public int id { get; set; }
+    public Dated dateCreated { get; set; }
+    public Dated lastUpdated { get; set; }
+    public bool deleteStructure { get; set; }
+
+    public Vector2d galaxyPosition
+    {
+        get
+        {
+            if (solarIndex.Count == 3)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]].galaxyPosition;
+            }
+            else if (solarIndex.Count == 2)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition;
+            }
+            else
+            {
+                throw new System.Exception("BuildStructure " + name + " solarIndex count incorrect: " + solarIndex.Count);
+            }
+        }
+
+        set
+        {
+            throw new System.Exception("Can't set galaxyPosition, set solarIndex instead");
+        }
+    }
+
+    public List<int> solarIndex { get; set; }
+    public int structureId { get; set; }
+    public int shipId { get; set; }
+
+    public int workers { get; set; }
+
+    public double workerPayRate { get; set; }
 
     public bool isProducing;
 
@@ -28,6 +72,8 @@ public class Factory : Structure {
         id = GameManager.instance.data.id++;
         
         solarIndex = body.solarIndex;
+        structureId = -1;
+        shipId = -1;
         body.groundStructures.Add(this);
         var product = GameManager.instance.data.itemsData.Model.GetItem(productionItemId);
         name = product.name + " " + structureType.ToString() + " " + id;
@@ -44,7 +90,7 @@ public class Factory : Structure {
         currentArmor = maxArmor;
         produtionTime = product.productionTime;
         workers = 30;
-
+        workerPayRate = .00116;
         owner.money -= 10000;
     }
 
@@ -76,6 +122,7 @@ public class Factory : Structure {
         int machineryAmount = (int)blueprint.contstructionParts.Find(x => x.itemType == ItemType.FactoryMachinery).amount;
         produtionTime = product.productionTime / machineryAmount;
         workers = 15 + blueprint.workers;
+        workerPayRate = .00116;
     }
 
     /// <summary>
@@ -165,7 +212,7 @@ public class Factory : Structure {
             {
                 var neededItem = new Item(item.id, neededAmount, item.price, owner.Model,id);
                 var found = false;
-                foreach (Structure structure in parentBody.groundStructures)
+                foreach (IStructure structure in parentBody.groundStructures)
                 {
                     if (structure.structureType == StructureTypes.GroundStorage)
                     {
@@ -216,7 +263,7 @@ public class Factory : Structure {
     {
         var found = false;
         Item item = new Item(productionItemId, 1,parentBody.GetMarketPrice(productionItemId), owner.Model, id);
-        foreach (Structure structure in parentBody.groundStructures)
+        foreach (IStructure structure in parentBody.groundStructures)
         {
             if (structure.structureType == StructureTypes.GroundStorage)
             {

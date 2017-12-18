@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using CodeControl;
+using System;
 
 public class CreatureModel : Model {
 
@@ -35,16 +36,41 @@ public class CreatureModel : Model {
     
 }
 
-public struct Creature
+public struct Creature: IPositionEntity
 {
     public string name;
     public CreatureType creatureType;
-    public List<int> solarIndex { get; private set; }
-    public int structureId { get; private set; }
-    public int shipId { get; private set; }
+    public List<int> solarIndex { get; set; }
+    public int structureId { get; set; }
+    public int shipId { get; set; }
     public int id;
     public Dated age { get; private set; }
     public Dated born { get; private set; }
+
+    public Vector2d galaxyPosition
+    {
+        get
+        {
+            if (solarIndex.Count == 3)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]].galaxyPosition;
+            }
+            else if (solarIndex.Count == 2)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition;
+            }
+            else
+            {
+                throw new System.Exception("BuildStructure " + name + " solarIndex count incorrect: " + solarIndex.Count);
+            }
+        }
+
+        set
+        {
+            throw new System.Exception("Can't set galaxyPosition, set solarIndex instead");
+        }
+    }
+
     public bool isPlayer;
 
     public Money money;
@@ -64,7 +90,7 @@ public struct Creature
         GameManager.instance.data.creatures.Model.AddCreature(this);
     }
 
-    public Creature(string _name, double credits, Structure structure, Dated currentDate, Dated _age, CreatureType type)
+    public Creature(string _name, double credits, IStructure structure, Dated currentDate, Dated _age, CreatureType type)
     {
         name = _name;
         isPlayer = false;

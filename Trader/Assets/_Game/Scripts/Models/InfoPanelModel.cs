@@ -10,7 +10,7 @@ public class InfoPanelModel : Model {
     public int targetId;
     public TargetType targetType; 
     public List<int> solarIndex;
-    public Structure structure;
+    public IStructure structure;
     public Creature creature;
 
     public InfoPanelModel() { }
@@ -30,7 +30,7 @@ public class InfoPanelModel : Model {
         this.solarIndex = solarIndex;
         targetType = TargetType.SolarBody;
     }
-    public InfoPanelModel(Structure structure)
+    public InfoPanelModel(IStructure structure)
     {
         this.solarIndex = structure.solarIndex;
         targetType = TargetType.Structure;

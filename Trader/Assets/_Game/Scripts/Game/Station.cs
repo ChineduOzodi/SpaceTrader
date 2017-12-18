@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CodeControl;
 using System.Xml.Serialization;
 
-public class Station: Structure {
+public class Station: IStructure, IWorkers {
 
     //public ModelRef<CreatureModel> manager = new ModelRef<CreatureModel>();
     //public ModelRefs<ShipModel> incomingShips = new ModelRefs<ShipModel>();
@@ -18,6 +18,51 @@ public class Station: Structure {
 
     public float runningCost = 10f;
 
+    public StructureTypes structureType { get; set; }
+
+    public string name { get; set; }
+    public string info { get; set; }
+    public ModelRef<IdentityModel> owner { get; set; }
+    public int managerId { get; set; }
+    public float maxArmor { get; set; }
+    public float currentArmor { get; set; }
+    public int id { get; set; }
+    public Dated dateCreated { get; set; }
+    public Dated lastUpdated { get; set; }
+    public bool deleteStructure { get; set; }
+
+    public Vector2d galaxyPosition
+    {
+        get
+        {
+            if (solarIndex.Count == 3)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]].galaxyPosition;
+            }
+            else if (solarIndex.Count == 2)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition;
+            }
+            else
+            {
+                throw new System.Exception("BuildStructure " + name + " solarIndex count incorrect: " + solarIndex.Count);
+            }
+        }
+
+        set
+        {
+            throw new System.Exception("Can't set galaxyPosition, set solarIndex instead");
+        }
+    }
+
+    public List<int> solarIndex { get; set; }
+    public int structureId { get; set; }
+    public int shipId { get; set; }
+
+    public int workers { get; set; }
+
+    public double workerPayRate { get; set; }
+
     public Station() { }
 
     public Station(string name, IdentityModel owner, SolarBody body)
@@ -27,8 +72,11 @@ public class Station: Structure {
         structureType = StructureTypes.SpaceStation;
         id = GameManager.instance.data.id++;
         solarIndex = body.solarIndex;
+        structureId = -1;
+        shipId = -1;
         this.name = name;
         workers = 250;
+        workerPayRate = .00116;
         totalDocks = 50;
         usedDocks = 0;
         var fuel = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
@@ -73,7 +121,7 @@ public class Station: Structure {
             {
                 var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, id);
                 var found = false;
-                foreach (Structure structure in parentBody.groundStructures)
+                foreach (IStructure structure in parentBody.groundStructures)
                 {
                     if (structure.structureType == StructureTypes.GroundStorage)
                     {

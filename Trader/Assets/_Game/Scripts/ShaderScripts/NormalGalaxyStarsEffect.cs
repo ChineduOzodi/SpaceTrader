@@ -76,7 +76,7 @@ public class NormalGalaxyStarsEffect : MonoBehaviour {
             {
                 foreach (SolarModel star in game.data.stars)
                 {
-                    positions.Add(new Vector4((float)(star.galacticPosition.x - game.data.cameraGalaxyPosition.x),(float) (star.galacticPosition.y - game.data.cameraGalaxyPosition.y)));
+                    positions.Add(new Vector4((float)(star.galaxyPosition.x - game.data.cameraGalaxyPosition.x),(float) (star.galaxyPosition.y - game.data.cameraGalaxyPosition.y)));
                     normalColors.Add(new Vector4(star.solar.color.r, star.solar.color.g, star.solar.color.b, star.solar.color.a));
                     territoryColors.Add(Vector4.zero);
                     starRadi.Add((float)Mathd.Pow((star.solar.bodyRadius), starPow) / starDiv);
@@ -86,7 +86,7 @@ public class NormalGalaxyStarsEffect : MonoBehaviour {
             }
             for (int i = 0; i < game.data.stars.Count; i++)
             {
-                Vector3 position = CameraController.CameraOffsetGalaxyPosition(game.data.stars[i].galacticPosition);
+                Vector3 position = CameraController.CameraOffsetGalaxyPosition(game.data.stars[i].galaxyPosition);
                 float localScale = (float)(Mathd.Pow((game.data.stars[i].solar.bodyRadius), starPow) / starDiv * game.data.cameraGalCameraScaleMod); ;
 
                 if (!game.galaxyView)
@@ -132,7 +132,7 @@ public class NormalGalaxyStarsEffect : MonoBehaviour {
             {
                 foreach (SolarModel star in game.data.stars)
                 {
-                    positions.Add(new Vector4((float)(star.galacticPosition.x - game.data.cameraGalaxyPosition.x), (float)(star.galacticPosition.y - game.data.cameraGalaxyPosition.y)));
+                    positions.Add(new Vector4((float)(star.galaxyPosition.x - game.data.cameraGalaxyPosition.x), (float)(star.galaxyPosition.y - game.data.cameraGalaxyPosition.y)));
                     normalColors.Add(new Vector4(star.solar.color.r, star.solar.color.g, star.solar.color.b, star.solar.color.a));
                     territoryColors.Add(Vector4.zero);
                     starRadi.Add((float)Mathd.Pow((star.solar.bodyRadius), starPow) / starDiv);
@@ -142,7 +142,7 @@ public class NormalGalaxyStarsEffect : MonoBehaviour {
             }
             for (int i = 0; i < game.data.stars.Count; i++)
             {
-                var position = CameraController.CameraOffsetGalaxyPosition(game.data.stars[i].galacticPosition);
+                var position = CameraController.CameraOffsetGalaxyPosition(game.data.stars[i].galaxyPosition);
                 positions[i] = (new Vector4(position.x, position.y));
                 if (game.data.stars[i].government.Model != null)
                 {
@@ -163,7 +163,7 @@ public class NormalGalaxyStarsEffect : MonoBehaviour {
         }
         if (!GameManager.instance.galaxyView && MapTogglePanel.instance.visualDisplay[VisualDisplay.Temperature].isOn)
         {
-            SolarTempMaterial.SetVector("_StarPosition", CameraController.CameraOffsetGalaxyPosition(GalaxyManager.instance.solarModel.galacticPosition));
+            SolarTempMaterial.SetVector("_StarPosition", CameraController.CameraOffsetGalaxyPosition(GalaxyManager.instance.solarModel.galaxyPosition));
             SolarTempMaterial.SetFloat("_StarTemperature", (float)GalaxyManager.instance.solarModel.solar.surfaceTemp);
             SolarTempMaterial.SetFloat("_StarLum", (float)GalaxyManager.instance.solarModel.solar.luminosity);
             SolarTempMaterial.SetFloat("_BondAlebo", (float)GalaxyManager.instance.solarModel.solar.bondAlebo);

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System;
 using CodeControl;
 
-public class BuildStructure : Structure {
+public class BuildStructure : IStructure, IWorkers {
 
+    /// <summary>
+    /// For use with factories
+    /// </summary>
     public int structureItemId { get; private set; }
     /// <summary>
     /// Time to complete one cycle in days.
@@ -17,7 +20,51 @@ public class BuildStructure : Structure {
     public StructureTypes buildStructureType { get; private set; }
 
     public bool isProducing { get; private set; }
-    
+
+    public StructureTypes structureType { get; set; }
+
+    public string name { get; set; }
+    public string info { get; set; }
+    public ModelRef<IdentityModel> owner { get; set; }
+    public int managerId { get; set; }
+    public float maxArmor { get; set; }
+    public float currentArmor { get; set; }
+    public int id { get; set; }
+    public Dated dateCreated { get; set; }
+    public Dated lastUpdated { get; set; }
+    public bool deleteStructure { get; set; }
+
+    public Vector2d galaxyPosition
+    {
+        get
+        {
+            if (solarIndex.Count == 3)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]].galaxyPosition;
+            }
+            else if (solarIndex.Count == 2)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition;
+            }
+            else
+            {
+                throw new System.Exception("BuildStructure " + name + " solarIndex count incorrect: " + solarIndex.Count);
+            }
+        }
+
+        set
+        {
+            throw new System.Exception("Can't set galaxyPosition, set solarIndex instead");
+        }
+    }
+
+    public List<int> solarIndex { get; set; }
+    public int structureId { get; set; }
+    public int shipId { get; set; }
+
+    public int workers { get; set; }
+
+    public double workerPayRate { get; set; }
 
     public BuildStructure() { }
 
@@ -30,6 +77,8 @@ public class BuildStructure : Structure {
         var product = GameManager.instance.data.itemsData.Model.GetItem(itemId);
         name = "Building ---> " + product.name + " | " + id;
         solarIndex = body.solarIndex;
+        structureId = -1;
+        shipId = -1;
         body.groundStructures.Add(this);
         buildStructureType = StructureTypes.Factory;
 
@@ -39,11 +88,14 @@ public class BuildStructure : Structure {
 
         maxArmor = product.baseArmor * .5f;
         currentArmor = maxArmor;
+        dateCreated = new Dated(GameManager.instance.data.date.time);
+        lastUpdated = new Dated(GameManager.instance.data.date.time);
         produtionTime = GameManager.instance.data.itemsData.Model.GetItem(itemId).productionTime * .25f;
         workers = product.workers;
+        workerPayRate = .00116;
     }
 
-    public BuildStructure(IdentityModel owner, Structure.StructureTypes _structureType, int structureItemId, SolarBody body)
+    public BuildStructure(IdentityModel owner, StructureTypes _structureType, int structureItemId, SolarBody body)
     {
         this.owner = new ModelRef<IdentityModel>(owner);
         owner.AddSolarBodyWithStructure(body);
@@ -52,6 +104,8 @@ public class BuildStructure : Structure {
         var product = GameManager.instance.data.itemsData.Model.GetItem(structureItemId);
         name = "Building ---> " + product.name + " | " + id;
         solarIndex = body.solarIndex;
+        structureId = -1;
+        shipId = -1;
         body.groundStructures.Add(this);
         buildStructureType = _structureType;
         
@@ -64,8 +118,11 @@ public class BuildStructure : Structure {
 
         maxArmor = product.baseArmor * .5f;
         currentArmor = maxArmor;
+        dateCreated = new Dated(GameManager.instance.data.date.time);
+        lastUpdated = new Dated(GameManager.instance.data.date.time);
         produtionTime = GameManager.instance.data.itemsData.Model.GetItem(structureItemId).productionTime * .25f;
         workers = product.workers;
+        workerPayRate = .00116;
     }
 
     /// <summary>
@@ -133,7 +190,7 @@ public class BuildStructure : Structure {
             }
             var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, id);
             var found = false;
-            foreach (Structure structure in parentBody.groundStructures)
+            foreach (IStructure structure in parentBody.groundStructures)
             {
                 if (structure.structureType == StructureTypes.GroundStorage)
                 {

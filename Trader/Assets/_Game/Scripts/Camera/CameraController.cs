@@ -66,11 +66,11 @@ public class CameraController : MonoBehaviour {
     {
         var data = GameManager.instance.data;
         var closestSolar = data.stars[0];
-        var distance = Vector2d.Distance(data.stars[0].galacticPosition, data.cameraGalaxyPosition);
+        var distance = Vector2d.Distance(data.stars[0].galaxyPosition, data.cameraGalaxyPosition);
         {
             foreach (SolarModel star in GameManager.instance.data.stars)
             {
-                var newDistance = Vector2d.Distance(star.galacticPosition, data.cameraGalaxyPosition);
+                var newDistance = Vector2d.Distance(star.galaxyPosition, data.cameraGalaxyPosition);
                 if (newDistance < distance)
                 {
                     distance = newDistance;

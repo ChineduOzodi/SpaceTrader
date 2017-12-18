@@ -1,76 +1,14 @@
-Base path: E:/Program Files/Unity/Editor/Data
+Base path: C:/Program Files/Unity/Editor/Data
 Cmd: initializeCompiler
 Cmd: preprocess
-  insize=1355 outsize=403 ok=1
+  insize=1698 outsize=381 ok=1
 Cmd: preprocess
-  insize=1355 outsize=403 ok=1
+  insize=2477 outsize=828 ok=1
 Cmd: preprocess
-  insize=1355 outsize=403 ok=1
+  insize=1712 outsize=381 ok=1
 Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
-Cmd: preprocess
-  insize=1355 outsize=403 ok=1
+  insize=1100 outsize=367 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=1075 outsize=650 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=1075 outsize=598 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1

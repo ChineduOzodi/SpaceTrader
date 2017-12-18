@@ -35,7 +35,7 @@ public class SolarController : Controller<SolarModel> {
         lastCamPosition.z = -10;
         game = GameManager.instance;
         galaxy = GalaxyManager.instance;
-        transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition);
+        transform.position = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition);
         name = model.name;
         circleCollider = GetComponent<CircleCollider2D>();
         sprite = GetComponent<SpriteRenderer>();
@@ -54,7 +54,7 @@ public class SolarController : Controller<SolarModel> {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition);
+        transform.position = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition);
         circleCollider.radius = (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod * 5);
 
         //Commerce
@@ -143,7 +143,7 @@ public class SolarController : Controller<SolarModel> {
                     localScale = (float)(body.bodyRadius / GameDataModel.galaxyDistanceMultiplication * Camera.main.orthographicSize / game.data.cameraGalaxyOrtho);
                 }
                 planets[i].transform.localScale = Vector3.one * localScale;
-                planets[i].transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.lastKnownPosition);
+                planets[i].transform.position = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + body.lastKnownPosition);
 
                 //Orbit Line Rendering
                 LineRenderer line = planets[i].GetComponent<LineRenderer>();
@@ -159,7 +159,7 @@ public class SolarController : Controller<SolarModel> {
                     for (var b = 0; b < 36; b++)
                     {
 
-                        positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.approximatePositions[b * 10]);
+                        positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + body.approximatePositions[b * 10]);
                     }
                     line.positionCount = 36;
                     line.SetPositions(positions);
@@ -207,7 +207,7 @@ public class SolarController : Controller<SolarModel> {
             for (int i = 0; i < moons.Count; i++)
             {
                 SolarBody body = moonModels[i];
-                moons[i].transform.position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[body.solarIndex[1]].lastKnownPosition
+                moons[i].transform.position = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + model.solar.satelites[body.solarIndex[1]].lastKnownPosition
                         + body.lastKnownPosition);
 
                 if (canSeeMoons() && moons[i].transform.position.sqrMagnitude < 62500)
@@ -233,7 +233,7 @@ public class SolarController : Controller<SolarModel> {
                         var positions = new Vector3[36];
                         for (var b = 0; b < 36; b++)
                         {
-                            positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[body.solarIndex[1]].lastKnownPosition
+                            positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + model.solar.satelites[body.solarIndex[1]].lastKnownPosition
                         + body.approximatePositions[b * 10]);
                         }
                         line.positionCount = 36;
@@ -292,7 +292,7 @@ public class SolarController : Controller<SolarModel> {
                     foreach (SolarModel solar in model.nearStars)
                     {
                         linePoints.Add(transform.position);
-                        linePoints.Add(CameraController.CameraOffsetGalaxyPosition(solar.galacticPosition));
+                        linePoints.Add(CameraController.CameraOffsetGalaxyPosition(solar.galaxyPosition));
                         lineWidths.Add((float)circleCollider.radius);
                         if (MapTogglePanel.instance.galaxyTerritory.isOn)
                         {
@@ -373,7 +373,7 @@ public class SolarController : Controller<SolarModel> {
             for (int i = 0; i < model.solar.satelites.Count; i++)
             {
                 SolarBody body = model.solar.satelites[i];
-                Vector2 position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.GamePosition(game.data.date.time));
+                Vector2 position = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + body.GamePosition(game.data.date.time));
 
                 Vector3 screenPoint = Camera.main.WorldToViewportPoint(position);
                 bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
@@ -397,7 +397,7 @@ public class SolarController : Controller<SolarModel> {
 
                     for (var b = 0; b < 360; b++)
                     {
-                        positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.approximatePositions[b]);
+                        positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + body.approximatePositions[b]);
                     }
                     line.positionCount = 360;
                     line.SetPositions(positions);
@@ -409,7 +409,7 @@ public class SolarController : Controller<SolarModel> {
             for (int i = 0; i < moons.Count; i++)
             {
                 SolarBody moon = moonModels[i];
-                Vector3 position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                Vector3 position = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
                     + moon.GamePosition(game.data.date.time));
 
                 Vector3 screenPoint = Camera.main.WorldToViewportPoint(position);
@@ -429,7 +429,7 @@ public class SolarController : Controller<SolarModel> {
 
                     for (var b = 0; b < 360; b++)
                     {
-                        positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                        positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
                     + moon.approximatePositions[b]);
                     }
                     line.positionCount = 360;
@@ -567,7 +567,7 @@ public class SolarController : Controller<SolarModel> {
         for (int i = 0; i < model.solar.satelites.Count; i++)
         {
             SolarBody body = model.solar.satelites[i];
-            Vector3 position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.GamePosition(game.data.date.time));
+            Vector3 position = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + body.GamePosition(game.data.date.time));
             planets.Add(Instantiate(planetObj, transform));
             planets[i].name = body.name;
             planets[i].transform.position = position;
@@ -589,7 +589,7 @@ public class SolarController : Controller<SolarModel> {
 
             for (var b = 0; b < 360; b++)
             {
-                positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + body.approximatePositions[b]);
+                positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + body.approximatePositions[b]);
             }
             line.positionCount = 360;
             line.SetPositions(positions);
@@ -628,7 +628,7 @@ public class SolarController : Controller<SolarModel> {
             for (int m = 0; m < model.solar.satelites[i].satelites.Count; m++)
             {
                 SolarBody moon = model.solar.satelites[i].satelites[m];
-                position = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                position = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
                     + moon.GamePosition(game.data.date.time));
                 moonModels.Add(moon);
 
@@ -650,7 +650,7 @@ public class SolarController : Controller<SolarModel> {
 
                 for (var b = 0; b < 360; b++)
                 {
-                    positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galacticPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
+                    positions[b] = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition + model.solar.satelites[moon.solarIndex[1]].lastKnownPosition
                 + moon.approximatePositions[b]);
                 }
                 line.positionCount = 360;

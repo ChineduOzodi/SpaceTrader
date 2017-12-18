@@ -329,7 +329,7 @@ public class GameManager : MonoBehaviour {
         InfoPanelModel infoModel = new InfoPanelModel(solarIndex);
         Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
     }
-    internal void OpenInfoPanel(Structure structure)
+    internal void OpenInfoPanel(IStructure structure)
     {
         InfoPanelModel infoModel = new InfoPanelModel(structure);
         Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
@@ -447,13 +447,13 @@ public class GameManager : MonoBehaviour {
                 //{
 
                 //}
-                foreach (Structure owned in body.spaceStructures)
+                foreach (IStructure owned in body.spaceStructures)
                 {
                     if (owned.owner.Model == model)
                     {
                         found = true;
 
-                        if (owned.structureType == Structure.StructureTypes.SpaceStation)
+                        if (owned.structureType == StructureTypes.SpaceStation)
                         {
                             ((Station)owned).Update(body, deltaTime);
                         }
@@ -465,21 +465,21 @@ public class GameManager : MonoBehaviour {
                     }
 
                 }
-                foreach (Structure owned in body.groundStructures)
+                foreach (IStructure owned in body.groundStructures)
                 {
                     if (owned.owner.Model == model)
                     {
                         found = true;
 
-                        if (owned.structureType == Structure.StructureTypes.Driller)
+                        if (owned.structureType == StructureTypes.Driller)
                         {
                             ((Driller)owned).UpdateProduction(body, deltaTime);
                         }
-                        if (owned.structureType == Structure.StructureTypes.Factory)
+                        if (owned.structureType == StructureTypes.Factory)
                         {
                             ((Factory)owned).UpdateProduction(body, deltaTime);
                         }
-                        if (owned.structureType == Structure.StructureTypes.BuildStructure)
+                        if (owned.structureType == StructureTypes.BuildStructure)
                         {
                             ((BuildStructure)owned).UpdateProduction(body, deltaTime);
                             if (((BuildStructure)owned).deleteStructure)
@@ -489,7 +489,7 @@ public class GameManager : MonoBehaviour {
                             }
                             
                         }
-                        if (owned.structureType == Structure.StructureTypes.GroundStorage)
+                        if (owned.structureType == StructureTypes.GroundStorage)
                         {
                             ((GroundStorage)owned).UpdateProduction(body, deltaTime);
                         }
@@ -531,13 +531,13 @@ public class GameManager : MonoBehaviour {
                 //{
 
                 //}
-                foreach (Structure owned in body.spaceStructures)
+                foreach (IStructure owned in body.spaceStructures)
                 {
                     if (owned.owner.Model == model)
                     {
                         found = true;
 
-                        if (owned.structureType == Structure.StructureTypes.SpaceStation)
+                        if (owned.structureType == StructureTypes.SpaceStation)
                         {
                             ((Station)owned).Update(body, deltaTime);
                         }
@@ -549,21 +549,21 @@ public class GameManager : MonoBehaviour {
                     }
 
                 }
-                foreach (Structure owned in body.groundStructures)
+                foreach (IStructure owned in body.groundStructures)
                 {
                     if (owned.owner.Model == model)
                     {
                         found = true;
 
-                        if (owned.structureType == Structure.StructureTypes.Driller)
+                        if (owned.structureType == StructureTypes.Driller)
                         {
                             ((Driller)owned).UpdateProduction(body, deltaTime);
                         }
-                        if (owned.structureType == Structure.StructureTypes.Factory)
+                        if (owned.structureType == StructureTypes.Factory)
                         {
                             ((Factory)owned).UpdateProduction(body, deltaTime);
                         }
-                        if (owned.structureType == Structure.StructureTypes.BuildStructure)
+                        if (owned.structureType == StructureTypes.BuildStructure)
                         {
                             ((BuildStructure)owned).UpdateProduction(body, deltaTime);
                             if (((BuildStructure)owned).deleteStructure)
@@ -573,7 +573,7 @@ public class GameManager : MonoBehaviour {
                             }
 
                         }
-                        if (owned.structureType == Structure.StructureTypes.GroundStorage)
+                        if (owned.structureType == StructureTypes.GroundStorage)
                         {
                             ((GroundStorage)owned).UpdateProduction(body, deltaTime);
                         }
@@ -900,7 +900,7 @@ public class GameManager : MonoBehaviour {
         {
             galaxyView = true;
             galaxy.GalaxyView();
-            data.cameraGalaxyPosition = data.stars[model.solarIndex[0]].galacticPosition;
+            data.cameraGalaxyPosition = data.stars[model.solarIndex[0]].galaxyPosition;
 
         }
     }
@@ -908,7 +908,7 @@ public class GameManager : MonoBehaviour {
     {
         galaxyView = true;
         galaxy.GalaxyView();
-        data.cameraGalaxyPosition = model.galacticPosition;
+        data.cameraGalaxyPosition = model.galaxyPosition;
     }
 
     internal void GoToTarget(List<int> solarIndex)
@@ -917,7 +917,7 @@ public class GameManager : MonoBehaviour {
         var solarBody = data.getSolarBody(solarIndex);
         galaxy.solarModel = data.stars[solarIndex[0]];
         galaxy.GoToSolarView();
-        data.cameraGalaxyPosition = solarBody.GamePosition(data.date.time) + data.stars[solarIndex[0]].galacticPosition;
+        data.cameraGalaxyPosition = solarBody.GamePosition(data.date.time) + data.stars[solarIndex[0]].galaxyPosition;
         //transform.position = new Vector3(CameraController.CameraOffsetPoistion(model.galacticPosition).x, CameraController.CameraOffsetPoistion(model.galacticPosition).y, -10);
     }
 
