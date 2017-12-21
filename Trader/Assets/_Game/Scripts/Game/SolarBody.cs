@@ -25,8 +25,7 @@ public class SolarBody: IPositionEntity
     public double surfaceGravity { get; private set; }
     public List<PlanetTile> planetTiles { get; private set; }
     public List<RawResource> rawResources { get; private set; }
-    public List<IStructure> groundStructures = new List<IStructure>();
-    public List<IStructure> spaceStructures = new List<IStructure>();
+    public List<IStructure> structures = new List<IStructure>();
     public bool deleteStructure;
     //----------------Commerce-----------------------------//
     public ItemsList buyList { get; private set; }
@@ -401,13 +400,13 @@ public class SolarBody: IPositionEntity
 
     public IStructure GetStructure(int structureId)
     {
-        int index = groundStructures.FindIndex(x => x.id == structureId);
+        int index = structures.FindIndex(x => x.id == structureId);
         if (index == -1)
-            index = spaceStructures.FindIndex(x => x.id == structureId);
+            index = structures.FindIndex(x => x.id == structureId);
         else
-            return groundStructures[index];
+            return structures[index];
         if (index != -1)
-            return spaceStructures[index];
+            return structures[index];
         else
             return null;
     }

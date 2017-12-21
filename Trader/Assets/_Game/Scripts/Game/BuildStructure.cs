@@ -79,7 +79,7 @@ public class BuildStructure : IStructure, IWorkers {
         solarIndex = body.solarIndex;
         structureId = -1;
         shipId = -1;
-        body.groundStructures.Add(this);
+        body.structures.Add(this);
         buildStructureType = StructureTypes.Factory;
 
         factoryProductionId = _productionItemId;
@@ -106,11 +106,11 @@ public class BuildStructure : IStructure, IWorkers {
         solarIndex = body.solarIndex;
         structureId = -1;
         shipId = -1;
-        body.groundStructures.Add(this);
+        body.structures.Add(this);
         buildStructureType = _structureType;
         
         this.structureItemId = structureItemId;
-        requiredItems = new List<Item>() { new Item(product.id, 1, 1, owner) };
+        requiredItems = new List<Item>() { new Item(product.id, 1, 1, owner, solarIndex) };
         requiredItems.ForEach(x => { x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);
             x.owner.Model = owner;
         });
@@ -188,9 +188,9 @@ public class BuildStructure : IStructure, IWorkers {
                 itemCount++;
                 break;
             }
-            var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, id);
+            var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, solarIndex, id);
             var found = false;
-            foreach (IStructure structure in parentBody.groundStructures)
+            foreach (IStructure structure in parentBody.structures)
             {
                 if (structure.structureType == StructureTypes.GroundStorage)
                 {

@@ -447,7 +447,7 @@ public class GameManager : MonoBehaviour {
                 //{
 
                 //}
-                foreach (IStructure owned in body.spaceStructures)
+                foreach (IStructure owned in body.structures)
                 {
                     if (owned.owner.Model == model)
                     {
@@ -459,13 +459,13 @@ public class GameManager : MonoBehaviour {
                         }
                         if ((owned).deleteStructure)
                         {
-                            body.groundStructures.Remove(owned);
+                            body.structures.Remove(owned);
                             break;
                         }
                     }
 
                 }
-                foreach (IStructure owned in body.groundStructures)
+                foreach (IStructure owned in body.structures)
                 {
                     if (owned.owner.Model == model)
                     {
@@ -484,7 +484,7 @@ public class GameManager : MonoBehaviour {
                             ((BuildStructure)owned).UpdateProduction(body, deltaTime);
                             if (((BuildStructure)owned).deleteStructure)
                             {
-                                body.groundStructures.Remove(owned);
+                                body.structures.Remove(owned);
                                 break;
                             }
                             
@@ -531,7 +531,7 @@ public class GameManager : MonoBehaviour {
                 //{
 
                 //}
-                foreach (IStructure owned in body.spaceStructures)
+                foreach (IStructure owned in body.structures)
                 {
                     if (owned.owner.Model == model)
                     {
@@ -543,13 +543,13 @@ public class GameManager : MonoBehaviour {
                         }
                         if ((owned).deleteStructure)
                         {
-                            body.groundStructures.Remove(owned);
+                            body.structures.Remove(owned);
                             break;
                         }
                     }
 
                 }
-                foreach (IStructure owned in body.groundStructures)
+                foreach (IStructure owned in body.structures)
                 {
                     if (owned.owner.Model == model)
                     {
@@ -568,7 +568,7 @@ public class GameManager : MonoBehaviour {
                             ((BuildStructure)owned).UpdateProduction(body, deltaTime);
                             if (((BuildStructure)owned).deleteStructure)
                             {
-                                body.groundStructures.Remove(owned);
+                                body.structures.Remove(owned);
                                 break;
                             }
 

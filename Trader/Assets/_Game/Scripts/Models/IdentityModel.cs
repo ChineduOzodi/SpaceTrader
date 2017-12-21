@@ -19,6 +19,7 @@ public class IdentityModel : Model {
     public List<int> solarIndex { get; protected set; }
     public List<int> ships = new List<int>();
     public List<List<int>> solarBodiesWithStructures { get; protected set; }
+    public ModelRefs<SolarModel> knownSolars { get; protected set; }
 
     public Dated age { get; private set; }
     public Dated dateCreated { get; private set; }
@@ -40,11 +41,13 @@ public class IdentityModel : Model {
         spriteColor = UnityEngine.Random.ColorHSV(.5f, 1f, .5f, 1f);
         spriteColor.a = 1;
         solarBodiesWithStructures = new List<List<int>>();
+        knownSolars = new ModelRefs<SolarModel>();
     }
 
     public void SetLocation(List<int> _solarIndex)
     {
         solarIndex = _solarIndex;
+        AddKnownSolar(GameManager.instance.data.stars[solarIndex[0]]);
     }
 
     public void AddSolarBodyWithStructure(SolarBody body)
@@ -53,5 +56,10 @@ public class IdentityModel : Model {
         {
             solarBodiesWithStructures.Add(body.solarIndex);
         }
+    }
+
+    public void AddKnownSolar(SolarModel body)
+    {
+        knownSolars.Add(body);
     }
 }

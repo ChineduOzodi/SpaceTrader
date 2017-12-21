@@ -13,7 +13,7 @@ public class GoapPlanner
 	 * Returns null if a plan could not be found, or a list of the actions
 	 * that must be performed, in order, to fulfill the goal.
 	 */
-	public Queue<GoapAction> plan(GameObject agent,
+	public Queue<GoapAction> plan(IPositionEntity agent,
 								  HashSet<GoapAction> availableActions, 
 	                              HashSet<KeyValuePair<string,object>> worldState, 
 	                              HashSet<KeyValuePair<string,object>> goal) 

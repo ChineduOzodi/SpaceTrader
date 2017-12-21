@@ -80,12 +80,12 @@ public class Station: IStructure, IWorkers {
         totalDocks = 50;
         usedDocks = 0;
         var fuel = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
-        requiredItems = new List<Item>() { new Item(fuel.id, 100, fuel.estimatedValue,owner)};
+        requiredItems = new List<Item>() { new Item(fuel.id, 100, fuel.estimatedValue,owner, solarIndex)};
         requiredItems.ForEach(x => {
             x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);
             x.owner.Model = owner;
         });
-        body.spaceStructures.Add(this);
+        body.structures.Add(this);
         owner.AddSolarBodyWithStructure(body);
     }
 
@@ -119,9 +119,9 @@ public class Station: IStructure, IWorkers {
             }
             else
             {
-                var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, id);
+                var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, solarIndex, id);
                 var found = false;
-                foreach (IStructure structure in parentBody.groundStructures)
+                foreach (IStructure structure in parentBody.structures)
                 {
                     if (structure.structureType == StructureTypes.GroundStorage)
                     {

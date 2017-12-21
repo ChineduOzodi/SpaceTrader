@@ -2,6 +2,7 @@
 using System.Collections;
 using CodeControl;
 using System.Collections.Generic;
+using System;
 
 public class ItemsModel: Model{
 
@@ -16,18 +17,57 @@ public class ItemsModel: Model{
     }
     
 }
-public class Item
+public class Item: IPositionEntity
 {
     public string name { get; private set; }
     public ItemType itemType { get; private set; }
     public int id { get; private set; }
     public double amount { get; private set; }
     public ModelRef<IdentityModel> owner = new ModelRef<IdentityModel>();
-    public int structureId;
     public double price;
     public double estimatedValue { get; private set; }
 
-    public Item(int _itemId, double _amount, double _price, IdentityModel owner, int _structureId = -1)
+    public Vector2d galaxyPosition
+    {
+        get
+        {
+            if (shipId == -1)
+            {
+                if (solarIndex.Count == 3)
+                {
+                    return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]].galaxyPosition;
+                }
+                else if (solarIndex.Count == 2)
+                {
+                    return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition;
+                }
+                else
+                {
+                    throw new System.Exception("BuildStructure " + name + " solarIndex count incorrect: " + solarIndex.Count);
+                }
+            }
+            else if (shipId > -1)
+            {
+                return GameManager.instance.data.ships.Model.ships.Find(x => x.id == shipId).galaxyPosition;
+            }
+            else
+            {
+                throw new Exception("Unknown error with retriviing galaxy position");
+            }
+            
+        }
+
+        set
+        {
+            throw new System.Exception("Can't set galaxyPosition of item, move item instead");
+        }
+    }
+
+    public List<int> solarIndex { get; set; }
+    public int structureId { get; set; }
+    public int shipId { get; set; }
+
+    public Item(int _itemId, double _amount, double _price, IdentityModel owner, List<int> _solarIndex, int _structureId = -1)
     {
 
         id = _itemId;
@@ -35,6 +75,7 @@ public class Item
         estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         amount = _amount;
         structureId = _structureId;
+        solarIndex = _solarIndex;
         if (owner != null)
             this.owner = new ModelRef<IdentityModel>(owner);
         price = _price;

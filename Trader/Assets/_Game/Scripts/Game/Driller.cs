@@ -74,7 +74,7 @@ public class Driller : IStructure, IWorkers {
         solarIndex = body.solarIndex;
         structureId = -1;
         shipId = -1;
-        body.groundStructures.Add(this);
+        body.structures.Add(this);
         structureType = StructureTypes.Driller;
         id = GameManager.instance.data.id++;
         productionItemId = _productionItemId;
@@ -100,7 +100,7 @@ public class Driller : IStructure, IWorkers {
         solarIndex = body.solarIndex;
         structureId = -1;
         shipId = -1;
-        body.groundStructures.Add(this);
+        body.structures.Add(this);
         structureType = StructureTypes.Driller;
         id = GameManager.instance.data.id++;
         productionItemId = _productionItemId;
@@ -173,8 +173,8 @@ public class Driller : IStructure, IWorkers {
     private void storeCreatedItem(SolarBody parentBody, double amount)
     {
         var found = false;
-        Item item = new Item(productionItemId, amount, parentBody.GetMarketPrice(productionItemId), owner.Model, id);
-        foreach (IStructure structure in parentBody.groundStructures)
+        Item item = new Item(productionItemId, amount, parentBody.GetMarketPrice(productionItemId), owner.Model, solarIndex, id);
+        foreach (IStructure structure in parentBody.structures)
         {
             if (structure.structureType == StructureTypes.GroundStorage) {
                 GroundStorage groundStruct = (GroundStorage)structure;

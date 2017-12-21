@@ -59,7 +59,7 @@ public class GroundStorage : IStructure {
         solarIndex = body.solarIndex;
         structureId = -1;
         shipId = -1;
-        body.groundStructures.Add(this);
+        body.structures.Add(this);
         //Implement IStructure
         maxArmor = 1000;
         currentArmor = maxArmor;
@@ -74,7 +74,7 @@ public class GroundStorage : IStructure {
         solarIndex = body.solarIndex;
         structureId = -1;
         shipId = -1;
-        body.groundStructures.Add(this);
+        body.structures.Add(this);
     }
 
     public GroundStorage(IdentityModel owner, SolarBody body)
@@ -82,7 +82,7 @@ public class GroundStorage : IStructure {
         this.owner = new ModelRef<IdentityModel>(owner);
         owner.AddSolarBodyWithStructure(body);
         solarIndex = body.solarIndex;
-        body.groundStructures.Add(this);
+        body.structures.Add(this);
         structureType = StructureTypes.GroundStorage;
         id = GameManager.instance.data.id++;
         name = structureType.ToString() + " " + id;

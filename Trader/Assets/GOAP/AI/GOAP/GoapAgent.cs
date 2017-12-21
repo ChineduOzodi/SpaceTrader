@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 
-public sealed class GoapAgent : MonoBehaviour {
+public class GoapAgent {
 
 	private FSM stateMachine;
 
@@ -19,23 +19,26 @@ public sealed class GoapAgent : MonoBehaviour {
 
 	private GoapPlanner planner;
 
+    public IPositionEntity entity;
 
-	void Start () {
+    public GoapAgent() { }
+
+	public GoapAgent (IGoap _dataProvider, GoapAction[] _actions) {
 		stateMachine = new FSM ();
 		availableActions = new HashSet<GoapAction> ();
 		currentActions = new Queue<GoapAction> ();
 		planner = new GoapPlanner ();
-		findDataProvider ();
+		findDataProvider (_dataProvider);
 		createIdleState ();
 		createMoveToState ();
 		createPerformActionState ();
 		stateMachine.pushState (idleState);
-		loadActions ();
+		loadActions (_actions);
 	}
 	
 
-	void Update () {
-		stateMachine.Update (this.gameObject);
+	void Update ( IPositionEntity entity) {
+		stateMachine.Update (entity);
 	}
 
 
@@ -68,7 +71,7 @@ public sealed class GoapAgent : MonoBehaviour {
 			HashSet<KeyValuePair<string,object>> goal = dataProvider.createGoalState();
 
 			// Plan
-			Queue<GoapAction> plan = planner.plan(gameObject, availableActions, worldState, goal);
+			Queue<GoapAction> plan = planner.plan(entity, availableActions, worldState, goal);
 			if (plan != null) {
 				// we have a plan, hooray!
 				currentActions = plan;
@@ -177,18 +180,13 @@ public sealed class GoapAgent : MonoBehaviour {
 		};
 	}
 
-	private void findDataProvider() {
-		foreach (Component comp in gameObject.GetComponents(typeof(Component)) ) {
-			if ( typeof(IGoap).IsAssignableFrom(comp.GetType()) ) {
-				dataProvider = (IGoap)comp;
-				return;
-			}
-		}
-	}
+	private void findDataProvider( IGoap provider) {
+        dataProvider = provider;
+    }
 
-	private void loadActions ()
+	private void loadActions (GoapAction[] _actions)
 	{
-		GoapAction[] actions = gameObject.GetComponents<GoapAction>();
+        GoapAction[] actions = _actions;
 		foreach (GoapAction a in actions) {
 			availableActions.Add (a);
 		}

@@ -9,7 +9,7 @@ public class ShipsModel: Model
     public ShipsModel() { ships = new List<Ship>(); }
 }
 
-public class Ship: IStructure, IWorkers {
+public class Ship: IStructure, IWorkers, IGoap {
 
     public ShipAction shipAction { get; private set; }
     public bool hyperSpace { get; private set; }
@@ -27,6 +27,7 @@ public class Ship: IStructure, IWorkers {
     public string name { get; set; }
     public string info { get; set; }
     public ModelRef<IdentityModel> owner { get; set; }
+    public GoapAgent agent;
     public int managerId { get; set; }
     public float maxArmor { get; set; }
     public float currentArmor { get; set; }
@@ -89,7 +90,13 @@ public class Ship: IStructure, IWorkers {
         this.fuelEfficiency = Random.Range(5000f, 1000f) * (1 - this.passangerCapacity / 200f + .5f);
         this.fuelCapacity = (int)(Random.Range(50, 200) * (this.passangerCapacity / 200f + .5f));
         var fuelBluePrint = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
-        this.fuel = new Item(fuelBluePrint.id,fuelCapacity, 1, owner);
+        this.fuel = new Item(fuelBluePrint.id,fuelCapacity, 1, owner, this.solarIndex);
+        this.fuel.shipId = this.id;
+
+        agent = new GoapAgent(this, new GoapAction[] {
+            new BuyItemTradeAction(this),
+            new SellItemAction(this)
+        });
     }
 
     public void SetShipAction(ShipAction action)
@@ -97,6 +104,67 @@ public class Ship: IStructure, IWorkers {
         shipAction = action;
     }
 
+    public HashSet<KeyValuePair<string, object>> getWorldState()
+    {
+        HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
+
+        worldData.Add(new KeyValuePair<string, object>("position", solarIndex));
+        worldData.Add(new KeyValuePair<string, object>("hasStorage", true));
+        worldData.Add(new KeyValuePair<string, object>("hasTradeItems", (items.Count > 0)));
+
+        return worldData;
+    }
+
+    public HashSet<KeyValuePair<string, object>> createGoalState()
+    {
+        HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
+
+        goal.Add(new KeyValuePair<string, object>("tradeItems", true));
+        return goal;
+    }
+
+    public void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
+    {
+        // Not handling this here since we are making sure our goals will always succeed.
+        // But normally you want to make sure the world state has changed before running
+        // the same goal again, or else it will just fail.
+    }
+
+    public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
+    {
+        // Yay we found a plan for our goal
+        Debug.Log("<color=green>Plan found</color> " + GoapAgent.prettyPrint(actions));
+    }
+
+    public void actionsFinished()
+    {
+        // Everything is done, we completed our actions for this gool. Hooray!
+        Debug.Log("<color=blue>Actions completed</color>");
+    }
+
+    public void planAborted(GoapAction aborter)
+    {
+       // An action bailed out of the plan.State has been reset to plan again.
+       // Take note of what happened and make sure if you run the same goal again
+       // that it can succeed.
+       Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
+    }
+
+    public bool moveAgent(GoapAction nextAction)
+    {
+        // move towards the NextAction's target
+        double step = speed * GameManager.instance.data.date.deltaTime;
+        galaxyPosition = Vector2d.MoveTowards(galaxyPosition, nextAction.target.galaxyPosition, step);
+
+        if ((galaxyPosition - nextAction.target.galaxyPosition).sqrMagnitude < 5)
+        {
+            // we are at the target location, we are done
+            nextAction.setInRange(true);
+            return true;
+        }
+        else
+            return false;
+    }
 }
 
 public enum ShipAction

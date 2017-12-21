@@ -28,6 +28,7 @@ public class CompanyModel : StructureModel {
         name = _name;
         ceo = _ceo.id;
         solarIndex = home.solarIndex;
+        AddKnownSolar(GameManager.instance.data.stars[solarIndex[0]]);
         home.companies.Add(this);
         gov.trustedCompanies.Add(this);
         governmentAccess.Add(gov);

@@ -74,7 +74,7 @@ public class Factory : IStructure,IWorkers {
         solarIndex = body.solarIndex;
         structureId = -1;
         shipId = -1;
-        body.groundStructures.Add(this);
+        body.structures.Add(this);
         var product = GameManager.instance.data.itemsData.Model.GetItem(productionItemId);
         name = product.name + " " + structureType.ToString() + " " + id;
         productionItemName = product.name;
@@ -104,7 +104,7 @@ public class Factory : IStructure,IWorkers {
         structureType = StructureTypes.Factory;
         id = GameManager.instance.data.id++;
         
-        body.groundStructures.Add(this);
+        body.structures.Add(this);
 
         var product = GameManager.instance.data.itemsData.Model.GetItem(productionItemId);
         var blueprint = GameManager.instance.data.itemsData.Model.GetItem(structureItemId);
@@ -210,9 +210,9 @@ public class Factory : IStructure,IWorkers {
             }
             else
             {
-                var neededItem = new Item(item.id, neededAmount, item.price, owner.Model,id);
+                var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, solarIndex, id);
                 var found = false;
-                foreach (IStructure structure in parentBody.groundStructures)
+                foreach (IStructure structure in parentBody.structures)
                 {
                     if (structure.structureType == StructureTypes.GroundStorage)
                     {
@@ -262,8 +262,8 @@ public class Factory : IStructure,IWorkers {
     private bool StoreCreatedItem(SolarBody parentBody)
     {
         var found = false;
-        Item item = new Item(productionItemId, 1,parentBody.GetMarketPrice(productionItemId), owner.Model, id);
-        foreach (IStructure structure in parentBody.groundStructures)
+        Item item = new Item(productionItemId, 1,parentBody.GetMarketPrice(productionItemId), owner.Model, solarIndex, id);
+        foreach (IStructure structure in parentBody.structures)
         {
             if (structure.structureType == StructureTypes.GroundStorage)
             {

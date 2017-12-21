@@ -103,7 +103,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button = Instantiate(uiButtonInstance, position);
             text = button.GetComponentInChildren<Text>();
             texts.Add("SpaceStructureCount", text);
-            button.GetComponentInChildren<Text>().text = "Space Structure Count: " + body.spaceStructures.Count;
+            button.GetComponentInChildren<Text>().text = "Space Structure Count: " + body.structures.Count;
             button.interactable = false;
 
             if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star)
@@ -111,7 +111,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 button = Instantiate(uiButtonInstance, position);
                 text = button.GetComponentInChildren<Text>();
                 texts.Add("GroundStructureCount", text);
-                button.GetComponentInChildren<Text>().text = "Ground Structure Count:" + body.groundStructures.Count;
+                button.GetComponentInChildren<Text>().text = "Ground Structure Count:" + body.structures.Count;
                 button.interactable = false;
 
                 button = Instantiate(uiButtonInstance, position);
@@ -172,7 +172,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
                 position = menuContent[index].transform;
 
-                body.spaceStructures.ForEach(x => {
+                body.structures.ForEach(x => {
                     button = Instantiate(uiButtonInstance, position);
                     text = button.GetComponentInChildren<Text>();
                     texts.Add("SpaceStructure" + x.id, text);
@@ -180,7 +180,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
                 });
                 
-                body.groundStructures.ForEach(x => {
+                body.structures.ForEach(x => {
                     button = Instantiate(uiButtonInstance, position);
                     text = button.GetComponentInChildren<Text>();
                     texts.Add("GroundStructure" + x.id, text);
@@ -556,12 +556,12 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             }
 
             text = texts["SpaceStructureCount"];
-            text.text = "Space Structure Count: " + body.spaceStructures.Count;
+            text.text = "Space Structure Count: " + body.structures.Count;
 
             if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star)
             {
                 text = texts["GroundStructureCount"];
-                text.text = "Ground Structure Count:" + body.groundStructures.Count;
+                text.text = "Ground Structure Count:" + body.structures.Count;
 
                 text = texts["ResourceCount"];
                 text.text = "Resource Types Count: " + body.rawResources.Count;
@@ -631,12 +631,12 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount);
                 });
 
-                body.spaceStructures.ForEach(x => {
+                body.structures.ForEach(x => {
                     text = texts["SpaceStructure" + x.id];
                     text.text = "Name: " + x.name + " - " + x.owner.Model.name;
                 });
 
-                body.groundStructures.ForEach(x => {
+                body.structures.ForEach(x => {
                     text = texts["GroundStructure" + x.id];
                     text.text = "Name: " + x.name + " - " + x.owner.Model.name;
                 });

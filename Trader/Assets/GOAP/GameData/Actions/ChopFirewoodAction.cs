@@ -34,53 +34,53 @@ public class ChopFirewoodAction : GoapAction
 		return true; // yes we need to be near a chopping block
 	}
 	
-	public override bool checkProceduralPrecondition (GameObject agent)
+	public override bool checkProceduralPrecondition (IPositionEntity agent)
 	{
 		// find the nearest chopping block that we can chop our wood at
 		ChoppingBlockComponent[] blocks = (ChoppingBlockComponent[]) UnityEngine.GameObject.FindObjectsOfType ( typeof(ChoppingBlockComponent) );
 		ChoppingBlockComponent closest = null;
 		float closestDist = 0;
 		
-		foreach (ChoppingBlockComponent block in blocks) {
-			if (closest == null) {
-				// first one, so choose it for now
-				closest = block;
-				closestDist = (block.gameObject.transform.position - agent.transform.position).magnitude;
-			} else {
-				// is this one closer than the last?
-				float dist = (block.gameObject.transform.position - agent.transform.position).magnitude;
-				if (dist < closestDist) {
-					// we found a closer one, use it
-					closest = block;
-					closestDist = dist;
-				}
-			}
-		}
+		//foreach (ChoppingBlockComponent block in blocks) {
+		//	if (closest == null) {
+		//		// first one, so choose it for now
+		//		closest = block;
+		//		closestDist = (block.gameObject.transform.position - agent.transform.position).magnitude;
+		//	} else {
+		//		// is this one closer than the last?
+		//		float dist = (block.gameObject.transform.position - agent.transform.position).magnitude;
+		//		if (dist < closestDist) {
+		//			// we found a closer one, use it
+		//			closest = block;
+		//			closestDist = dist;
+		//		}
+		//	}
+		//}
 		if (closest == null)
 			return false;
 
 		targetChoppingBlock = closest;
-		target = targetChoppingBlock.gameObject;
+		//target = targetChoppingBlock.gameObject;
 		
 		return closest != null;
 	}
 	
-	public override bool perform (GameObject agent)
+	public override bool perform (IPositionEntity agent)
 	{
 		if (startTime == 0)
 			startTime = Time.time;
 		
 		if (Time.time - startTime > workDuration) {
 			// finished chopping
-			BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-			backpack.numFirewood += 5;
-			chopped = true;
-			ToolComponent tool = backpack.tool.GetComponent(typeof(ToolComponent)) as ToolComponent;
-			tool.use(0.34f);
-			if (tool.destroyed()) {
-				Destroy(backpack.tool);
-				backpack.tool = null;
-			}
+			//BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
+			//backpack.numFirewood += 5;
+			//chopped = true;
+			//ToolComponent tool = backpack.tool.GetComponent(typeof(ToolComponent)) as ToolComponent;
+			//tool.use(0.34f);
+			//if (tool.destroyed()) {
+			//	Destroy(backpack.tool);
+			//	backpack.tool = null;
+			//}
 		}
 		return true;
 	}

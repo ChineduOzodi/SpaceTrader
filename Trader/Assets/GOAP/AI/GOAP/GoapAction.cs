@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public abstract class GoapAction : MonoBehaviour {
+public abstract class GoapAction {
 
 
 	private HashSet<KeyValuePair<string,object>> preconditions;
@@ -17,7 +17,7 @@ public abstract class GoapAction : MonoBehaviour {
 
 	/**
 	 * An action often has to perform on an object. This is that object. Can be null. */
-	public GameObject target;
+	public IPositionEntity target;
 
 	public GoapAction() {
 		preconditions = new HashSet<KeyValuePair<string, object>> ();
@@ -44,7 +44,7 @@ public abstract class GoapAction : MonoBehaviour {
 	 * Procedurally check if this action can run. Not all actions
 	 * will need this, but some might.
 	 */
-	public abstract bool checkProceduralPrecondition(GameObject agent);
+	public abstract bool checkProceduralPrecondition(IPositionEntity agent);
 
 	/**
 	 * Run the action.
@@ -52,7 +52,7 @@ public abstract class GoapAction : MonoBehaviour {
 	 * if something happened and it can no longer perform. In this case
 	 * the action queue should clear out and the goal cannot be reached.
 	 */
-	public abstract bool perform(GameObject agent);
+	public abstract bool perform(IPositionEntity agent);
 
 	/**
 	 * Does this action need to be within range of a target game object?
