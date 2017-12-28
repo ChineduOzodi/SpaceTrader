@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
     public int numStationsPerFrame;
     public double marketPriceMod = .0001f;
     internal GameObject selectedObj;
+    public bool updateShips;
     
     
     internal GameDataModel data;
@@ -292,7 +293,7 @@ public class GameManager : MonoBehaviour {
 
     public void StartGame()
     {
-        //StartCoroutine("UpdateShips", numShipsPerFrame);
+        StartCoroutine("UpdateShips", numShipsPerFrame);
         //StartCoroutine("UpdateStations", numStationsPerFrame);
         StartCoroutine("UpdateGovernments");
         StartCoroutine("UpdateCompanies");
@@ -355,13 +356,13 @@ public class GameManager : MonoBehaviour {
         int shipIndex = 0;
         while (true)
         {
-            //if (shipIndex >= data.ships.Count)
-            //    shipIndex = 0;
-            //for (int i = 0; i < updatesPerFrame; i++)
-            //{
-            //    //ShipControl(shipIndex);
-            //    shipIndex++;
-            //}
+            if (shipIndex >= data.ships.Model.ships.Count)
+                shipIndex = 0;
+            for (int i = 0; i < updatesPerFrame; i++)
+            {
+                ShipControl(shipIndex);
+                shipIndex++;
+            }
 
             yield return null;
         }
@@ -681,125 +682,128 @@ public class GameManager : MonoBehaviour {
     /// Runs commands on ships when called
     /// </summary>
     /// <param name="shipIndex">index of ship in the ship data to call</param>
-    //private void ShipControl(int shipIndex)
-    //{
-    //    Ship model = data.ships[shipIndex];
-    //    double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
-    //    model.age.AddTime(deltaTime);
+    private void ShipControl(int shipIndex)
+    {
+        Ship model = data.ships.Model.ships[shipIndex];
+        double deltaTime = data.date.time - model.lastUpdated.time;
+        model.lastUpdated.AddTime(deltaTime);
+        if (updateShips)
+            model.agent.Update(model);
 
-    //    if (model.timeUpdate < model.age.time)
-    //    {
-    //        model.timeUpdate += Dated.Hour;
+        //if (model.timeUpdate < model.age.time)
+        //{
+        //    model.timeUpdate += Dated.Hour;
 
-    //        //Money Evaluation
-    //        model.money -= model.runningCost;
-    //        model.money -= model.workers * 15;
+        //    //Money Evaluation
+        //    model.money -= model.runningCost;
+        //    model.money -= model.workers * 15;
 
-    //        if (model.captain.Model != model.owner.Model)
-    //        {
-    //            model.captain.Model.money += 35;
-    //            model.money -= 35;
-    //        }
+        //    if (model.captain.Model != model.owner.Model)
+        //    {
+        //        model.captain.Model.money += 35;
+        //        model.money -= 35;
+        //    }
 
-    //        double moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+        //    double moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
 
-    //        if (moneyEarned > 0)
-    //        {
-    //            model.captain.Model.money += moneyEarned * .1f;
-    //            model.money -= moneyEarned * .1f;
-    //        }
-    //        moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
-    //        model.moneyChange = moneyEarned;
-    //        model.moneyStats.data["Money Change"].Add(new Stat(model.age.time, model.moneyChange));
-    //        model.moneyStats.data["Money"].Add(new Stat(model.age.time, model.money));
-    //        model.owner.Model.money += model.money;
-    //        model.money = 0;
-    //        //if (model.money < 0)
-    //        //{
-    //        //    if (model.mode == ShipMode.Sell && model.target != null && model.target.Model != null)
-    //        //    {
-    //        //        ((StationModel) model.target.Model).SellIncomplete(model.item);
-    //        //    }
-    //        //    print(model.name + " Died");
-    //        //    model.Delete();
-    //        //    return;
-    //        //}
+        //    if (moneyEarned > 0)
+        //    {
+        //        model.captain.Model.money += moneyEarned * .1f;
+        //        model.money -= moneyEarned * .1f;
+        //    }
+        //    moneyEarned = model.money - model.moneyStats.data["Money"][model.moneyStats.data["Money"].Count - 1].y;
+        //    model.moneyChange = moneyEarned;
+        //    model.moneyStats.data["Money Change"].Add(new Stat(model.age.time, model.moneyChange));
+        //    model.moneyStats.data["Money"].Add(new Stat(model.age.time, model.money));
+        //    model.owner.Model.money += model.money;
+        //    model.money = 0;
+        //    //if (model.money < 0)
+        //    //{
+        //    //    if (model.mode == ShipMode.Sell && model.target != null && model.target.Model != null)
+        //    //    {
+        //    //        ((StationModel) model.target.Model).SellIncomplete(model.item);
+        //    //    }
+        //    //    print(model.name + " Died");
+        //    //    model.Delete();
+        //    //    return;
+        //    //}
 
-    //    }
+        //}
 
-    //    if ((float)model.fuel.amount / model.fuelCapacity < .25f && model.target == null)
-    //    {
-    //        //model.target = new ModelRef<StructureModel>(FindClosestStation( ItemTypes.Fuel.ToString() , model));
-    //        //if (model.target != null)
-    //        //{
-    //        //    Station station = (Station) model.target.Model;
-    //        //    Items buyItem = new Items(ItemTypes.Fuel, model.fuelCapacity);
-    //        //    //model.items.Add(station.Buy(buyItem, model));
-    //        //    model.spriteColor = Color.yellow;
-    //        //    model.mode = ShipMode.Buy;
-    //        //    station.incomingShips.Add(model);
-    //        //    model.NotifyChange();
-    //        //    return;
-    //        //}
-    //        //else if (model.fuel.amount < 0) {  }
-    //    }
+        if ((float)model.fuel.amount / model.fuelCapacity < .25f && model.target == null)
+        {
+            //model.target = new ModelRef<StructureModel>(FindClosestStation( ItemTypes.Fuel.ToString() , model));
+            //if (model.target != null)
+            //{
+            //    Station station = (Station) model.target.Model;
+            //    Items buyItem = new Items(ItemTypes.Fuel, model.fuelCapacity);
+            //    //model.items.Add(station.Buy(buyItem, model));
+            //    model.spriteColor = Color.yellow;
+            //    model.mode = ShipMode.Buy;
+            //    station.incomingShips.Add(model);
+            //    model.NotifyChange();
+            //    return;
+            //}
+            //else if (model.fuel.amount < 0) {  }
+        }
 
-    //    foreach (ItemsModel item in model.items)
-    //    {
-    //        if (item.name == ItemTypes.Ship.ToString() && item.amount > 0)
-    //        {
-    //            for (int i = 0; i < item.amount; i++)
-    //            {
-    //                CreatureModel captain = new CreatureModel(model.owner.Model.name + " Ship Captain " + model.owner.Model.itemsBought, 1000);
-    //                Ship ship = ShipCreator.CreateShip(model.owner.Model.name + "." + model.owner.Model.itemsBought, model.solarIndex, model.parentIndex, model.orbit, model.owner.Model, captain);
-    //                data.ships.Add(ship);
-    //                data.creatures.Add(captain);
-    //                model.owner.Model.itemsBought++;
-    //            }
+        //foreach (Item item in model.items)
+        //{
+        //    if (item.name == ItemTypes.Ship.ToString() && item.amount > 0)
+        //    {
+        //        for (int i = 0; i < item.amount; i++)
+        //        {
+        //            CreatureModel captain = new CreatureModel(model.owner.Model.name + " Ship Captain " + model.owner.Model.itemsBought, 1000);
+        //            Ship ship = ShipCreator.CreateShip(model.owner.Model.name + "." + model.owner.Model.itemsBought, model.solarIndex, model.parentIndex, model.orbit, model.owner.Model, captain);
+        //            data.ships.Add(ship);
+        //            data.creatures.Add(captain);
+        //            model.owner.Model.itemsBought++;
+        //        }
 
-    //            item.amount = 0;
-    //        }
+        //        item.amount = 0;
+        //    }
 
-    //        if (item.amount == 0 && item.pendingAmount == 0)
-    //            model.items.Remove(item);
-    //    }
+        //    if (item.amount == 0 && item.pendingAmount == 0)
+        //        model.items.Remove(item);
+        //}
 
 
-    //    //if (model.money > 10000 && model.target.Model == null)
-    //    //{
-    //    //    model.target.Model = FindClosestStation("Ship", model);
-    //    //    if (model.target.Model != null)
-    //    //    {
-    //    //        StationModel station = (StationModel) model.target.Model;
-    //    //        foreach (Items outputItem in station.factory.outputItems)
-    //    //        {
-    //    //            if (outputItem.name == "Ship")
-    //    //            {
-    //    //                if (outputItem.price + 2000 < model.money)
-    //    //                {
-    //    //                    model.item = new Items("Ship", 1);
-    //    //                    model.spriteColor = Color.cyan;
-    //    //                    model.mode = ShipMode.Buy;
-    //    //                    station.incomingShips.Add(model);
-    //    //                    model.NotifyChange();
-    //    //                    return;
-    //    //                }
-    //    //                else
-    //    //                {
-    //    //                    model.target.Model = null;
-    //    //                }
-    //    //            }
-    //    //        }
-    //    //    }
-    //    //}
-    //    if (model.shipAction == ShipMode.Idle)
-    //    {
-    //        model.mode = ShipMode.SearchingTradeRoute;
-    //        TradeRouteRequestManager.RequestTradeRoute(model, OnFindRouteFinished);
-    //    }
+        //if (model.money > 10000 && model.target.Model == null)
+        //{
+        //    model.target.Model = FindClosestStation("Ship", model);
+        //    if (model.target.Model != null)
+        //    {
+        //        StationModel station = (StationModel) model.target.Model;
+        //        foreach (Items outputItem in station.factory.outputItems)
+        //        {
+        //            if (outputItem.name == "Ship")
+        //            {
+        //                if (outputItem.price + 2000 < model.money)
+        //                {
+        //                    model.item = new Items("Ship", 1);
+        //                    model.spriteColor = Color.cyan;
+        //                    model.mode = ShipMode.Buy;
+        //                    station.incomingShips.Add(model);
+        //                    model.NotifyChange();
+        //                    return;
+        //                }
+        //                else
+        //                {
+        //                    model.target.Model = null;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
-    //    ShipTravel(model, deltaTime);
-    //}
+        //if (model.shipAction == ShipAction.Idle)
+        //{
+        //    model.mode = ShipMode.SearchingTradeRoute;
+        //    TradeRouteRequestManager.RequestTradeRoute(model, OnFindRouteFinished);
+        //}
+
+        //ShipTravel(model, deltaTime);
+    }
     /// <summary>
     /// Controls ship movement, taking into the account of when the ship was last called
     /// </summary>

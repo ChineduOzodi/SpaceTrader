@@ -23,6 +23,7 @@ public class SolarController : Controller<SolarModel> {
     public float viewCompanySize = 1;
     private float solarSpriteScale = .02f;
     private float moonViewOrthoSize = .001f;
+    private float lineSize = 2;
     //private VectorObject3D line;
     private VectorLine solarLine;
     public Texture lineTexture;
@@ -177,11 +178,11 @@ public class SolarController : Controller<SolarModel> {
                     if (canSeeMoons())
                     {
                         
-                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * Mathf.Pow(body.totalPopulation, viewPopulationSize));
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * Mathf.Pow(body.totalPopulation, viewPopulationSize) * lineSize);
                     }
                     else
                     {
-                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * Mathf.Pow(body.population, viewPopulationSize));
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * Mathf.Pow(body.population, viewPopulationSize) * lineSize);
                     }
 
                     lineColors.Add(new Color32(100, 100, 255, 200));
@@ -192,7 +193,7 @@ public class SolarController : Controller<SolarModel> {
                 if (MapTogglePanel.instance.compines.isOn)
                 {
                     linePoints.Add(planets[i].transform.position + Vector3.right * planets[i].transform.localScale.x * .5f);
-                    linePoints.Add(planets[i].transform.position + Vector3.right * planets[i].transform.localScale.x * .5f + Vector3.right * Mathf.Pow(body.companies.Count, viewCompanySize));
+                    linePoints.Add(planets[i].transform.position + Vector3.right * planets[i].transform.localScale.x * .5f + Vector3.right * Mathf.Pow(body.companies.Count, viewCompanySize) * lineSize);
 
                     if (!canSeeMoons())
                     {
@@ -250,7 +251,7 @@ public class SolarController : Controller<SolarModel> {
                         if (MapTogglePanel.instance.populations.isOn && body.population > 0)
                         {
                             linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x *.5f);
-                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x *.5f + Vector3.up * Mathf.Pow(body.population, viewPopulationSize));
+                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x *.5f + Vector3.up * Mathf.Pow(body.population, viewPopulationSize) * lineSize);
                             lineColors.Add(new Color32(100, 100, 255, 200));
                             lineWidths.Add(localScale);
                         }
@@ -259,7 +260,7 @@ public class SolarController : Controller<SolarModel> {
                         if (MapTogglePanel.instance.compines.isOn)
                         {
                             linePoints.Add(moons[i].transform.position + Vector3.right * moons[i].transform.localScale.x * .5f);
-                            linePoints.Add(moons[i].transform.position + Vector3.right * moons[i].transform.localScale.x * .5f + Vector3.right * Mathf.Pow(body.companies.Count, viewCompanySize));
+                            linePoints.Add(moons[i].transform.position + Vector3.right * moons[i].transform.localScale.x * .5f + Vector3.right * Mathf.Pow(body.companies.Count, viewCompanySize) * lineSize);
 
                             lineColors.Add(new Color32(255, 50, 255, 150));
                             lineWidths.Add(localScale);
@@ -327,7 +328,7 @@ public class SolarController : Controller<SolarModel> {
                 if (MapTogglePanel.instance.populations.isOn && model.solar.totalPopulation > 0)
                 {
                     linePoints.Add(transform.position + Vector3.up *circleCollider.radius* .5f);
-                    linePoints.Add(transform.position + Vector3.up * circleCollider.radius + Vector3.up * Mathf.Pow(model.solar.totalPopulation, viewPopulationSize));
+                    linePoints.Add(transform.position + Vector3.up * circleCollider.radius + Vector3.up * Mathf.Pow(model.solar.totalPopulation, viewPopulationSize) * lineSize);
                     lineColors.Add(new Color32(100, 100, 255, 200));
                     lineWidths.Add(circleCollider.radius * 2f);
                 }

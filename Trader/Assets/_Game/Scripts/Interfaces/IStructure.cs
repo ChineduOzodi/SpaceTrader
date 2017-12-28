@@ -10,6 +10,7 @@ public interface IStructure: IPositionEntity {
 
     string name { get; set; }
     string info { get; set; }
+    int count { get; set; }
 
     ModelRef<IdentityModel> owner { get; set; }
     int managerId { get; set; }

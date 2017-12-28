@@ -176,21 +176,6 @@ public struct RawResource
         return removeAmount;
     }
 
-    public int RemoveAmount(int removeAmount)
-    {
-        if (removeAmount < amount)
-        {
-            amount -= removeAmount;
-        }
-        else
-        {
-            removeAmount = (int) amount;
-            amount = 0;
-        }
-
-        return removeAmount;
-    }
-
     public void AddAmount(double amount)
     {
         this.amount += amount;

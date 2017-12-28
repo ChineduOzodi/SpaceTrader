@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CodeControl;
 using System.Xml.Serialization;
 
-public class Station: IStructure, IWorkers {
+public class Station: ProductionStructure, IWorkers {
 
     //public ModelRef<CreatureModel> manager = new ModelRef<CreatureModel>();
     //public ModelRefs<ShipModel> incomingShips = new ModelRefs<ShipModel>();
@@ -12,52 +12,13 @@ public class Station: IStructure, IWorkers {
     public float totalDocks { get; private set; }
     public float usedDocks { get; private set; }
 
-    public List<Item> requiredItems { get; private set; }
+    public List<Item> planetItems = new List<Item>();
+
+
     public bool isProducing = true;
-    public ItemsList storage = new ItemsList();
+    public double timePassed = 0;
 
     public float runningCost = 10f;
-
-    public StructureTypes structureType { get; set; }
-
-    public string name { get; set; }
-    public string info { get; set; }
-    public ModelRef<IdentityModel> owner { get; set; }
-    public int managerId { get; set; }
-    public float maxArmor { get; set; }
-    public float currentArmor { get; set; }
-    public int id { get; set; }
-    public Dated dateCreated { get; set; }
-    public Dated lastUpdated { get; set; }
-    public bool deleteStructure { get; set; }
-
-    public Vector2d galaxyPosition
-    {
-        get
-        {
-            if (solarIndex.Count == 3)
-            {
-                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]].galaxyPosition;
-            }
-            else if (solarIndex.Count == 2)
-            {
-                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition;
-            }
-            else
-            {
-                throw new System.Exception("BuildStructure " + name + " solarIndex count incorrect: " + solarIndex.Count);
-            }
-        }
-
-        set
-        {
-            throw new System.Exception("Can't set galaxyPosition, set solarIndex instead");
-        }
-    }
-
-    public List<int> solarIndex { get; set; }
-    public int structureId { get; set; }
-    public int shipId { get; set; }
 
     public int workers { get; set; }
 
@@ -65,12 +26,13 @@ public class Station: IStructure, IWorkers {
 
     public Station() { }
 
-    public Station(string name, IdentityModel owner, SolarBody body)
+    public Station(string name, IdentityModel owner, SolarBody body, int _count = 1)
     {
 
         this.owner = new ModelRef<IdentityModel>(owner);
         structureType = StructureTypes.SpaceStation;
         id = GameManager.instance.data.id++;
+        count = _count;
         solarIndex = body.solarIndex;
         structureId = -1;
         shipId = -1;
@@ -79,93 +41,58 @@ public class Station: IStructure, IWorkers {
         workerPayRate = .00116;
         totalDocks = 50;
         usedDocks = 0;
+        planetItems = new List<Item>();
+        GameManager.instance.data.itemsData.Model.items.ForEach(x =>
+        {
+            if (x.itemType != ItemType.Fuel)
+                planetItems.Add(new Item(x.id, Mathd.Ceil(Mathd.Pow(body.population,.5) / (Mathd.Pow(x.productionTime, 1.25))), 1,owner, solarIndex));
+        });
         var fuel = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
         requiredItems = new List<Item>() { new Item(fuel.id, 100, fuel.estimatedValue,owner, solarIndex)};
+
+        requiredItems.AddRange(planetItems);
         requiredItems.ForEach(x => {
-            x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);
+            x.price = body.GetMarketPrice(x.id);
             x.owner.Model = owner;
         });
         body.structures.Add(this);
         owner.AddSolarBodyWithStructure(body);
+
+        productionTime = 1;
     }
 
     public void Update(SolarBody parentBody, double deltaTime)
     {
         if (deleteStructure)
             return;
+        info = "Is producing: " + isProducing + "\nTime Completed: " + (timePassed / Dated.Day).ToString("0.000") + "%";
         if (isProducing)
         {
+            timePassed += deltaTime;
             SearchRequiredItems(parentBody, deltaTime);
+            if (timePassed > Dated.Day)
+            {
+                timePassed = 0;
+                UsePlanetItems();
+            }
         }
         
     }
 
-    private bool SearchRequiredItems(SolarBody parentBody, double deltaTime)
+    private void UsePlanetItems()
     {
-        int neededItemCount = requiredItems.Count;
-        int itemCount = 0;
-        foreach (Item item in requiredItems)
+        foreach (Item item in planetItems)
         {
-            double neededAmount = item.amount;
-            if (storage.ContainsItem(item))
+            Item use = storage.Find(item.id);
+            if (use != null)
             {
-                neededAmount -= storage.Find(item).amount;
-            }
-            if (neededAmount <= 0)
-            {
-                item.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(item.id);
-                parentBody.RemoveBuying(item.id, owner.Model, id, item.amount);
-                itemCount++;
-            }
-            else
-            {
-                var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, solarIndex, id);
-                var found = false;
-                foreach (IStructure structure in parentBody.structures)
-                {
-                    if (structure.structureType == StructureTypes.GroundStorage)
-                    {
-                        GroundStorage groundStruct = (GroundStorage)structure;
-                        if (groundStruct.owner.Model == owner.Model && groundStruct.RemoveItem(neededItem))
-                        {
-                            storage.AddItem(neededItem);
-                            parentBody.RemoveBuying(item.id, owner.Model, id, neededItem.amount);
-                            parentBody.RemoveSelling(item.id, owner.Model, id, neededItem.amount);
-                            neededAmount = item.amount - neededItem.amount;
-                            if (neededAmount <= 0)
-                            {
-                                itemCount++;
-                                found = true;
-                                break;
-                            }
-                            neededItem = new Item(item.id, neededAmount, item.price);
-                        }
-                    }
-                }
-                //Runs if there are still needed Items
+                var found = storage.UseItem(use);
                 if (!found)
-                {
-                    parentBody.SetBuying(neededItem);
-                    item.price += item.price * GameManager.instance.marketPriceMod * deltaTime;
-                    if (item.price < .1)
-                    {
-                        item.price = .1f;
-                    }
-                }
+                    throw new System.Exception("Item is not found in correct amount");
             }
+        }
+    }
 
-        }
-        return (neededItemCount == itemCount);
-    }
-    private void useRequiredItems(SolarBody parentBody)
-    {
-        foreach (Item item in requiredItems)
-        {
-            var found = storage.RemoveItem(item);
-            if (!found)
-                throw new System.Exception("Item is not found in correct amount");
-        }
-    }
     /// <summary>
     /// Item is Being Baught from station
     /// </summary>

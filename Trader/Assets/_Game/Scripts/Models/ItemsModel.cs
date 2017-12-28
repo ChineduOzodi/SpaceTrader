@@ -75,6 +75,7 @@ public class Item: IPositionEntity
         estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         amount = _amount;
         structureId = _structureId;
+        shipId = -1;
         solarIndex = _solarIndex;
         if (owner != null)
             this.owner = new ModelRef<IdentityModel>(owner);
@@ -91,6 +92,8 @@ public class Item: IPositionEntity
         estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         amount = _amount;
         this.owner = null;
+        shipId = -1;
+        structureId = -1;
         price = _price;
         itemType = ItemType.AI;
         itemType = GetItemType();
@@ -108,6 +111,9 @@ public class Item: IPositionEntity
         price = _price;
         itemType = ItemType.AI;
         itemType = type;
+
+        shipId = -1;
+        structureId = -1;
     }
 
     public Item(ItemType type, int _amount, double _price, IdentityModel owner)
@@ -120,6 +126,9 @@ public class Item: IPositionEntity
         this.owner = new ModelRef<IdentityModel>(owner);
         price = _price;
         itemType = type;
+
+        shipId = -1;
+        structureId = -1;
     }
 
     public void SetAmount(double _amount, double _price)
@@ -327,10 +336,14 @@ public class ItemsList
         return true;
     }
 
-    public bool RemoveItem(Item item)
+    public bool UseItem(Item item, bool owner = true )
     {
         int itemIndex = -1;
-        if (item.structureId == -1)
+        if (!owner)
+        {
+            itemIndex = items.FindIndex(x => x.id == item.id);
+        }
+        else if (item.structureId == -1)
         {
             itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
         }
@@ -353,11 +366,45 @@ public class ItemsList
         }
         return false;
     }
-
-    public bool ContainsItem(Item item)
+    /// <summary>
+    /// Uses as much of the item amount as it can from the storage, returns the left over item amount that was not used.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public Item UseAsMuchItem(Item item)
     {
         int itemIndex = -1;
-        if (item.owner == null || item.owner.Model == null)
+        if (item.structureId == -1)
+        {
+            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        }
+        else if (item.owner == null || item.owner.Model == null)
+            itemIndex = items.FindIndex(x => x.id == item.id);
+        else itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+
+        if (itemIndex >= 0)
+        {
+            if (items[itemIndex].amount <= item.amount)
+            {
+                item.RemoveAmount(items[itemIndex].amount);
+                items[itemIndex].RemoveAmount(items[itemIndex].amount);
+                items.RemoveAt(itemIndex);
+                return item;
+            }
+            else
+            {
+                items[itemIndex].RemoveAmount(item.amount);
+                item.RemoveAmount(item.amount);
+                return item;
+            }
+        }
+        throw new Exception("Could not find item " + item.name);
+    }
+
+    public bool ContainsItem(Item item, bool owner = true)
+    {
+        int itemIndex = -1;
+        if (item.owner == null || item.owner.Model == null || !owner)
             itemIndex = items.FindIndex(x => x.id == item.id);
         else itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
 
@@ -369,9 +416,9 @@ public class ItemsList
         return items.Find(x => x.id == itemId && owner == x.owner.Model).name != "";
     }
 
-    public Item Find(Item item)
+    public Item Find(Item item, bool owner = true)
     {
-        if (item.owner == null || item.owner.Model == null)
+        if (item.owner == null || item.owner.Model == null || !owner)
             return items.Find(x => x.id == item.id);
         else return items.Find(x => x.id == item.id && item.owner.Model == x.owner.Model);
     }

@@ -16,7 +16,7 @@ public class SellItemAction : GoapAction {
     {
         addPrecondition("hasTradeItems", true); // if we have items we don't want more
         addEffect("hasTradeItems", false);
-
+        addEffect("itemsSold", true);
         owner = _ship.owner.Model;
         ship = _ship;
     }
@@ -99,6 +99,6 @@ public class SellItemAction : GoapAction {
         if (ship.itemCapacity < itemAmount)
             itemAmount = ship.itemCapacity;
 
-        return item.price * itemAmount - (item.galaxyPosition - ship.galaxyPosition).magnitude * fuelMarketPrice / (ship.speed * ship.fuelEfficiency) - ship.items[0].amount * ship.items[0].price;
+        return item.price * itemAmount - (item.galaxyPosition - ship.galaxyPosition).magnitude * fuelMarketPrice / (ship.speed * ship.fuelEfficiency); //- ship.items[0].amount * ship.items[0].price;
     }
 }

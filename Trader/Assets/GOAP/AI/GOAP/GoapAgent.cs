@@ -37,7 +37,7 @@ public class GoapAgent {
 	}
 	
 
-	void Update ( IPositionEntity entity) {
+	public void Update ( IPositionEntity entity) {
 		stateMachine.Update (entity);
 	}
 

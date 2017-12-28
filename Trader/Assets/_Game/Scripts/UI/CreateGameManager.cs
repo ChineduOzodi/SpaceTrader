@@ -158,7 +158,7 @@ public class CreateGameManager : MonoBehaviour {
 
                 foreach(RawResource raw in parent.rawResources)
                 {
-                    Driller driller = new Driller(gov, raw.id, parent);
+                    Driller driller = new Driller(gov, raw.id, parent, 50);
                     GroundStorage storage = new GroundStorage(gov, parent);
                 }
 

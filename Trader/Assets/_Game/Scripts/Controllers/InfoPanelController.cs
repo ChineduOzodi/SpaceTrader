@@ -175,15 +175,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 body.structures.ForEach(x => {
                     button = Instantiate(uiButtonInstance, position);
                     text = button.GetComponentInChildren<Text>();
-                    texts.Add("SpaceStructure" + x.id, text);
-                    text.text = "Name: " + x.name + " - " + x.owner.Model.name;
-                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                });
-                
-                body.structures.ForEach(x => {
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    texts.Add("GroundStructure" + x.id, text);
+                    texts.Add("Structure" + x.id, text);
                     text.text = "Name: " + x.name + " - " + x.owner.Model.name;
                     button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
                 });
@@ -346,9 +338,9 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 button = Instantiate(uiButtonInstance, position);
                 text = button.GetComponentInChildren<Text>();
                 texts.Add("FillPercent", text);
-                text.text = "Storage Filled: " + ((((GroundStorage)model.structure).currentStorageAmount / ((GroundStorage)model.structure).totalStorageAmount) * 100).ToString("0.00") + " %  " 
+                text.text = "Storage Filled: " + ((((GroundStorage)model.structure).currentStorageAmount / ((GroundStorage)model.structure).totalStorageAmount) * 100 * model.structure.count).ToString("0.00") + " %  " 
                     + Units.ReadItem(((GroundStorage)model.structure).currentStorageAmount) + " - " +
-                     Units.ReadItem(((GroundStorage)model.structure).totalStorageAmount);
+                     Units.ReadItem(((GroundStorage)model.structure).totalStorageAmount * model.structure.count);
             }
             if (model.structure.structureType == StructureTypes.Driller)
             {
@@ -364,7 +356,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(((Factory)model.structure).productionItemId, TargetType.Item));
 
                 button = Instantiate(uiButtonInstance, position);
-                button.GetComponentInChildren<Text>().text = "Modified Production Time: " + Dated.ReadTime(((Factory)model.structure).produtionTime);
+                button.GetComponentInChildren<Text>().text = "Modified Production Time: " + Dated.ReadTime(((Factory)model.structure).productionTime);
                 button.interactable = false;
 
                 button = Instantiate(uiButtonInstance, position);
@@ -556,12 +548,12 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             }
 
             text = texts["SpaceStructureCount"];
-            text.text = "Space Structure Count: " + body.structures.Count;
+            text.text = "Space Structure Count: " + body.structures.FindAll(x => x.structureType == StructureTypes.SpaceStation).Count;
 
             if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star)
             {
                 text = texts["GroundStructureCount"];
-                text.text = "Ground Structure Count:" + body.structures.Count;
+                text.text = "Ground Structure Count:" + body.structures.FindAll(x => x.structureType != StructureTypes.SpaceStation).Count;
 
                 text = texts["ResourceCount"];
                 text.text = "Resource Types Count: " + body.rawResources.Count;
@@ -632,12 +624,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 });
 
                 body.structures.ForEach(x => {
-                    text = texts["SpaceStructure" + x.id];
-                    text.text = "Name: " + x.name + " - " + x.owner.Model.name;
-                });
-
-                body.structures.ForEach(x => {
-                    text = texts["GroundStructure" + x.id];
+                    text = texts["Structure" + x.id];
                     text.text = "Name: " + x.name + " - " + x.owner.Model.name;
                 });
 
@@ -654,9 +641,9 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             if (model.structure.structureType == StructureTypes.GroundStorage)
             {
                 text = texts["FillPercent"];
-                text.text = "Storage Filled: " + ((((GroundStorage)model.structure).currentStorageAmount / ((GroundStorage)model.structure).totalStorageAmount) * 100).ToString("0.00") + " %  "
+                text.text = "Storage Filled: " + ((((GroundStorage)model.structure).currentStorageAmount / ((GroundStorage)model.structure).totalStorageAmount) * model.structure.count * 100).ToString("0.00") + " %  "
                     + Units.ReadItem(((GroundStorage)model.structure).currentStorageAmount) + " - " +
-                     Units.ReadItem(((GroundStorage)model.structure).totalStorageAmount);
+                     Units.ReadItem(((GroundStorage)model.structure).totalStorageAmount * model.structure.count);
 
                 ((GroundStorage)model.structure).storage.items.ForEach(x => {
                     text = texts["Items" + x.id];

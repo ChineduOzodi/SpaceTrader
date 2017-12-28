@@ -14,8 +14,7 @@ public class Ship: IStructure, IWorkers, IGoap {
     public ShipAction shipAction { get; private set; }
     public bool hyperSpace { get; private set; }
 
-    public List<int> target { get; private set; }
-    public List<int> sellTarget { get; private set; }
+    public IPositionEntity target { get; private set; }
     public int shipTargetId { get; private set; }
     public int structureTargetId { get; private set; }
 
@@ -35,6 +34,7 @@ public class Ship: IStructure, IWorkers, IGoap {
     public Dated dateCreated { get; set; }
     public Dated lastUpdated { get; set; }
     public bool deleteStructure { get; set; }
+    public int count { get; set; }
 
     public Vector2d galaxyPosition { get; set; }
 
@@ -64,12 +64,13 @@ public class Ship: IStructure, IWorkers, IGoap {
 
     public Ship() { }
 
-    public Ship(string name, IdentityModel owner, Creature captain, int _structureId)
+    public Ship(string name, IdentityModel owner, Creature captain, int _structureId, int _count = 1)
     {
         this.owner = new ModelRef<IdentityModel>(owner);
         this.managerId = captain.id;
         structureId = _structureId;
         structureType = StructureTypes.Ship;
+        this.count = _count;
         //this.captain.Model.location = this;
         id = GameManager.instance.data.id++;
         this.owner.Model.ships.Add(id);
@@ -119,7 +120,7 @@ public class Ship: IStructure, IWorkers, IGoap {
     {
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
 
-        goal.Add(new KeyValuePair<string, object>("tradeItems", true));
+        goal.Add(new KeyValuePair<string, object>("itemsSold", true));
         return goal;
     }
 

@@ -22,6 +22,7 @@ public class GroundStorage : IStructure {
     public Dated dateCreated { get; set; }
     public Dated lastUpdated { get; set; }
     public bool deleteStructure { get; set; }
+    public int count { get; set; }
 
     public Vector2d galaxyPosition
     {
@@ -53,35 +54,39 @@ public class GroundStorage : IStructure {
 
     public GroundStorage() { }
 
-    public GroundStorage(ItemBluePrint blueprint, SolarBody body)
+    public GroundStorage(IdentityModel owner, ItemBluePrint blueprint, SolarBody body, int _count = 1):
+        this(owner,body,_count)
     {
-        id = GameManager.instance.data.id++;
-        solarIndex = body.solarIndex;
-        structureId = -1;
-        shipId = -1;
-        body.structures.Add(this);
-        //Implement IStructure
-        maxArmor = 1000;
-        currentArmor = maxArmor;
-        dateCreated = new Dated(GameManager.instance.data.date.time);
-        lastUpdated = new Dated(GameManager.instance.data.date.time);
+        
     }
 
-    public GroundStorage(ItemBluePrint blueprint, ItemsList _items, SolarBody body)
+    public GroundStorage(IdentityModel owner, ItemBluePrint blueprint, ItemsList _items, SolarBody body, int _count = 1):
+        this(owner, blueprint,body,_count)
     {
         storage = _items;
-        id = GameManager.instance.data.id++;
-        solarIndex = body.solarIndex;
-        structureId = -1;
-        shipId = -1;
-        body.structures.Add(this);
     }
 
-    public GroundStorage(IdentityModel owner, SolarBody body)
+    public GroundStorage(IdentityModel owner, SolarBody body, int _count = 1)
     {
+        //Look to see if similar structure already exists
+        foreach (IStructure structure in body.structures)
+        {
+            if (structure.structureType == StructureTypes.GroundStorage)
+            {
+                //If the same structure is found, check ownership, and productionItemId
+                if (structure.owner.Model == owner)
+                {
+                    //If found, increase count
+                    structure.count++;
+                    return;
+                }
+            }
+        }
+
         this.owner = new ModelRef<IdentityModel>(owner);
         owner.AddSolarBodyWithStructure(body);
         solarIndex = body.solarIndex;
+        count = _count;
         body.structures.Add(this);
         structureType = StructureTypes.GroundStorage;
         id = GameManager.instance.data.id++;
@@ -101,6 +106,7 @@ public class GroundStorage : IStructure {
     {
         if (deleteStructure)
             return;
+        info = "Count: " + count + "\nItemCount: " + storage.items.Count;
         foreach (Item item in storage.items)
         {
             item.price -= item.price * GameManager.instance.marketPriceMod * deltaTime;
@@ -116,7 +122,7 @@ public class GroundStorage : IStructure {
 
     public bool AddItem(Item item)
     {
-        if (currentStorageAmount + item.amount > totalStorageAmount)
+        if (currentStorageAmount + item.amount > totalStorageAmount * count)
             return false;
         item.owner.Model = owner.Model;
         storage.AddItem(item);
@@ -126,7 +132,7 @@ public class GroundStorage : IStructure {
 
     public bool RemoveItem(Item item)
     {
-        if (storage.RemoveItem(item))
+        if (storage.UseItem(item))
         {
             currentStorageAmount -= item.amount;
             return true;
@@ -139,8 +145,22 @@ public class GroundStorage : IStructure {
         return storage.ContainsItem(item);
     }
 
+    public Item UseAsMuchItem(Item item)
+    {
+        double itemAmount = item.amount;
+        Item unusedItem = storage.UseAsMuchItem(item);
+        currentStorageAmount -= (itemAmount - unusedItem.amount);
+        if (currentStorageAmount < 0)
+        {
+            Debug.Log("current storage below 0: " + currentStorageAmount + " + " + (itemAmount - unusedItem.amount));
+            currentStorageAmount = 0;
+        }
+            
+        return unusedItem;
+    }
+
     public bool CanAddItem(Item item)
     {
-        return currentStorageAmount + item.amount < totalStorageAmount;
+        return currentStorageAmount + item.amount < totalStorageAmount * count;
     }
 }
