@@ -10,10 +10,21 @@ public class ProductionStructure: IStructure {
     public string productionItemName;
     public int productionItemId { get; protected set; }
     /// <summary>
-    /// Time to complete one cycle in days.
+    /// Time to complete one cycle in seconds.
     /// </summary>
     public double productionTime { get; protected set; }
-
+    /// <summary>
+    /// The ids of structures connecting into this structure
+    /// </summary>
+    public List<int> structureConnectionIdsIn = new List<int>();
+    /// <summary>
+    /// The ids of structures connecting out of this structure
+    /// </summary>
+    public List<int> structureConnectionIdsOut = new List<int>();
+    /// <summary>
+    /// Stores information of the items that are needed or that have surpluses.
+    /// </summary>
+    public List<KeyValuePair<int, double>> connectionItems = new List<KeyValuePair<int, double>>();
     public ItemsList storage = new ItemsList();
 
     public StructureTypes structureType { get; set; }
@@ -33,18 +44,7 @@ public class ProductionStructure: IStructure {
     {
         get
         {
-            if (solarIndex.Count == 3)
-            {
-                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]].galaxyPosition;
-            }
-            else if (solarIndex.Count == 2)
-            {
-                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition;
-            }
-            else
-            {
-                throw new System.Exception("BuildStructure " + name + " solarIndex count incorrect: " + solarIndex.Count);
-            }
+            return body.galaxyPosition;
         }
 
         set
@@ -59,15 +59,59 @@ public class ProductionStructure: IStructure {
 
     public int count { get; set; }
 
+    private SolarBody body
+    {
+        get
+        {
+            if (solarIndex.Count == 3)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]];
+            }
+            else if (solarIndex.Count == 2)
+            {
+                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]];
+            }
+            else
+            {
+                throw new System.Exception("Structure " + name + " solarIndex count incorrect: " + solarIndex.Count);
+            }
+        }
+    }
+    /// <summary>
+    /// The rate of output to each connection. The key is the structure id.
+    /// </summary>
+    internal Dictionary<int, double> connectionOutRate = new Dictionary<int, double>();
+    /// <summary>
+    /// The item ids and rate of items the factory needs.
+    /// </summary>
+    internal Dictionary<int, double> neededItemRate = new Dictionary<int, double>();
+    public double extraProductionRate = 0;
+
     public ProductionStructure() { }
 
     public ProductionStructure(IdentityModel owner, int _productionItemId, SolarBody body, int _count = 1)
     {
         storage = new ItemsList();
 
-        //Look to see if similar structure already exists
+        id = GameManager.instance.data.id++;
+        this.owner = new ModelRef<IdentityModel>(owner);
+        solarIndex = body.solarIndex;
+
+        productionItemId = _productionItemId;
+        var product = GameManager.instance.data.itemsData.Model.GetItem(productionItemId);
+        name = product.name + " " + structureType.ToString() + " " + id;
+        productionItemName = product.name;
+
+        requiredItems = product.contstructionParts;
+        requiredItems.ForEach(x => {
+            x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);
+            x.owner.Model = owner;
+        });
+
         foreach (IStructure structure in body.structures)
         {
+
+            //Look to see if similar structure already exists
             if (GetType() == structure.GetType())
             {
                 //If the same structure is found, check ownership, and productionItemId
@@ -75,32 +119,53 @@ public class ProductionStructure: IStructure {
                 if (prodStruct.owner.Model == owner && prodStruct.productionItemId == _productionItemId)
                 {
                     //If found, increase count
-                    prodStruct.count++;
+                    prodStruct.count += _count;
                     return;
                 }
             }
+
+            ProductionStructure productionStructure = structure as ProductionStructure;
+            if (productionStructure != null && productionStructure.GetType() != Type.GetType("Station"))
+            {
+                foreach(Item item in productionStructure.requiredItems)
+                {
+                    if (item.id == productionItemId)
+                    {
+                        if (!structureConnectionIdsOut.Contains(productionStructure.id))
+                        {
+                            structureConnectionIdsOut.Add(productionStructure.id);
+                            productionStructure.structureConnectionIdsIn.Add(id);
+                        }
+                    }
+                }
+
+                foreach (Item item in requiredItems)
+                {
+                    if (item.id == productionStructure.productionItemId)
+                    {
+                        if (!structureConnectionIdsIn.Contains(productionStructure.productionItemId))
+                        {
+                            structureConnectionIdsIn.Add(productionStructure.id);
+                            productionStructure.structureConnectionIdsOut.Add(id);
+                        }
+                    }
+                }
+                
+            }
         }
 
-        this.owner = new ModelRef<IdentityModel>(owner);
+        
         owner.AddSolarBodyWithStructure(body);
         body.structures.Add(this);
 
-        id = GameManager.instance.data.id++;
+        
         count = _count;
-        solarIndex = body.solarIndex;
+        
         structureId = -1;
         shipId = -1;
 
-        productionItemId = _productionItemId;
-        var product = GameManager.instance.data.itemsData.Model.GetItem(productionItemId);
-        name = product.name + " " + structureType.ToString() + " " + id;
-        productionItemName = product.name;
         
-        requiredItems = product.contstructionParts;
-        requiredItems.ForEach(x => {
-            x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);
-            x.owner.Model = owner;
-        });
+        
 
         maxArmor = 1000;
         currentArmor = maxArmor;
@@ -109,6 +174,7 @@ public class ProductionStructure: IStructure {
         dateCreated = new Dated(GameManager.instance.data.date.time);
         lastUpdated = new Dated(GameManager.instance.data.date.time);
 
+        UpdateConnectionItems();
     }
 
     protected bool SearchRequiredItems(SolarBody parentBody, double deltaTime)
@@ -188,25 +254,100 @@ public class ProductionStructure: IStructure {
     protected bool StoreCreatedItem(SolarBody parentBody, double amount)
     {
         var found = false;
-        Item item = new Item(productionItemId, amount, parentBody.GetMarketPrice(productionItemId), owner.Model, solarIndex, id);
-        foreach (IStructure structure in parentBody.structures)
+        
+        foreach( KeyValuePair<int,double> outRate in connectionOutRate)
         {
-            if (structure.structureType == StructureTypes.GroundStorage)
-            {
-                GroundStorage groundStruct = (GroundStorage)structure;
-                if (groundStruct.owner.Model == owner.Model &&
-                groundStruct.CanAddItem(item))
-                {
-                    groundStruct.AddItem(item);
-                    //parentBody.SetSelling(item);
-                    found = true;
-                    break;
-                }
-            }
-
+            ((ProductionStructure)parentBody.GetStructure(outRate.Key)).storage.AddItem(
+                new Item(productionItemId, amount / count * productionTime * outRate.Value, parentBody.GetMarketPrice(productionItemId), owner.Model, solarIndex, id));
         }
-        if (!found)
-            throw new System.Exception("Component storage not found or nearly full");
+        if (extraProductionRate > 0)
+        {
+            Item item = new Item(productionItemId, amount / count * productionTime * extraProductionRate, parentBody.GetMarketPrice(productionItemId), owner.Model, solarIndex, id);
+            foreach (IStructure structure in parentBody.structures)
+            {
+                if (structure.structureType == StructureTypes.GroundStorage)
+                {
+                    GroundStorage groundStruct = (GroundStorage)structure;
+                    if (groundStruct.owner.Model == owner.Model &&
+                    groundStruct.CanAddItem(item))
+                    {
+                        groundStruct.AddItem(item);
+                        //parentBody.SetSelling(item);
+                        found = true;
+                        break;
+                    }
+                }
+
+            }
+            if (!found)
+                throw new System.Exception("Component storage not found or nearly full");
+        }
+        
         return true;
+    }
+
+    public void UpdateConnectionItems()
+    {
+        connectionItems = new List<KeyValuePair<int, double>>();
+        connectionOutRate = new Dictionary<int, double>();
+        double productionRate = count / productionTime;
+        Dictionary<int,double> connectionProductionRate = new Dictionary<int, double>();
+        double totalConnectionRate = 0;
+
+        //Figures out the rate of material to give to each of it out connections
+        foreach ( int connectionId in structureConnectionIdsOut)
+        {
+            ProductionStructure structure = body.GetStructure(connectionId) as ProductionStructure;
+
+            //Determine which production rates to consider
+            
+            if  (structure.storage.ContainsItem(productionItemId) && 
+                structure.storage.items.Find(x => x.id == productionItemId).amount > 
+                structure.requiredItems.Find(x => x.id == productionItemId).amount * 3 * structure.count)
+            {
+                connectionProductionRate[connectionId] = 0;
+            }
+            else
+            {
+                double rate = structure.count / structure.productionTime;
+                connectionProductionRate[connectionId] = rate;
+                totalConnectionRate += rate;
+            }
+            
+        }
+
+        //Figure out whether the rate of production is greater or less than the rate of consumption
+        extraProductionRate = productionRate - totalConnectionRate;
+
+        if (totalConnectionRate <= productionRate)
+        {
+            //More than enough
+            foreach(KeyValuePair<int,double> rate in connectionProductionRate)
+            {
+                connectionOutRate[rate.Key] = rate.Value;
+            }
+            
+        }
+        else
+        {
+            //Not enough
+            double conversionFactor = productionRate / totalConnectionRate;
+            foreach (KeyValuePair<int, double> rate in connectionProductionRate)
+            {
+                connectionOutRate[rate.Key] = rate.Value * conversionFactor;
+            }
+        }
+
+        //Figures out which materials that are not accounted for and creates a dictionry for the needed rates.
+        neededItemRate = new Dictionary<int, double>();
+
+        foreach(Item item in requiredItems)
+        {
+            neededItemRate[item.id] = item.amount * productionRate;
+        }
+        foreach (int structureId in structureConnectionIdsIn)
+        {
+            neededItemRate.Remove(((ProductionStructure)body.GetStructure(structureId)).productionItemId);
+        }
     }
 }

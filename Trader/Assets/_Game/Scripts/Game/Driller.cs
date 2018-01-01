@@ -11,7 +11,8 @@ public class Driller : ProductionStructure, IWorkers {
 
     public double workerPayRate { get; set; }
 
-    public bool isProducing = true;
+    public bool on = true;
+    public bool isProducing = false;
 
     public Driller() { }
 
@@ -21,7 +22,7 @@ public class Driller : ProductionStructure, IWorkers {
     /// <param name="owner"></param>
     /// <param name="drillerBlueprint"></param>
     /// <param name="_productionItemId"></param>
-    public Driller(IdentityModel owner, ItemBluePrint drillerBlueprint, int _productionItemId, SolarBody body, int _count = 1):
+    public Driller(IdentityModel owner, ItemBlueprint drillerBlueprint, int _productionItemId, SolarBody body, int _count = 1):
         base(owner, _productionItemId,body, _count)
     {
         
@@ -65,14 +66,23 @@ public class Driller : ProductionStructure, IWorkers {
             return;
         var price = parentBody.GetMarketPrice(productionItemId) / productionTime;
         var cost = workers * workerPayRate;
-        info = "Count: " + count + "\nOn: " + isProducing.ToString()+ "\nPrice:Cost " + price + " - " + cost;
-        if (isProducing &&  price > cost)
+        info = "Count: " + count + "\nOn: " + on.ToString()
+            + "\nIs Producing: " + isProducing.ToString()
+            + "\nPrice/Cost " + (price/cost).ToString("0.0000");
+        UpdateConnectionItems();
+        if (on &&  (price > cost ||
+            structureConnectionIdsOut.Exists(x => !((ProductionStructure)parentBody.GetStructure(x)).storage.ContainsItem(productionItemId) ||
+            (((ProductionStructure)parentBody.GetStructure(x)).storage.ContainsItem(productionItemId) &&
+                ((ProductionStructure)parentBody.GetStructure(x)).storage.items.Find(b => b.id == productionItemId).amount <
+                ((ProductionStructure)parentBody.GetStructure(x)).requiredItems.Find(b => b.id == productionItemId).amount * 3 *
+                ((ProductionStructure)parentBody.GetStructure(x)).count))
+            ))
         {
-            if (GameManager.instance.timeScale > 2000)
-            {
-                GameManager.instance.timeScale = 1;
-                GameManager.instance.OpenInfoPanel(this);
-            }
+            //if (GameManager.instance.timeScale > 2000)
+            //{
+            //    GameManager.instance.timeScale = 1;
+            //    GameManager.instance.OpenInfoPanel(this);
+            //}
             
             productionProgress = deltaTime / productionTime;
             DrillResource(parentBody, productionProgress * count);
@@ -106,7 +116,7 @@ public class Driller : ProductionStructure, IWorkers {
                 double amountRemoved = raw.RemoveAmount(amount);
                 StoreCreatedItem(parentBody, amountRemoved);
                 if (amount > amountRemoved)
-                    isProducing = false;
+                    on = false;
                 break;
             }
         }

@@ -332,6 +332,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             text = button.GetComponentInChildren<Text>();
             texts.Add("Info", text);
             text.text = model.structure.info;
+            button.interactable = false;
 
             if (model.structure.structureType == StructureTypes.GroundStorage)
             {
@@ -369,6 +370,71 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button = Instantiate(uiButtonInstance, position);
             button.GetComponentInChildren<Text>().text = "Go to -->";
             button.onClick.AddListener(() => GameManager.instance.GoToTarget(body.solarIndex));
+
+            ProductionStructure productionStructure = model.structure as ProductionStructure;
+            if (productionStructure != null && (productionStructure.structureConnectionIdsIn.Count > 0 || productionStructure.structureConnectionIdsOut.Count > 0))
+            {
+                button = Instantiate(uiButtonInstance, titleContent.transform);
+                button.GetComponentInChildren<Text>().text = "Connections";
+                //name.GetComponent<Image>().color = gov.spriteColor;
+                menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+                index = menuContent.Count - 1;
+                button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+                position = menuContent[index].transform;
+                if (productionStructure.structureConnectionIdsOut.Count > 0)
+                {
+                    button = Instantiate(uiButtonInstance, position);
+                    text = button.GetComponentInChildren<Text>();
+                    text.text = "Connections Out | Rate: " + 
+                        (productionStructure.count/productionStructure.productionTime * Dated.Hour).ToString("0.00") +
+                        " per Hour | Extra: " +
+                        (productionStructure.extraProductionRate * Dated.Hour).ToString("0.00") +
+                        " per Hour";
+                    button.interactable = false;
+
+                    productionStructure.structureConnectionIdsOut.ForEach(x => {
+                        button = Instantiate(uiButtonInstance, position);
+                        text = button.GetComponentInChildren<Text>();
+                        IStructure outStructure = body.structures.Find(b => b.id == x);
+                        text.text = outStructure.name + " Rate: " + (productionStructure.connectionOutRate[x] * Dated.Hour).ToString("0.00") + " per Hour";
+                        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(outStructure));
+                    });
+                }
+                
+                if (productionStructure.structureConnectionIdsIn.Count > 0)
+                {
+                    button = Instantiate(uiButtonInstance, position);
+                    text = button.GetComponentInChildren<Text>();
+                    text.text = "Connections In";
+                    button.interactable = false;
+
+                    productionStructure.structureConnectionIdsIn.ForEach(x => {
+                        button = Instantiate(uiButtonInstance, position);
+                        text = button.GetComponentInChildren<Text>();
+                        IStructure inStructure = body.structures.Find(b => b.id == x);
+                        text.text = inStructure.name;
+                        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(inStructure));
+                    });
+                }
+
+                if (productionStructure.neededItemRate.Count > 0)
+                {
+                    button = Instantiate(uiButtonInstance, position);
+                    text = button.GetComponentInChildren<Text>();
+                    text.text = "Needed Items";
+                    button.interactable = false;
+
+                    foreach(KeyValuePair<int,double> neededItem in productionStructure.neededItemRate) {
+                        button = Instantiate(uiButtonInstance, position);
+                        text = button.GetComponentInChildren<Text>();
+                        ItemBlueprint item = GameManager.instance.data.itemsData.Model.GetItem(neededItem.Key);
+                        text.text = item.name;
+                        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(item.id, TargetType.Item));
+                    }
+
+                }
+
+            }
 
             if (model.structure.structureType == StructureTypes.GroundStorage)
             {
@@ -619,13 +685,23 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             {
 
                 body.rawResources.ForEach(x => {
-                    text = texts["Resources" + x.id];
-                    text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount);
+
+                    if (texts.ContainsKey("Resources" + x.id))
+                    {
+                        text = texts["Resources" + x.id];
+                        text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount); text = texts["Resources" + x.id];
+                        text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount);
+                    }
+                    
                 });
 
                 body.structures.ForEach(x => {
-                    text = texts["Structure" + x.id];
-                    text.text = "Name: " + x.name + " - " + x.owner.Model.name;
+                    if (texts.ContainsKey("Structure" + x.id))
+                    {
+                        text = texts["Structure" + x.id];
+                        text.text = "Name: " + x.name + " - " + x.owner.Model.name;
+                    }
+                        
                 });
 
             }
@@ -646,8 +722,12 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                      Units.ReadItem(((GroundStorage)model.structure).totalStorageAmount * model.structure.count);
 
                 ((GroundStorage)model.structure).storage.items.ForEach(x => {
-                    text = texts["Items" + x.id];
-                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+                    if (texts.ContainsKey("Items" + x.id))
+                    {
+                        text = texts["Items" + x.id];
+                        text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+                    }
+                    
                 });
             }
 
@@ -668,8 +748,11 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 text.text = "Production Percent: " + ((((Factory)model.structure).productionProgress * 100).ToString("0.00") + " %");
 
                 ((Factory)model.structure).storage.items.ForEach(x => {
-                    text = texts["Items" + x.id];
-                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+                    if (texts.ContainsKey("Items" + x.id))
+                    {
+                        text = texts["Items" + x.id];
+                        text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+                    }
                 });
             }
         }

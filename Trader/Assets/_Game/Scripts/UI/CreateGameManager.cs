@@ -60,54 +60,54 @@ public class CreateGameManager : MonoBehaviour {
 
             foreach (RawResourceBlueprint raw in game.data.rawResources.Model.rawResources)
             {
-                var item = new ItemBluePrint(raw);
+                var item = new ItemBlueprint(raw);
                 GameManager.instance.data.itemsData.Model.items.Add(item);
             }
             game.data.itemsData.Model.items.Add(
-                new ItemBluePrint("Fuel Cell", ItemType.Fuel, "A normal fuel cell.", 60, new List<Item>() {
+                new ItemBlueprint("Fuel Cell", ItemType.Fuel, "A normal fuel cell.", 60, new List<Item>() {
                     new Item(defaultRawResources.Fuelodite.ToString(), (int)defaultRawResources.Fuelodite, ItemType.RawMaterial, 10,1,null) }));
             game.data.itemsData.Model.items.Add(
-                new ItemBluePrint("Basic AI", ItemType.AI, "A basic AI unit.", Dated.Hour, new List<Item>() {
+                new ItemBlueprint("Basic AI", ItemType.AI, "A basic AI unit.", Dated.Hour, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 1,1,null),
                     new Item(defaultRawResources.Coppode.ToString(), (int)defaultRawResources.Coppode, ItemType.RawMaterial, 5,1,null)
                 }));
             game.data.itemsData.Model.items.Add(
-                new ItemBluePrint("Basic Machinery", ItemType.FactoryMachinery, "Factory Machinery.", Dated.Hour, new List<Item>() {
+                new ItemBlueprint("Basic Machinery", ItemType.FactoryMachinery, "Factory Machinery.", Dated.Hour, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 10,1,null),
                     new Item(ItemType.AI, 1,1,null)
                 }));
             game.data.itemsData.Model.items.Add(
-                new ItemBluePrint("Basic Factory", ItemType.Factory, "A usable factory.",2 * Dated.Day, new List<Item>() {
+                new ItemBlueprint("Basic Factory", ItemType.Factory, "A usable factory.",2 * Dated.Day, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 250,1,null),
                     new Item(ItemType.FactoryMachinery, 1,1,null)
                 }));
             game.data.itemsData.Model.items.Add(
-               new ItemBluePrint("Basic Driller", ItemType.Driller, "A usable driller.", Dated.Day, new List<Item>() {
+               new ItemBlueprint("Basic Driller", ItemType.Driller, "A usable driller.", Dated.Day, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 200,1,null),
                     new Item(ItemType.FactoryMachinery, 1,1,null)
                }));
             game.data.itemsData.Model.items.Add(
-               new ItemBluePrint("Basic Ground Storgae", ItemType.GroundStorage, "Used to store items.", .5f * Dated.Day, new List<Item>() {
+               new ItemBlueprint("Basic Ground Storgae", ItemType.GroundStorage, "Used to store items.", .5f * Dated.Day, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 100,1,null),
                }));
             game.data.itemsData.Model.items.Add(
-                new ItemBluePrint("Basic Engine", ItemType.Engine, "A usable engine.", .5f * Dated.Day, new List<Item>() {
+                new ItemBlueprint("Basic Engine", ItemType.Engine, "A usable engine.", .5f * Dated.Day, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 20,1,null),
                     new Item(defaultRawResources.Warium.ToString(), (int)defaultRawResources.Warium, ItemType.RawMaterial, 5,1,null)
                 }));
             game.data.itemsData.Model.items.Add(
-                new ItemBluePrint("Ship fueltank", ItemType.FuelTank, "Ship fueltank.", 3 * Dated.Hour, new List<Item>() {
+                new ItemBlueprint("Ship fueltank", ItemType.FuelTank, "Ship fueltank.", 3 * Dated.Hour, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 15,1,null),
                     new Item(defaultRawResources.Limoite.ToString(), (int)defaultRawResources.Limoite, ItemType.RawMaterial, 1,1,null)
                 }));
             game.data.itemsData.Model.items.Add(
-                new ItemBluePrint("Ship sensor", ItemType.Sensor, "Basic ship sensor.", 5 * Dated.Hour, new List<Item>() {
+                new ItemBlueprint("Ship sensor", ItemType.Sensor, "Basic ship sensor.", 5 * Dated.Hour, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 5,1,null),
                     new Item(defaultRawResources.Goldium.ToString(), (int)defaultRawResources.Goldium, ItemType.RawMaterial, 1,1,null),
                     new Item(ItemType.AI, 1,1,null)
                 }));
             game.data.itemsData.Model.items.Add(
-                new ItemBluePrint("Exploration Ship", ItemType.SpaceShip, "Basic ship", 5 * Dated.Day, new List<Item>() {
+                new ItemBlueprint("Exploration Ship", ItemType.SpaceShip, "Basic ship", 5 * Dated.Day, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 200,1,null),
                     new Item(defaultRawResources.Glassitum.ToString(), (int)defaultRawResources.Glassitum, ItemType.RawMaterial, 20,1,null),
                     new Item(ItemType.AI, 1,1,null),
@@ -116,7 +116,7 @@ public class CreateGameManager : MonoBehaviour {
                     new Item(ItemType.Sensor, 1,1,null)
                 }));
             game.data.itemsData.Model.items.Add(
-                new ItemBluePrint("Combat Ship", ItemType.SpaceShip, "Basic combat ship", 8 * Dated.Day, new List<Item>() {
+                new ItemBlueprint("Combat Ship", ItemType.SpaceShip, "Basic combat ship", 8 * Dated.Day, new List<Item>() {
                     new Item(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid, ItemType.RawMaterial, 400,1,null),
                     new Item(defaultRawResources.Glassitum.ToString(), (int)defaultRawResources.Glassitum, ItemType.RawMaterial, 20,1,null),
                     new Item(ItemType.AI, 2,1,null),
@@ -158,13 +158,13 @@ public class CreateGameManager : MonoBehaviour {
 
                 foreach(RawResource raw in parent.rawResources)
                 {
-                    Driller driller = new Driller(gov, raw.id, parent, 50);
+                    Driller driller = new Driller(gov, raw.id, parent, 1);
                     GroundStorage storage = new GroundStorage(gov, parent);
                 }
 
                 var factoryBlueprint = game.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Factory);
 
-                foreach (ItemBluePrint item in game.data.itemsData.Model.items)
+                foreach (ItemBlueprint item in game.data.itemsData.Model.items)
                 {
                     if (item.itemType != ItemType.RawMaterial)
                     {

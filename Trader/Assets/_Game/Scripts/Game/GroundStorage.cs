@@ -54,13 +54,13 @@ public class GroundStorage : IStructure {
 
     public GroundStorage() { }
 
-    public GroundStorage(IdentityModel owner, ItemBluePrint blueprint, SolarBody body, int _count = 1):
+    public GroundStorage(IdentityModel owner, ItemBlueprint blueprint, SolarBody body, int _count = 1):
         this(owner,body,_count)
     {
         
     }
 
-    public GroundStorage(IdentityModel owner, ItemBluePrint blueprint, ItemsList _items, SolarBody body, int _count = 1):
+    public GroundStorage(IdentityModel owner, ItemBlueprint blueprint, ItemsList _items, SolarBody body, int _count = 1):
         this(owner, blueprint,body,_count)
     {
         storage = _items;
@@ -152,8 +152,14 @@ public class GroundStorage : IStructure {
         currentStorageAmount -= (itemAmount - unusedItem.amount);
         if (currentStorageAmount < 0)
         {
-            Debug.Log("current storage below 0: " + currentStorageAmount + " + " + (itemAmount - unusedItem.amount));
             currentStorageAmount = 0;
+            storage.items.ForEach(x => currentStorageAmount += x.amount);
+            if (currentStorageAmount < 0)
+            {
+                Debug.Log("current storage below 0: " + currentStorageAmount + " + " + (itemAmount - unusedItem.amount));
+                currentStorageAmount = 0;
+            }
+                
         }
             
         return unusedItem;

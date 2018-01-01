@@ -6,12 +6,12 @@ using System;
 
 public class ItemsModel: Model{
 
-    public List<ItemBluePrint> items { get; private set; }
+    public List<ItemBlueprint> items { get; private set; }
     
 
-    public ItemsModel() { items = new List<ItemBluePrint>(); }
+    public ItemsModel() { items = new List<ItemBlueprint>(); }
 
-    public ItemBluePrint GetItem(int id)
+    public ItemBlueprint GetItem(int id)
     {
         return items.Find(x => x.id == id);
     }
@@ -215,7 +215,7 @@ public class Item: IPositionEntity
     //}
 }
 
-public struct ItemBluePrint
+public struct ItemBlueprint
 {
     public string name { get; private set; }
     public int id { get; private set; }
@@ -239,7 +239,7 @@ public struct ItemBluePrint
     /// </summary>
     public int workers { get; private set; }
 
-    public ItemBluePrint(string _name, ItemType _itemType, string _desctiption, float _productionTime, List<Item> parts)
+    public ItemBlueprint(string _name, ItemType _itemType, string _desctiption, float _productionTime, List<Item> parts)
     {
         name = _name;
         description = "This is the " + name;
@@ -263,7 +263,7 @@ public struct ItemBluePrint
         coloredName = "<color=" + ColorTypeConverter.ToRGBHex(color) + ">" + name + "</color>";
     }
 
-    public ItemBluePrint(RawResourceBlueprint raw)
+    public ItemBlueprint(RawResourceBlueprint raw)
     {
         name = raw.name;
         description = raw.description;
@@ -411,9 +411,14 @@ public class ItemsList
         return itemIndex != -1;
     }
 
+    public bool ContainsItem(int itemId)
+    {
+        return items.Find(x => x.id == itemId) != null;
+    }
+
     public bool ContainsItem(int itemId, IdentityModel owner)
     {
-        return items.Find(x => x.id == itemId && owner == x.owner.Model).name != "";
+        return items.Find(x => x.id == itemId && owner == x.owner.Model) != null;
     }
 
     public Item Find(Item item, bool owner = true)

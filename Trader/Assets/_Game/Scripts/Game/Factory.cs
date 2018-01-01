@@ -14,6 +14,7 @@ public class Factory : ProductionStructure,IWorkers {
     public double workerPayRate { get; set; }
 
     public bool isProducing;
+    public bool on = true;
 
     public Factory() { }
 
@@ -60,9 +61,17 @@ public class Factory : ProductionStructure,IWorkers {
         var cost = workers * workerPayRate;
 
         requiredItems.ForEach(x => cost += x.amount * x.price / GameManager.instance.data.itemsData.Model.GetItem(x.id).productionTime);
-
-        info = "Count: " + count + "\nPrice:Cost " + price + " - " + cost;
-        if ( price < cost)
+        info = "Count: " + count + "\nOn: " + on.ToString()
+            + "\nIs Producing: " + isProducing.ToString()
+            + "\nPrice/Cost " + (price / cost).ToString("0.0000");
+        UpdateConnectionItems();
+        if (on && (price > cost ||
+            structureConnectionIdsOut.Exists(x => !((ProductionStructure)parentBody.GetStructure(x)).storage.ContainsItem(productionItemId) ||
+            (((ProductionStructure)parentBody.GetStructure(x)).storage.ContainsItem(productionItemId) &&
+                ((ProductionStructure)parentBody.GetStructure(x)).storage.items.Find(b => b.id == productionItemId).amount <
+                ((ProductionStructure)parentBody.GetStructure(x)).requiredItems.Find(b => b.id == productionItemId).amount * 3 *
+                ((ProductionStructure)parentBody.GetStructure(x)).count))
+            ))
         {
             requiredItems.ForEach(x => {
                 parentBody.RemoveBuying(x.id, owner.Model, id, x.amount * count);
