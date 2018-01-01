@@ -689,8 +689,9 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     if (texts.ContainsKey("Resources" + x.id))
                     {
                         text = texts["Resources" + x.id];
-                        text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount); text = texts["Resources" + x.id];
                         text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount);
+                        if (x.timeUntilDepleted > 0)
+                        text.text += "Time to Depletion: " + Dated.ReadTime(x.timeUntilDepleted);
                     }
                     
                 });

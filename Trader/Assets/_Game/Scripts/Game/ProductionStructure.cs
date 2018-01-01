@@ -287,7 +287,7 @@ public class ProductionStructure: IStructure {
     }
 
     public void UpdateConnectionItems()
-    {
+    { 
         connectionItems = new List<KeyValuePair<int, double>>();
         connectionOutRate = new Dictionary<int, double>();
         double productionRate = count / productionTime;

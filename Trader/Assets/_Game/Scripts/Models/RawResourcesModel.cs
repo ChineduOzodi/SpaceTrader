@@ -145,12 +145,17 @@ public class RawResourcesModel: Model
     //}
 }
 
-public struct RawResource
+public class RawResource
 {
     public string name { get; private set; }
     public int id { get; private set; }
     public double amount { get; private set; }
     public double accessibility { get; private set; }
+
+    private double previousTime;
+    private double previousAmount;
+
+    public double timeUntilDepleted { get; private set; }
 
     public RawResource(string _name, int _resourceId, int _amount, float accessibility)
     {
@@ -165,6 +170,27 @@ public struct RawResource
     {        
         if (removeAmount < amount)
         {
+            var time = GameManager.instance.data.date.time;
+            if (previousTime == 0)
+            {
+                previousTime = GameManager.instance.data.date.time;
+                previousAmount = amount;
+            }
+            else if (time - previousTime > Dated.Hour)
+            {
+                var changeAmount = previousAmount - amount + removeAmount;
+                var changeTime = GameManager.instance.data.date.time - previousTime;
+                previousTime = time;
+                previousAmount = amount;
+                if (changeTime == 0)
+                {
+                    changeTime = 1;
+                    changeAmount = 0;
+                    Debug.Log("Change time == 0");
+                }
+                var rate = changeAmount / changeTime;
+                timeUntilDepleted = ( (amount - removeAmount) / rate);
+            }
             amount -= removeAmount;
         }
         else
