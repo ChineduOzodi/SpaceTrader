@@ -26,8 +26,8 @@ public class SolarModel : Model, IPositionEntity {
     internal float localScale;
 
     //----------------Commerce-----------------------------//
-    public ItemsList buyList { get; private set; }
-    public ItemsList sellList { get; private set; }
+    public ItemStorage buyList { get; private set; }
+    public ItemStorage sellList { get; private set; }
     public List<SupplyDemand> supplyDemand { get; private set; }
 
     public List<int> solarIndex { get; set; }
@@ -45,8 +45,8 @@ public class SolarModel : Model, IPositionEntity {
         shipId = -1;
         this.solarIndex = new List<int>() { index };
         supplyDemand = new List<SupplyDemand>();
-        buyList = new ItemsList();
-        sellList = new ItemsList();
+        buyList = new ItemStorage();
+        sellList = new ItemStorage();
 
         // Create star
 
@@ -221,14 +221,11 @@ public class SolarModel : Model, IPositionEntity {
         int itemIndex = -1;
         if (item.structureId == -1)
         {
-            if (item.owner != null)
-                itemIndex = buyList.items.FindIndex(x => x.id == item.id);
-            else
-            itemIndex = buyList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+            itemIndex = buyList.items.FindIndex(x => x.id == item.id);
         }
         else
         {
-            itemIndex = buyList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+            itemIndex = buyList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
         }
         if (itemIndex >= 0)
         {
@@ -240,17 +237,17 @@ public class SolarModel : Model, IPositionEntity {
         }
     }
 
-    public void RemoveBuying(int itemId, IdentityModel owner, int structureId, double amount)
+    public void RemoveBuying(int itemId, int structureId, double amount)
     {
 
         int itemIndex = -1;
         if (structureId == -1)
         {
-            itemIndex = buyList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model);
+            itemIndex = buyList.items.FindIndex(x => x.id == itemId);
         }
         else
         {
-            itemIndex = buyList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model && x.structureId == structureId);
+            itemIndex = buyList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
         }
 
         if (itemIndex >= 0)
@@ -266,14 +263,11 @@ public class SolarModel : Model, IPositionEntity {
         int itemIndex = -1;
         if (item.structureId == -1)
         {
-            if (item.owner != null)
-                itemIndex = sellList.items.FindIndex(x => x.id == item.id);
-            else
-                itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id);
         }
         else
         {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
         }
         if (itemIndex >= 0)
         {
@@ -289,14 +283,11 @@ public class SolarModel : Model, IPositionEntity {
         int itemIndex = -1;
         if (item.structureId == -1)
         {
-            if (item.owner != null)
-                itemIndex = sellList.items.FindIndex(x => x.id == item.id);
-            else
-                itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id);
         }
         else
         {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
         }
         if (itemIndex >= 0)
         {
@@ -304,17 +295,17 @@ public class SolarModel : Model, IPositionEntity {
         }
     }
 
-    public void RemoveSelling(int itemId, IdentityModel owner, int structureId, double amount)
+    public void RemoveSelling(int itemId, int structureId, double amount)
     {
 
         int itemIndex = -1;
         if (structureId == -1)
         {
-            itemIndex = sellList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model);
+            itemIndex = sellList.items.FindIndex(x => x.id == itemId);
         }
         else
         {
-            itemIndex = sellList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model && x.structureId == structureId);
+            itemIndex = sellList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
         }
 
         if (itemIndex >= 0)

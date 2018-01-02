@@ -74,7 +74,7 @@ public class Factory : ProductionStructure,IWorkers {
             ))
         {
             requiredItems.ForEach(x => {
-                parentBody.RemoveBuying(x.id, owner.Model, id, x.amount * count);
+                parentBody.RemoveBuying(x.id, id, x.amount * count);
                 x.price = parentBody.GetMarketPrice(x.id);
             }
             );

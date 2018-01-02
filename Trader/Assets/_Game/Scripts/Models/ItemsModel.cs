@@ -23,7 +23,6 @@ public class Item: IPositionEntity
     public ItemType itemType { get; private set; }
     public int id { get; private set; }
     public double amount { get; private set; }
-    public ModelRef<IdentityModel> owner = new ModelRef<IdentityModel>();
     public double price;
     public double estimatedValue { get; private set; }
 
@@ -67,7 +66,7 @@ public class Item: IPositionEntity
     public int structureId { get; set; }
     public int shipId { get; set; }
 
-    public Item(int _itemId, double _amount, double _price, IdentityModel owner, List<int> _solarIndex, int _structureId = -1)
+    public Item(int _itemId, double _amount, double _price, List<int> _solarIndex, int _structureId = -1)
     {
 
         id = _itemId;
@@ -77,8 +76,6 @@ public class Item: IPositionEntity
         structureId = _structureId;
         shipId = -1;
         solarIndex = _solarIndex;
-        if (owner != null)
-            this.owner = new ModelRef<IdentityModel>(owner);
         price = _price;
         itemType = ItemType.AI;
         itemType = GetItemType();
@@ -91,7 +88,6 @@ public class Item: IPositionEntity
         name = GameManager.instance.data.itemsData.Model.GetItem(id).name;
         estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         amount = _amount;
-        this.owner = null;
         shipId = -1;
         structureId = -1;
         price = _price;
@@ -100,13 +96,12 @@ public class Item: IPositionEntity
 
     }
 
-    public Item(string _name, int _itemId, ItemType type, int _amount, double _price, IdentityModel owner)
+    public Item(string _name, int _itemId, ItemType type, int _amount, double _price)
     {
 
         id = _itemId;
         name = _name;
         amount = _amount;
-        this.owner = new ModelRef<IdentityModel>(owner);
         estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         price = _price;
         itemType = ItemType.AI;
@@ -116,14 +111,13 @@ public class Item: IPositionEntity
         structureId = -1;
     }
 
-    public Item(ItemType type, int _amount, double _price, IdentityModel owner)
+    public Item(ItemType type, int _amount, double _price)
     {
         var itemBlueprint = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == type);
         id = itemBlueprint.id;
         name = itemBlueprint.name;
         estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         amount = _amount;
-        this.owner = new ModelRef<IdentityModel>(owner);
         price = _price;
         itemType = type;
 
@@ -285,31 +279,28 @@ public struct ItemBlueprint
     }
 }
 
-public class ItemsList
+public class ItemStorage
 {
-    public List<Item> items;
+    public List<Item> items = new List<Item>();
+    public int structureId = -1;
 
-    public ItemsList()
+    public ItemStorage() {    }
+    public ItemStorage(int _structureId)
     {
-        items = new List<Item>();
+        structureId = _structureId;
     }
     public bool SetAmount(Item item)
     {
         int itemIndex = -1;
-        if (item.structureId == -1)
-        {
-            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
-        }
-        else
-        {
-            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
-        }
+        itemIndex = items.FindIndex(x => x.id == item.id);
+
         if (itemIndex >= 0)
         {
             items[itemIndex].SetAmount(item.amount, item.price);
         }
         else
         {
+            item.structureId = structureId;
             items.Add(item);
         }
         return true;
@@ -317,39 +308,31 @@ public class ItemsList
     public bool AddItem(Item item)
     {
         int itemIndex = -1;
-        if (item.structureId == -1)
-        {
-            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
-        }
-        else
-        {
-            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
-        }
+        itemIndex = items.FindIndex(x => x.id == item.id);
+
         if (itemIndex >= 0)
         {
             items[itemIndex].AddAmount(item.amount, item.price);
         }
         else
         {
+            item.structureId = structureId;
             items.Add(item);
         }
         return true;
     }
 
-    public bool UseItem(Item item, bool owner = true )
+    public bool UseItem(Item item)
     {
         int itemIndex = -1;
-        if (!owner)
-        {
-            itemIndex = items.FindIndex(x => x.id == item.id);
-        }
-        else if (item.structureId == -1)
-        {
-            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
-        }
-        else if (item.owner == null || item.owner.Model == null)
-            itemIndex = items.FindIndex(x => x.id == item.id);
-        else itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        itemIndex = items.FindIndex(x => x.id == item.id);
+
+        //if (item.structureId == -1)
+        //{
+        //    itemIndex = items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
+        //}
+        //else
+        //    itemIndex = items.FindIndex(x => x.id == item.id);
 
         if (itemIndex >= 0)
         {
@@ -374,13 +357,7 @@ public class ItemsList
     public Item UseAsMuchItem(Item item)
     {
         int itemIndex = -1;
-        if (item.structureId == -1)
-        {
-            itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
-        }
-        else if (item.owner == null || item.owner.Model == null)
-            itemIndex = items.FindIndex(x => x.id == item.id);
-        else itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        itemIndex = items.FindIndex(x => x.id == item.id);
 
         if (itemIndex >= 0)
         {
@@ -401,12 +378,10 @@ public class ItemsList
         throw new Exception("Could not find item " + item.name);
     }
 
-    public bool ContainsItem(Item item, bool owner = true)
+    public bool ContainsItem(Item item)
     {
         int itemIndex = -1;
-        if (item.owner == null || item.owner.Model == null || !owner)
-            itemIndex = items.FindIndex(x => x.id == item.id);
-        else itemIndex = items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        itemIndex = items.FindIndex(x => x.id == item.id);
 
         return itemIndex != -1;
     }
@@ -415,17 +390,14 @@ public class ItemsList
     {
         return items.Find(x => x.id == itemId) != null;
     }
-
-    public bool ContainsItem(int itemId, IdentityModel owner)
+    /// <summary>
+    /// Finds item with the same id stored in ItemStorage.
+    /// </summary>
+    /// <param name="item">item to look for</param>
+    /// <returns>item that was found, or null</returns>
+    public Item Find(Item item)
     {
-        return items.Find(x => x.id == itemId && owner == x.owner.Model) != null;
-    }
-
-    public Item Find(Item item, bool owner = true)
-    {
-        if (item.owner == null || item.owner.Model == null || !owner)
-            return items.Find(x => x.id == item.id);
-        else return items.Find(x => x.id == item.id && item.owner.Model == x.owner.Model);
+        return items.Find(x => x.id == item.id);
     }
     public Item Find(int itemId)
     {

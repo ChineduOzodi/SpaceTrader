@@ -48,12 +48,11 @@ public class Station: ProductionStructure, IWorkers {
         //        planetItems.Add(new Item(x.id, Mathd.Ceil(Mathd.Pow(body.population,.5) / (Mathd.Pow(x.productionTime, 1.25))), 1,owner, solarIndex));
         //});
         var fuel = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
-        requiredItems = new List<Item>() { new Item(fuel.id, 100, fuel.estimatedValue,owner, solarIndex)};
+        requiredItems = new List<Item>() { new Item(fuel.id, 100, fuel.estimatedValue, solarIndex)};
 
         requiredItems.AddRange(planetItems);
         requiredItems.ForEach(x => {
             x.price = body.GetMarketPrice(x.id);
-            x.owner.Model = owner;
         });
         body.structures.Add(this);
         owner.AddSolarBodyWithStructure(body);

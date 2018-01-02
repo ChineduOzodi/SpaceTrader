@@ -91,7 +91,7 @@ public class Ship: IStructure, IWorkers, IGoap {
         this.fuelEfficiency = Random.Range(5000f, 1000f) * (1 - this.passangerCapacity / 200f + .5f);
         this.fuelCapacity = (int)(Random.Range(50, 200) * (this.passangerCapacity / 200f + .5f));
         var fuelBluePrint = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
-        this.fuel = new Item(fuelBluePrint.id,fuelCapacity, 1, owner, this.solarIndex);
+        this.fuel = new Item(fuelBluePrint.id,fuelCapacity, 1, this.solarIndex);
         this.fuel.shipId = this.id;
 
         agent = new GoapAgent(this, new GoapAction[] {

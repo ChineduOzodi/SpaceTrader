@@ -199,8 +199,8 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     solar.buyList.items.ForEach(x => {
                         button = Instantiate(uiButtonInstance, position);
                         text = button.GetComponentInChildren<Text>();
-                        texts.Add("BuyList" + x.id + x.owner + x.structureId, text);
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
+                        texts.Add("BuyList" + x.id + x.structureId, text);
+                        text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                         var structure = body.GetStructure(x.structureId);
                         if (structure != null)
                             button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
@@ -222,8 +222,8 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     solar.sellList.items.ForEach(x => {
                         button = Instantiate(uiButtonInstance, position);
                         text = button.GetComponentInChildren<Text>();
-                        texts.Add("SellList" + x.id + x.owner + x.structureId, text);
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
+                        texts.Add("SellList" + x.id + x.structureId, text);
+                        text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                         var structure = body.GetStructure(x.structureId);
                         if (structure != null)
                             button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
@@ -267,8 +267,8 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     body.buyList.items.ForEach(x => {
                         button = Instantiate(uiButtonInstance, position);
                         text = button.GetComponentInChildren<Text>();
-                        texts.Add("BuyList" + x.id + x.owner + x.structureId, text);
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
+                        texts.Add("BuyList" + x.id + x.structureId, text);
+                        text.text = x.name  + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                         var structure = body.GetStructure(x.structureId);
                         if (structure != null)
                             button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
@@ -290,8 +290,8 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                     body.sellList.items.ForEach(x => {
                         button = Instantiate(uiButtonInstance, position);
                         text = button.GetComponentInChildren<Text>();
-                        texts.Add("SellList" + x.id + x.owner + x.structureId, text);
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
+                        texts.Add("SellList" + x.id + x.structureId, text);
+                        text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                         var structure = body.GetStructure(x.structureId);
                         if (structure != null)
                             button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
@@ -634,16 +634,16 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 {
 
                     solar.buyList.items.ForEach(x => {
-                        if (texts.TryGetValue("SellList" + x.id + x.owner + x.structureId, out text))
-                            text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c";
+                        if (texts.TryGetValue("SellList" + x.id  + x.structureId, out text))
+                            text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c";
                     });
                 }
 
                 if (solar.sellList.items.Count > 0)
                 {
                     solar.sellList.items.ForEach(x => {
-                        if (texts.TryGetValue("SellList" + x.id + x.owner + x.structureId, out text))
-                            text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c";
+                        if (texts.TryGetValue("SellList" + x.id + x.structureId, out text))
+                            text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c";
                     });
                 }
 
@@ -662,16 +662,16 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 {
 
                     body.buyList.items.ForEach(x => {
-                        if (texts.TryGetValue("BuyList" + x.id + x.owner + x.structureId, out text))
-                            text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
+                        if (texts.TryGetValue("BuyList" + x.id + x.structureId, out text))
+                            text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                     });
                 }
 
                 if (body.sellList.items.Count > 0)
                 {
                     body.sellList.items.ForEach(x => {
-                        if (texts.TryGetValue("SellList" + x.id + x.owner + x.structureId, out text))
-                        text.text = x.name + " - " + x.owner.Model.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
+                        if (texts.TryGetValue("SellList" + x.id + x.structureId, out text))
+                        text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
                     });
                 }
             }

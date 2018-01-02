@@ -55,11 +55,9 @@ public class BuildStructure : ProductionStructure, IWorkers {
         buildStructureType = _structureType;
         
         this.structureItemId = structureItemId;
-        requiredItems = new List<Item>() { new Item(product.id, 1, 1, owner, solarIndex) };
-        requiredItems.ForEach(x => { x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);
-            x.owner.Model = owner;
-        });
-        storage = new ItemsList();
+        requiredItems = new List<Item>() { new Item(product.id, 1, 1, solarIndex) };
+        requiredItems.ForEach(x => { x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);});
+        storage = new ItemStorage();
 
         maxArmor = product.baseArmor * .5f;
         currentArmor = maxArmor;

@@ -8,7 +8,7 @@ public class GroundStorage : IStructure {
     public double totalStorageAmount;
     public double currentStorageAmount;
 
-    public ItemsList storage = new ItemsList();
+    public ItemStorage storage = new ItemStorage();
 
     public StructureTypes structureType { get; set; }
 
@@ -60,7 +60,7 @@ public class GroundStorage : IStructure {
         
     }
 
-    public GroundStorage(IdentityModel owner, ItemBlueprint blueprint, ItemsList _items, SolarBody body, int _count = 1):
+    public GroundStorage(IdentityModel owner, ItemBlueprint blueprint, ItemStorage _items, SolarBody body, int _count = 1):
         this(owner, blueprint,body,_count)
     {
         storage = _items;
@@ -124,7 +124,6 @@ public class GroundStorage : IStructure {
     {
         if (currentStorageAmount + item.amount > totalStorageAmount * count)
             return false;
-        item.owner.Model = owner.Model;
         storage.AddItem(item);
         currentStorageAmount += item.amount;
         return true;

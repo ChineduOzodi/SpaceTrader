@@ -28,8 +28,8 @@ public class SolarBody: IPositionEntity
     public List<IStructure> structures = new List<IStructure>();
     public bool deleteStructure;
     //----------------Commerce-----------------------------//
-    public ItemsList buyList { get; private set; }
-    public ItemsList sellList { get; private set; }
+    public ItemStorage buyList { get; private set; }
+    public ItemStorage sellList { get; private set; }
 
     public ModelRefs<IdentityModel> companies = new ModelRefs<IdentityModel>();
 
@@ -108,8 +108,8 @@ public class SolarBody: IPositionEntity
         surfacePressure = 1;
         greenhouse = .0137328 * Mathd.Pow(surfacePressure, 2) + .0986267 * surfacePressure;
 
-        buyList = new ItemsList();
-        sellList = new ItemsList();
+        buyList = new ItemStorage();
+        sellList = new ItemStorage();
     }
 
     public SolarBody(string _name, List<int> _solarIndex, SolarType _solarType, SolarSubType _solarSubType, double mass, double radius, Orbit orbit, Color _color, SolarBody star)
@@ -130,8 +130,8 @@ public class SolarBody: IPositionEntity
         surfacePressure = 0; // In atm
         bondAlebo = Random.value;
 
-        buyList = new ItemsList();
-        sellList = new ItemsList();
+        buyList = new ItemStorage();
+        sellList = new ItemStorage();
 
         var dist = orbit.sma;
         if (solarIndex.Count == 3)
@@ -423,11 +423,11 @@ public class SolarBody: IPositionEntity
         int itemIndex = -1;
         if (item.structureId == -1)
         {
-            itemIndex = buyList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+            itemIndex = buyList.items.FindIndex(x => x.id == item.id);
         }
         else
         {
-            itemIndex = buyList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+            itemIndex = buyList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
         }
         if (itemIndex >= 0)
         {
@@ -440,17 +440,17 @@ public class SolarBody: IPositionEntity
 
         GameManager.instance.data.stars[solarIndex[0]].SetBuying(item);
     }
-    public void RemoveBuying(int itemId, IdentityModel owner, int structureId, double amount)
+    public void RemoveBuying(int itemId, int structureId, double amount)
     {
 
         int itemIndex = -1;
         if (structureId == -1)
         {
-            itemIndex = buyList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model);
+            itemIndex = buyList.items.FindIndex(x => x.id == itemId);
         }
         else
         {
-            itemIndex = buyList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model && x.structureId == structureId);
+            itemIndex = buyList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
         }
 
         if (itemIndex >= 0)
@@ -460,7 +460,7 @@ public class SolarBody: IPositionEntity
                 buyList.items.RemoveAt(itemIndex);
         }
 
-        GameManager.instance.data.stars[solarIndex[0]].RemoveBuying(itemId,owner,structureId, amount);
+        GameManager.instance.data.stars[solarIndex[0]].RemoveBuying(itemId,structureId, amount);
     }
 
     public void SetSelling(Item item)
@@ -468,14 +468,11 @@ public class SolarBody: IPositionEntity
         int itemIndex = -1;
         if (item.structureId == -1)
         {
-            if (item.owner != null)
-                itemIndex = sellList.items.FindIndex(x => x.id == item.id);
-            else
-                itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model);
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id);
         }
         else
         {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id && item.owner.Model == x.owner.Model && x.structureId == item.structureId);
+            itemIndex = sellList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
         }
         if (itemIndex >= 0)
         {
@@ -490,17 +487,17 @@ public class SolarBody: IPositionEntity
     
     
 
-    public void RemoveSelling(int itemId, IdentityModel owner, int structureId, double amount)
+    public void RemoveSelling(int itemId, int structureId, double amount)
     {
 
         int itemIndex = -1;
         if (structureId == -1)
         {
-            itemIndex = sellList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model);
+            itemIndex = sellList.items.FindIndex(x => x.id == itemId);
         }
         else
         {
-            itemIndex = sellList.items.FindIndex(x => x.id == itemId && owner == x.owner.Model && x.structureId == structureId);
+            itemIndex = sellList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
         }
 
         if (itemIndex >= 0)
@@ -510,7 +507,7 @@ public class SolarBody: IPositionEntity
                 sellList.items.RemoveAt(itemIndex);
         }
 
-        GameManager.instance.data.stars[solarIndex[0]].RemoveSelling(itemId, owner, structureId, amount);
+        GameManager.instance.data.stars[solarIndex[0]].RemoveSelling(itemId, structureId, amount);
     }
 
     #endregion

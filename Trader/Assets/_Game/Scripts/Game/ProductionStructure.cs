@@ -25,7 +25,7 @@ public class ProductionStructure: IStructure {
     /// Stores information of the items that are needed or that have surpluses.
     /// </summary>
     public List<KeyValuePair<int, double>> connectionItems = new List<KeyValuePair<int, double>>();
-    public ItemsList storage = new ItemsList();
+    public ItemStorage storage = new ItemStorage();
 
     public StructureTypes structureType { get; set; }
 
@@ -91,7 +91,7 @@ public class ProductionStructure: IStructure {
 
     public ProductionStructure(IdentityModel owner, int _productionItemId, SolarBody body, int _count = 1)
     {
-        storage = new ItemsList();
+        storage = new ItemStorage();
 
         id = GameManager.instance.data.id++;
         this.owner = new ModelRef<IdentityModel>(owner);
@@ -105,7 +105,6 @@ public class ProductionStructure: IStructure {
         requiredItems = product.contstructionParts;
         requiredItems.ForEach(x => {
             x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);
-            x.owner.Model = owner;
         });
 
         foreach (IStructure structure in body.structures)
@@ -184,19 +183,19 @@ public class ProductionStructure: IStructure {
         foreach (Item item in requiredItems)
         {
             double neededAmount = item.amount * count;
-            if (storage.ContainsItem(item, false))
+            if (storage.ContainsItem(item))
             {
-                neededAmount -= storage.Find(item, false).amount;
+                neededAmount -= storage.Find(item).amount;
             }
             if (neededAmount <= 0)
             {
                 item.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(item.id);
-                parentBody.RemoveBuying(item.id, owner.Model, id, item.amount);
+                parentBody.RemoveBuying(item.id, id, item.amount);
                 itemCount++;
             }
             else
             {
-                var neededItem = new Item(item.id, neededAmount, item.price, owner.Model, solarIndex, id);
+                var neededItem = new Item(item.id, neededAmount, item.price, solarIndex, id);
                 var found = false;
                 foreach (IStructure structure in parentBody.structures)
                 {
@@ -211,8 +210,8 @@ public class ProductionStructure: IStructure {
                             storage.AddItem(neededItem);
 
 
-                            parentBody.RemoveBuying(item.id, owner.Model, id, neededItem.amount);
-                            parentBody.RemoveSelling(item.id, owner.Model, id, neededItem.amount);
+                            parentBody.RemoveBuying(item.id, id, neededItem.amount);
+                            parentBody.RemoveSelling(item.id, id, neededItem.amount);
                             neededAmount = itemAmount - neededItem.amount;
                             if (neededAmount <= 0)
                             {
@@ -220,7 +219,7 @@ public class ProductionStructure: IStructure {
                                 found = true;
                                 break;
                             }
-                            neededItem = new Item(item.id, neededAmount, item.price, owner.Model, solarIndex, id);
+                            neededItem = new Item(item.id, neededAmount, item.price, solarIndex, id);
                         }
                     }
                 }
@@ -244,8 +243,8 @@ public class ProductionStructure: IStructure {
     {
         foreach (Item item in requiredItems)
         {
-            Item use = new Item(item.id, item.amount * count, item.price, item.owner.Model, item.solarIndex, item.structureId);
-            var found = storage.UseItem(use, false);
+            Item use = new Item(item.id, item.amount * count, item.price, item.solarIndex, item.structureId);
+            var found = storage.UseItem(use);
             if (!found)
                 throw new System.Exception("Item is not found in correct amount");
         }
@@ -258,11 +257,11 @@ public class ProductionStructure: IStructure {
         foreach( KeyValuePair<int,double> outRate in connectionOutRate)
         {
             ((ProductionStructure)parentBody.GetStructure(outRate.Key)).storage.AddItem(
-                new Item(productionItemId, amount / count * productionTime * outRate.Value, parentBody.GetMarketPrice(productionItemId), owner.Model, solarIndex, id));
+                new Item(productionItemId, amount / count * productionTime * outRate.Value, parentBody.GetMarketPrice(productionItemId), solarIndex, id));
         }
         if (extraProductionRate > 0)
         {
-            Item item = new Item(productionItemId, amount / count * productionTime * extraProductionRate, parentBody.GetMarketPrice(productionItemId), owner.Model, solarIndex, id);
+            Item item = new Item(productionItemId, amount / count * productionTime * extraProductionRate, parentBody.GetMarketPrice(productionItemId), solarIndex, id);
             foreach (IStructure structure in parentBody.structures)
             {
                 if (structure.structureType == StructureTypes.GroundStorage)
