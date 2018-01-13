@@ -75,7 +75,7 @@ namespace vietlabs {
 
         public static void Check() {
             var e = Event.current;
-            if (e.type != EventType.keyDown || e.keyCode == KeyCode.None) return;
+            if (e.type != EventType.KeyDown || e.keyCode == KeyCode.None) return;
 
             var hasKeyChain = keyChain.code != KeyCode.None && keyChain.ctrl == e.control && keyChain.alt == e.alt && keyChain.shift == e.shift;
             var shortcut = new KBShortcut{

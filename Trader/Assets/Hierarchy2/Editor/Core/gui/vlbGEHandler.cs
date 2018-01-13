@@ -52,18 +52,18 @@ public class vlbGEHandler<T> {//where T : Object
     public vlbGEHandler<T> ReadMouse()
     {
         var e = Event.current;
-        d = d.xBit((int)vlbGE.LMB_DOWN,  e.type == EventType.mouseDown   && e.button == 0)
-             .xBit((int)vlbGE.LMB_UP,    e.type == EventType.mouseUp     && e.button == 0)
-             .xBit((int)vlbGE.RMB_DOWN,  e.type == EventType.mouseDown   && e.button == 1)
-             .xBit((int)vlbGE.RMB_UP,    e.type == EventType.mouseUp     && e.button == 1);
+        d = d.xBit((int)vlbGE.LMB_DOWN,  e.type == EventType.MouseDown   && e.button == 0)
+             .xBit((int)vlbGE.LMB_UP,    e.type == EventType.MouseUp     && e.button == 0)
+             .xBit((int)vlbGE.RMB_DOWN,  e.type == EventType.MouseDown   && e.button == 1)
+             .xBit((int)vlbGE.RMB_UP,    e.type == EventType.MouseUp     && e.button == 1);
         return this;
     }
 
     public vlbGEHandler<T> ReadKeyboard()
     {
         var e = Event.current;
-        d = d.xBit((int)vlbGE.KEY_DOWN, e.type == EventType.keyDown)
-             .xBit((int)vlbGE.KEY_UP, e.type == EventType.keyUp);
+        d = d.xBit((int)vlbGE.KEY_DOWN, e.type == EventType.KeyDown)
+             .xBit((int)vlbGE.KEY_UP, e.type == EventType.KeyUp);
         return this;
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 public static class GuiEventX {
     public static GEInfo xLMB_isUp(this Rect r) {
         var e = Event.current;
-        return new GEInfo {prequisite = e.type == EventType.mouseUp && e.button == 0 && r.Contains(e.mousePosition)};
+        return new GEInfo {prequisite = e.type == EventType.MouseUp && e.button == 0 && r.Contains(e.mousePosition)};
     }
 
     public static GEInfo xLMB_isDrag(this Rect r) {
@@ -14,27 +14,27 @@ public static class GuiEventX {
 
     public static GEInfo xLMB_isDown(this Rect r) {
         var e = Event.current;
-        return new GEInfo {prequisite = e.type == EventType.mouseDown && e.button == 0 && r.Contains(e.mousePosition)};
+        return new GEInfo {prequisite = e.type == EventType.MouseDown && e.button == 0 && r.Contains(e.mousePosition)};
     }
 
     public static GEInfo xRMB_isDown(this Rect r) {
         var e = Event.current;
-        return new GEInfo {prequisite = e.type == EventType.mouseDown && e.button == 1 && r.Contains(e.mousePosition)};
+        return new GEInfo {prequisite = e.type == EventType.MouseDown && e.button == 1 && r.Contains(e.mousePosition)};
     }
 
     public static GEInfo xRMB_isUp(this Rect r) {
         var e = Event.current;
-        return new GEInfo {prequisite = e.type == EventType.mouseUp && e.button == 1 && r.Contains(e.mousePosition)};
+        return new GEInfo {prequisite = e.type == EventType.MouseUp && e.button == 1 && r.Contains(e.mousePosition)};
     }
 
     public static GEInfo xKey_isDown(this KeyCode key) {
         var e = Event.current;
-        return new GEInfo {prequisite = e.type == EventType.keyDown && e.keyCode == key};
+        return new GEInfo {prequisite = e.type == EventType.KeyDown && e.keyCode == key};
     }
 
     public static GEInfo xKey_isUp(this KeyCode key) {
         var e = Event.current;
-        return new GEInfo {prequisite = e.type == EventType.keyUp && e.keyCode == key};
+        return new GEInfo {prequisite = e.type == EventType.KeyUp && e.keyCode == key};
     }
 }
 

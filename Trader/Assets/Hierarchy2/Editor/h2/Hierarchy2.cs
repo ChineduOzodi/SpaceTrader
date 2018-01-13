@@ -204,7 +204,7 @@ namespace vietlabs {
 
         static bool h2IsEnabled() {
             var e = Event.current;
-            if (e.type != EventType.keyUp || !e.alt || !e.control || !e.shift || e.keyCode != KeyCode.Alpha0) return h2Settings.enable;
+            if (e.type != EventType.KeyUp || !e.alt || !e.control || !e.shift || e.keyCode != KeyCode.Alpha0) return h2Settings.enable;
 
             h2Settings.enable = !h2Settings.enable;
             if (h2Settings.useSceneViewHL) {

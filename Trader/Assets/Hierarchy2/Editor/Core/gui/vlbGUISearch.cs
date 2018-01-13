@@ -72,7 +72,7 @@ internal class vlbGUISearch {
 			GUI.FocusControl(gID);
 			EditorGUI.FocusTextInControl(gID);
 
-			if (focus && evt.type == EventType.repaint) {
+			if (focus && evt.type == EventType.Repaint) {
 				gainFocus = false;
 			}
 		}

@@ -75,7 +75,7 @@ public class vlbStringArray {
 
                     //Debug.Log(Event.current + ":" + r.Contains(Event.current.mousePosition) + ":" + GUI.GetNameOfFocusedControl
                     //remove focus when click outside
-                    if (GUI.GetNameOfFocusedControl() == focusName && !r.Contains(Event.current.mousePosition) && Event.current.type == EventType.mouseDown) {
+                    if (GUI.GetNameOfFocusedControl() == focusName && !r.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown) {
                         GUI.FocusControl(null);
                         _needRepaint = true;
                     }

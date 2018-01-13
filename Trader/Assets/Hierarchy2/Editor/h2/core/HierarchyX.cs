@@ -329,12 +329,12 @@ public static class HierarchyX {
                 return;
             }
 
-            if (Event.current.type == EventType.repaint && renameStep > 0) {
+            if (Event.current.type == EventType.Repaint && renameStep > 0) {
                 renameStep--;
                 //hWindow.Repaint();
             }
 
-            if (Event.current.type != EventType.repaint && renameStep == 0) renameGO = null;
+            if (Event.current.type != EventType.Repaint && renameStep == 0) renameGO = null;
         }
         //}
     }

@@ -64,9 +64,9 @@ public static class GuiX {
     public static LabelWidthG LabelWidth(float w) { return new LabelWidthG(w); }
 
 
-    public static bool xIsLayout(this Event evt) { return evt.type == EventType.layout; }
-    public static bool xIsNotLayout(this Event evt) { return evt.type != EventType.layout; }
-    public static bool xIsNotUsed(this Event evt) { return evt.type != EventType.used; }
+    public static bool xIsLayout(this Event evt) { return evt.type == EventType.Layout; }
+    public static bool xIsNotLayout(this Event evt) { return evt.type != EventType.Layout; }
+    public static bool xIsNotUsed(this Event evt) { return evt.type != EventType.Used; }
 
     public static bool xIconSelector(this Rect r, ref int selected, params Texture2D[] textureList) {
         var n = textureList.Length;
@@ -287,7 +287,7 @@ public static class GuiX {
 
         var rr = r.wh(autoSize ? lbRect.x : r.width, r.height);
 
-        if (Event.current.type == EventType.repaint) {
+        if (Event.current.type == EventType.Repaint) {
             GUI.DrawTexture(rr, bgTex);
             var offsetX = Mathf.Max(0, rr.width - lbRect.x) * lbAlign;
             var offsetY = (rr.height - h) * 0.5f;

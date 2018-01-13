@@ -23,7 +23,7 @@ namespace vietlabs {
                     break;
             }
 
-            if (Event.current.type == EventType.repaint) {
+            if (Event.current.type == EventType.Repaint) {
                 var drawnInstanceIDs = new HashSet<int>();
 
                 Color handleColor = Handles.color;

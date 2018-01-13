@@ -1,8 +1,15 @@
-Base path: E:/Program Files/Unity/Editor/Data
+Base path: C:/Program Files/Unity 2018.1.0b2/Editor/Data
 Cmd: initializeCompiler
-Cmd: compileSnippet
-  api=1 type=0 insize=1895 outsize=732 kw=SOFTPARTICLES_ON pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1
-Cmd: compileSnippet
-  error: 2 plat 1 at (45): maximum ps_3_0 constant register index (224) exceeded - Try reducing number of constants referenced\nCompiling Fragment program
-Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
-  api=1 type=1 insize=1659 outsize=0 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileComputeKernel
+  api=4 insize=3273 outsize=2237 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1526 outsize=1509 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5207 outsize=6133 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2343 outsize=1317 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1331 outsize=1729 ok=1
+Cmd: initializeCompiler
+Cmd: initializeCompiler
+Cmd: initializeCompiler

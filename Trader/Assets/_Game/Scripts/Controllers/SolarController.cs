@@ -151,9 +151,6 @@ public class SolarController : Controller<SolarModel> {
             };
             supplyDemandProgress = 0;
         }
-        
-
-
 
         List<Vector3> linePoints = new List<Vector3>();
         List<Color32> lineColors = new List<Color32>();

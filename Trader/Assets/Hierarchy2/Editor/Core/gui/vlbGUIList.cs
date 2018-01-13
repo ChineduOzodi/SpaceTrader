@@ -91,7 +91,7 @@ namespace vietlabs {
 		}
 
 		internal Rect AnimateStep() {
-			if (!IsAnimate || Event.current.type != EventType.repaint) { return _cRect; }
+			if (!IsAnimate || Event.current.type != EventType.Repaint) { return _cRect; }
 			_cRect = _cRect.xLerp(_tRect, 0.1f);
 			return CheckAnimate.CurrentRect;
 		}
@@ -290,7 +290,7 @@ namespace vietlabs {
 					}
 
 					if (item != Drag.Target) {
-						if (Event.current.type == EventType.layout) { info.SetY(y + ch); } else { info.TweenY(y + ch); }
+						if (Event.current.type == EventType.Layout) { info.SetY(y + ch); } else { info.TweenY(y + ch); }
 					}
 				}
 
@@ -473,7 +473,7 @@ namespace vietlabs {
 		private void HandleDrag() {
 			NeedRepaint = true;
             //true || 
-            if (Event.current.type == EventType.mouseDrag) { //only update when mouse drag
+            if (Event.current.type == EventType.MouseDrag) { //only update when mouse drag
 				LIInfo dragAnim = Drag.Info;
 
 				var ch = GuiRect.y;
