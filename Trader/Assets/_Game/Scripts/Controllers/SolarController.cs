@@ -19,7 +19,7 @@ public class SolarController : Controller<SolarModel> {
     internal GalaxyManager galaxy;
     private SpriteRenderer sprite;
     private CircleCollider2D circleCollider;
-    public float viewPopulationSize = .01f;
+    public float viewPopulationSize = 3f;
     public float viewCompanySize = 1;
     private float solarSpriteScale = .02f;
     private float moonViewOrthoSize = .001f;
@@ -29,6 +29,9 @@ public class SolarController : Controller<SolarModel> {
     public Texture lineTexture;
     internal double supplyDemandProgress = Dated.Hour- 30;
     public double supplyDemandUpdateTime = Dated.Hour;
+
+    internal double populationUpdateProgress = 0;
+    internal double populationUpdateTime = Dated.Day;
 
     private Vector3 lastCamPosition = Vector3.zero;
     protected override void OnInitialize()
@@ -47,6 +50,11 @@ public class SolarController : Controller<SolarModel> {
         solarLine = new VectorLine("model.name Connections", points, (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod));
         //line.SetVectorLine(vectorLine, lineTexture, sprite.material);
         sprite.enabled = false;
+
+        //staggers the updating of supplydemand and population updates
+        supplyDemandProgress = Dated.Hour - UnityEngine.Random.Range(0, 300);
+        populationUpdateProgress = UnityEngine.Random.Range(0, 300);
+
         if (model.isActive)
         {
             CreateSystem();
@@ -57,7 +65,33 @@ public class SolarController : Controller<SolarModel> {
 	void Update () {
         transform.position = CameraController.CameraOffsetGalaxyPosition(model.galaxyPosition);
         circleCollider.radius = (float)(Mathd.Pow((model.solar.bodyRadius), .02f) * game.data.cameraGalCameraScaleMod * 5);
+        //Population
+        populationUpdateProgress += game.data.date.deltaTime;
+        if (populationUpdateProgress > populationUpdateTime)
+        {
 
+            for (int i = 0; i < model.solar.satelites.Count; i++)
+            {
+                SolarBody body = model.solar.satelites[i];
+                if (body.inhabited)
+                {
+                    body.population.Update(body, populationUpdateProgress);
+                    if (body.sateliteInhabited)
+                    {
+                        for (int m = 0; m < body.satelites.Count; m++)
+                        {
+                            SolarBody moon = body.satelites[m];
+                            if (moon.inhabited)
+                            {
+                                moon.population.Update(moon, populationUpdateProgress);
+                            }
+                        }
+                    }
+                }
+
+            }
+            populationUpdateProgress = 0;
+        }
         //Commerce
         supplyDemandProgress += game.data.date.deltaTime;
         if (supplyDemandProgress > supplyDemandUpdateTime)
@@ -171,22 +205,24 @@ public class SolarController : Controller<SolarModel> {
                 }
 
                 //Population rendering
-                if (MapTogglePanel.instance.populations.isOn)
+                if (MapTogglePanel.instance.populations.isOn && (body.inhabited || body.sateliteInhabited))
                 {
-                    linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f);
-
-                    if (canSeeMoons())
+                    if (canSeeMoons() && body.inhabited)
                     {
-                        
-                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * Mathf.Pow(body.totalPopulation, viewPopulationSize) * lineSize);
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f);
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * viewPopulationSize);
+                        lineColors.Add(new Color32(100, 100, 255, 200));
+                        lineWidths.Add(localScale);
                     }
-                    else
+                    else if (body.inhabited || body.sateliteInhabited)
                     {
-                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * Mathf.Pow(body.population, viewPopulationSize) * lineSize);
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f);
+                        linePoints.Add(planets[i].transform.position + Vector3.up * planets[i].transform.localScale.x * .5f + Vector3.up * viewPopulationSize);
+                        lineColors.Add(new Color32(100, 100, 255, 200));
+                        lineWidths.Add(localScale);
                     }
 
-                    lineColors.Add(new Color32(100, 100, 255, 200));
-                    lineWidths.Add(localScale);
+
                 }
 
                 //Companies rendering
@@ -248,10 +284,10 @@ public class SolarController : Controller<SolarModel> {
                     if (moons[i].activeSelf)
                     {
                         //Population rendering
-                        if (MapTogglePanel.instance.populations.isOn && body.population > 0)
+                        if (MapTogglePanel.instance.populations.isOn && body.inhabited)
                         {
-                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x *.5f);
-                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x *.5f + Vector3.up * Mathf.Pow(body.population, viewPopulationSize) * lineSize);
+                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x * .5f);
+                            linePoints.Add(moons[i].transform.position + Vector3.up * moons[i].transform.localScale.x * .5f + Vector3.up * viewPopulationSize);
                             lineColors.Add(new Color32(100, 100, 255, 200));
                             lineWidths.Add(localScale);
                         }
@@ -325,10 +361,10 @@ public class SolarController : Controller<SolarModel> {
                 }
 
                 //Population rendering
-                if (MapTogglePanel.instance.populations.isOn && model.solar.totalPopulation > 0)
+                if (MapTogglePanel.instance.populations.isOn && model.solar.inhabited)
                 {
-                    linePoints.Add(transform.position + Vector3.up *circleCollider.radius* .5f);
-                    linePoints.Add(transform.position + Vector3.up * circleCollider.radius + Vector3.up * Mathf.Pow(model.solar.totalPopulation, viewPopulationSize) * lineSize);
+                    linePoints.Add(transform.position + Vector3.up * circleCollider.radius * .5f);
+                    linePoints.Add(transform.position + Vector3.up * circleCollider.radius + Vector3.up * viewPopulationSize);
                     lineColors.Add(new Color32(100, 100, 255, 200));
                     lineWidths.Add(circleCollider.radius * 2f);
                 }

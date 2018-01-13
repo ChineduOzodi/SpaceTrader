@@ -361,7 +361,7 @@ public class CreateGameManager : MonoBehaviour {
                                 star.government.Model = model;
                                 model.stars.Add(star);
                             }
-                            body.AddPopulation(UnityEngine.Random.Range(1000000, 1000000000));
+                            body.Population(1);
                             body.companies.Add(model);
                             return body;
                         }

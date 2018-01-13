@@ -90,14 +90,17 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
             var position = menuContent[index].transform;
 
-            if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star)
+            if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star && body.inhabited)
             {
                 button = Instantiate(uiButtonInstance, position);
                 text = button.GetComponentInChildren<Text>();
                 texts.Add("Population", text);
-                text.text = "Population: " + Units.ReadItem(body.population);
+                text.text = "Population: " + Units.ReadItem(body.population.totalPopulation) + "\n"
+                    + "Young: " + Units.ReadItem(body.population.young) + "\n"
+                    + "Adult: " + Units.ReadItem(body.population.adult) + "\n"
+                    + "Old: " + Units.ReadItem(body.population.old);
                 button.interactable = false;
-                
+
             }
 
             button = Instantiate(uiButtonInstance, position);
@@ -601,10 +604,13 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             title.text = body.name;
             Text text;
 
-            if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star)
+            if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star && body.inhabited)
             {
                 text = texts["Population"];
-                text.text = "Population: " + Units.ReadItem(body.population);
+                text.text = "Population: " + Units.ReadItem(body.population.totalPopulation) + "\n"
+                    + "Young: " + Units.ReadItem(body.population.young) + "\n"
+                    + "Adult: " + Units.ReadItem(body.population.adult) + "\n"
+                    + "Old: " + Units.ReadItem(body.population.old);
 
                 foreach (IdentityModel x in body.companies)
                 {

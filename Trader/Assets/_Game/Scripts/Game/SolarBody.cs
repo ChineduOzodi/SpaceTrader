@@ -33,8 +33,9 @@ public class SolarBody: IPositionEntity
 
     public ModelRefs<IdentityModel> companies = new ModelRefs<IdentityModel>();
 
-
-    public int population { get; private set; }
+    public bool inhabited = false;
+    public bool sateliteInhabited = false;
+    public Population population { get; private set; }
     //public Dictionary<RawResources, double> rawResources;
     public Color color;
 
@@ -87,8 +88,6 @@ public class SolarBody: IPositionEntity
     {
         rawResources = new List<RawResource>();
         planetTiles = new List<PlanetTile>();
-        totalPopulation = 0;
-        population = 0;
         this.orbit = orbit;
         this.mass = mass;
         this.bodyRadius = radius;
@@ -119,7 +118,6 @@ public class SolarBody: IPositionEntity
         this.bodyRadius = radius;
         name = _name;
         totalPopulation = 0;
-        population = 0;
         this.solarType = _solarType;
         this.solarSubType = _solarSubType;
         solarIndex = _solarIndex;
@@ -410,6 +408,23 @@ public class SolarBody: IPositionEntity
         else
             return null;
     }
+
+    public void Population(int people)
+    {
+        population = new Population(this);
+        this.inhabited = true;
+
+        if (solarIndex.Count > 1)
+        {
+            GameManager.instance.data.stars[solarIndex[0]].solar.inhabited = true;
+        }
+        if (solarIndex.Count > 2)
+        {
+            GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].sateliteInhabited = true;
+        }
+
+    }
+
     #region "Commerce"
 
     public double GetMarketPrice(int itemId)
@@ -511,47 +526,6 @@ public class SolarBody: IPositionEntity
     }
 
     #endregion
-
-    public void AddPopulation(int people)
-    {
-        population += people;
-        totalPopulation += people;
-        if (solarIndex.Count > 1)
-        {
-            GameManager.instance.data.stars[solarIndex[0]].solar.AddTotalPopulation(people);
-        }
-        if (solarIndex.Count >2)
-        {
-            GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].AddTotalPopulation(people);
-        }
-
-    }
-
-    protected void AddTotalPopulation(int people)
-    {
-        totalPopulation += people;
-    }
-
-    public void SubtractPopulation(int people)
-    {
-        population -= people;
-        totalPopulation -= people;
-        if (solarIndex.Count > 1)
-        {
-            GameManager.instance.data.stars[solarIndex[0]].solar.SuntractTotalPopulation(people);
-        }
-        if (solarIndex.Count > 2)
-        {
-            GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].SuntractTotalPopulation(people);
-        }
-
-    }
-
-    protected void SuntractTotalPopulation(int people)
-    {
-        totalPopulation -= people;
-    }
-
     //-----------------Orbital Functions-------------------//
     #region "Orbital Functions"
     public Vector2d GamePosition(double time)

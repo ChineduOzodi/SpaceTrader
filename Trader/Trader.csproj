@@ -853,6 +853,7 @@
     <Compile Include="Assets\_Game\Scripts\Game\GroundStorage.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\Money.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\PlanetTile.cs" />
+    <Compile Include="Assets\_Game\Scripts\Game\Population.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\ProductionStructure.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\SolarBody.cs" />
     <Compile Include="Assets\_Game\Scripts\Game\Station.cs" />
