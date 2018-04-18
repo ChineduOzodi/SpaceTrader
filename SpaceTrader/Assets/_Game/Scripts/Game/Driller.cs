@@ -1,18 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System;
 using CodeControl;
 
-public class Driller : ProductionStructure, IWorkers {
-
-    public double productionProgress { get; private set; }
-
-    public int workers { get; set; }
-
-    public double workerPayRate { get; set; }
-
-    public bool on = true;
-    public bool isProducing = false;
+public class Driller : ProductionStructure {
 
     public Driller() { }
 
@@ -20,73 +10,77 @@ public class Driller : ProductionStructure, IWorkers {
     /// Creates an itemFactory, the factory blueprint must have ai and machinery
     /// </summary>
     /// <param name="owner"></param>
-    /// <param name="drillerBlueprint"></param>
+    /// <param name="drillerBlueprintId"></param>
     /// <param name="_productionItemId"></param>
-    public Driller(IdentityModel owner, ItemBlueprint drillerBlueprint, int _productionItemId, SolarBody body, int _count = 1):
-        base(owner, _productionItemId,body, _count)
+    public Driller(IdentityModel owner, string drillerBlueprintId, string _productionItemId, string referenceId, int _count = 1):
+        base(owner, _productionItemId,referenceId, (Vector3d)Random.onUnitSphere * ((SolarBody)GameManager.instance.locations[referenceId]).bodyRadius * .5, _count)
     {
         
         structureType = StructureTypes.Driller;
-        
+        ItemBlueprint drillerBlueprint = GameManager.instance.data.itemsData.Model.GetItem(drillerBlueprintId);
         name = productionItemName + " Driller " + id;
         
         maxArmor = drillerBlueprint.baseArmor;
         currentArmor = maxArmor;
         int aiAmount = (int) drillerBlueprint.contstructionParts.Find(x => x.itemType == ItemType.AI).amount;
         int machineryAmount = (int) drillerBlueprint.contstructionParts.Find(x => x.itemType == ItemType.FactoryMachinery).amount;
-        productionTime /= machineryAmount;
+        workAmount /= machineryAmount;
 
-        var productionEfficiency = (productionTime * .9f + aiAmount * 1.1f) / (productionTime + aiAmount);
-        productionTime /= productionEfficiency;
-
-        workers = drillerBlueprint.workers + 10;
+        var productionEfficiency = (workAmount * .9f + aiAmount * 1.1f) / (workAmount + aiAmount);
+        workAmount /= productionEfficiency;
+        blueprintId = drillerBlueprintId;
+        workers = drillerBlueprint.workers * count + 10;
         workerPayRate = .00116;
     }
 
-    public Driller(IdentityModel owner, int _productionItemId, SolarBody body, int _count = 1):
-        base(owner, _productionItemId,body,_count)
+    public Driller(IdentityModel owner, string _productionItemId, string referenceId, int _count = 1):
+        base(owner, _productionItemId, referenceId, (Vector3d)Random.onUnitSphere * ((SolarBody)GameManager.instance.locations[referenceId]).bodyRadius * .5, _count)
     {
              
         structureType = StructureTypes.Driller;
-        
+        blueprintId = GameManager.instance.data.itemsData.Model.blueprints.Find(x => x.itemType == ItemType.Driller).id;
         name = productionItemName + " Driller " + id;
 
-        workers = 25;
+        workers = 250 * count;
         workerPayRate = .00116;
-        owner.money -= 10000;
+
+        owner.PayConstruction(100000);
     }
 
     /// <summary>
     /// Creates items and uses items based on the elapsed time
     /// </summary>
     /// <param name="elapsedTime">time elapsed (in seconds)</param>
-    public void UpdateProduction(SolarBody parentBody, double deltaTime)
+    public override void Update()
     {
+        base.Update();
+
         if (deleteStructure)
             return;
-        var price = parentBody.GetMarketPrice(productionItemId) / productionTime;
-        var cost = workers * workerPayRate;
-        info = "Count: " + count + "\nOn: " + on.ToString()
+
+        //var price = parentBody.GetMarketPrice(productionItemId) / productionTime;
+        //var cost = workers * workerPayRate;
+        Info = "Count: " + count + "\nOn: " + on.ToString()
             + "\nIs Producing: " + isProducing.ToString()
-            + "\nPrice/Cost " + (price/cost).ToString("0.0000");
-        UpdateConnectionItems();
-        if (on &&  (price > cost ||
-            structureConnectionIdsOut.Exists(x => !((ProductionStructure)parentBody.GetStructure(x)).storage.ContainsItem(productionItemId) ||
-            (((ProductionStructure)parentBody.GetStructure(x)).storage.ContainsItem(productionItemId) &&
-                ((ProductionStructure)parentBody.GetStructure(x)).storage.items.Find(b => b.id == productionItemId).amount <
-                ((ProductionStructure)parentBody.GetStructure(x)).requiredItems.Find(b => b.id == productionItemId).amount * 3 *
-                ((ProductionStructure)parentBody.GetStructure(x)).count))
-            ))
+            + "\nResources Mined: " + Units.ReadItem(productionProgress)+ "u";
+        
+        if (on)
         {
+            isProducing = true;
             //if (GameManager.instance.timeScale > 2000)
             //{
             //    GameManager.instance.timeScale = 1;
             //    GameManager.instance.OpenInfoPanel(this);
             //}
-            
-            productionProgress = deltaTime / productionTime;
-            DrillResource(parentBody, productionProgress * count);
-            owner.Model.money -= workerPayRate * workers * deltaTime * count;
+            var productionDone = (float)(deltaTime * ProductionRateActual);
+            productionProgress += productionDone;
+
+            DrillResource(productionDone);
+            owner.Model.PayWorkers(workerPayRate * workers * deltaTime);
+        }
+        else
+        {
+            isProducing = false;
         }
     }
 
@@ -104,17 +98,17 @@ public class Driller : ProductionStructure, IWorkers {
         }
         return found;
     }
-    private void DrillResource(SolarBody parentBody, double amount)
+    private void DrillResource(double amount)
     {
         var resource = GameManager.instance.data.rawResources.Model.GetResource(productionItemId);
 
-        foreach (RawResource raw in parentBody.rawResources)
+        foreach (RawResource raw in ReferenceBody.rawResources)
         {
             if (raw.id == resource.id)
             {
 
                 double amountRemoved = raw.RemoveAmount(amount);
-                StoreCreatedItem(parentBody, amountRemoved);
+                StoreCreatedItem(amountRemoved);
                 if (amount > amountRemoved)
                     on = false;
                 break;

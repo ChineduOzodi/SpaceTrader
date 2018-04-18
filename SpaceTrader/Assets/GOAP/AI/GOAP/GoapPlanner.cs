@@ -13,7 +13,7 @@ public class GoapPlanner
 	 * Returns null if a plan could not be found, or a list of the actions
 	 * that must be performed, in order, to fulfill the goal.
 	 */
-	public Queue<GoapAction> plan(IPositionEntity agent,
+	public Queue<GoapAction> plan(PositionEntity agent,
 								  HashSet<GoapAction> availableActions, 
 	                              HashSet<KeyValuePair<string,object>> worldState, 
 	                              HashSet<KeyValuePair<string,object>> goal) 
@@ -40,8 +40,9 @@ public class GoapPlanner
 		bool success = buildGraph(start, leaves, usableActions, goal);
 
 		if (!success) {
-			// oh no, we didn't get a plan
-			Debug.Log("NO PLAN");
+            // oh no, we didn't get a plan
+            if (GameManager.instance.debugLog)
+                Debug.Log("NO PLAN");
 			return null;
 		}
 

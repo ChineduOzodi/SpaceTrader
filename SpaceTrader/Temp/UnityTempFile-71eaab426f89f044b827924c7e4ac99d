@@ -1,0 +1,635 @@
+-debug
+-target:library
+-nowarn:0169
+-langversion:4
+-out:Temp/Assembly-CSharp.dll
+-nostdlib
+-r:Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll
+-r:Library/ScriptAssemblies/UnityEditor.StandardEvents.dll
+-r:Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.AIModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.ARModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.AccessibilityModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.AnimationModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.AssetBundleModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.AudioModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.BaselibModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.ClothModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.CloudWebServicesModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.ClusterInputModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.CoreModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.CrashReportingModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.DirectorModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.FacebookModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.GameCenterModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.GridModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.HotReloadModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.IMGUIModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.ImageConversionModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.InputModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.ParticlesLegacyModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.PhysicsModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.Physics2DModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.SpatialTrackingModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.StyleSheetsModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.SubstanceModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.TLSModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.TerrainModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.TextRenderingModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.TilemapModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.TimelineModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UIModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UIElementsModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UNETModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UmbraModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UnityConnectModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestAssetBundleModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.VRModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.VehiclesModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.VideoModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.WebModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.WindModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEngine/UnityEngine.XRModule.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/UnityEditor.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\Managed/Unity.Locator.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/2018.1.0b13/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/2018.1.0b13/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/2018.1.0b13/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/2018.1.0b13/Editor/Data/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/2018.1.0b13/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/2018.1.0b13/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll"
+-r:"C:/Program Files/Unity/Hub/Editor/2018.1.0b13/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll"
+-r:Assets/Graph_Maker/DOTween/DOTween.dll
+-r:Assets/Graph_Maker/DOTween/DOTween43.dll
+-r:Assets/Graph_Maker/DOTween/DOTween46.dll
+-r:Assets/Graph_Maker/DOTween/DOTween50.dll
+-r:Assets/Plugins/Vectrosity/Vectrosity.dll
+-r:Assets/ProCore/ProBuilder/Classes/ProBuilderCore-Unity5.dll
+-r:Assets/ProCore/ProBuilder/Classes/ProBuilderMeshOps-Unity5.dll
+-r:Assets/ProCore/ProBuilder/Classes/ClassesLib/KdTreeLib.dll
+-r:Assets/ProCore/ProBuilder/Classes/ClassesLib/pb_Stl.dll
+-r:Assets/ProCore/ProBuilder/Classes/ClassesLib/Poly2Tri.dll
+-r:C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.4/UnityEngine.Advertisements.dll
+-r:C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll
+-r:C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.purchasing@2.0.1/UnityEngine.Purchasing.dll
+-r:C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity\mscorlib.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Core.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Runtime.Serialization.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Xml.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Xml.Linq.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity\UnityScript.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity\UnityScript.Lang.dll"
+-r:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity\Boo.Lang.dll"
+-define:UNITY_5_3_OR_NEWER
+-define:UNITY_5_4_OR_NEWER
+-define:UNITY_5_5_OR_NEWER
+-define:UNITY_5_6_OR_NEWER
+-define:UNITY_2017_1_OR_NEWER
+-define:UNITY_2017_2_OR_NEWER
+-define:UNITY_2017_3_OR_NEWER
+-define:UNITY_2018_1_OR_NEWER
+-define:UNITY_2018_1_0
+-define:UNITY_2018_1
+-define:UNITY_2018
+-define:PLATFORM_ARCH_64
+-define:UNITY_64
+-define:UNITY_ANALYTICS
+-define:ENABLE_AUDIO
+-define:ENABLE_CACHING
+-define:ENABLE_CLOTH
+-define:ENABLE_DUCK_TYPING
+-define:ENABLE_MICROPHONE
+-define:ENABLE_MULTIPLE_DISPLAYS
+-define:ENABLE_PHYSICS
+-define:ENABLE_SPRITERENDERER_FLIPPING
+-define:ENABLE_SPRITES
+-define:ENABLE_GRID
+-define:ENABLE_TILEMAP
+-define:ENABLE_TERRAIN
+-define:ENABLE_RAKNET
+-define:ENABLE_DIRECTOR
+-define:ENABLE_UNET
+-define:ENABLE_LZMA
+-define:ENABLE_UNITYEVENTS
+-define:ENABLE_WEBCAM
+-define:ENABLE_WWW
+-define:ENABLE_CLOUD_SERVICES_COLLAB
+-define:ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS
+-define:ENABLE_CLOUD_SERVICES_ADS
+-define:ENABLE_CLOUD_HUB
+-define:ENABLE_CLOUD_PROJECT_ID
+-define:ENABLE_CLOUD_SERVICES_USE_WEBREQUEST
+-define:ENABLE_CLOUD_SERVICES_UNET
+-define:ENABLE_CLOUD_SERVICES_BUILD
+-define:ENABLE_CLOUD_LICENSE
+-define:ENABLE_EDITOR_HUB
+-define:ENABLE_EDITOR_HUB_LICENSE
+-define:ENABLE_WEBSOCKET_CLIENT
+-define:ENABLE_DIRECTOR_AUDIO
+-define:ENABLE_DIRECTOR_TEXTURE
+-define:ENABLE_TIMELINE
+-define:ENABLE_EDITOR_METRICS
+-define:ENABLE_EDITOR_METRICS_CACHING
+-define:ENABLE_MANAGED_JOBS
+-define:ENABLE_MANAGED_TRANSFORM_JOBS
+-define:INCLUDE_DYNAMIC_GI
+-define:INCLUDE_GI
+-define:ENABLE_MONO_BDWGC
+-define:PLATFORM_SUPPORTS_MONO
+-define:RENDER_SOFTWARE_CURSOR
+-define:INCLUDE_PUBNUB
+-define:ENABLE_PLAYMODE_TESTS_RUNNER
+-define:ENABLE_VIDEO
+-define:ENABLE_PACKMAN
+-define:ENABLE_CUSTOM_RENDER_TEXTURE
+-define:ENABLE_LOCALIZATION
+-define:PLATFORM_STANDALONE_WIN
+-define:PLATFORM_STANDALONE
+-define:UNITY_STANDALONE_WIN
+-define:UNITY_STANDALONE
+-define:ENABLE_SUBSTANCE
+-define:ENABLE_RUNTIME_GI
+-define:ENABLE_MOVIES
+-define:ENABLE_NETWORK
+-define:ENABLE_CRUNCH_TEXTURE_COMPRESSION
+-define:ENABLE_UNITYWEBREQUEST
+-define:ENABLE_CLOUD_SERVICES
+-define:ENABLE_CLOUD_SERVICES_ANALYTICS
+-define:ENABLE_CLOUD_SERVICES_PURCHASING
+-define:ENABLE_CLOUD_SERVICES_CRASH_REPORTING
+-define:ENABLE_OUT_OF_PROCESS_CRASH_HANDLER
+-define:ENABLE_EVENT_QUEUE
+-define:ENABLE_CLUSTERINPUT
+-define:ENABLE_VR
+-define:ENABLE_AR
+-define:ENABLE_WEBSOCKET_HOST
+-define:ENABLE_MONO
+-define:NET_2_0_SUBSET
+-define:ENABLE_PROFILER
+-define:DEBUG
+-define:TRACE
+-define:UNITY_ASSERTIONS
+-define:UNITY_EDITOR
+-define:UNITY_EDITOR_64
+-define:UNITY_EDITOR_WIN
+-define:ENABLE_UNITY_COLLECTIONS_CHECKS
+-define:UNITY_TEAM_LICENSE
+-define:ENABLE_VSTU
+-define:CROSS_PLATFORM_INPUT
+-define:ODIN_INSPECTOR
+Assets/_Game/_Scenes/ScaledCamera.cs
+Assets/_Game/Scripts/Camera/MapCamera.cs
+Assets/_Game/Scripts/Controllers/InfoPanelController.cs
+Assets/_Game/Scripts/Controllers/PlanetCreator.cs
+Assets/_Game/Scripts/Controllers/SatelliteIconCreator.cs
+Assets/_Game/Scripts/Controllers/ShipController.cs
+Assets/_Game/Scripts/Controllers/SolarController.cs
+Assets/_Game/Scripts/Game/BuildStructure.cs
+Assets/_Game/Scripts/Game/Contract.cs
+Assets/_Game/Scripts/Game/DistributionCenter.cs
+Assets/_Game/Scripts/Game/Driller.cs
+Assets/_Game/Scripts/Game/Factory.cs
+Assets/_Game/Scripts/Game/Money.cs
+Assets/_Game/Scripts/Game/PlanetTile.cs
+Assets/_Game/Scripts/Game/Population.cs
+Assets/_Game/Scripts/Game/ProductionStructure.cs
+Assets/_Game/Scripts/Game/SolarBody.cs
+Assets/_Game/Scripts/Game/Station.cs
+Assets/_Game/Scripts/Game/SupplyDemand.cs
+Assets/_Game/Scripts/GameManagers/CreateGameManager.cs
+Assets/_Game/Scripts/GameManagers/GalaxyView.cs
+Assets/_Game/Scripts/GameManagers/GameManager.cs
+Assets/_Game/Scripts/GameManagers/LoadGameManager.cs
+Assets/_Game/Scripts/GameManagers/NormalView.cs
+Assets/_Game/Scripts/GameManagers/PlanetView.cs
+Assets/_Game/Scripts/GameManagers/SolarView.cs
+Assets/_Game/Scripts/GameManagers/UIManager.cs
+Assets/_Game/Scripts/GameManagers/ViewManager.cs
+Assets/_Game/Scripts/Helpers/ColorTempToRGB.cs
+Assets/_Game/Scripts/Helpers/ColorTypeConverter.cs
+Assets/_Game/Scripts/Helpers/Coord.cs
+Assets/_Game/Scripts/Helpers/DataGraph.cs
+Assets/_Game/Scripts/Helpers/Dated.cs
+Assets/_Game/Scripts/Helpers/Datef.cs
+Assets/_Game/Scripts/Helpers/FresNoise.cs
+Assets/_Game/Scripts/Helpers/Heap.cs
+Assets/_Game/Scripts/Helpers/Mathd.cs
+Assets/_Game/Scripts/Helpers/NameGen.cs
+Assets/_Game/Scripts/Helpers/NamesStrings.cs
+Assets/_Game/Scripts/Helpers/Orbit.cs
+Assets/_Game/Scripts/Helpers/PlanetInfo.cs
+Assets/_Game/Scripts/Helpers/Polar2.cs
+Assets/_Game/Scripts/Helpers/Polar2d.cs
+Assets/_Game/Scripts/Helpers/Position.cs
+Assets/_Game/Scripts/Helpers/Stat.cs
+Assets/_Game/Scripts/Helpers/Types.cs
+Assets/_Game/Scripts/Helpers/Units.cs
+Assets/_Game/Scripts/Helpers/Vector2d.cs
+Assets/_Game/Scripts/Helpers/Vector3d.cs
+Assets/_Game/Scripts/Interfaces/IPositionEntity.cs
+Assets/_Game/Scripts/Interfaces/IStructure.cs
+Assets/_Game/Scripts/Interfaces/IWorkers.cs
+Assets/_Game/Scripts/Models/CompanyModel.cs
+Assets/_Game/Scripts/Models/CreatureModel.cs
+Assets/_Game/Scripts/Models/DrillerCompany.cs
+Assets/_Game/Scripts/Models/FuelCompany.cs
+Assets/_Game/Scripts/Models/GameDataModel.cs
+Assets/_Game/Scripts/Models/GovernmentModel.cs
+Assets/_Game/Scripts/Models/IdentityModel.cs
+Assets/_Game/Scripts/Models/InfoPanelModel.cs
+Assets/_Game/Scripts/Models/ItemsModel.cs
+Assets/_Game/Scripts/Models/RawResourcesModel.cs
+Assets/_Game/Scripts/Models/ShipsModel.cs
+Assets/_Game/Scripts/Models/SolarModel.cs
+Assets/_Game/Scripts/Models/StructureModel.cs
+Assets/_Game/Scripts/Node.cs
+Assets/_Game/Scripts/OrbitTest.cs
+Assets/_Game/Scripts/OrbitTestModel.cs
+Assets/_Game/Scripts/Pathfinding.cs
+Assets/_Game/Scripts/PathRequestManager.cs
+Assets/_Game/Scripts/Research.cs
+Assets/_Game/Scripts/SaveLoadOrbitTest.cs
+Assets/_Game/Scripts/ShaderScripts/NormalGalaxyStarsEffect.cs
+Assets/_Game/Scripts/TradeRouteFinding.cs
+Assets/_Game/Scripts/TradeRouteRequestManager.cs
+Assets/_Game/Scripts/UI/ButtonInfo.cs
+Assets/_Game/Scripts/UI/GovernmentButton.cs
+Assets/_Game/Scripts/UI/IconManager.cs
+Assets/_Game/Scripts/UI/IconObjectTrack.cs
+Assets/_Game/Scripts/UI/LoadingPanel.cs
+Assets/_Game/Scripts/UI/MainHudPanel.cs
+Assets/_Game/Scripts/UI/MapTogglePanel.cs
+Assets/_Game/Scripts/UI/PlanetGridPanel.cs
+Assets/_Game/Scripts/UI/PopupPanel.cs
+Assets/_Game/Scripts/UI/ScrollView.cs
+Assets/_Game/Scripts/UI/ToolTip.cs
+Assets/_Game/Scripts/UI/TooltipInteract.cs
+Assets/_Game/Scripts/UI/TooltipShip.cs
+Assets/_Game/Scripts/Unit.cs
+"Assets/Advanced INI Parser/INIParser.cs"
+Assets/CodeControl/Scripts/Source/Controller.cs
+Assets/CodeControl/Scripts/Source/Coroutiner.cs
+Assets/CodeControl/Scripts/Source/Helpers/ListHelper.cs
+Assets/CodeControl/Scripts/Source/Helpers/SerializeHelper.cs
+Assets/CodeControl/Scripts/Source/Helpers/TypeHelper.cs
+Assets/CodeControl/Scripts/Source/Helpers/VectorHelper.cs
+Assets/CodeControl/Scripts/Source/Manifest/Manifest.cs
+Assets/CodeControl/Scripts/Source/Manifest/ModelBlobs.cs
+Assets/CodeControl/Scripts/Source/Manifest/ModelEntry.cs
+Assets/CodeControl/Scripts/Source/Message.cs
+Assets/CodeControl/Scripts/Source/Model.cs
+Assets/CodeControl/Scripts/Source/ModelProxy.cs
+Assets/CodeControl/Scripts/Source/ModelReferencing/ModelRef.cs
+Assets/CodeControl/Scripts/Source/ModelReferencing/ModelReferencer.cs
+Assets/CodeControl/Scripts/Source/ModelReferencing/ModelRefs.cs
+Assets/GOAP/AI/FSM/FSM.cs
+Assets/GOAP/AI/FSM/FSMState.cs
+Assets/GOAP/AI/GOAP/GoapAction.cs
+Assets/GOAP/AI/GOAP/GoapAgent.cs
+Assets/GOAP/AI/GOAP/GoapPlanner.cs
+Assets/GOAP/AI/GOAP/IGoap.cs
+Assets/GOAP/GameData/Actions/BuyItemTradeAction.cs
+Assets/GOAP/GameData/Actions/ChopFirewoodAction.cs
+Assets/GOAP/GameData/Actions/DropOffFirewoodAction.cs
+Assets/GOAP/GameData/Actions/SellItemAction.cs
+Assets/GOAP/GameData/BackpackComponent.cs
+Assets/GOAP/GameData/ChoppingBlockComponent.cs
+Assets/GOAP/GameData/Labourers/Blacksmith.cs
+Assets/GOAP/GameData/Labourers/Labourer.cs
+Assets/Graph_Maker/Examples/X_Dynamic/WMG_X_Data_Provider.cs
+Assets/Graph_Maker/Examples/X_Dynamic/WMG_X_Dynamic.cs
+Assets/Graph_Maker/Examples/X_Equation_Plotter/WMG_X_Equation_Plotter.cs
+Assets/Graph_Maker/Examples/X_Interactive_Pie/WMG_X_Interactive_Pie.cs
+Assets/Graph_Maker/Examples/X_Pie_Ring_Graph/WMG_X_Pie_Ring_Graph.cs
+Assets/Graph_Maker/Examples/X_Plot_Overtime/WMG_X_Plot_Overtime.cs
+Assets/Graph_Maker/Examples/X_Ring_Graph/WMG_X_Ring_Graph.cs
+Assets/Graph_Maker/Examples/X_Simple_Pie/WMG_X_Simple_Pie.cs
+Assets/Graph_Maker/Examples/X_Tutorial_1/WMG_X_Tutorial_1.cs
+Assets/Graph_Maker/Examples/X_WorldSpace/WMG_X_WorldSpace.cs
+Assets/Graph_Maker/Scripts/Graphs/WMG_Axis_Graph.cs
+Assets/Graph_Maker/Scripts/Graphs/WMG_Bezier_Band_Graph.cs
+Assets/Graph_Maker/Scripts/Graphs/WMG_Grid.cs
+Assets/Graph_Maker/Scripts/Graphs/WMG_Hierarchical_Tree.cs
+Assets/Graph_Maker/Scripts/Graphs/WMG_Pie_Graph.cs
+Assets/Graph_Maker/Scripts/Graphs/WMG_Radar_Graph.cs
+Assets/Graph_Maker/Scripts/Graphs/WMG_Random_Graph.cs
+Assets/Graph_Maker/Scripts/Graphs/WMG_Ring_Graph.cs
+Assets/Graph_Maker/Scripts/GUIDependent/WMG_Anim.cs
+Assets/Graph_Maker/Scripts/GUIDependent/WMG_Events.cs
+Assets/Graph_Maker/Scripts/GUIDependent/WMG_Graph_Tooltip.cs
+Assets/Graph_Maker/Scripts/GUIDependent/WMG_GUI_Functions.cs
+Assets/Graph_Maker/Scripts/GUIDependent/WMG_Image_Custom_Mat.cs
+Assets/Graph_Maker/Scripts/GUIDependent/WMG_Raycaster.cs
+Assets/Graph_Maker/Scripts/GUIDependent/WMG_Raycatcher.cs
+Assets/Graph_Maker/Scripts/GUIDependent/WMG_Text_Functions.cs
+Assets/Graph_Maker/Scripts/Utils/WMG_Change_Obj.cs
+Assets/Graph_Maker/Scripts/Utils/WMG_EnumFlagAttribute.cs
+Assets/Graph_Maker/Scripts/Utils/WMG_Enums.cs
+Assets/Graph_Maker/Scripts/Utils/WMG_List.cs
+Assets/Graph_Maker/Scripts/Utils/WMG_Reflection.cs
+Assets/Graph_Maker/Scripts/Utils/WMG_Util.cs
+Assets/Graph_Maker/Scripts/WMG_Axis.cs
+Assets/Graph_Maker/Scripts/WMG_Bezier_Band.cs
+Assets/Graph_Maker/Scripts/WMG_Compute_Shader.cs
+Assets/Graph_Maker/Scripts/WMG_ComputeLineGraph_Data.cs
+Assets/Graph_Maker/Scripts/WMG_Data_Source.cs
+Assets/Graph_Maker/Scripts/WMG_Graph_Auto_Anim.cs
+Assets/Graph_Maker/Scripts/WMG_Graph_Manager.cs
+Assets/Graph_Maker/Scripts/WMG_Legend.cs
+Assets/Graph_Maker/Scripts/WMG_Legend_Entry.cs
+Assets/Graph_Maker/Scripts/WMG_Link.cs
+Assets/Graph_Maker/Scripts/WMG_Node.cs
+Assets/Graph_Maker/Scripts/WMG_Pie_Graph_Slice.cs
+Assets/Graph_Maker/Scripts/WMG_Ring.cs
+Assets/Graph_Maker/Scripts/WMG_Series.cs
+Assets/PostProcessing/Runtime/Attributes/GetSetAttribute.cs
+Assets/PostProcessing/Runtime/Attributes/MinAttribute.cs
+Assets/PostProcessing/Runtime/Attributes/TrackballAttribute.cs
+Assets/PostProcessing/Runtime/Attributes/TrackballGroupAttribute.cs
+Assets/PostProcessing/Runtime/Components/AmbientOcclusionComponent.cs
+Assets/PostProcessing/Runtime/Components/BloomComponent.cs
+Assets/PostProcessing/Runtime/Components/BuiltinDebugViewsComponent.cs
+Assets/PostProcessing/Runtime/Components/ChromaticAberrationComponent.cs
+Assets/PostProcessing/Runtime/Components/ColorGradingComponent.cs
+Assets/PostProcessing/Runtime/Components/DepthOfFieldComponent.cs
+Assets/PostProcessing/Runtime/Components/DitheringComponent.cs
+Assets/PostProcessing/Runtime/Components/EyeAdaptationComponent.cs
+Assets/PostProcessing/Runtime/Components/FogComponent.cs
+Assets/PostProcessing/Runtime/Components/FxaaComponent.cs
+Assets/PostProcessing/Runtime/Components/GrainComponent.cs
+Assets/PostProcessing/Runtime/Components/MotionBlurComponent.cs
+Assets/PostProcessing/Runtime/Components/ScreenSpaceReflectionComponent.cs
+Assets/PostProcessing/Runtime/Components/TaaComponent.cs
+Assets/PostProcessing/Runtime/Components/UserLutComponent.cs
+Assets/PostProcessing/Runtime/Components/VignetteComponent.cs
+Assets/PostProcessing/Runtime/Models/AmbientOcclusionModel.cs
+Assets/PostProcessing/Runtime/Models/AntialiasingModel.cs
+Assets/PostProcessing/Runtime/Models/BloomModel.cs
+Assets/PostProcessing/Runtime/Models/BuiltinDebugViewsModel.cs
+Assets/PostProcessing/Runtime/Models/ChromaticAberrationModel.cs
+Assets/PostProcessing/Runtime/Models/ColorGradingModel.cs
+Assets/PostProcessing/Runtime/Models/DepthOfFieldModel.cs
+Assets/PostProcessing/Runtime/Models/DitheringModel.cs
+Assets/PostProcessing/Runtime/Models/EyeAdaptationModel.cs
+Assets/PostProcessing/Runtime/Models/FogModel.cs
+Assets/PostProcessing/Runtime/Models/GrainModel.cs
+Assets/PostProcessing/Runtime/Models/MotionBlurModel.cs
+Assets/PostProcessing/Runtime/Models/ScreenSpaceReflectionModel.cs
+Assets/PostProcessing/Runtime/Models/UserLutModel.cs
+Assets/PostProcessing/Runtime/Models/VignetteModel.cs
+Assets/PostProcessing/Runtime/PostProcessingBehaviour.cs
+Assets/PostProcessing/Runtime/PostProcessingComponent.cs
+Assets/PostProcessing/Runtime/PostProcessingContext.cs
+Assets/PostProcessing/Runtime/PostProcessingModel.cs
+Assets/PostProcessing/Runtime/PostProcessingProfile.cs
+Assets/PostProcessing/Runtime/Utils/ColorGradingCurve.cs
+Assets/PostProcessing/Runtime/Utils/GraphicsUtils.cs
+Assets/PostProcessing/Runtime/Utils/MaterialFactory.cs
+Assets/PostProcessing/Runtime/Utils/RenderTextureFactory.cs
+Assets/PostProcessing/Utilities/CustomMotionTexture/ExampleWheelController.cs
+"Assets/ProCore/ProBuilder/API Examples/Icosphere FFT/Scripts/CameraControls.cs"
+"Assets/ProCore/ProBuilder/API Examples/Icosphere FFT/Scripts/IcoBumpin.cs"
+"Assets/ProCore/ProBuilder/API Examples/Misc/HueCube.cs"
+"Assets/ProCore/ProBuilder/API Examples/Procedural Mesh/ExtrudeRandomEdges.cs"
+"Assets/ProCore/ProBuilder/API Examples/Runtime Editing/RuntimeEdit.cs"
+"Assets/ProCore/ProBuilder/API Examples/Vertex Colors/HighlightNearestFace.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtDebugMesh.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtDepthTextureMode.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtGravityReceiver.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtGravitySource.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtGui.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtHideWireframe.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtKeyboardMove.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtKeyboardThruster.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtMouseLook.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtMove.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtProceduralSystem.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtRotate.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtSimpleOrbit.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtSpacetimeBomb.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtSpacetimeBombs.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtTwirl.cs"
+"Assets/Space Graphics Toolkit/Examples/Basic Pack/Scripts/SgtVelocity.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtBeltAsteroid.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtBeltAsteroidVariant.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtClassPool.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtComponentPool.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtCoronaOuter.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtEditorHelper.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtForceType.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtHelper.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtNebulaSource.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtObjectPool.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtOutputMode.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtPatchBuilder.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtProceduralMesh.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtRangeAttribute.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtRenderQueue.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtSeedAttribute.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtSimplex.cs"
+"Assets/Space Graphics Toolkit/Scripts/Library/SgtStarfieldStar.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtAccretion.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtAdvancedBelt.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtAtmosphere.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtBelt.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtBeltGroup.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtBeltModel.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtBoxStarfield.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtCloudsphere.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtCloudsphereModel.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtCorona.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtCustomBelt.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtCustomStarfield.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtDepth.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtDisplacedMesh.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtDisplacedTerrain.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtEditor.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtEllipticalStarfield.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtJovian.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtJovianModel.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtLightning.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtLightningSpawner.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtNebulaStarfield.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtObserver.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtPatch.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtProminence.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtProminencePlane.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtRequireObject.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtRing.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtRingSegment.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtRingShadow.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtShadow.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSimpleBelt.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSingularity.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSingularityModel.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSkysphere.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSkysphereModel.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSnapToTerrain.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSpacetime.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSpacetimeWell.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSphereShadow.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtSpiralStarfield.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtStarfield.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtStarfieldGroup.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtStarfieldModel.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtStaticStarfield.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtTerrain.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtTerrainCylindrical.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtTerrainDisplacer.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtTerrainModifier.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtTerrainSimplex.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtThruster.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtThrusterFlame.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtThrusterFlare.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtThrusterVisibility.cs"
+"Assets/Space Graphics Toolkit/Scripts/Player/SgtWrappedStarfield.cs"
+Assets/StarTools/Assets/CoronaRotator.cs
+Assets/StarTools/Assets/Misc/CamCont.cs
+Assets/StarTools/Assets/Misc/MorphStar.cs
+Assets/StarTools/Assets/Star.cs
+Assets/StarTools/Assets/StarRotator.cs
+Assets/unity-ui-extensions/Examples/testHref.cs
+Assets/unity-ui-extensions/Examples/UIVerticalScrollerDemo/Scripts/ScrollingCalendar.cs
+Assets/unity-ui-extensions/Scripts/Controls/Accordion/Accordion.cs
+Assets/unity-ui-extensions/Scripts/Controls/Accordion/AccordionElement.cs
+Assets/unity-ui-extensions/Scripts/Controls/Accordion/Tweening/FloatTween.cs
+Assets/unity-ui-extensions/Scripts/Controls/Accordion/Tweening/ITweenValue.cs
+Assets/unity-ui-extensions/Scripts/Controls/Accordion/Tweening/TweenRunner.cs
+Assets/unity-ui-extensions/Scripts/Controls/BoxSlider.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/ColorImage.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/ColorLabel.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/ColorPickerControl.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/ColorPickerPresets.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/ColorPickerTester.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/ColorSlider.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/ColorSliderImage.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/ColorValues.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/Events/ColorChangedEvent.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/Events/HSVChangedEvent.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/HexColorField.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/HSVUtil.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/SVBoxSlider.cs
+Assets/unity-ui-extensions/Scripts/Controls/ColorPicker/TiltWindow.cs
+Assets/unity-ui-extensions/Scripts/Controls/ComboBox/AutoCompleteComboBox.cs
+Assets/unity-ui-extensions/Scripts/Controls/ComboBox/ComboBox.cs
+Assets/unity-ui-extensions/Scripts/Controls/ComboBox/DropDownList.cs
+Assets/unity-ui-extensions/Scripts/Controls/ComboBox/DropDownListButton.cs
+Assets/unity-ui-extensions/Scripts/Controls/ComboBox/DropDownListItem.cs
+Assets/unity-ui-extensions/Scripts/Controls/InputFocus.cs
+Assets/unity-ui-extensions/Scripts/Controls/ReorderableList/ReorderableList.cs
+Assets/unity-ui-extensions/Scripts/Controls/ReorderableList/ReorderableListContent.cs
+Assets/unity-ui-extensions/Scripts/Controls/ReorderableList/ReorderableListDebug.cs
+Assets/unity-ui-extensions/Scripts/Controls/ReorderableList/ReorderableListElement.cs
+Assets/unity-ui-extensions/Scripts/Controls/RescalingPanels/RescaleDragPanel.cs
+Assets/unity-ui-extensions/Scripts/Controls/RescalingPanels/RescalePanel.cs
+Assets/unity-ui-extensions/Scripts/Controls/RescalingPanels/ResizePanel.cs
+Assets/unity-ui-extensions/Scripts/Controls/SelectionBox/ExampleSelectable.cs
+Assets/unity-ui-extensions/Scripts/Controls/SelectionBox/IBoxSelectable.cs
+Assets/unity-ui-extensions/Scripts/Controls/SelectionBox/SelectionBox.cs
+Assets/unity-ui-extensions/Scripts/Controls/TextPic.cs
+Assets/unity-ui-extensions/Scripts/Controls/UI_Knob.cs
+Assets/unity-ui-extensions/Scripts/Effects/BestFitOutline.cs
+Assets/unity-ui-extensions/Scripts/Effects/CurvedText.cs
+Assets/unity-ui-extensions/Scripts/Effects/CylinderText.cs
+Assets/unity-ui-extensions/Scripts/Effects/Gradient.cs
+Assets/unity-ui-extensions/Scripts/Effects/Gradient2.cs
+Assets/unity-ui-extensions/Scripts/Effects/LetterSpacing.cs
+Assets/unity-ui-extensions/Scripts/Effects/NicerOutline.cs
+Assets/unity-ui-extensions/Scripts/Effects/RaycastMask.cs
+Assets/unity-ui-extensions/Scripts/Effects/ShaderEffects/UIAdditiveEffect.cs
+Assets/unity-ui-extensions/Scripts/Effects/ShaderEffects/UIImageCrop.cs
+Assets/unity-ui-extensions/Scripts/Effects/ShaderEffects/UILinearDodgeEffect.cs
+Assets/unity-ui-extensions/Scripts/Effects/ShaderEffects/UIMultiplyEffect.cs
+Assets/unity-ui-extensions/Scripts/Effects/ShaderEffects/UIScreenEffect.cs
+Assets/unity-ui-extensions/Scripts/Effects/ShaderEffects/UISoftAdditiveEffect.cs
+Assets/unity-ui-extensions/Scripts/Effects/ShineEffect.cs
+Assets/unity-ui-extensions/Scripts/Effects/ShineEffector.cs
+Assets/unity-ui-extensions/Scripts/Effects/SoftMaskScript.cs
+Assets/unity-ui-extensions/Scripts/Effects/UIFlippable.cs
+Assets/unity-ui-extensions/Scripts/Effects/UIParticleSystem.cs
+Assets/unity-ui-extensions/Scripts/InputModules/AimerInputModule.cs
+Assets/unity-ui-extensions/Scripts/InputModules/GamePadInputModule.cs
+Assets/unity-ui-extensions/Scripts/Layout/CurvedLayout.cs
+Assets/unity-ui-extensions/Scripts/Layout/FlowLayoutGroup.cs
+Assets/unity-ui-extensions/Scripts/Layout/HorizontalScrollSnap.cs
+Assets/unity-ui-extensions/Scripts/Layout/RadialLayout.cs
+Assets/unity-ui-extensions/Scripts/Layout/ScrollSnap.cs
+Assets/unity-ui-extensions/Scripts/Layout/ScrollSnapBase.cs
+Assets/unity-ui-extensions/Scripts/Layout/TableLayoutGroup.cs
+Assets/unity-ui-extensions/Scripts/Layout/TileSizeFitter.cs
+Assets/unity-ui-extensions/Scripts/Layout/UIVerticalScroller.cs
+Assets/unity-ui-extensions/Scripts/Layout/VerticalScrollSnap.cs
+Assets/unity-ui-extensions/Scripts/Primitives/DiamondGraph.cs
+Assets/unity-ui-extensions/Scripts/Primitives/UICircle.cs
+Assets/unity-ui-extensions/Scripts/Primitives/UICornerCut.cs
+Assets/unity-ui-extensions/Scripts/Primitives/UILineRenderer.cs
+Assets/unity-ui-extensions/Scripts/Primitives/UILineTextureRenderer.cs
+Assets/unity-ui-extensions/Scripts/Primitives/UIPolygon.cs
+Assets/unity-ui-extensions/Scripts/Primitives/UIPrimitiveBase.cs
+Assets/unity-ui-extensions/Scripts/TabNavigation.cs
+Assets/unity-ui-extensions/Scripts/ToolTips/BoundTooltip/BoundTooltipItem.cs
+Assets/unity-ui-extensions/Scripts/ToolTips/BoundTooltip/BoundTooltipTrigger.cs
+Assets/unity-ui-extensions/Scripts/ToolTips/HoverTooltip.cs
+Assets/unity-ui-extensions/Scripts/ToolTips/ToolTip.cs
+Assets/unity-ui-extensions/Scripts/UIWindowBase.cs
+Assets/unity-ui-extensions/Scripts/Utilities/BezierPath.cs
+Assets/unity-ui-extensions/Scripts/Utilities/CLZF2.cs
+Assets/unity-ui-extensions/Scripts/Utilities/DragCorrector.cs
+Assets/unity-ui-extensions/Scripts/Utilities/ExtensionsToggle.cs
+Assets/unity-ui-extensions/Scripts/Utilities/ExtensionsToggleGroup.cs
+Assets/unity-ui-extensions/Scripts/Utilities/InputFieldEnterSubmit.cs
+Assets/unity-ui-extensions/Scripts/Utilities/NonDrawingGraphic.cs
+Assets/unity-ui-extensions/Scripts/Utilities/PPIViewer.cs
+Assets/unity-ui-extensions/Scripts/Utilities/ReturnKeyTriggersButton.cs
+Assets/unity-ui-extensions/Scripts/Utilities/ScrollConflictManager.cs
+Assets/unity-ui-extensions/Scripts/Utilities/ScrollRectEx.cs
+Assets/unity-ui-extensions/Scripts/Utilities/ScrollRectExtensions.cs
+Assets/unity-ui-extensions/Scripts/Utilities/ScrollRectLinker.cs
+Assets/unity-ui-extensions/Scripts/Utilities/ScrollRectTweener.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Attributes/DontSaveField.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/ExampleScriptsAndClasses/TestClass.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/ExampleScriptsAndClasses/TestScript.cs
+"Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Non-Mono Classes/ObjectComponent.cs"
+"Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Non-Mono Classes/SceneData.cs"
+"Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Non-Mono Classes/SceneObject.cs"
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/ObjectIdentifier.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/SaveLoad.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/SaveLoadMenu.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Surrogates/ColorSurrogate.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Surrogates/GameObjectSurrogate.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Surrogates/QuaternionSurrogate.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Surrogates/Texture2DSurrogate.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Surrogates/TransformSurrogate.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Surrogates/Vector2Surrogate.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Surrogates/Vector3Surrogate.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Surrogates/Vector4Surrogate.cs
+Assets/unity-ui-extensions/Scripts/Utilities/Serialization/Utilities/TypeSystem.cs
+Assets/unity-ui-extensions/Scripts/Utilities/SetPropertyUtility.cs
+Assets/unity-ui-extensions/Scripts/Utilities/switchToRectTransform.cs
+Assets/unity-ui-extensions/Scripts/Utilities/TestCompression.cs
+Assets/unity-ui-extensions/Scripts/Utilities/UI_InfiniteScroll.cs
+Assets/unity-ui-extensions/Scripts/Utilities/UI_ScrollRectOcclusion.cs
+Assets/unity-ui-extensions/Scripts/Utilities/UI_TweenScale.cs
+Assets/unity-ui-extensions/Scripts/Utilities/UIScrollToSelection.cs
+Assets/unity-ui-extensions/Scripts/Utilities/UIScrollToSelectionXY.cs
+Assets/unity-ui-extensions/Scripts/Utilities/UISelectableExtension.cs
+"Assets/unity-ui-extensions/Scripts/VR Extensions/VRCursor.cs"
+"Assets/unity-ui-extensions/Scripts/VR Extensions/VRInputModule.cs"
+-lib:"C:\Program Files\Unity\Hub\Editor\2018.1.0b13\Editor\Data\MonoBleedingEdge\lib\mono\unity"

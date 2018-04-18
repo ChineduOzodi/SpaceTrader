@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 58000013468022588}
   - component: {fileID: 120307022350071666}
   - component: {fileID: 114666509279312128}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: ship
   m_TagString: ship
   m_Icon: {fileID: 0}

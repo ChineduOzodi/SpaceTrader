@@ -3,96 +3,81 @@ using System.Collections.Generic;
 using System;
 using CodeControl;
 
-public class BuildStructure : ProductionStructure, IWorkers {
+public class BuildStructure : ProductionStructure {
 
-    /// <summary>
-    /// For use with factories
-    /// </summary>
-    public int structureItemId { get; private set; }
-    public float productionProgress { get; private set; }
-    public int factoryProductionId;
-    public StructureTypes buildStructureType { get; private set; }
+    public StructureTypes buildStructureType { get; set; }
 
-    public bool isProducing { get; private set; }
-
-    public int workers { get; set; }
-
-    public double workerPayRate { get; set; }
+    public string targetStructureBlueprintId;
 
     public BuildStructure() { }
-
-    public BuildStructure(IdentityModel owner, int itemId, int _productionItemId, SolarBody body, int _count = 1):
-        base(owner, _productionItemId, body, _count)
+    public BuildStructure(IdentityModel owner, string referenceId, Vector3d localPosisiton) :
+        base(owner, referenceId, localPosisiton)
     {
-        var product = GameManager.instance.data.itemsData.Model.GetItem(itemId);
+    }
+
+    public void BuildFactory( string factoryBlueprintId, string _productionItemId, int _count = 1)  
+    {
+        count = _count;
+
+        ItemBlueprint product = GameManager.instance.data.itemsData.Model.GetItem(factoryBlueprintId);
         name = "Building ---> " + product.name + " | " + id;
         buildStructureType = StructureTypes.Factory;
+        targetStructureBlueprintId = factoryBlueprintId;
+        productionItemId = _productionItemId;
+        requiredItems = product.contstructionParts;
 
-        factoryProductionId = _productionItemId;
-        requiredItems = new List<Item>() { new Item(itemId, 1, 1)};
+        maxArmor = product.baseArmor;
+        currentArmor = 0;
 
-        maxArmor = product.baseArmor * .5f;
-        currentArmor = maxArmor;
-        
-        productionTime = GameManager.instance.data.itemsData.Model.GetItem(itemId).productionTime * .25f;
-        workers = product.workers;
+        workAmount = product.workAmount;
+        workers = product.workers * count;
         workerPayRate = .00116;
     }
 
-    public BuildStructure(IdentityModel owner, StructureTypes _structureType, int structureItemId, SolarBody body, int _count = 1)
+    public void BuildDriller(string drillerBlueprintId, string resourceItemId, int _count = 1)
     {
-        this.owner = new ModelRef<IdentityModel>(owner);
-        owner.AddSolarBodyWithStructure(body);
-        structureType = StructureTypes.BuildStructure;
-        id = GameManager.instance.data.id++;
         count = _count;
-        var product = GameManager.instance.data.itemsData.Model.GetItem(structureItemId);
-        name = "Building ---> " + product.name + " | " + id;
-        solarIndex = body.solarIndex;
-        structureId = -1;
-        shipId = -1;
-        body.structures.Add(this);
-        buildStructureType = _structureType;
-        
-        this.structureItemId = structureItemId;
-        requiredItems = new List<Item>() { new Item(product.id, 1, 1, solarIndex) };
-        requiredItems.ForEach(x => { x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id);});
-        storage = new ItemStorage();
 
-        maxArmor = product.baseArmor * .5f;
-        currentArmor = maxArmor;
-        dateCreated = new Dated(GameManager.instance.data.date.time);
-        lastUpdated = new Dated(GameManager.instance.data.date.time);
-        productionTime = GameManager.instance.data.itemsData.Model.GetItem(structureItemId).productionTime * .25f;
-        workers = product.workers;
+        ItemBlueprint product = GameManager.instance.data.itemsData.Model.GetItem(drillerBlueprintId);
+        name = "Building ---> " + product.name + " | " + id;
+        buildStructureType = StructureTypes.Driller;
+        targetStructureBlueprintId = drillerBlueprintId;
+        productionItemId = resourceItemId;
+        requiredItems = product.contstructionParts;
+
+        maxArmor = product.baseArmor;
+        currentArmor = 0;
+
+        workAmount = product.workAmount;
+        workers = product.workers * count;
         workerPayRate = .00116;
     }
 
-    /// <summary>
-    /// Creates items and uses items based on the elapsed time
-    /// </summary>
-    /// <param name="elapsedTime">time elapsed (in seconds)</param>
-    public void UpdateProduction(SolarBody parentBody, double deltaTime)
+    public override void Update()
     {
+        base.Update();
+        
         if (deleteStructure)
             return;
+
         while (true)
         {
-            var progress = (float)(deltaTime / productionTime);
-            info = "Active: " + isProducing.ToString();
-
-            if (isProducing)
+            if (productionState == ProductionState.Active)
             {
-                productionProgress += progress;
+                var productionDone = (float)(deltaTime * ProductionRateActual);
+                productionProgress += productionDone;
                 if (productionProgress > 1)
                 {
                     if (structureType == StructureTypes.Factory)
                     {
-                        new Factory(owner.Model, structureItemId, factoryProductionId, solarIndex);
-                        
+                        new Factory(owner.Model, targetStructureBlueprintId,productionItemId, referenceId, count);
                     }
-                    deleteStructure = true;
-                    GameManager.instance.data.getSolarBody(solarIndex).deleteStructure = true;
+                    else if (structureType == StructureTypes.Driller)
+                    {
+                        new Driller(owner.Model, targetStructureBlueprintId, productionItemId, referenceId, count);
+                    }
+                    deleteStructure = true; //TODO: Create proper structure deletion
+                    //GameManager.instance.data.getSolarBody(solarIndex).deleteStructure = true;
                     productionProgress = 1;
                     break;
                 }
@@ -101,16 +86,39 @@ public class BuildStructure : ProductionStructure, IWorkers {
                     break;
                 }
             }
-            else if (SearchRequiredItems(parentBody, progress))
+            else if (productionState == ProductionState.LackMaterials)
             {
-                isProducing = true;
-                UseRequiredItems(parentBody);
+                //SearchContracts();
+                //Check to see if has all 
             }
             else
             {
                 break;
             }
         }
-        
+
+    }
+
+    /// <summary>
+    /// Makes sure that the factory is at the maximum production rate by finding contracts with known companies for needed materials
+    /// </summary>
+    public override void SearchContracts(string itemId, double itemAmount)
+    {
+        //Find a contract
+        string contractId = "";
+
+        contractId = owner.Model.Government.GetCheapestContractId(itemId, id, itemAmount);
+
+        if (contractId != "" && contractId != null)
+        {
+            supplierContractIds.Add(contractId);
+            Contract contract = GameManager.instance.contracts[contractId];
+
+            //Set wanted conditions;
+            contract.destinationId = id;
+            contract.contractState = ContractState.Sent;
+            contract.reknewable = false;
+            contract.itemAmount = itemAmount;
+        }
     }
 }

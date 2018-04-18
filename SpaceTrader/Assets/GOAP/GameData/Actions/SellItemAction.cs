@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class SellItemAction : GoapAction {
 
-    private bool itemSold = false;
-    private IPositionEntity item; // where the item is located
+    private bool itemUnloaded = false;
     private IdentityModel owner;
     private Ship ship;
 
-    private float startTime = 0;
-    public float workDuration = 30; // seconds
+    private double startTime = 0;
+    public double workDuration = 30; // seconds
 
     public SellItemAction(Ship _ship)
     {
@@ -24,81 +23,133 @@ public class SellItemAction : GoapAction {
 
     public override void reset()
     {
-        itemSold = false;
-        item = null;
+        itemUnloaded = false;
         startTime = 0;
     }
 
     public override bool isDone()
     {
-        return itemSold;
+        return itemUnloaded;
     }
 
     public override bool requiresInRange()
     {
-        return true; // yes we need to be near a chopping block
+        return true; // yes
     }
 
-    public override bool checkProceduralPrecondition(IPositionEntity agent)
+    public override bool checkProceduralPrecondition(PositionEntity agent)
     {
-        // find the nearest station to buy item to be sold at a profit
+        // Check to make sure contract has destinationId
 
 
-        IPositionEntity profitableSell = null;
-
-        foreach (SolarModel solar in owner.knownSolars)
+        Ship ship = agent as Ship;
+        if (ship.contractId != null)
         {
-            foreach (Item item in solar.buyList.items)
+            Contract contract = GameManager.instance.contracts[ship.contractId];
+
+            if (contract.contractState == ContractState.Active)
             {
-                if (profitableSell == null && CalculateProfit(item, ship) > 0)
+                if (contract.destinationId != null && contract.destinationId != "")
                 {
-                    // first one, so choose it for now
-                    profitableSell = item;
-                }
-                else if (CalculateProfit(item, ship) > 0)
-                {
-                    profitableSell = item;
+                    target = GameManager.instance.locations[contract.destinationId];
+                    return true;
                 }
             }
-
         }
-        if (profitableSell == null)
-            return false;
 
-        item = profitableSell;
-        target = item;
-
-        return profitableSell != null;
+        return false;
     }
 
-    public override bool perform(IPositionEntity agent)
+    public override bool perform(PositionEntity agent)
     {
         if (startTime == 0)
-            startTime = Time.time;
-
-        if (Time.time - startTime > workDuration)
         {
-            // finished chopping
-            //BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-            //backpack.numFirewood += 5;
-            //chopped = true;
-            //ToolComponent tool = backpack.tool.GetComponent(typeof(ToolComponent)) as ToolComponent;
-            //tool.use(0.34f);
-            //if (tool.destroyed()) {
-            //	Destroy(backpack.tool);
-            //	backpack.tool = null;
-            //}
+            startTime = GameManager.instance.data.date.time;
+
+            Ship ship = agent as Ship;
+            if (ship.contractId == null)
+            {
+                Debug.Log("No contract, it ended");
+                ship.itemsStorage.RemoveAll(x => true);
+                return false;
+            }
+            Contract contract = GameManager.instance.contracts[ship.contractId];
+            Item item = ship.itemsStorage.Find(x => x.id == contract.itemId && x.destinationId == contract.destinationId);
+
+            if (item == null)
+            {
+                Debug.Log("Could not find item " + contract.itemId + " in " + ship.name + " with destination " + contract.destinationId);
+                ship.itemsStorage.RemoveAll(x => true);
+                return false;
+            }
+            workDuration = Dated.Minute * item.amount;
+        }
+
+
+        if (GameManager.instance.data.date.time - startTime > workDuration)
+        {
+            // Finish item unload
+            Ship ship = agent as Ship;
+            ProductionStructure structure = GameManager.instance.locations[ship.referenceId] as ProductionStructure;
+            
+            if (ship.contractId == null)
+            {
+                Debug.Log("No contract, it ended");
+                ship.itemsStorage.RemoveAll(x => true);
+                return false;
+            }
+            Contract contract = GameManager.instance.contracts[ship.contractId];
+            Item item = ship.itemsStorage.Find(x => x.id == contract.itemId && x.destinationId == contract.destinationId);
+            if (item.id == structure.blueprintId)
+            {
+                //Construct structure
+                structure.count += (int)item.amount;
+                structure.workers = structure.GetBlueprint().workers * structure.count;
+                contract.itemAmount -= item.amount;
+                ship.itemsStorage.Remove(item);
+                Debug.Log(item.name + "Construction at " + structure.name);
+
+                //Pay
+                double cost = contract.unitPrice * item.amount + contract.distance * contract.PricePerKm;
+                contract.client.Model.PayContract(cost);
+                owner.EarnMoney(cost);
+
+                if (((ProductionStructure)GameManager.instance.locations[contract.destinationId]).GetType() == typeof(DistributionCenter))
+                {
+                    //Undo payment if going to DC
+                    contract.client.Model.PayContract(-cost);
+                }
+            }
+            else
+            {
+                //Add to storage
+                structure.AddItem(item);
+                ship.itemsStorage.Remove(item);
+                contract.itemAmount -= item.amount;
+                //Pay
+                double cost = contract.unitPrice * item.amount + contract.distance * contract.PricePerKm;
+                contract.client.Model.PayContract(cost);
+                owner.EarnMoney(cost);
+                if (((ProductionStructure)GameManager.instance.locations[contract.destinationId]).GetType() == typeof(DistributionCenter))
+                {
+                    contract.client.Model.PayContract(-cost);
+                }
+            }
+            
+            itemUnloaded = true;
+            
         }
         return true;
     }
 
     private double CalculateProfit(Item item, Ship ship)
     {
-        double fuelMarketPrice = owner.knownSolars[0].GetMarketPrice(ship.fuel.id);
-        double itemAmount = item.amount;
-        if (ship.itemCapacity < itemAmount)
-            itemAmount = ship.itemCapacity;
+        //double fuelMarketPrice = owner.KnownStarIds[0].GetMarketPrice(ship.fuel.id);
+        //double itemAmount = item.amount;
+        //if (ship.itemCapacity < itemAmount)
+        //    itemAmount = ship.itemCapacity;
 
-        return item.price * itemAmount - (item.galaxyPosition - ship.galaxyPosition).magnitude * fuelMarketPrice / (ship.speed * ship.fuelEfficiency); //- ship.items[0].amount * ship.items[0].price;
+        //return item.price * itemAmount - (item.position[0] - ship.position[0]).magnitude * fuelMarketPrice / (ship.speed * ship.fuelEfficiency); //- ship.items[0].amount * ship.items[0].price;
+        return 1;
     }
 }

@@ -35,7 +35,15 @@ public sealed class ModelRefs<T> : ModelReferencer, IEnumerable<T>, IXmlSerializ
     /// </summary>
     public T Last { get { return models.Count == 0 ? null : models[models.Count - 1]; } }
 
-
+    public List<T> ToList()
+    {
+        List<T> list = new List<T>();
+        foreach (T item in models)
+        {
+            list.Add(item);
+        }
+        return list;
+    }
     private List<T> models;
     private List<string> ids;
 

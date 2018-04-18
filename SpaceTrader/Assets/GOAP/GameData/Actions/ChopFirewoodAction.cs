@@ -34,7 +34,7 @@ public class ChopFirewoodAction : GoapAction
 		return true; // yes we need to be near a chopping block
 	}
 	
-	public override bool checkProceduralPrecondition (IPositionEntity agent)
+	public override bool checkProceduralPrecondition (PositionEntity agent)
 	{
 		// find the nearest chopping block that we can chop our wood at
 		ChoppingBlockComponent[] blocks = (ChoppingBlockComponent[]) UnityEngine.GameObject.FindObjectsOfType ( typeof(ChoppingBlockComponent) );
@@ -65,7 +65,7 @@ public class ChopFirewoodAction : GoapAction
 		return closest != null;
 	}
 	
-	public override bool perform (IPositionEntity agent)
+	public override bool perform (PositionEntity agent)
 	{
 		if (startTime == 0)
 			startTime = Time.time;

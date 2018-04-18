@@ -19,7 +19,7 @@ public class GoapAgent {
 
 	private GoapPlanner planner;
 
-    public IPositionEntity entity;
+    public PositionEntity entity;
 
     public GoapAgent() { }
 
@@ -29,6 +29,7 @@ public class GoapAgent {
 		currentActions = new Queue<GoapAction> ();
 		planner = new GoapPlanner ();
 		findDataProvider (_dataProvider);
+        entity = (PositionEntity)_dataProvider;
 		createIdleState ();
 		createMoveToState ();
 		createPerformActionState ();
@@ -37,7 +38,7 @@ public class GoapAgent {
 	}
 	
 
-	public void Update ( IPositionEntity entity) {
+	public void Update ( PositionEntity entity) {
 		stateMachine.Update (entity);
 	}
 
@@ -76,13 +77,14 @@ public class GoapAgent {
 				// we have a plan, hooray!
 				currentActions = plan;
 				dataProvider.planFound(goal, plan);
-
+                Debug.Log("Found plan");
 				fsm.popState(); // move to PerformAction state
 				fsm.pushState(performActionState);
 
 			} else {
 				// ugh, we couldn't get a plan
-				Debug.Log("<color=orange>Failed Plan:</color>"+prettyPrint(goal));
+                if (GameManager.instance.debugLog)
+				    Debug.Log("<color=orange>Failed Plan:</color>"+prettyPrint(goal));
 				dataProvider.planFailed(goal);
 				fsm.popState (); // move back to IdleAction state
 				fsm.pushState (idleState);

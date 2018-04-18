@@ -6,47 +6,22 @@ using CodeControl;
 /// <summary>
 /// Inherited by all center solar objects.
 /// </summary>
-public class SolarModel : Model, IPositionEntity {
+public class SolarModel : Model {
 
     public string name;
-
-    public bool isActive = false;
-    /// <summary>
-    /// position in galaxy in light years
-    /// </summary>
-    public Vector2d galaxyPosition { get; set; }
-    public Color color;
     public SolarBody solar;
     public List<Ship> ships { get; private set; }
     public ModelRefs<SolarModel> nearStars = new ModelRefs<SolarModel>();
     public ModelRef<GovernmentModel> government = new ModelRef<GovernmentModel>();
     public double governmentInfluence;
-    public bool isCapital;
-    public int index;
-    internal float localScale;
 
-    //----------------Commerce-----------------------------//
-    public ItemStorage buyList { get; private set; }
-    public ItemStorage sellList { get; private set; }
-    public List<SupplyDemand> supplyDemand { get; private set; }
-
-    public List<int> solarIndex { get; set; }
-    public int structureId { get; set; }
-    public int shipId { get; set; }
+    
 
     public SolarModel() { }
 
-    public SolarModel(string _name, int _index, Vector2d _position, Gradient sunSizeColor)
+    public SolarModel(string _name, Vector3 starPosition)
     {
         name = _name;
-        galaxyPosition = _position * Units.ly / GameDataModel.galaxyDistanceMultiplication;
-        index = _index;
-        structureId = -1;
-        shipId = -1;
-        this.solarIndex = new List<int>() { index };
-        supplyDemand = new List<SupplyDemand>();
-        buyList = new ItemStorage();
-        sellList = new ItemStorage();
 
         // Create star
 
@@ -84,13 +59,11 @@ public class SolarModel : Model, IPositionEntity {
         //Color color = sunSizeColor.Evaluate(sunColorValue);
         Color color = ColorTempToRGB.TempToRGB((float)temp);
         double sunRadius = Mathd.Pow(((sunMass / sunDensity) * 3) / (4 * Mathd.PI), 1 / 3d) / Units.convertToMeters; // In km
-        var solarIndex = new List<int>();
-        solarIndex.Add(_index);
 
-        solar = new SolarBody(_name + " " + starSubType.ToString(), solarIndex, starSubType, sunMass , sunRadius, new Orbit(), color, temp);
+        solar = new SolarBody(_name + " " + starSubType.ToString(), (Vector3d) starPosition, starSubType, sunMass , sunRadius, new Orbit(), color, temp);
 
         int numPlanets = (int)Random.Range(0, (float)Mathd.Pow(sunMass / GameDataModel.sunMassMultiplication, .25f) * 20);
-        double sunSoi = solar.SOI(sunMass);
+        double sunSoi = solar.SOI();
 
         for (int i = 0; i < numPlanets; i++)
         {
@@ -132,16 +105,10 @@ public class SolarModel : Model, IPositionEntity {
             }
 
             double planetRadius = Mathd.Pow((((planetMass) / planetDensity) * 3) / (4 * Mathd.PI), 1 / 3d) / Units.convertToMeters; // In meters
-            
-            
-
-            var planetIndex = new List<int>();
-            planetIndex.Add(solarIndex[0]);
-            planetIndex.Add(i);
 
             color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
 
-            solar.satelites.Add(new SolarBody(name + " " + planetType.ToString() + " " + (i + 1), planetIndex, planetType, planetSubType, planetMass, planetRadius, new Orbit(sma,ecc,lpe,0,lpe),color, solar));
+            solar.satelites.Add(new SolarBody(name + " " + planetType.ToString() + " " + (i + 1), solar.id, planetType, planetSubType, planetMass, planetRadius, new Orbit(sma,ecc,lpe,0,lpe),color, solar));
 
             int numMoonRange = 0;
             float moonChance = 0;
@@ -163,7 +130,7 @@ public class SolarModel : Model, IPositionEntity {
             }
             int numMoon = Random.Range(0, numMoonRange);
 
-            double soi = solar.satelites[i].SOI(solar.mass);
+            double soi = solar.satelites[i].SOI();
 
             if (Random.value < moonChance)
             {
@@ -171,7 +138,7 @@ public class SolarModel : Model, IPositionEntity {
                 {
                     double moonMass = Random.Range(.0001f, 50) * 1e+22;
 
-                    sma = Random.Range((float)solar.satelites[i].bodyRadius * 1.2f, (float)(soi * .75f));
+                    sma = Random.Range((float)solar.satelites[i].bodyRadius * 1.1f, (float)(soi * .1f));
                     lpe = Random.Range(0, 2 * Mathf.PI);
                     color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
                     float moonDensity = Random.Range(3.5f, 7) * Units.k * Units.convertToMeters;
@@ -185,11 +152,7 @@ public class SolarModel : Model, IPositionEntity {
                         ecc = Random.Range(0.02f, .5f);
                     }
 
-                    var moonIndex = new List<int>();
-                    moonIndex.AddRange(planetIndex);
-                    moonIndex.Add(m);
-
-                    solar.satelites[i].satelites.Add(new SolarBody(name + "Moon " + (i + 1), moonIndex, moonType, moonSubType, moonMass, moonRadius, new Orbit(sma, ecc, lpe, 0, lpe), color, solar));
+                    solar.satelites[i].satelites.Add(new SolarBody(name + "Moon " + (i + 1), solar.satelites[i].id, moonType, moonSubType, moonMass, moonRadius, new Orbit(sma, ecc, lpe, 0, lpe), color, solar));
                 }
             }
             
@@ -197,124 +160,8 @@ public class SolarModel : Model, IPositionEntity {
     }
     public double GetModifiedRadius(float scale)
     {
-        return (Mathd.Pow((solar.bodyRadius),scale) * Camera.main.orthographicSize / GameManager.instance.data.cameraGalaxyOrtho);
+        return (Mathd.Pow((solar.bodyRadius),scale) * Camera.main.orthographicSize);
     }
 
-#region "Commerce"
 
-    public double GetMarketPrice(int itemId)
-    {
-        int index = supplyDemand.FindIndex(x => x.itemId == itemId);
-
-        if (index >= 0)
-        {
-            return supplyDemand[index].marketPrice;
-        }
-        else
-        {
-            return GameManager.instance.data.itemsData.Model.GetItem(itemId).estimatedValue;
-        }
-    }
-
-    public void SetBuying(Item item)
-    {
-        int itemIndex = -1;
-        if (item.structureId == -1)
-        {
-            itemIndex = buyList.items.FindIndex(x => x.id == item.id);
-        }
-        else
-        {
-            itemIndex = buyList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
-        }
-        if (itemIndex >= 0)
-        {
-            buyList.items[itemIndex].SetAmount(item.amount, item.price);
-        }
-        else
-        {
-            buyList.AddItem(item);
-        }
-    }
-
-    public void RemoveBuying(int itemId, int structureId, double amount)
-    {
-
-        int itemIndex = -1;
-        if (structureId == -1)
-        {
-            itemIndex = buyList.items.FindIndex(x => x.id == itemId);
-        }
-        else
-        {
-            itemIndex = buyList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
-        }
-
-        if (itemIndex >= 0)
-        {
-            buyList.items[itemIndex].RemoveAmount(amount);
-            if (buyList.items[itemIndex].amount == 0)
-                buyList.items.RemoveAt(itemIndex);
-        }
-    }
-
-    public void SetSelling(Item item)
-    {
-        int itemIndex = -1;
-        if (item.structureId == -1)
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id);
-        }
-        else
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
-        }
-        if (itemIndex >= 0)
-        {
-            sellList.items[itemIndex].SetAmount(item.amount, item.price);
-        }
-        else
-        {
-            sellList.AddItem(item);
-        }
-    }
-    public void SetSellingPrice(Item item)
-    {
-        int itemIndex = -1;
-        if (item.structureId == -1)
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id);
-        }
-        else
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
-        }
-        if (itemIndex >= 0)
-        {
-            sellList.items[itemIndex].price = item.price;
-        }
-    }
-
-    public void RemoveSelling(int itemId, int structureId, double amount)
-    {
-
-        int itemIndex = -1;
-        if (structureId == -1)
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == itemId);
-        }
-        else
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
-        }
-
-        if (itemIndex >= 0)
-        {
-            sellList.items[itemIndex].RemoveAmount(amount);
-            if (sellList.items[itemIndex].amount == 0)
-                sellList.items.RemoveAt(itemIndex);
-        }
-    }
-
-    #endregion
 }

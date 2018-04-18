@@ -17,7 +17,7 @@ public abstract class GoapAction {
 
 	/**
 	 * An action often has to perform on an object. This is that object. Can be null. */
-	public IPositionEntity target;
+	public PositionEntity target;
 
 	public GoapAction() {
 		preconditions = new HashSet<KeyValuePair<string, object>> ();
@@ -44,7 +44,7 @@ public abstract class GoapAction {
 	 * Procedurally check if this action can run. Not all actions
 	 * will need this, but some might.
 	 */
-	public abstract bool checkProceduralPrecondition(IPositionEntity agent);
+	public abstract bool checkProceduralPrecondition(PositionEntity agent);
 
 	/**
 	 * Run the action.
@@ -52,7 +52,7 @@ public abstract class GoapAction {
 	 * if something happened and it can no longer perform. In this case
 	 * the action queue should clear out and the goal cannot be reached.
 	 */
-	public abstract bool perform(IPositionEntity agent);
+	public abstract bool perform(PositionEntity agent);
 
 	/**
 	 * Does this action need to be within range of a target game object?

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 58090084209927902}
   - component: {fileID: 120708878426957570}
   - component: {fileID: 114535649081396204}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: planet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

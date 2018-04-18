@@ -2,19 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPositionEntity {
+public class PositionEntity:Position {
 
-    Vector2d galaxyPosition { get; set; }
+    public string name { get; set; }
+    public string id { get; set; }
+
     /// <summary>
-    /// The Position of the body it is/is orbiting/is on
+    /// Is the entity docked?
     /// </summary>
-    List<int> solarIndex { get; set; }
+    public bool docked { get; set; }
     /// <summary>
-    /// Used to set weather the entity is inside a structure.
+    /// Use to set the dock id of the entity.
     /// </summary>
-    int structureId { get; set; }
-    /// <summary>
-    /// Used to set whether the entity is inside a ship.
-    /// </summary>
-    int shipId { get; set; }
+    public int dockId { get; set; }
+    public List<string> structureIds = new List<string>();
+
+    public PositionEntity()
+    {
+        id = GetType().ToString() + GameManager.instance.data.id++.ToString();
+        GameManager.instance.locations[id] = this;
+    }
+    public PositionEntity(string _referenceId) :
+        base(_referenceId)
+    {
+        id = GetType().ToString() + GameManager.instance.data.id++.ToString();
+        GameManager.instance.locations[id] = this;
+    }
+    public PositionEntity(string _referenceId, Vector3d _localPosition) :
+        base(_referenceId, _localPosition)
+    {
+        id = GetType().ToString() + GameManager.instance.data.id++.ToString();
+        GameManager.instance.locations[id] = this;
+    }
 }

@@ -16,10 +16,10 @@ public class FSM {
 
 	private Stack<FSMState> stateStack = new Stack<FSMState> ();
 
-	public delegate void FSMState (FSM fsm, IPositionEntity gameObject);
+	public delegate void FSMState (FSM fsm, PositionEntity gameObject);
 	
 
-	public void Update (IPositionEntity entity) {
+	public void Update (PositionEntity entity) {
 		if (stateStack.Peek() != null)
 			stateStack.Peek().Invoke (this, entity);
 	}

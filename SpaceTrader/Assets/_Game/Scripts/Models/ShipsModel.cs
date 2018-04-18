@@ -9,38 +9,22 @@ public class ShipsModel: Model
     public ShipsModel() { ships = new List<Ship>(); }
 }
 
-public class Ship: IStructure, IWorkers, IGoap {
+public class Ship: Structure, IWorkers, IGoap {
 
-    public ShipAction shipAction { get; private set; }
-    public bool hyperSpace { get; private set; }
+    public ShipAction shipAction = ShipAction.Idle;
+    public bool hyperSpace;
 
-    public IPositionEntity target { get; private set; }
-    public int shipTargetId { get; private set; }
-    public int structureTargetId { get; private set; }
+    public string shipTargetId;
 
-    public List<int> passengerIds { get; private set; }
+    public string contractId;
 
-    //IStructure and IWorkers
-    public StructureTypes structureType { get; set; }
+    public StructureTypes structureType = StructureTypes.Ship;
+    public ShipType shipType { get { return GetShipBlueprint().shipType; } }
 
-    public string name { get; set; }
-    public string info { get; set; }
-    public ModelRef<IdentityModel> owner { get; set; }
+    //IWorkers
+
+
     public GoapAgent agent;
-    public int managerId { get; set; }
-    public float maxArmor { get; set; }
-    public float currentArmor { get; set; }
-    public int id { get; set; }
-    public Dated dateCreated { get; set; }
-    public Dated lastUpdated { get; set; }
-    public bool deleteStructure { get; set; }
-    public int count { get; set; }
-
-    public Vector2d galaxyPosition { get; set; }
-
-    public List<int> solarIndex { get; set; }
-    public int structureId { get; set; }
-    public int shipId { get; set; }
 
     public int workers { get; set; }
 
@@ -48,57 +32,73 @@ public class Ship: IStructure, IWorkers, IGoap {
 
     //Ship Properties
 
-    public int passangerCapacity { get; private set; }
-    
-    public float speed { get; private set; }
-    public float rotateSpeed { get; private set; }
-    public float jumpHullDamage { get; private set; }
+    public int PassangerCapacity { get { return GetShipBlueprint().passangerCapacity; } }
+    public List<int> passengerIds;
 
+    /// <summary>
+    /// Sub light speed in km/s
+    /// </summary>
+    public float SubLightSpeed { get { return GetShipBlueprint().subLightSpeed; } }
+    /// <summary>
+    /// Rotate speed in degrees per second;
+    /// </summary>
+    public float rotateSpeed { get { return GetShipBlueprint().rotateSpeed; } }
 
-    public List<Item> items = new List<Item>();
-    public int itemCapacity = 100;
-
-    public Item fuel { get; private set; }
-    public float fuelEfficiency = 5;
+    public Fuel fuel;
+    /// <summary>
+    /// Number of km for one unit of fuel;
+    /// </summary>
+    public double fuelRange { get { return GetShipBlueprint().fuelRange; } }
     public int fuelCapacity = 100;
+
+
+    public double idleTime;
+
+    //Ship Properties
+    public double ApproxFuelCostPerKm
+    {
+        get { return fuel.EstimatedValue / fuelRange; }
+    }
 
     public Ship() { }
 
-    public Ship(string name, IdentityModel owner, Creature captain, int _structureId, int _count = 1)
+    public Ship(string shipBlueprintId, IdentityModel owner, Creature captain, string _referenceId, int _count = 1) :
+        base(owner, _referenceId, Vector3d.zero)
     {
-        this.owner = new ModelRef<IdentityModel>(owner);
         this.managerId = captain.id;
-        structureId = _structureId;
-        structureType = StructureTypes.Ship;
-        this.count = _count;
+        referenceId = _referenceId;
+        this.Count = _count;
         //this.captain.Model.location = this;
-        id = GameManager.instance.data.id++;
-        this.owner.Model.ships.Add(id);
+        this.owner.Model.ownedShipIds.Add(id);
         GameManager.instance.data.ships.Model.ships.Add(this);
-        shipAction = ShipAction.Idle;
-        solarIndex = captain.solarIndex;
-        galaxyPosition = GameManager.instance.data.stars[solarIndex[0]].galaxyPosition + GameManager.instance.data.getSolarBody(solarIndex).lastKnownPosition;
-        structureId = -1;
-        shipId = -1;
 
-        this.workers = 10;
-        this.name = name;
-        this.dateCreated = new Dated(GameManager.instance.data.date.time);
-        this.lastUpdated = new Dated(GameManager.instance.data.date.time);
-        this.passangerCapacity = 10;
+        //Get Blueprint
+        blueprintId = shipBlueprintId;
 
-        this.speed = Random.Range(2f, 5f) * (1 - this.passangerCapacity / 200f + .5f);
-        this.fuelEfficiency = Random.Range(5000f, 1000f) * (1 - this.passangerCapacity / 200f + .5f);
-        this.fuelCapacity = (int)(Random.Range(50, 200) * (this.passangerCapacity / 200f + .5f));
-        var fuelBluePrint = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
-        this.fuel = new Item(fuelBluePrint.id,fuelCapacity, 1, this.solarIndex);
-        this.fuel.shipId = this.id;
+        ShipBlueprint ship = GetShipBlueprint();
+        name = ship.name + " " + ship.count++;
 
+
+        //workers
+        this.workers = ship.workers;
+        workerPayRate = ship.workerPayRate;
+
+        //Cargo
+        itemCapacity = ship.cargoCapacity;
+
+        //Fuel
+        this.fuelCapacity = 100;
+        this.fuel = new Fuel(GetShipBlueprint().fuelBlueprintId,fuelCapacity, id);
+
+        //Agent
         agent = new GoapAgent(this, new GoapAction[] {
             new BuyItemTradeAction(this),
             new SellItemAction(this)
         });
     }
+
+    public ShipBlueprint GetShipBlueprint()
+    { return GameManager.instance.data.itemsData.Model.GetItem(blueprintId) as ShipBlueprint; }
 
     public void SetShipAction(ShipAction action)
     {
@@ -109,9 +109,9 @@ public class Ship: IStructure, IWorkers, IGoap {
     {
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
 
-        worldData.Add(new KeyValuePair<string, object>("position", solarIndex));
+        worldData.Add(new KeyValuePair<string, object>("position", referenceId));
         worldData.Add(new KeyValuePair<string, object>("hasStorage", true));
-        worldData.Add(new KeyValuePair<string, object>("hasTradeItems", (items.Count > 0)));
+        worldData.Add(new KeyValuePair<string, object>("hasTradeItems", (itemsStorage.Count > 0)));
 
         return worldData;
     }
@@ -154,12 +154,117 @@ public class Ship: IStructure, IWorkers, IGoap {
     public bool moveAgent(GoapAction nextAction)
     {
         // move towards the NextAction's target
-        double step = speed * GameManager.instance.data.date.deltaTime;
-        galaxyPosition = Vector2d.MoveTowards(galaxyPosition, nextAction.target.galaxyPosition, step);
+        double step = SubLightSpeed * deltaTime;
+        SystemPosition = Vector3d.MoveTowards(SystemPosition, nextAction.target.SystemPosition, step);
 
-        if ((galaxyPosition - nextAction.target.galaxyPosition).sqrMagnitude < 5)
+        //Remove Fuel
+        fuel.RemoveAmount(step / fuelRange);
+
+        //Set State and Target
+        shipTargetId = nextAction.target.id;
+        shipAction = ShipAction.Moving;
+
+        //Exiting SOI
+
+        var location = GameManager.instance.locations[referenceId];
+
+        if (location.GetType()== typeof(SolarBody))
+        {
+            SolarBody solar = (SolarBody)location;
+
+            if (referencePosition.sqrMagnitude > Mathd.Pow(solar.SOI(),2))
+            {
+                if (GameManager.instance.debugLog)
+                    Debug.Log("Exiting " + solar.name);
+                solar.structureIds.Remove(id);
+                referenceId = location.referenceId;
+
+                referencePosition += location.referencePosition;
+
+                location = GameManager.instance.locations[referenceId];
+                ((SolarBody)location).structureIds.Add(id);
+            }
+        }
+        else
+        {
+            Structure structure = (Structure) location;
+
+            if (referencePosition.sqrMagnitude > Mathd.Pow(structure.SOI, 2))
+            {
+                if (GameManager.instance.debugLog)
+                    Debug.Log("Exiting " + structure.name);
+                referenceId = location.referenceId;
+                structure.structureIds.Remove(id);
+                referencePosition += location.referencePosition;
+
+                location = GameManager.instance.locations[referenceId];
+                ((SolarBody)location).structureIds.Add(id);
+            }
+        }
+
+        //Entering SOI SolarBody
+
+        if (location.GetType() == typeof(SolarBody))
+        {
+
+            SolarBody solar = location as SolarBody;
+
+            foreach (SolarBody body in solar.satelites)
+            {
+                
+                if ((referencePosition - body.referencePosition).sqrMagnitude < Mathd.Pow(body.SOI(),2))
+                {
+                    solar.structureIds.Remove(id);
+                    if (GameManager.instance.debugLog)
+                        Debug.Log("Entering " + body.name);
+                    //move into an SOI
+
+                    referenceId = body.id;
+                    location = GameManager.instance.locations[referenceId];
+                    referencePosition -= body.referencePosition;
+                    ((SolarBody)location).structureIds.Add(id);
+                    break;
+
+                }
+
+            }
+
+        }
+
+        //Entering SOI Structure
+
+        if (location.GetType() == typeof(SolarBody))
+        {
+
+            SolarBody solar = location as SolarBody;
+            foreach (Structure structure in solar.structures)
+            {
+                if ((referencePosition - structure.referencePosition).sqrMagnitude < Mathd.Pow(structure.SOI, 2))
+                {
+                    if (GameManager.instance.debugLog)
+                        Debug.Log("Entering " + structure.name);
+                    solar.structureIds.Remove(id);
+                    //move into an SOI
+
+                    referenceId = structure.id;
+                    location = GameManager.instance.locations[referenceId];
+                    referencePosition -= structure.referencePosition;
+                    ((Structure)location).structureIds.Add(id);
+                    break;
+
+                }
+
+            }
+        }
+
+        //Reached Location
+
+        if ((SystemToGalaxyPosition() - nextAction.target.SystemToGalaxyPosition()).sqrMagnitude < 1/Position.SystemConversion[0] && referenceId == nextAction.target.id)
         {
             // we are at the target location, we are done
+            if (GameManager.instance.debugLog)
+                Debug.Log("Location Reached");
+            shipAction = ShipAction.Docked;
             nextAction.setInRange(true);
             return true;
         }
@@ -170,8 +275,8 @@ public class Ship: IStructure, IWorkers, IGoap {
 
 public enum ShipAction
 {
-    Buy,
-    Sell,
-    SearchingTradeRoute,
+    Moving,
+    Docked,
+    Refueling,
     Idle
 }

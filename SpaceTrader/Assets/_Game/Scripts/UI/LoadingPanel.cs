@@ -13,7 +13,7 @@ public class LoadingPanel : MonoBehaviour {
 	void Start () {
 
         loadingPanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
-        //loadingPanel.SetActive(false);
+        loadingPanel.SetActive(false);
 		
 	}
 	

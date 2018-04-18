@@ -1,0 +1,2 @@
+C:\Users\chinedu\Documents\GitHub\SpaceTrader\SpaceTrader\obj\Debug\Assembly-CSharp-Editor.csprojResolveAssemblyReference.cache
+C:\Users\chinedu\Documents\GitHub\SpaceTrader\SpaceTrader\obj\Debug\Assembly-CSharp-Editor.csproj.CoreCompileInputs.cache

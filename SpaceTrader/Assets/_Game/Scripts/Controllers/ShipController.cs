@@ -15,7 +15,7 @@ public class ShipController : Controller<ShipsModel>
     internal SpriteRenderer sprite;
     internal LineRenderer line;
     internal double timeUpdate = 0;
-    private GalaxyManager galaxy;
+    private ViewManager galaxy;
     private Unit unit;
 
     //internal int solarIndex

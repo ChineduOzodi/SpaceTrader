@@ -11,12 +11,12 @@ public class TradeRouteFinding : MonoBehaviour
     TradeRouteRequestManager requestManager;
 
     private GameManager game;
-    private GalaxyManager galaxy;
+    private ViewManager galaxy;
     // Use this for initialization
     void Awake()
     {
         game = GetComponent<GameManager>();
-        galaxy = GetComponent<GalaxyManager>();
+        galaxy = GetComponent<ViewManager>();
         requestManager = GetComponent<TradeRouteRequestManager>();
 
     }
@@ -38,7 +38,7 @@ public class TradeRouteFinding : MonoBehaviour
         Station[] targets = new Station[2];
         while (true)
         {
-            model.SetShipAction(ShipAction.SearchingTradeRoute);
+            model.SetShipAction(ShipAction.Refueling);
             double profitability = 0;
             //foreach (Station sellStation in game.data.stations)
             //{

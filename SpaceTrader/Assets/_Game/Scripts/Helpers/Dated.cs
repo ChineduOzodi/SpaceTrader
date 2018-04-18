@@ -21,6 +21,9 @@ public class Dated
     /// Seconds in year.
     /// </summary>
     public static int Year = Day * Days; // Seconds in a year.
+    /// <summary>
+    /// Seconds in a month.
+    /// </summary>
     public static int Month = Year / Months;
     /// <summary>
     /// Seconds in a season.

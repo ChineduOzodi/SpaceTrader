@@ -2,34 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SolarBody: IPositionEntity
+public class SolarBody: PositionEntity
 {
-    public string name;
     public int totalPopulation { get; private set; }
     public SolarType solarType { get; private set; }
     public SolarSubType solarSubType { get; private set; }
     public Orbit orbit;
     public double mass { get; set; }
-    public double bodyRadius { get; set; }
-    public Vector2d lastKnownPosition { get; private set; }
-    public Vector2d[] approximatePositions {get; private set;}
+    /// <summary>
+    /// In km
+    /// </summary>
+    public double bodyRadius { get; set; } 
+    public Vector3 lastKnownPosition { get; private set; }
+    public Vector3[] approximatePositions {get; private set;}
 
     //-----------------Star Properties---------------------//
     public double surfaceTemp { get; private set; }
     public double surfacePressure { get; private set; }
     public double luminosity { get; private set; } // in ergs per second
-
+    public SolarBody Star { get
+        {
+            if (referenceId == "") return this;
+            return ((SolarBody)GameManager.instance.locations[referenceId]).Star;
+        } }
+    public List<SolarBody> GetAllSolarBodies()
+    {
+        List<SolarBody> bodies = new List<SolarBody>(satelites);
+        foreach(SolarBody body in satelites)
+        {
+            bodies.AddRange(body.GetAllSolarBodies());
+        }
+        return bodies;
+    }
     //----------------Rocky Satellite Properties-----------//
     public double bondAlebo { get; private set; } 
     public double greenhouse { get; private set; }
     public double surfaceGravity { get; private set; }
     public List<PlanetTile> planetTiles { get; private set; }
     public List<RawResource> rawResources { get; private set; }
-    public List<IStructure> structures = new List<IStructure>();
+    public List<Structure> structures = new List<Structure>();
     public bool deleteStructure;
+   
+
+    //----------------GameDisplay Properties---------------//
+    public int scaleIndex;
+    public bool HasStations
+    {
+        get
+        {
+            if (structureIds.Count > 0) return true;
+            for (int i = 0; i < satelites.Count; i++)
+            {
+                if (satelites[i].HasStations) return true;
+            }
+            return false;
+        }
+    }
     //----------------Commerce-----------------------------//
-    public ItemStorage buyList { get; private set; }
-    public ItemStorage sellList { get; private set; }
+    public IItemStorage buyList { get; private set; }
+    public IItemStorage sellList { get; private set; }
 
     public ModelRefs<IdentityModel> companies = new ModelRefs<IdentityModel>();
 
@@ -40,38 +71,9 @@ public class SolarBody: IPositionEntity
     public Color color;
 
     public List<SolarBody> satelites = new List<SolarBody>();
-    /// <summary>
-    /// Index of solar body in solarsystem.
-    /// </summary>
-    public List<int> solarIndex { get; set; }
-    public int structureId { get; set; }
-    public int shipId { get; set; }
+    public List<string> shipIds = new List<string>();
+    
 
-    public Vector2d galaxyPosition
-    {
-        get
-        {
-            if (solarIndex.Count == 3)
-            {
-                return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition
-                        + lastKnownPosition;
-            }
-            else if (solarIndex.Count == 2)
-            {
-                return GameManager.instance.data.stars[solarIndex[0]].galaxyPosition
-                        + lastKnownPosition;
-            }
-            else
-            {
-                throw new System.Exception("Solarbody " + name + " solarIndex count incorrect: " + solarIndex.Count);
-            }
-        }
-
-        set
-        {
-            throw new System.Exception("Can't set solarbody galaxyPosition, use GamePosition instead");
-        }
-    }
 
     /// <summary>
     /// Used for creating stars
@@ -84,7 +86,8 @@ public class SolarBody: IPositionEntity
     /// <param name="orbit"></param>
     /// <param name="_color"></param>
     /// <param name="_surfaceTemp"></param>
-    public SolarBody(string _name, List<int> _solarIndex, SolarSubType _solarSubType, double mass, double radius, Orbit orbit, Color _color, double _surfaceTemp)
+    public SolarBody(string _name, Vector3d galaxyPosition, SolarSubType _solarSubType, double mass, double radius, Orbit orbit, Color _color, double _surfaceTemp):
+        base("", galaxyPosition)
     {
         rawResources = new List<RawResource>();
         planetTiles = new List<PlanetTile>();
@@ -93,9 +96,6 @@ public class SolarBody: IPositionEntity
         this.bodyRadius = radius;
         name = _name;
         this.solarType = solarType;
-        solarIndex = _solarIndex;
-        structureId = -1;
-        shipId = -1;
         color = _color;
         surfaceTemp = _surfaceTemp;
         surfacePressure = 1; // In atm
@@ -107,11 +107,11 @@ public class SolarBody: IPositionEntity
         surfacePressure = 1;
         greenhouse = .0137328 * Mathd.Pow(surfacePressure, 2) + .0986267 * surfacePressure;
 
-        buyList = new ItemStorage();
-        sellList = new ItemStorage();
+        scaleIndex = 1;
     }
 
-    public SolarBody(string _name, List<int> _solarIndex, SolarType _solarType, SolarSubType _solarSubType, double mass, double radius, Orbit orbit, Color _color, SolarBody star)
+    public SolarBody(string _name, string referenceId, SolarType _solarType, SolarSubType _solarSubType, double mass, double radius, Orbit orbit, Color _color, SolarBody star):
+        base(referenceId)
     {
         this.orbit = orbit;
         this.mass = mass;
@@ -120,22 +120,12 @@ public class SolarBody: IPositionEntity
         totalPopulation = 0;
         this.solarType = _solarType;
         this.solarSubType = _solarSubType;
-        solarIndex = _solarIndex;
-        structureId = -1;
-        shipId = -1;
+        referencePosition = new Vector3d(0,orbit.sma, 0);
         color = _color;
         surfaceGravity = GameDataModel.G * mass / Mathd.Pow(Units.convertToMeters * radius, 2) / 9.81;
         surfacePressure = 0; // In atm
         bondAlebo = Random.value;
-
-        buyList = new ItemStorage();
-        sellList = new ItemStorage();
-
-        var dist = orbit.sma;
-        if (solarIndex.Count == 3)
-        {
-            dist = star.satelites[solarIndex[1]].orbit.sma;
-        }
+        
 
         if (solarType == SolarType.Moon || solarType == SolarType.DwarfPlanet)
         {
@@ -147,9 +137,9 @@ public class SolarBody: IPositionEntity
             }
             if (solarType == SolarType.Moon)
             {
-                surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(star.satelites[solarIndex[1]].orbit.sma * Units.convertToMeters + orbit.sma * Units.convertToMeters, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
+                surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(SystemPosition.magnitude * Units.convertToMeters, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
             }
-            else
+            else //Assumes solarbody is a planet orbiting the center star
             {
                 surfaceTemp = Mathd.Pow(((1 - bondAlebo) * star.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(orbit.sma * Units.convertToMeters, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
             }
@@ -349,6 +339,17 @@ public class SolarBody: IPositionEntity
         {
             GeneratePlanetTiles();
         }
+
+        SetScaleIndex();
+    }
+
+    private void SetScaleIndex()
+    {
+        if (this.ReferenceBody.solarType == SolarType.Star)
+        {
+            scaleIndex = 1; //Gm
+        }
+        else scaleIndex = 2; //Mm
     }
 
     private void GeneratePlanetTiles()
@@ -396,7 +397,7 @@ public class SolarBody: IPositionEntity
 
     public SolarBody() { }
 
-    public IStructure GetStructure(int structureId)
+    public Structure GetStructure(string structureId)
     {
         int index = structures.FindIndex(x => x.id == structureId);
         if (index == -1)
@@ -413,154 +414,127 @@ public class SolarBody: IPositionEntity
     {
         population = new Population(this);
         this.inhabited = true;
-
-        if (solarIndex.Count > 1)
-        {
-            GameManager.instance.data.stars[solarIndex[0]].solar.inhabited = true;
-        }
-        if (solarIndex.Count > 2)
-        {
-            GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].sateliteInhabited = true;
-        }
-
     }
 
     #region "Commerce"
 
-    public double GetMarketPrice(int itemId)
+    public double GetMarketPrice(string itemId)
     {
-        return GameManager.instance.data.stars[solarIndex[0]].GetMarketPrice(itemId);
+        return 1.00;
+        //    return GameManager.instance.data.stars[solarIndex[0]].GetMarketPrice(itemId);
     }
 
     public void SetBuying(Item item)
     {
 
-        int itemIndex = -1;
-        if (item.structureId == -1)
-        {
-            itemIndex = buyList.items.FindIndex(x => x.id == item.id);
-        }
-        else
-        {
-            itemIndex = buyList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
-        }
-        if (itemIndex >= 0)
-        {
-            buyList.items[itemIndex].SetAmount(item.amount, item.price);
-        }
-        else
-        {
-            buyList.AddItem(item);
-        }
+        //    int itemIndex = -1;
+        //    if (item.structureId == -1)
+        //    {
+        //        itemIndex = buyList.items.FindIndex(x => x.id == item.id);
+        //    }
+        //    else
+        //    {
+        //        itemIndex = buyList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
+        //    }
+        //    if (itemIndex >= 0)
+        //    {
+        //        buyList.items[itemIndex].SetAmount(item.amount, item.price);
+        //    }
+        //    else
+        //    {
+        //        buyList.AddItem(item);
+        //    }
 
-        GameManager.instance.data.stars[solarIndex[0]].SetBuying(item);
+        //    GameManager.instance.data.stars[solarIndex[0]].SetBuying(item);
     }
-    public void RemoveBuying(int itemId, int structureId, double amount)
+    public void RemoveBuying(string itemId, string structureId, double amount)
     {
 
-        int itemIndex = -1;
-        if (structureId == -1)
-        {
-            itemIndex = buyList.items.FindIndex(x => x.id == itemId);
-        }
-        else
-        {
-            itemIndex = buyList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
-        }
+        //    int itemIndex = -1;
+        //    if (structureId == -1)
+        //    {
+        //        itemIndex = buyList.items.FindIndex(x => x.id == itemId);
+        //    }
+        //    else
+        //    {
+        //        itemIndex = buyList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
+        //    }
 
-        if (itemIndex >= 0)
-        {
-            buyList.items[itemIndex].RemoveAmount(amount);
-            if (buyList.items[itemIndex].amount == 0)
-                buyList.items.RemoveAt(itemIndex);
-        }
+        //    if (itemIndex >= 0)
+        //    {
+        //        buyList.items[itemIndex].RemoveAmount(amount);
+        //        if (buyList.items[itemIndex].amount == 0)
+        //            buyList.items.RemoveAt(itemIndex);
+        //    }
 
-        GameManager.instance.data.stars[solarIndex[0]].RemoveBuying(itemId,structureId, amount);
+        //    GameManager.instance.data.stars[solarIndex[0]].RemoveBuying(itemId,structureId, amount);
     }
 
     public void SetSelling(Item item)
     {
-        int itemIndex = -1;
-        if (item.structureId == -1)
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id);
+        //    int itemIndex = -1;
+        //    if (item.structureId == -1)
+        //    {
+        //        itemIndex = sellList.items.FindIndex(x => x.id == item.id);
+        //    }
+        //    else
+        //    {
+        //        itemIndex = sellList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
+        //    }
+        //    if (itemIndex >= 0)
+        //    {
+        //        sellList.items[itemIndex].SetAmount(item.amount, item.price);
+        //    }
+        //    else
+        //    {
+        //        sellList.AddItem(item);
+        //    }
+        //    GameManager.instance.data.stars[solarIndex[0]].SetSelling(item);
         }
-        else
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
-        }
-        if (itemIndex >= 0)
-        {
-            sellList.items[itemIndex].SetAmount(item.amount, item.price);
-        }
-        else
-        {
-            sellList.AddItem(item);
-        }
-        GameManager.instance.data.stars[solarIndex[0]].SetSelling(item);
-    }
-    
-    
 
-    public void RemoveSelling(int itemId, int structureId, double amount)
+
+
+    public void RemoveSelling(string itemId, string structureId, double amount)
     {
 
-        int itemIndex = -1;
-        if (structureId == -1)
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == itemId);
-        }
-        else
-        {
-            itemIndex = sellList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
-        }
+        //    int itemIndex = -1;
+        //    if (structureId == -1)
+        //    {
+        //        itemIndex = sellList.items.FindIndex(x => x.id == itemId);
+        //    }
+        //    else
+        //    {
+        //        itemIndex = sellList.items.FindIndex(x => x.id == itemId && x.structureId == structureId);
+        //    }
 
-        if (itemIndex >= 0)
-        {
-            sellList.items[itemIndex].RemoveAmount(amount);
-            if (sellList.items[itemIndex].amount == 0)
-                sellList.items.RemoveAt(itemIndex);
-        }
+        //    if (itemIndex >= 0)
+        //    {
+        //        sellList.items[itemIndex].RemoveAmount(amount);
+        //        if (sellList.items[itemIndex].amount == 0)
+        //            sellList.items.RemoveAt(itemIndex);
+        //    }
 
-        GameManager.instance.data.stars[solarIndex[0]].RemoveSelling(itemId, structureId, amount);
+        //    GameManager.instance.data.stars[solarIndex[0]].RemoveSelling(itemId, structureId, amount);
     }
 
-    #endregion
-    //-----------------Orbital Functions-------------------//
-    #region "Orbital Functions"
-    public Vector2d GamePosition(double time)
+        #endregion
+        //-----------------Orbital Functions-------------------//
+        #region "Orbital Functions"
+        /// <summary>
+        /// Local position of solar body scaled to the game position
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public Vector3 GamePosition(double time)
     {
-        if (orbit.sma == 0)
-        {
-            return Vector3d.zero;
-        }
-
-        double parentMass;
-        if (solarIndex.Count == 2)
-        {
-            parentMass = GameManager.instance.data.stars[solarIndex[0]].solar.mass;
-        }
-        else if (solarIndex.Count == 3)
-        {
-            parentMass = GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].mass;
-        }
-        else
-        {
-            throw new System.Exception("parentMass not found.");
-        }
-
-        var ena = ENA(time, parentMass);
-        var pos = new Vector3d(orbit.sma * (Mathd.Cos(ena) - orbit.ecc), orbit.sma * Mathd.Sqrt(1 - (orbit.ecc * orbit.ecc)) * Mathd.Sin(ena));
-        var pol = new Polar2d(pos);
-        pol.angle += orbit.lpe;
-        var pos2 = (pol.cartesian / GameDataModel.galaxyDistanceMultiplication); //Used to set the scale of the positioning of the solar systems
-        lastKnownPosition = pos2;
-        return pos2;
+        var pos2 = (Position(time) * (KmToLocalScale(scaleIndex)));
+        lastKnownPosition = (Vector3) pos2;
+        return (Vector3) pos2;
     }
 
-    public Vector2d SetOrbit(double time, double orbitedObjectMass)
+    public Vector3 SetOrbit(double time, double orbitedObjectMass)
     {
-        approximatePositions = new Vector2d[361];
+        approximatePositions = new Vector3[361];
 
         double timeInc = (OrbitalPeriod(orbitedObjectMass) / 360);
 
@@ -572,7 +546,11 @@ public class SolarBody: IPositionEntity
 
         return lastKnownPosition;
     }
-
+    /// <summary>
+    /// Returns local position of solar body in km
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
     private Vector3d Position(double time)
     {
         if (orbit.sma == 0)
@@ -580,42 +558,30 @@ public class SolarBody: IPositionEntity
             return Vector3d.zero;
         }
 
-        double parentMass;
-        if (solarIndex.Count == 2)
-        {
-            parentMass = GameManager.instance.data.stars[solarIndex[0]].solar.mass;
-        }
-        else if (solarIndex.Count == 3)
-        {
-            parentMass = GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].mass;
-        }
-        else
-        {
-            throw new System.Exception("parentMass not found.");
-        }
+        double parentMass = ((SolarBody)GameManager.instance.locations[referenceId]).mass;
         var ena = ENA(time, parentMass);
         var pos = new Vector3d(orbit.sma * (Mathd.Cos(ena) - orbit.ecc), orbit.sma * Mathd.Sqrt(1 - (orbit.ecc * orbit.ecc)) * Mathd.Sin(ena));
         var pol = new Polar2d(pos);
         pol.angle += orbit.lpe;
         var pos2 = pol.cartesian;
+
+        //Update Reference Position
+        referencePosition = pos2;
+
         return pos2;
 
     }
 
-    public double temp(double time)
+    public double Temp(double time)
     {
-        if (GameManager.instance.data.stars[solarIndex[0]].solar == this)
+        if (solarType == SolarType.Star)
             return surfaceTemp;
 
         Vector3d position = Position(time);
 
-        var solar = GameManager.instance.data.stars[solarIndex[0]].solar;
+        var solar = Star;
 
-        if (solarIndex.Count == 3)
-        {
-            position += solar.satelites[solarIndex[1]].Position(time);
-        }
-        var distance = position.magnitude;
+        var distance = SystemPosition.magnitude;
         //(Mathd.Pow(solar.bodyRadius, 2) / Mathd.Pow(position.magnitude, 2)) * solar.surfaceTemp * 2314;
         surfaceTemp = Mathd.Pow(((1 - bondAlebo) * solar.luminosity) / ((16 * Mathd.PI * 5.6705e-8) * Mathd.Pow(distance * Units.convertToMeters, 2)), .25) * Mathd.Pow((1 + .438 * greenhouse * .9), .25);
 
@@ -647,27 +613,22 @@ public class SolarBody: IPositionEntity
         return Mathd.Sqrt((GameDataModel.G * parentMass) / (Mathd.Pow((double) orbit.sma *Units.convertToMeters, 3)));
     }
 
-    public double SOI(double parentMass)
+    public double SOI()
     {
         if (orbit.sma == 0) // Assuming sun SOI.
         {
-            return Units.M * Mathd.Pow(81 * mass, .25);
+            return Units.M * Mathd.Pow(mass, .25);
         }
-        return orbit.sma * Mathd.Pow(mass / parentMass, .4f);
+
+        var trueSOI = orbit.sma * Mathd.Pow(mass / ReferenceBody.mass, .4f);
+        var estSOI = Units.M * Mathd.Pow(mass, .25);
+        return (trueSOI < estSOI) ? trueSOI : estSOI;
     }
 #endregion
     public string GetInfo(double time)
     {
         double parentMass;
-        if (solarIndex.Count == 2)
-        {
-            parentMass = GameManager.instance.data.stars[solarIndex[0]].solar.mass;
-        }
-        else if (solarIndex.Count == 3)
-        {
-            parentMass = GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].mass;
-        }
-        else if (solarIndex.Count == 1)
+        if (solarType == SolarType.Star)
         {
             parentMass = mass;
             return string.Format("Mass: {0}\nRadius: {1}\nSatelite Count: {2}\nSurfaceTemp: {3} C\nSurface Gravity: {4} g",
@@ -679,10 +640,10 @@ public class SolarBody: IPositionEntity
         }
         else
         {
-            throw new System.Exception("parentMass not found.");
+            parentMass = ((SolarBody)GameManager.instance.locations[referenceId]).mass;
         }
 
-        var sTemp = temp(time) - 273.15;
+        var sTemp = Temp(time) - 273.15;
 
         return string.Format("Type: {8}\nSubType: {9}\nMass: {0}\nRadius: {1}\nOrbital Period: {2}\nSatelite Count: {3}\nSemi-Major Axis: {4}\nSurfaceTemp: {5} C\nSurface Gravity: {6} g\nSurfacePressure: {7} atm\n",
             mass.ToString("G4") + " kg",
@@ -690,7 +651,7 @@ public class SolarBody: IPositionEntity
             Dated.ReadTime(OrbitalPeriod(parentMass)),
             satelites.Count,
             Units.ReadDistance(orbit.sma),
-            (GameManager.instance.data.stars[solarIndex[0]].solar == this)?surfaceTemp.ToString():sTemp.ToString("0.0"),
+            sTemp.ToString("0.0"),
             (surfaceGravity).ToString("0.00"),
             surfacePressure.ToString("0.00"),
             solarType.ToString(),

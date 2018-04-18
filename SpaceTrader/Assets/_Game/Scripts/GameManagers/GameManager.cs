@@ -6,20 +6,19 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 using Vectrosity;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// Manages the main aspects of the game, including player interaction, main ai, game ui, and view changes. Anything else should be moved to a more specific file
 /// </summary>
 public class GameManager : MonoBehaviour {
 
-    public GameObject galaxyManager;
-    public GameObject pathfindingManager;
+    internal GameObject galaxyManager;
+    internal GameObject pathfindingManager;
     public LoadingPanel loadingPanel;
     public GameObject exitPanel;
     public GameObject savePanel;
     public Slider saveSlider;
     public Image saveFill;
-    public Text dateInfo;
-    public Text nameOfSystem;
     internal float localScaleMod = 1;
     internal bool galaxyView = true;
     public int numShipsPerFrame;
@@ -27,17 +26,18 @@ public class GameManager : MonoBehaviour {
     public double marketPriceMod = .0001f;
     internal GameObject selectedObj;
     public bool updateShips;
+    public bool debugLog;
     
     
     internal GameDataModel data;
     
-    internal int statsDisplay = 0;
-    internal GalaxyManager galaxy;
+    internal ViewManager galaxy;
     internal TradeRouteRequestManager tradeRequestManager;
     internal static GameManager instance;
-
-    private VectorLine line;
-    public Texture lineTexture;
+    internal Dictionary<string, PositionEntity> locations = new Dictionary<string, PositionEntity>();
+    internal Dictionary<string, Contract> contracts = new Dictionary<string, Contract>();
+    //private VectorLine line;
+    //public Texture lineTexture;
 
     //Used to setup the game and make sure nothing is running while things are being configured
     internal bool gameInitiated = false;
@@ -60,12 +60,12 @@ public class GameManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        galaxy = galaxyManager.GetComponent<GalaxyManager>();
-        tradeRequestManager = pathfindingManager.GetComponent<TradeRouteRequestManager>();
+        //galaxy = galaxyManager.GetComponent<ViewManager>();
+        //tradeRequestManager = pathfindingManager.GetComponent<TradeRouteRequestManager>();
         data = new GameDataModel();
         setup = true;
-        GetLoadingPanel().LoadAssets();
-        line = new VectorLine("Galaxy line", new List<Vector3>(), 1);
+        //GetLoadingPanel().LoadAssets();
+        //line = new VectorLine("Galaxy line", new List<Vector3>(), 1);
 
     }
 
@@ -93,33 +93,6 @@ public class GameManager : MonoBehaviour {
             if (!setup)
             {
                 data.date.AddTime(Time.deltaTime * timeScale);
-                if (Input.GetMouseButtonDown(0))
-                {
-                    Vector2 rayPos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-                    RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero, 0f);
-
-                    if (!EventSystem.current.IsPointerOverGameObject())
-                    {
-                        if (hit)
-                        {
-                            selectedObj = hit.transform.gameObject;
-                            //if (selectedObj.tag == "station")
-                            //{
-                            //    OpenInfoPanel(selectedObj.GetComponent<StationController>().Model);
-                            //}
-
-                        }
-                        else
-                        {
-                            //BreakStationLinks();
-                            selectedObj = null;
-                            statsDisplay = 0;
-                        }
-
-
-                    }
-                }
-
                 if (Input.GetKeyDown(KeyCode.Comma))
                 {
                     timeScale *= .5f;
@@ -136,73 +109,72 @@ public class GameManager : MonoBehaviour {
                 {
                     if (selectedObj != null && !following)
                     {
+                        //TODO: Fix following
                         following = true;
-                        data.cameraGalaxyPosition += (Vector2d)(Vector2)selectedObj.transform.position * data.cameraGalaxyOrtho / Camera.main.orthographicSize;
+                        //data.mainCameraPosition += (Vector2d)(Vector2)selectedObj.transform.position * data.cameraGalaxyOrtho / Camera.main.orthographicSize;
                     }
                     else following = false;
                 }
+                if (Input.GetKeyDown(KeyCode.M))
+                {
+                    GalaxyView.instance.SelectGalaxyView();
+                    print("M pressed.");
+                }
+                if (Input.GetKeyDown(KeyCode.N))
+                {
+                    SolarView.instance.SelectSolarView();
+                    print("N pressed.");
+                }
 
-                dateInfo.text = data.date.GetDateTime() + "\nTimescale: " + timeScale + "\n";
-                CreateLines();
+                //CreateLines();
+            }
+            // ---------------------------------- TODO: Need to find a mor MVC way to run on click events on the controllers themselves -------------------------//
+            //if (transform.parent != null && transform.parent.tag == "ship")
+            //{
+            //    ShipController ship = transform.parent.GetComponent<ShipController>();
+            //    galaxy.solar = galaxy.starControllers[ship.starIndex];
+            //    if (ship.hyperspace != galaxyView)
+            //    {
+            //        if (ship.hyperspace)
+            //        {
+            //            galaxyView = true;
+            //            galaxy.GalaxyView();
+            //            transform.localPosition = new Vector3(0, 0, -10);
+            //            transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
 
-                //if (selectedObj != null)
-                //{
-                //    if (selectedObj.tag == "station")
-                //        dateInfo.text += selectedObj.GetComponent<StationController>().GetInfo();
-                //    else if (selectedObj.tag == "ship")
-                //        dateInfo.text += selectedObj.GetComponent<ShipController>().GetInfo();
-                //}
-                //else
-                //{
+            //        }
+            //        else
+            //        {
+            //            galaxyView = false;
+            //            galaxy.SolarView();
+            //            transform.localPosition = new Vector3(0, 0, -10);
+            //            transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
+            //        }
+            //    }
 
-                //    if (statsDisplay == 1)
-                //    {
-                //        dateInfo.text += ShipStats();
-                //    }
-                //    else if (statsDisplay == 2)
-                //    {
-                //        dateInfo.text += StationStats();
-                //    }
-                //    else if (statsDisplay == 3)
-                //    {
-                //        dateInfo.text += CreatureStats();
-                //    }
-                //    else
-                //    {
-                //        dateInfo.text += BasicStats();
-                //    }
-                //}
-                // ---------------------------------- TODO: Need to find a mor MVC way to run on click events on the controllers themselves -------------------------//
-                //if (transform.parent != null && transform.parent.tag == "ship")
-                //{
-                //    ShipController ship = transform.parent.GetComponent<ShipController>();
-                //    galaxy.solar = galaxy.starControllers[ship.starIndex];
-                //    if (ship.hyperspace != galaxyView)
-                //    {
-                //        if (ship.hyperspace)
-                //        {
-                //            galaxyView = true;
-                //            galaxy.GalaxyView();
-                //            transform.localPosition = new Vector3(0, 0, -10);
-                //            transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
+            //}
 
-                //        }
-                //        else
-                //        {
-                //            galaxyView = false;
-                //            galaxy.SolarView();
-                //            transform.localPosition = new Vector3(0, 0, -10);
-                //            transform.localScale = Vector3.one * (1 / transform.parent.localScale.x);
-                //        }
-                //    }
 
-                //}
+        }
+        
+    }
 
-             
+    public void CreateLocations()
+    {
+        locations = new Dictionary<string, PositionEntity>();
+        foreach( SolarModel star in data.stars)
+        {
+            locations.Add(star.Id.ToString(), star.solar);
+            foreach (SolarBody solarbody in star.solar.satelites)
+            {
+                locations.Add(solarbody.id, solarbody);
+                foreach (SolarBody moonbody in solarbody.satelites)
+                {
+                    locations.Add(moonbody.id, moonbody);
+                }
             }
         }
     }
-
     private void CreateLines()
     {
 
@@ -262,8 +234,8 @@ public class GameManager : MonoBehaviour {
         //                }
         //            }
         //        }
-                
-                
+
+
         //    }
 
         //    line.points3 = points;
@@ -279,24 +251,16 @@ public class GameManager : MonoBehaviour {
         //    //    line.Draw3D();
         //    //}
         //}
-        
-    }
 
-    //private void BreakStationLinks()
-    //{
-    //    foreach (StationModel station in data.stations)
-    //    {
-    //        station.lineTarget = station.position;
-    //        station.NotifyChange();
-    //    }
-    //}
+    }
 
     public void StartGame()
     {
+        SceneManager.LoadScene("main3d");
         StartCoroutine("UpdateShips", numShipsPerFrame);
         //StartCoroutine("UpdateStations", numStationsPerFrame);
-        StartCoroutine("UpdateGovernments");
         StartCoroutine("UpdateCompanies");
+        StartCoroutine("UpdateGovernments");
         setup = false;
     }
 
@@ -308,8 +272,12 @@ public class GameManager : MonoBehaviour {
     {
         exitPanel.SetActive(true);
     }
-
-    internal void OpenInfoPanel(int id,  TargetType targetType)
+    public void OpenGovernmentsPanel()
+    {
+        InfoPanelModel infoModel = new InfoPanelModel( TargetType.Governments );
+        Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
+    }
+    internal void OpenInfoPanel(string id,  TargetType targetType)
     {
         InfoPanelModel infoModel = new InfoPanelModel(id,targetType);
         Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
@@ -325,12 +293,12 @@ public class GameManager : MonoBehaviour {
         InfoPanelModel infoModel = new InfoPanelModel(model);
         Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
     }
-    internal void OpenInfoPanel(List<int> solarIndex)
+    internal void OpenInfoPanel(string locationId)
     {
-        InfoPanelModel infoModel = new InfoPanelModel(solarIndex);
+        InfoPanelModel infoModel = new InfoPanelModel(locationId);
         Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
     }
-    internal void OpenInfoPanel(IStructure structure)
+    internal void OpenInfoPanel(Structure structure)
     {
         InfoPanelModel infoModel = new InfoPanelModel(structure);
         Controller.Instantiate<InfoPanelController>("infopanelcanvas", infoModel);
@@ -356,13 +324,14 @@ public class GameManager : MonoBehaviour {
         int shipIndex = 0;
         while (true)
         {
-            if (shipIndex >= data.ships.Model.ships.Count)
-                shipIndex = 0;
-            for (int i = 0; i < updatesPerFrame; i++)
-            {
-                ShipControl(shipIndex);
-                shipIndex++;
-            }
+            if (data.ships.Model.ships.Count > 0)
+                for (int i = 0; i < updatesPerFrame; i++)
+                {
+                    ShipControl(shipIndex);
+                    shipIndex++;
+                    if (shipIndex >= data.ships.Model.ships.Count)
+                        shipIndex = 0;
+                }
 
             yield return null;
         }
@@ -402,9 +371,12 @@ public class GameManager : MonoBehaviour {
         {
             GovernmentModel model = data.governments[govIndex];
 
-            double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
-            model.age.AddTime(deltaTime);
+            double deltaTime = data.date.time - model.lastUpdated.time;
+            model.lastUpdated.AddTime(deltaTime);
 
+            //Update Supply and Demand
+            model.UpdateSupplyDemand(deltaTime);
+            model.UpdateMoney(deltaTime);
             foreach (SolarModel star in model.stars)
             {
                 if (star.solar == null)
@@ -414,7 +386,6 @@ public class GameManager : MonoBehaviour {
                 else
                 {
                     double totalPop = star.solar.totalPopulation;
-
                     //star.governmentInfluence += (totalPop * .000000001f * (float)data.date.deltaTime) - (star.governmentInfluence * .0000001f * (float)data.date.deltaTime);
 
                     //foreach (SolarModel nearStar in star.nearStars)
@@ -440,70 +411,29 @@ public class GameManager : MonoBehaviour {
                 }
 
             }
-            foreach (List<int> solarIndex in model.solarBodiesWithStructures)
+            foreach (string structureId in model.structureIds)
             {
-                var body = data.getSolarBody(solarIndex);
-                bool found = false;
-                //if (body.deleteStructure)
-                //{
+                Structure owned = GameManager.instance.locations[structureId] as Structure;
 
-                //}
-                foreach (IStructure owned in body.structures)
+                owned.Update();
+
+                if (owned.deleteStructure)
                 {
-                    if (owned.owner.Model == model)
-                    {
-                        found = true;
-
-                        if (owned.structureType == StructureTypes.SpaceStation)
-                        {
-                            ((Station)owned).Update(body, deltaTime);
-                        }
-                        if ((owned).deleteStructure)
-                        {
-                            body.structures.Remove(owned);
-                            break;
-                        }
-                    }
-
-                }
-                foreach (IStructure owned in body.structures)
-                {
-                    if (owned.owner.Model == model)
-                    {
-                        found = true;
-
-                        if (owned.structureType == StructureTypes.Driller)
-                        {
-                            ((Driller)owned).UpdateProduction(body, deltaTime);
-                        }
-                        if (owned.structureType == StructureTypes.Factory)
-                        {
-                            ((Factory)owned).UpdateProduction(body, deltaTime);
-                        }
-                        if (owned.structureType == StructureTypes.BuildStructure)
-                        {
-                            ((BuildStructure)owned).UpdateProduction(body, deltaTime);
-                            if (((BuildStructure)owned).deleteStructure)
-                            {
-                                body.structures.Remove(owned);
-                                break;
-                            }
-                            
-                        }
-                        if (owned.structureType == StructureTypes.GroundStorage)
-                        {
-                            ((GroundStorage)owned).UpdateProduction(body, deltaTime);
-                        }
-                    }
-                    
-                }
-                if (!found)
-                {
-                    model.solarBodiesWithStructures.Remove(solarIndex);
+                    owned.ReferenceBody.structureIds.Remove(owned.id);
+                    owned.ReferenceBody.structures.Remove(owned);
+                    model.structureIds.Remove(owned.id);
+                    GameManager.instance.locations.Remove(owned.id);
                     break;
                 }
             }
-            
+
+            foreach (string solarId in model.knownSolarBodyIds)
+            {
+                SolarBody solarBody = GameManager.instance.data.getSolarBody(solarId);
+
+                solarBody.GamePosition(GameManager.instance.data.date.time);
+            }
+
             yield return null;
             govIndex++;
             if (govIndex >= data.governments.Count)
@@ -521,69 +451,22 @@ public class GameManager : MonoBehaviour {
         {
             CompanyModel model = data.companies[compIndex];
 
-            double deltaTime = data.date.time - model.age.time - model.dateCreated.time;
-            model.age.AddTime(deltaTime);
+            double deltaTime = data.date.time - model.lastUpdated.time;
+            model.lastUpdated.AddTime(deltaTime);
+            model.UpdateMoney(deltaTime);
 
-            foreach (List<int> solarIndex in model.solarBodiesWithStructures)
+            foreach (string structureId in model.structureIds)
             {
-                var body = data.getSolarBody(solarIndex);
-                bool found = false;
-                //if (body.deleteStructure)
-                //{
+                var owned = GameManager.instance.locations[structureId] as Structure;
 
-                //}
-                foreach (IStructure owned in body.structures)
+                owned.Update();
+
+                if ((owned).deleteStructure)
                 {
-                    if (owned.owner.Model == model)
-                    {
-                        found = true;
-
-                        if (owned.structureType == StructureTypes.SpaceStation)
-                        {
-                            ((Station)owned).Update(body, deltaTime);
-                        }
-                        if ((owned).deleteStructure)
-                        {
-                            body.structures.Remove(owned);
-                            break;
-                        }
-                    }
-
-                }
-                foreach (IStructure owned in body.structures)
-                {
-                    if (owned.owner.Model == model)
-                    {
-                        found = true;
-
-                        if (owned.structureType == StructureTypes.Driller)
-                        {
-                            ((Driller)owned).UpdateProduction(body, deltaTime);
-                        }
-                        if (owned.structureType == StructureTypes.Factory)
-                        {
-                            ((Factory)owned).UpdateProduction(body, deltaTime);
-                        }
-                        if (owned.structureType == StructureTypes.BuildStructure)
-                        {
-                            ((BuildStructure)owned).UpdateProduction(body, deltaTime);
-                            if (((BuildStructure)owned).deleteStructure)
-                            {
-                                body.structures.Remove(owned);
-                                break;
-                            }
-
-                        }
-                        if (owned.structureType == StructureTypes.GroundStorage)
-                        {
-                            ((GroundStorage)owned).UpdateProduction(body, deltaTime);
-                        }
-                    }
-
-                }
-                if (!found)
-                {
-                    model.solarBodiesWithStructures.Remove(solarIndex);
+                    owned.ReferenceBody.structures.Remove(owned);
+                    owned.ReferenceBody.structureIds.Remove(owned.id);
+                    model.structureIds.Remove(structureId);
+                    GameManager.instance.locations.Remove(owned.id);
                     break;
                 }
             }
@@ -686,6 +569,7 @@ public class GameManager : MonoBehaviour {
     {
         Ship model = data.ships.Model.ships[shipIndex];
         double deltaTime = data.date.time - model.lastUpdated.time;
+        model.deltaTime = deltaTime;
         model.lastUpdated.AddTime(deltaTime);
         if (updateShips)
             model.agent.Update(model);
@@ -730,7 +614,7 @@ public class GameManager : MonoBehaviour {
 
         //}
 
-        if ((float)model.fuel.amount / model.fuelCapacity < .25f && model.target == null)
+        if ((float)model.fuel.amount / model.fuelCapacity < .25f && model.shipTargetId == null)
         {
             //model.target = new ModelRef<StructureModel>(FindClosestStation( ItemTypes.Fuel.ToString() , model));
             //if (model.target != null)
@@ -811,7 +695,7 @@ public class GameManager : MonoBehaviour {
     /// <param name="deltaTime">time since the ship was last called</param>
     private void ShipTravel(Ship model, double deltaTime)
     {
-        if (model.target != null && model.target != null && !model.hyperSpace)
+        if (model.shipTargetId != null && model.shipTargetId != null && !model.hyperSpace)
         {
             //Vector3 distance = target.transform.position - transform.position;
             //Polar2 angleOfAttack = new Polar2(distance);
@@ -820,7 +704,7 @@ public class GameManager : MonoBehaviour {
             //distance.Normalize();
             //Vector2 targetPosition = model.target.Model.GamePosition(data.date.time);
             //model.orbit.SetWorldPosition( Vector3d.MoveTowards((Vector3d) model.orbit.Radius(data.date.time), (Vector2d) targetPosition, model.speed * deltaTime), data.date.time);
-            model.fuel.RemoveAmount((float) (deltaTime / model.fuelEfficiency));
+            //model.fuel.RemoveAmount((float) (deltaTime / model.fuelConsumption));
 
             //Vector2d distance = targetPosition - model.orbit.Radius(data.date.time);
             
@@ -900,29 +784,36 @@ public class GameManager : MonoBehaviour {
     /// <param name="model"></param>
     internal void GoToTarget(IdentityModel model)
     {
-        if (model.identityType == IdentityType.Government)
+        if (model.GetType() == typeof(GovernmentModel))
         {
             galaxyView = true;
             galaxy.GalaxyView();
-            data.cameraGalaxyPosition = data.stars[model.solarIndex[0]].galaxyPosition;
-
+            //data.mainCameraPosition.GoTo(data.stars[model.solarIndex[0]].position);
+            ResetCamera();
         }
     }
     internal void GoToTarget(SolarModel model)
     {
         galaxyView = true;
         galaxy.GalaxyView();
-        data.cameraGalaxyPosition = model.galaxyPosition;
+        //data.mainCameraSolarIndex = model.solarIndex;
+        //data.mainCameraPosition.GoTo(model.position);
+        ResetCamera();
     }
 
-    internal void GoToTarget(List<int> solarIndex)
+    internal void GoToTarget(string solarId)
     {
         galaxyView = false;
-        var solarBody = data.getSolarBody(solarIndex);
-        galaxy.solarModel = data.stars[solarIndex[0]];
-        galaxy.GoToSolarView();
-        data.cameraGalaxyPosition = solarBody.GamePosition(data.date.time) + data.stars[solarIndex[0]].galaxyPosition;
-        //transform.position = new Vector3(CameraController.CameraOffsetPoistion(model.galacticPosition).x, CameraController.CameraOffsetPoistion(model.galacticPosition).y, -10);
+        var solarBody = data.getSolarBody(solarId);
+        //data.mainCameraSolarIndex = solarId;
+        //galaxy.GoToSolarView(solarId);
+        //data.mainCameraPosition.GoTo(data.stars[solarIndex[0]].position);
+        //ResetCamera();
+    }
+
+    private void ResetCamera()
+    {
+        Camera.main.transform.position = new Vector3(0, 0, -10);
     }
 
     private void OnFindRouteFinished(Ship model, ItemsModel buyItem, StructureModel[] targets, bool success)
@@ -1062,11 +953,6 @@ public class GameManager : MonoBehaviour {
         return stats;
     }
 
-    public void SetShipStats()
-    {
-        selectedObj = null;
-        statsDisplay = 1;
-    }
     public string ShipStats()
     {
         string stats = "";//"\nTotal Ships: " + data.ships.Count + "\n";
@@ -1104,11 +990,6 @@ public class GameManager : MonoBehaviour {
 
     //    return stats;
     //}
-    public void SetCreatureStats()
-    {
-        selectedObj = null;
-        statsDisplay = 3;
-    }
     public string CreatureStats()
     {
         string stats = "\nTotal Creatures:" + data.creatures.Model.creatures.Count;

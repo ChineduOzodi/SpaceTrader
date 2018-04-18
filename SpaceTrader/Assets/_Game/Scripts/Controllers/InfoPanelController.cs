@@ -7,72 +7,60 @@ using UnityEngine.UI;
 
 public class InfoPanelController : Controller<InfoPanelModel> {
 
+    public WMG_Axis_Graph emptyGraphPrefab;
     public Button uiButtonInstance;
     public Text title;
     public GameObject titleContent;
+    public ScrollView scrollViewPrefab;
     public GameObject infoContentPanel;
     public PlanetGridPanel planetTiles;
-    
+    public UpdateDel TextUpdates;
     public GameObject contentPosition;
+    /// <summary>
+    /// Used to create tabs in the info panel.
+    /// </summary>
     internal List<GameObject> menuContent = new List<GameObject>();
-
+    /// <summary>
+    /// Used to update items that need updating.
+    /// </summary>
     private Dictionary<string, Text> texts = new Dictionary<string, Text>();
 
+    public Dictionary<string, Button> buttons = new Dictionary<string, Button>();
+    
     public bool fix = true;
 
     protected override void OnInitialize()
     {
-        if (model.targetType == TargetType.Identity)
+        TextUpdates = () => { };
+        if (model.targetType == TargetType.Governments)
         {
-            if (model.target.Model.identityType == IdentityType.Government)
+            BuildGovernments();
+        }
+        else if (model.targetType == TargetType.Contract)
+        {
+            BuildContract();
+        }
+        else if (model.targetType == TargetType.Identity)
+        {
+            if (model.target.Model.GetType() == typeof(GovernmentModel))
             {
-                GovernmentModel gov = (GovernmentModel)model.target.Model;
-                title.text = gov.name;
-                Button button = Instantiate(uiButtonInstance, titleContent.transform);
-                button.GetComponentInChildren<Text>().text = "Overview";
-                button.GetComponent<Image>().color = gov.spriteColor;
-                menuContent.Add(Instantiate(infoContentPanel,contentPosition.transform));
-                var index = menuContent.Count - 1;
-                button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                var position = menuContent[index].transform;
 
+                BuildGovernment();
                 
-                button = Instantiate(uiButtonInstance, position);
-                var creature = GameManager.instance.data.creatures.Model.GetCreature(gov.leaders[0]);
-                button.GetComponentInChildren<Text>().text = "Leader: " + creature.name;
-                button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(creature));
-
-                button = Instantiate(uiButtonInstance, position);
-                button.GetComponentInChildren<Text>().text = "Capital: " + GameManager.instance.data.getSolarBody(gov.solarIndex).name;
-                button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(gov.solarIndex));
-
-                button = Instantiate(uiButtonInstance, position);
-                texts.Add("Money", button.GetComponentInChildren<Text>());
-                texts["Money"].text = "Money: " + gov.money;
-                button.interactable = false;
-
-                button = Instantiate(uiButtonInstance, position);
-                var text = button.GetComponentInChildren<Text>();
-                texts.Add("Star Count", text);
-                text.text = "Star Count:" + gov.stars.Count;
-                button.interactable = false;
-
-                double totalInfluence = 0;
-                foreach (SolarModel star in gov.stars)
-                {
-                    totalInfluence += star.governmentInfluence;
-                }
-                button = Instantiate(uiButtonInstance, position);
-                text = button.GetComponentInChildren<Text>();
-                texts.Add("Influence", text);
-                text.text = "Total Influence:" + Units.ReadItem(totalInfluence);
-                button.interactable = false;
-
             }
+            else
+            {
+                BuildCompany();
+                
+            }
+
+            BuildIdentityModel();
+
+            SelectPanel(0);
         }
         else if (model.targetType == TargetType.SolarBody)
         {
-            SolarBody body = GameManager.instance.data.getSolarBody(model.solarIndex);
+            SolarBody body = GameManager.instance.data.getSolarBody(model.id);
             title.text = body.name;
             Text text;
 
@@ -92,48 +80,39 @@ public class InfoPanelController : Controller<InfoPanelModel> {
 
             if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star && body.inhabited)
             {
-                button = Instantiate(uiButtonInstance, position);
-                text = button.GetComponentInChildren<Text>();
-                texts.Add("Population", text);
-                text.text = "Population: " + Units.ReadItem(body.population.totalPopulation) + "\n"
+                Button(position, () =>
+                {
+                    return "Population: " + Units.ReadItem(body.population.totalPopulation) + "\n"
                     + "Young: " + Units.ReadItem(body.population.young) + "\n"
                     + "Adult: " + Units.ReadItem(body.population.adult) + "\n"
                     + "Old: " + Units.ReadItem(body.population.old);
-                button.interactable = false;
-
+                });
             }
 
-            button = Instantiate(uiButtonInstance, position);
-            text = button.GetComponentInChildren<Text>();
-            texts.Add("SpaceStructureCount", text);
-            button.GetComponentInChildren<Text>().text = "Space Structure Count: " + body.structures.Count;
-            button.interactable = false;
+
+            Button(position, () =>
+            {
+                return "Structure Count: " + body.structures.Count;
+            });
 
             if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star)
             {
-                button = Instantiate(uiButtonInstance, position);
-                text = button.GetComponentInChildren<Text>();
-                texts.Add("GroundStructureCount", text);
-                button.GetComponentInChildren<Text>().text = "Ground Structure Count:" + body.structures.Count;
-                button.interactable = false;
 
-                button = Instantiate(uiButtonInstance, position);
-                text = button.GetComponentInChildren<Text>();
-                texts.Add("ResourceCount", text);
-                button.GetComponentInChildren<Text>().text = "Resource Types Count: " + body.rawResources.Count;
-                button.interactable = false;
+                Button(position, () =>
+                {
+                    return "Resource Types Count: " + body.rawResources.Count;
+                });
 
-                foreach( IdentityModel x in body.companies){
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    texts.Add("Companies" + x.name, text);
-                    text.text = "Entity: " + x.name + " - " + Units.ReadItem(x.money);
-                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                }
+                Button(position, () =>
+                {
+                    return "Resource Types Count: " + body.rawResources.Count;
+                });
+
+                
 
             }
 
-            
+
 
             button = Instantiate(uiButtonInstance, titleContent.transform);
             button.GetComponentInChildren<Text>().text = "Orbit";
@@ -159,348 +138,35 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
                 position = menuContent[index].transform;
 
-                body.rawResources.ForEach(x => {
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    texts.Add("Resources" + x.id, text);
-                    text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount);
-                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
+                ButtonList<RawResource>(body.id, body.rawResources, position, (x) =>
+                {
+                    string output = "Resource: " + x.name + " - " + Units.ReadItem(x.amount);
+                    if (x.timeUntilDepleted > 0) output += "Time to Depletion: " + Dated.ReadTime(x.timeUntilDepleted);
+                    return output;
+                }, (x) => () => GameManager.instance.OpenInfoPanel(x), (x, but) => {
+
+                    Image image = but.GetComponent<Image>();
+                    if (x.timeUntilDepleted > 0) image.color = Color.green;
+                    else image.color = Color.white;
                 });
 
-                button = Instantiate(uiButtonInstance, titleContent.transform);
-                button.GetComponentInChildren<Text>().text = "Structures";
-                //name.GetComponent<Image>().color = gov.spriteColor;
-                menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                index = menuContent.Count - 1;
-                button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                position = menuContent[index].transform;
+                BuildList(body.id, body.companies.ToList());
 
-                body.structures.ForEach(x => {
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    texts.Add("Structure" + x.id, text);
-                    text.text = "Name: " + x.name + " - " + x.owner.Model.name;
-                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                });
+                BuildList(body.id, body.structures);
 
             }
-
-            if (body.solarType == SolarType.Star)
-            {
-                SolarModel solar = GameManager.instance.data.stars[body.solarIndex[0]];
-
-                if (solar.buyList.items.Count > 0)
-                {
-                    button = Instantiate(uiButtonInstance, titleContent.transform);
-                    button.GetComponentInChildren<Text>().text = "Buying";
-                    //name.GetComponent<Image>().color = gov.spriteColor;
-                    menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                    index = menuContent.Count - 1;
-                    button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                    position = menuContent[index].transform;
-
-                    solar.buyList.items.ForEach(x => {
-                        button = Instantiate(uiButtonInstance, position);
-                        text = button.GetComponentInChildren<Text>();
-                        texts.Add("BuyList" + x.id + x.structureId, text);
-                        text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
-                        var structure = body.GetStructure(x.structureId);
-                        if (structure != null)
-                            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
-                        else
-                            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                    });
-                }
-
-                if (solar.sellList.items.Count > 0)
-                {
-                    button = Instantiate(uiButtonInstance, titleContent.transform);
-                    button.GetComponentInChildren<Text>().text = "Selling";
-                    //name.GetComponent<Image>().color = gov.spriteColor;
-                    menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                    index = menuContent.Count - 1;
-                    button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                    position = menuContent[index].transform;
-
-                    solar.sellList.items.ForEach(x => {
-                        button = Instantiate(uiButtonInstance, position);
-                        text = button.GetComponentInChildren<Text>();
-                        texts.Add("SellList" + x.id + x.structureId, text);
-                        text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
-                        var structure = body.GetStructure(x.structureId);
-                        if (structure != null)
-                            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
-                        else
-                            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                    });
-                }
-
-                if (solar.supplyDemand.Count > 0)
-                {
-                    button = Instantiate(uiButtonInstance, titleContent.transform);
-                    button.GetComponentInChildren<Text>().text = "Supply & Demand";
-                    //name.GetComponent<Image>().color = gov.spriteColor;
-                    menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                    index = menuContent.Count - 1;
-                    button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                    position = menuContent[index].transform;
-
-                    solar.supplyDemand.ForEach(x => {
-                        button = Instantiate(uiButtonInstance, position);
-                        text = button.GetComponentInChildren<Text>();
-                        texts.Add("SupplyDemand" + x.itemId, text);
-                        text.text = x.itemName + " - " + Units.ReadItem(x.marketPrice) + "c " + Units.ReadItem(x.itemDemand) + " (" + Units.ReadItem(x.averageItemBuyPrice)
-                        + "c) : " + Units.ReadItem(x.itemSupply) + " (" + Units.ReadItem(x.averageItemSellPrice) + "c)";
-                        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x.itemId, TargetType.Item));
-                    });
-                }
-            }
-            else
-            {
-                if (body.buyList.items.Count > 0)
-                {
-                    button = Instantiate(uiButtonInstance, titleContent.transform);
-                    button.GetComponentInChildren<Text>().text = "Buying";
-                    //name.GetComponent<Image>().color = gov.spriteColor;
-                    menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                    index = menuContent.Count - 1;
-                    button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                    position = menuContent[index].transform;
-
-                    body.buyList.items.ForEach(x => {
-                        button = Instantiate(uiButtonInstance, position);
-                        text = button.GetComponentInChildren<Text>();
-                        texts.Add("BuyList" + x.id + x.structureId, text);
-                        text.text = x.name  + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
-                        var structure = body.GetStructure(x.structureId);
-                        if (structure != null)
-                            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
-                        else
-                            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                    });
-                }
-
-                if (body.sellList.items.Count > 0)
-                {
-                    button = Instantiate(uiButtonInstance, titleContent.transform);
-                    button.GetComponentInChildren<Text>().text = "Selling";
-                    //name.GetComponent<Image>().color = gov.spriteColor;
-                    menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                    index = menuContent.Count - 1;
-                    button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                    position = menuContent[index].transform;
-
-                    body.sellList.items.ForEach(x => {
-                        button = Instantiate(uiButtonInstance, position);
-                        text = button.GetComponentInChildren<Text>();
-                        texts.Add("SellList" + x.id + x.structureId, text);
-                        text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
-                        var structure = body.GetStructure(x.structureId);
-                        if (structure != null)
-                            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(structure));
-                        else
-                            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                    });
-                }
-            }
-
-
-
 
             SelectPanel(0);
         }
         else if (model.targetType == TargetType.Structure)
         {
-            SolarBody body = GameManager.instance.data.getSolarBody(model.solarIndex);
-            title.text = model.structure.name;
-            Text text;
-            Button button = Instantiate(uiButtonInstance, titleContent.transform);
-            button.GetComponentInChildren<Text>().text = "Overview";
-            //name.GetComponent<Image>().color = gov.spriteColor;
-            menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-            var index = menuContent.Count - 1;
-            button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-            var position = menuContent[index].transform;
-
-            button = Instantiate(uiButtonInstance, position);
-            var owner = model.structure.owner.Model;
-            button.GetComponentInChildren<Text>().text = "Owner: " + owner.name;
-            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(owner));
-
-            button = Instantiate(uiButtonInstance, position);
-            button.GetComponentInChildren<Text>().text = "Location: " + body.name;
-            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(body.solarIndex));
-
-            button = Instantiate(uiButtonInstance, position);
-            text = button.GetComponentInChildren<Text>();
-            texts.Add("Info", text);
-            text.text = model.structure.info;
-            button.interactable = false;
-
-            if (model.structure.structureType == StructureTypes.GroundStorage)
-            {
-                button = Instantiate(uiButtonInstance, position);
-                text = button.GetComponentInChildren<Text>();
-                texts.Add("FillPercent", text);
-                text.text = "Storage Filled: " + ((((GroundStorage)model.structure).currentStorageAmount / ((GroundStorage)model.structure).totalStorageAmount) * 100 * model.structure.count).ToString("0.00") + " %  " 
-                    + Units.ReadItem(((GroundStorage)model.structure).currentStorageAmount) + " - " +
-                     Units.ReadItem(((GroundStorage)model.structure).totalStorageAmount * model.structure.count);
-            }
-            if (model.structure.structureType == StructureTypes.Driller)
-            {
-                button = Instantiate(uiButtonInstance, position);
-                text = button.GetComponentInChildren<Text>();
-                text.text = "Mining: " + ((Driller)model.structure).productionItemName;
-                button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(((Driller)model.structure).productionItemId, TargetType.RawResource));
-            }
-            if (model.structure.structureType == StructureTypes.Factory)
-            {
-                button = Instantiate(uiButtonInstance, position);
-                button.GetComponentInChildren<Text>().text = "Producing Item: " + ((Factory)model.structure).productionItemName;
-                button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(((Factory)model.structure).productionItemId, TargetType.Item));
-
-                button = Instantiate(uiButtonInstance, position);
-                button.GetComponentInChildren<Text>().text = "Modified Production Time: " + Dated.ReadTime(((Factory)model.structure).productionTime);
-                button.interactable = false;
-
-                button = Instantiate(uiButtonInstance, position);
-                text = button.GetComponentInChildren<Text>();
-                texts.Add("ProductionPercent", text);
-                text.text = "Production Percent: " + ((((Factory)model.structure).productionProgress * 100).ToString("0.00") + " %");
-            }
-
-
-            button = Instantiate(uiButtonInstance, position);
-            button.GetComponentInChildren<Text>().text = "Go to -->";
-            button.onClick.AddListener(() => GameManager.instance.GoToTarget(body.solarIndex));
-
-            ProductionStructure productionStructure = model.structure as ProductionStructure;
-            if (productionStructure != null && (productionStructure.structureConnectionIdsIn.Count > 0 || productionStructure.structureConnectionIdsOut.Count > 0))
-            {
-                button = Instantiate(uiButtonInstance, titleContent.transform);
-                button.GetComponentInChildren<Text>().text = "Connections";
-                //name.GetComponent<Image>().color = gov.spriteColor;
-                menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                index = menuContent.Count - 1;
-                button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                position = menuContent[index].transform;
-                if (productionStructure.structureConnectionIdsOut.Count > 0)
-                {
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    text.text = "Connections Out | Rate: " + 
-                        (productionStructure.count/productionStructure.productionTime * Dated.Hour).ToString("0.00") +
-                        " per Hour | Extra: " +
-                        (productionStructure.extraProductionRate * Dated.Hour).ToString("0.00") +
-                        " per Hour";
-                    button.interactable = false;
-
-                    productionStructure.structureConnectionIdsOut.ForEach(x => {
-                        button = Instantiate(uiButtonInstance, position);
-                        text = button.GetComponentInChildren<Text>();
-                        IStructure outStructure = body.structures.Find(b => b.id == x);
-                        text.text = outStructure.name + " Rate: " + (productionStructure.connectionOutRate[x] * Dated.Hour).ToString("0.00") + " per Hour";
-                        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(outStructure));
-                    });
-                }
-                
-                if (productionStructure.structureConnectionIdsIn.Count > 0)
-                {
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    text.text = "Connections In";
-                    button.interactable = false;
-
-                    productionStructure.structureConnectionIdsIn.ForEach(x => {
-                        button = Instantiate(uiButtonInstance, position);
-                        text = button.GetComponentInChildren<Text>();
-                        IStructure inStructure = body.structures.Find(b => b.id == x);
-                        text.text = inStructure.name;
-                        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(inStructure));
-                    });
-                }
-
-                if (productionStructure.neededItemRate.Count > 0)
-                {
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    text.text = "Needed Items";
-                    button.interactable = false;
-
-                    foreach(KeyValuePair<int,double> neededItem in productionStructure.neededItemRate) {
-                        button = Instantiate(uiButtonInstance, position);
-                        text = button.GetComponentInChildren<Text>();
-                        ItemBlueprint item = GameManager.instance.data.itemsData.Model.GetItem(neededItem.Key);
-                        text.text = item.name;
-                        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(item.id, TargetType.Item));
-                    }
-
-                }
-
-            }
-
-            if (model.structure.structureType == StructureTypes.GroundStorage)
-            {
-                button = Instantiate(uiButtonInstance, titleContent.transform);
-                button.GetComponentInChildren<Text>().text = "Items";
-                //name.GetComponent<Image>().color = gov.spriteColor;
-                menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                index = menuContent.Count - 1;
-                button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                position = menuContent[index].transform;
-
-                ((GroundStorage) model.structure).storage.items.ForEach(x => {
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    texts.Add("Items"+ x.id, text);
-                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
-                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                });
-            }
-
-            if (model.structure.structureType == StructureTypes.Factory)
-            {
-                button = Instantiate(uiButtonInstance, titleContent.transform);
-                button.GetComponentInChildren<Text>().text = "Items";
-                //name.GetComponent<Image>().color = gov.spriteColor;
-                menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                index = menuContent.Count - 1;
-                button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                position = menuContent[index].transform;
-
-                ((Factory)model.structure).storage.items.ForEach(x => {
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    texts.Add("Items" + x.id, text);
-                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
-                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                });
-            }
-
-            if (model.structure.structureType == StructureTypes.SpaceStation)
-            {
-                button = Instantiate(uiButtonInstance, titleContent.transform);
-                button.GetComponentInChildren<Text>().text = "Items";
-                //name.GetComponent<Image>().color = gov.spriteColor;
-                menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
-                index = menuContent.Count - 1;
-                button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
-                position = menuContent[index].transform;
-
-                ((Station)model.structure).storage.items.ForEach(x => {
-                    button = Instantiate(uiButtonInstance, position);
-                    text = button.GetComponentInChildren<Text>();
-                    texts.Add("Items" + x.id, text);
-                    text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
-                    button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(x));
-                });
-            }
+            BuildStructurePanel();
 
             SelectPanel(0);
         }
         else if (model.targetType == TargetType.Item)
         {
-            var item = GameManager.instance.data.itemsData.Model.GetItem(model.targetId);
+            var item = GameManager.instance.data.itemsData.Model.GetItem(model.id);
             title.text = item.name;
 
             Button button = Instantiate(uiButtonInstance, titleContent.transform);
@@ -520,7 +186,7 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             button.interactable = false;
 
             button = Instantiate(uiButtonInstance, position);
-            button.GetComponentInChildren<Text>().text = "Production Time: " + Dated.ReadTime(item.productionTime);
+            button.GetComponentInChildren<Text>().text = "Work Amount: " + item.workAmount;
             button.interactable = false;
 
             if (item.workers > 0)
@@ -542,7 +208,8 @@ public class InfoPanelController : Controller<InfoPanelModel> {
                 button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
                 position = menuContent[index].transform;
 
-                item.contstructionParts.ForEach(x => {
+                item.contstructionParts.ForEach(x =>
+                {
                     button = Instantiate(uiButtonInstance, position);
                     var buttonText = button.GetComponentInChildren<Text>();
                     buttonText.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
@@ -556,6 +223,932 @@ public class InfoPanelController : Controller<InfoPanelModel> {
 
 
     }
+
+    private void BuildStructurePanel()
+    {
+        model.structure = GameManager.instance.locations[model.id] as Structure;
+        var positionEntity = GameManager.instance.locations[model.structure.referenceId];
+        title.text = model.structure.name;
+        Text text;
+        Button button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Overview";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        var index = menuContent.Count - 1;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+        var position = menuContent[index].transform;
+
+        button = Instantiate(uiButtonInstance, position);
+        var owner = model.structure.owner.Model;
+        button.GetComponentInChildren<Text>().text = "Owner: " + owner.name;
+        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(owner));
+
+        button = Instantiate(uiButtonInstance, position);
+        button.GetComponentInChildren<Text>().text = "Location: " + positionEntity.name;
+        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(positionEntity.id));
+
+        Button(position, () =>
+        {
+            return model.structure.Info;
+        });
+
+        //Button(position, () =>
+        //{
+        //    return "Storage Filled: " + (((model.structure).currentStorageAmount / (model.structure).totalStorageAmount) * 100 * model.structure.Count).ToString("0.00") + " %  "
+        //        + Units.ReadItem(((DistributionCenter)model.structure).currentStorageAmount) + " - " +
+        //         Units.ReadItem(((DistributionCenter)model.structure).totalStorageAmount * model.structure.Count);
+        //});
+
+        if (model.structure.StructureType == StructureTypes.Driller)
+        {
+            button = Instantiate(uiButtonInstance, position);
+            text = button.GetComponentInChildren<Text>();
+            text.text = "Mining: " + ((Driller)model.structure).productionItemName;
+            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(((Driller)model.structure).productionItemId, TargetType.RawResource));
+        }
+
+        if (model.structure.GetType() == typeof(Factory))
+        {
+            button = Instantiate(uiButtonInstance, position);
+            button.GetComponentInChildren<Text>().text = "Producing Item: " + ((Factory)model.structure).productionItemName;
+            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(((Factory)model.structure).productionItemId, TargetType.Item));
+
+            Button(position, () =>
+            {
+                return "Modified Production Time: " + Dated.ReadTime(((Factory)model.structure).ProductionTime);
+            });
+
+            Button(position, () =>
+            {
+                return "Production Percent: " + ((((Factory)model.structure).productionProgress * 100).ToString("0.00") + " %");
+            });
+        }
+
+        if (model.structure.GetType() == typeof(Ship))
+        {
+            Ship ship = model.structure as Ship;
+
+            Button(position, () =>
+            {
+                return "Current Action: " + ship.shipAction.ToString();
+            });
+
+            Button(position, () =>
+            {
+                if (ship.contractId != null)
+                {
+                    Contract contract = GameManager.instance.contracts[ship.contractId];
+                    return "Contract Name: " + contract.id +
+                    "\nItem: " + contract.itemName +
+                    "\nAmount: " + Units.ReadRate(contract.itemRate) +
+                    "\nUnit Price: " + Units.ReadItem(contract.unitPrice) +
+                    "c\nDistnace Cost: " + Units.ReadItem(contract.PricePerKm * contract.distance * 2);
+                }
+                return "Contract: None";
+            }, () => {
+                if (ship.contractId != null)
+                {
+                    Contract contract = GameManager.instance.contracts[ship.contractId];
+                    GameManager.instance.OpenInfoPanel(contract.id, TargetType.Contract);
+                }
+            });
+
+            Button(position, () =>
+            {
+                if (ship.shipTargetId != null)
+                {
+                    Structure structure = GameManager.instance.locations[ship.shipTargetId] as Structure;
+                    double distance = Vector3d.Distance(structure.SystemPosition, ship.SystemPosition);
+                    return "Target: " + structure.id +
+                    "\nDistance: " + Units.ReadDistance(distance) +
+                    "\nETA: " + Dated.ReadTime(distance / ship.SubLightSpeed);
+                }
+                return "Target: None";
+            }, () => {
+                if (ship.contractId != null)
+                {
+                    Structure structure = GameManager.instance.locations[ship.shipTargetId] as Structure;
+                    GameManager.instance.OpenInfoPanel(structure);
+                }
+            });
+
+            Button(position, () =>
+            {
+                if (ship.fuel != null)
+                {
+                    return "Fuel: " + (ship.fuel.amount / ship.fuelCapacity * 100).ToString("0.00") + " %" +
+                    "\nDistance: " + Units.ReadDistance(ship.fuelRange * ship.fuel.amount) +
+                "\nETA: " + Dated.ReadTime((ship.fuelRange * ship.fuel.amount) / ship.SubLightSpeed);
+                }
+                return "Fuel: Empty";
+            }, () => {
+                if (ship.fuel != null)
+                {
+                    GameManager.instance.OpenInfoPanel(ship.fuel);
+                }
+            });
+        }
+
+        button = Instantiate(uiButtonInstance, position);
+        button.GetComponentInChildren<Text>().text = "Go to -->";
+        button.onClick.AddListener(() => GameManager.instance.GoToTarget(positionEntity.id));
+
+        ProductionStructure productionStructure = model.structure as ProductionStructure;
+        if (productionStructure != null)
+        {
+            SolarBody body = positionEntity as SolarBody;
+            button = Instantiate(uiButtonInstance, titleContent.transform);
+            button.GetComponentInChildren<Text>().text = "Connections";
+            //name.GetComponent<Image>().color = gov.spriteColor;
+            menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+            index = menuContent.Count - 1;
+            button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+            position = menuContent[index].transform;
+
+            Button(position, () =>
+            {
+                return "Rate: " + Units.ReadRate(productionStructure.ProductionRateActual) + " of " + Units.ReadRate(productionStructure.ProductionRateOptimal) + " | Extra: " +
+                Units.ReadRate(productionStructure.extraProductionRate);
+            });
+
+            Button(position, () =>
+            {
+                return "Connections Out: " + productionStructure.structureConnectionIdsOut.Count;
+            });
+
+            ButtonList<ProductionStructure>(productionStructure.id, productionStructure.GetStructuresOut(), position, (x) =>
+            {
+                string output = x.name + " Rate: " + Units.ReadRate(productionStructure.connectionOutRate[x.id]);
+                return output;
+            }, (x) => () => GameManager.instance.OpenInfoPanel(x), (x, but) => {
+
+                Image image = but.GetComponent<Image>();
+                if (x.isProducing) image.color = Color.green;
+                else image.color = Color.yellow;
+            });
+
+            Button(position, () =>
+            {
+                return "Connections In: " + productionStructure.structureConnectionIdsIn.Count;
+            });
+
+            ButtonList<ProductionStructure>(productionStructure.id, productionStructure.GetStructuresIn(), position, (x) =>
+            {
+                string output = x.name + " " + (x.connectionOutRate[productionStructure.id] * 100 / (productionStructure.requiredItems.Find(b => b.id == x.productionItemId).amount * productionStructure.ProductionRateOptimal)).ToString("0.00") + " %";
+                return output;
+            }, (x) => () => GameManager.instance.OpenInfoPanel(x), (x, but) => {
+
+                Image image = but.GetComponent<Image>();
+                if (x.isProducing) image.color = Color.green;
+                else image.color = Color.yellow;
+            });
+
+            Button(position, () =>
+            {
+                return "Contracts Out: " + productionStructure.clientContracts.Count;
+            });
+
+            ButtonList<Contract>(productionStructure.id, productionStructure.clientContracts, position, (contract) =>
+            {
+                string output = "Item: " + contract.itemName +
+                        " | Amount: " + Units.ReadRate(contract.itemRate) +
+                        "u | Monthly Cost: " + Units.ReadItem(contract.monthlyCost) + "c";
+                if (contract.destinationId != null)
+                {
+                    output += "\nDestination: " + GameManager.instance.locations[contract.destinationId].name;
+                }
+                return output;
+            }, (contract) => () => GameManager.instance.OpenInfoPanel(contract.id, TargetType.Contract), (contract, but) => {
+
+                Image image = but.GetComponent<Image>();
+                if (contract.contractState == ContractState.Active) image.color = Color.green;
+                else image.color = Color.white;
+            });
+
+            Button(position, () =>
+            {
+                return "Contracts In: " + productionStructure.supplierContractIds.Count;
+            });
+
+            ButtonList<Contract>(productionStructure.id, productionStructure.GetSupplyContracts(), position, (contract) =>
+            {
+                string output = "Item: " + contract.itemName +
+                        "\nAmount: " + Units.ReadRate(contract.itemRate) +
+                        "\nMonthly Cost: " + Units.ReadItem(contract.monthlyCost) +
+                        "c\nOrigin: " + contract.Origin.name;
+                return output;
+            }, (contract) => () => GameManager.instance.OpenInfoPanel(contract.id, TargetType.Contract), (contract, but) => {
+
+                Image image = but.GetComponent<Image>();
+                if (contract.contractState == ContractState.Active) image.color = Color.green;
+                else image.color = Color.white;
+            });
+
+            Button(position, () =>
+            {
+                return "Needed Items: " + productionStructure.neededItemRate.Count;
+            });
+
+            ButtonList<string,double>(productionStructure.id, productionStructure.neededItemRate, position, (x) =>
+            {
+                ItemBlueprint item = GameManager.instance.data.itemsData.Model.GetItem(x.Key);
+                string output = item.name + " | " + Units.ReadRate(x.Value);
+                return output;
+            }, (x) => () => GameManager.instance.OpenInfoPanel(x.Key, TargetType.Item));
+
+        }
+
+        button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Items";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        index = menuContent.Count - 1;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+        position = menuContent[index].transform;
+
+        ButtonList<Item>(model.structure.id, model.structure.itemsStorage, position, (x) =>
+        {
+            string output = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
+            if (x.destinationId != null) output += " | " + GameManager.instance.locations[x.destinationId];
+            return output;
+        }, (contract) => () => GameManager.instance.OpenInfoPanel(contract.id, TargetType.Contract));
+    }
+
+    private void BuildIdentityModel()
+    {
+        IdentityModel identityModel = model.target.Model;
+
+        Button button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Money";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        int index = menuContent.Count - 1;
+        var position = menuContent[index].transform;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+
+        var graph = Instantiate(emptyGraphPrefab,position);
+        graph.yAxis.MaxAutoGrow = true;
+        graph.yAxis.MaxAutoShrink = true;
+        graph.yAxis.MinAutoGrow = true;
+        graph.yAxis.MaxAutoShrink = true;
+        graph.xAxis.MaxAutoGrow = true;
+        graph.xAxis.MaxAutoShrink = true;
+
+        TextUpdates += () =>
+        {
+            string name = "TotalMoney";
+            WMG_List <Vector2> list = new WMG_List<Vector2>();
+            //for (int i = 0; i < identityModel.moneyTotalMonth.Count; i++)
+            //{
+            //    list.Add(new Vector2(i, (float)identityModel.moneyTotalMonth[i]));
+            //}
+
+            //if (graph.lineSeries.Exists(x => x.name == name))
+            //{
+            //    graph.lineSeries.Find(x => x.name == name).GetComponent<WMG_Series>().pointValues = list;
+            //}
+            //else
+            //{
+            //    var series = graph.addSeries();
+            //    series.gameObject.name = name;
+            //    series.lineColor = Color.blue;
+            //    series.seriesName = name;
+            //    series.pointValues = list;
+            //}
+
+            name = "TotalEarned";
+            list = new WMG_List<Vector2>();
+            for (int i = 0; i < identityModel.moneyTotalMonth.Count; i++)
+            {
+                list.Add(new Vector2(i, (float)identityModel.moneyEarnedMonth[i]));
+            }
+
+            if (graph.lineSeries.Exists(x => x.name == name))
+            {
+                graph.lineSeries.Find(x => x.name == name).GetComponent<WMG_Series>().pointValues = list;
+
+            }
+            else
+            {
+                var series = graph.addSeries();
+                series.gameObject.name = name;
+                series.lineColor = Color.green;
+                series.seriesName = name;
+                series.pointValues = list;
+            }
+
+            list = new WMG_List<Vector2>();
+            for (int i = 0; i < identityModel.moneyTotalMonth.Count; i++)
+            {
+                list.Add(new Vector2(i, (float)identityModel.moneySupplierContractsMonth[i]));
+            }
+
+            name = "TotalContracts";
+            if (graph.lineSeries.Exists(x => x.name == name))
+            {
+                graph.lineSeries.Find(x => x.name == name).GetComponent<WMG_Series>().pointValues = list;
+            }
+            else
+            {
+                var series = graph.addSeries();
+                series.gameObject.name = name;
+                series.lineColor = Color.yellow;
+                series.seriesName = name;
+                series.pointValues = list;
+            }
+
+
+            //name = "TotalWorkers";
+            //list = new WMG_List<Vector2>();
+            //for (int i = 0; i < identityModel.moneyTotalMonth.Count; i++)
+            //{
+            //    list.Add(new Vector2(i, (float)identityModel.moneyWorkersMonth[i]));
+            //}
+
+            
+            //if (graph.lineSeries.Exists(x => x.name == name))
+            //{
+            //    graph.lineSeries.Find(x => x.name == name).GetComponent<WMG_Series>().pointValues = list;
+            //}
+            //else
+            //{
+            //    var series = graph.addSeries();
+            //    series.gameObject.name = name;
+            //    series.lineColor = Color.red;
+            //    series.seriesName = name;
+            //    series.pointValues = list;
+            //}
+
+            //name = "TotalConstruction";
+            //list = new WMG_List<Vector2>();
+            //for (int i = 0; i < identityModel.moneyTotalMonth.Count; i++)
+            //{
+            //    list.Add(new Vector2(i, (float)identityModel.moneyConstructionMonth[i]));
+            //}
+
+
+            //if (graph.lineSeries.Exists(x => x.name == name))
+            //{
+            //    graph.lineSeries.Find(x => x.name == name).GetComponent<WMG_Series>().pointValues = list;
+            //}
+            //else
+            //{
+            //    var series = graph.addSeries();
+            //    series.gameObject.name = name;
+            //    series.lineColor = Color.gray;
+            //    series.seriesName = name;
+            //    series.pointValues = list;
+            //}
+
+            graph.Refresh();
+        };
+        graph.Init();
+
+
+        button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Own Contracts";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        index = menuContent.Count - 1;
+        position = menuContent[index].transform;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+
+        ButtonList<Contract>(identityModel.Id, identityModel.GetConstructionContracts(), position, (contract) =>
+        {
+            string output = "Constructing: " + contract.itemName +
+                     " : " + Units.ReadItem(contract.monthlyCost) +
+                     "c\nUnit Price: " + Units.ReadItem(contract.unitPrice) +
+                     "c | Distnace Cost: " + Units.ReadItem(contract.PricePerKm * contract.distance * 2) + " c";
+            return output;
+        }, (contract) => () => GameManager.instance.OpenInfoPanel(contract.id, TargetType.Contract), (contract, but) => {
+
+            Image image = but.GetComponent<Image>();
+            if (contract.contractState == ContractState.Active) image.color = Color.green;
+            else image.color = Color.white;
+        });
+
+        ButtonList<Contract>(identityModel.Id, identityModel.GetContracts(), position, (contract) =>
+        {
+            string output = "Item: " + contract.itemName +
+                     " : " + Units.ReadRate(contract.itemRate) +
+                     "\nUnit Price: " + Units.ReadItem(contract.unitPrice) +
+                     "c | Distnace Cost: " + Units.ReadItem(contract.PricePerKm * contract.distance * 2) + " c";
+            return output;
+        }, (contract) => () => GameManager.instance.OpenInfoPanel(contract.id, TargetType.Contract), (contract, but) => {
+
+            Image image = but.GetComponent<Image>();
+            if (contract.contractState == ContractState.Active) image.color = Color.green;
+            else image.color = Color.white;
+        });
+
+        
+
+        button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Owned Ships";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        index = menuContent.Count - 1;
+        position = menuContent[index].transform;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+
+        ButtonList<Ship>(identityModel.Id, identityModel.GetOwnedShips(), position, (ship) =>
+        {
+            string output = "Name : " + ship.name +
+                "\nLocation: " + GameManager.instance.locations[ship.referenceId].name;
+            if (ship.shipTargetId != null)
+            {
+                Structure structure = GameManager.instance.locations[ship.shipTargetId] as Structure;
+                double distance = Vector3d.Distance(structure.SystemPosition, ship.SystemPosition);
+                output += "\nTarget: " + structure.id +
+                "\nDistance: " + Units.ReadDistance(distance) +
+                " : ETA: " + Dated.ReadTime(distance / ship.SubLightSpeed);
+            }
+            return output;
+        }, (ship) => () => GameManager.instance.OpenInfoPanel(ship), (ship, but) => {
+
+            Image image = but.GetComponent<Image>();
+            if (ship.shipAction == ShipAction.Moving) image.color = Color.green;
+            else if (ship.shipAction == ShipAction.Refueling) image.color = Color.yellow;
+            else if (ship.shipAction == ShipAction.Docked) image.color = Color.blue;
+            else image.color = Color.white;
+        });
+
+        BuildList(identityModel.Id,identityModel.GetStructures());
+    }
+
+    private void BuildList(string name, List<Structure> list)
+    {
+        Button button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Structures";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        int index = menuContent.Count - 1;
+        var position = menuContent[index].transform;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+
+        ButtonList<Structure>(name, list, position, (structure) =>
+        {
+            string output = "Name : " + +structure.Count + " " + structure.name;
+
+            if (structure as ProductionStructure != null)
+            {
+                ProductionStructure productionStructure = (ProductionStructure)structure;
+                output += " (" + productionStructure.clientContracts.Count + ")";
+            }
+
+            output += " - " + GameManager.instance.locations[structure.referenceId].name;
+            return output;
+        }, (item) => () => GameManager.instance.OpenInfoPanel(item), (structure, but) => {
+
+            if (structure as ProductionStructure != null)
+            {
+                ProductionStructure productionStructure = (ProductionStructure)structure;
+                Image image = but.GetComponent<Image>();
+                if (productionStructure.isProducing && productionStructure.clientContracts.Count > 0)
+                {
+                    image.color = Color.green;
+                }
+                else if (productionStructure.isProducing) image.color = Color.yellow;
+                else if (productionStructure.clientContracts.Count > 0) image.color = Color.blue;
+                else image.color = Color.red;
+            }
+        });
+    }
+
+    private void BuildCompany()
+    {
+        CompanyModel comp = model.target.Model as CompanyModel;
+        title.text = comp.name;
+        Button button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Overview";
+        button.GetComponent<Image>().color = comp.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        var index = menuContent.Count - 1;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+        var position = menuContent[index].transform;
+
+
+        button = Instantiate(uiButtonInstance, position);
+        var creature = GameManager.instance.data.creatures.Model.GetCreature(comp.ceoId);
+        button.GetComponentInChildren<Text>().text = "CEO: " + creature.name;
+        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(creature));
+
+        button = Instantiate(uiButtonInstance, position);
+        button.GetComponentInChildren<Text>().text = "Headquarters: " + GameManager.instance.data.getSolarBody(comp.referenceId).name;
+        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(comp.referenceId));
+
+        Button(position, () =>
+        {
+            return "Money: " + Units.ReadItem(comp.moneyTotal) + "c";
+        });
+    }
+
+    private void BuildGovernment()
+    {
+        GovernmentModel gov = (GovernmentModel)model.target.Model;
+        title.text = gov.name;
+        Button button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Overview";
+        button.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        var index = menuContent.Count - 1;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+        var position = menuContent[index].transform;
+
+
+        button = Instantiate(uiButtonInstance, position);
+        var creature = GameManager.instance.data.creatures.Model.GetCreature(gov.leaders[0]);
+        button.GetComponentInChildren<Text>().text = "Leader: " + creature.name;
+        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(creature));
+
+        button = Instantiate(uiButtonInstance, position);
+        button.GetComponentInChildren<Text>().text = "Capital: " + GameManager.instance.data.getSolarBody(gov.referenceId).name;
+        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(gov.referenceId));
+
+
+        Button(position, () =>
+        {
+            return "Money: " + Units.ReadItem(gov.moneyTotal) + "c";
+        });
+
+
+        Button(position, () =>
+        {
+            return "Star Count:" + gov.stars.Count;
+        });
+
+        BuildList(gov.Id, gov.licensedCompanies.ToList());
+
+        button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "All Contracts";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        index = menuContent.Count - 1;
+        position = menuContent[index].transform;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+
+        ButtonList<Contract>(gov.Id, gov.GetPostedContracts(), position, (contract) =>
+        {
+            string output = "Item: " + contract.itemName +
+                     " : " + Units.ReadRate(contract.itemRate) +
+                     "\nUnit Price: " + Units.ReadItem(contract.unitPrice) +
+                     "c | Distnace Cost: " + Units.ReadItem(contract.PricePerKm * contract.distance * 2) + " c";
+            return output;
+        }, (contract) => () => GameManager.instance.OpenInfoPanel(contract.id, TargetType.Contract), (contract, but) => {
+
+            Image image = but.GetComponent<Image>();
+            if (contract.contractState == ContractState.Active) image.color = Color.green;
+            else image.color = Color.white;
+        });
+
+        button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Supply and Demand";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        index = menuContent.Count - 1;
+        position = menuContent[index].transform;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+
+        ButtonList<SupplyDemand>(gov.Id, gov.supplyDemand, position, (supplyDemand) =>
+        {
+            string output = "Item: " + supplyDemand.name +
+                " | Amount: " + Units.ReadItem(supplyDemand.totalItemAmount) +
+                "u\nSupply/Demand: " + Units.ReadItem(supplyDemand.itemSupply) +
+                " : " + Units.ReadItem(supplyDemand.itemDemand) +
+                "\nAverage Price: " + Units.ReadItem(supplyDemand.marketPrice) + "c";
+            return output;
+        }, (supplyDemand) => () => GameManager.instance.OpenInfoPanel(supplyDemand.id, TargetType.Item), (item, but) => {
+            Image image = but.GetComponent<Image>();
+            if (item.itemSupply > item.itemDemand)
+            {
+                if (item.itemDemand == 0)
+                    image.color = Color.green;
+                else
+                    image.color = new Color(0, (float)(item.itemSupply / item.itemDemand / 5), 0);
+
+            }
+            else if (item.itemSupply < item.itemDemand)
+            {
+                if (item.itemSupply == 0)
+                    image.color = Color.red;
+                else
+                    image.color = new Color((float)(item.itemDemand / item.itemSupply / 5), 0, 0);
+            }
+            else image.color = Color.black;
+        });
+    }
+
+    private void BuildList(string name, List<IdentityModel> companies)
+    {
+        Button button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Companies";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        int index = menuContent.Count - 1;
+        Transform position = menuContent[index].transform;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+
+        ButtonList<IdentityModel>(name, companies, position, (company) =>
+        {
+            string output = "Name: " + company.name + " | " + Units.ReadItem(company.moneyTotal) +
+                    "c\nShips: " + Units.ReadItem(company.ownedShipIds.Count) +
+                    "\nLocation: " + GameManager.instance.locations[company.referenceId].name;
+            return output;
+        }, (company) => () => GameManager.instance.OpenInfoPanel(company), (company, but) => {
+
+            Image image = but.GetComponent<Image>();
+            if (company.moneyTotal > 0) image.color = Color.green;
+            else image.color = Color.red;
+        });
+    }
+
+    private void BuildList(string name, List<CompanyModel> companies)
+    {
+        Button button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Companies";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        int index = menuContent.Count - 1;
+        Transform position = menuContent[index].transform;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+
+        ButtonList<CompanyModel>(name, companies, position, (company) =>
+        {
+            string output = "Name: " + company.name + " | " + Units.ReadItem(company.moneyTotal) +
+                    "c\nShips: " + Units.ReadItem(company.ownedShipIds.Count) +
+                    "\nLocation: " + GameManager.instance.locations[company.referenceId].name;
+            return output;
+        }, (company) => () => GameManager.instance.OpenInfoPanel(company), (company, but) => {
+
+            Image image = but.GetComponent<Image>();
+            if (company.moneyTotal > 0) image.color = Color.green;
+            else image.color = Color.red;
+        });
+    }
+
+    private void BuildContract()
+    {
+        Contract contract = GameManager.instance.contracts[model.id];
+        title.text = contract.itemName + " Contract: " + contract.id;
+
+        Button button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Overview";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+        var index = menuContent.Count - 1;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+        var position = menuContent[index].transform;
+
+
+        Button(position, () =>
+        {
+            return "State: " + contract.contractState.ToString();
+        });
+
+        Button(position, () =>
+        {
+            return "Duration: " + Dated.ReadTime(contract.duration);
+        });
+
+        if (contract.contractEndDate != null)
+        {
+            Button(position, () =>
+            {
+                return "Contract End Date: " + contract.contractEndDate.GetFormatedDate();
+            });
+        }
+
+        Button(position, () =>
+        {
+            return "Renewable: " + contract.reknewable.ToString();
+        });
+
+        IdentityModel identity = contract.owner.Model;
+        button = Instantiate(uiButtonInstance, position);
+        //if (company.contractState == ContractState.Active) button.GetComponent<Image>().color = Color.green;
+        Text text = button.GetComponentInChildren<Text>();
+        text.text = "Owner: " + identity.name;
+        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(identity));
+
+        if (contract.client != null)
+        {
+            identity = contract.client.Model;
+            button = Instantiate(uiButtonInstance, position);
+            //if (company.contractState == ContractState.Active) button.GetComponent<Image>().color = Color.green;
+            text = button.GetComponentInChildren<Text>();
+            text.text = "Client: " + identity.name;
+            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(identity));
+        }
+        
+
+        button = Instantiate(uiButtonInstance, position);
+        button.GetComponentInChildren<Text>().text = "Item: " + contract.itemName;
+        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(contract.itemId, TargetType.Item));
+
+        Button(position, () =>
+        {
+            return "Cost Per Month: " + Units.ReadItem(contract.monthlyCost) + "c";
+        });
+
+        if (contract.payDate != null)
+        {
+            Button(position, () =>
+            {
+                return "Payment Date: " + contract.payDate.GetFormatedDate();
+            });
+        }
+
+        Button(position, () =>
+        {
+            return "Item Rate: " + Units.ReadRate(contract.itemRate);
+        });
+
+        Button(position, () =>
+        {
+            return "Total Amount: " + Units.ReadItem(contract.itemAmount) + "u";
+        });
+
+        Button(position, () =>
+        {
+            return "Unit Price: " + Units.ReadItem(contract.unitPrice) + "c";
+        });
+
+        Button(position, () =>
+        {
+            return "Price Per Gm: " + Units.ReadItem(contract.PricePerKm * Units.G) + "c";
+        });
+
+        Button(position, () =>
+        {
+            return "Distance: " + Units.ReadDistance(contract.distance);
+        });
+
+        Button(position, () =>
+        {
+            return "Distnace Cost: " + Units.ReadItem(contract.PricePerKm * contract.distance * 2);
+        });
+
+        button = Instantiate(uiButtonInstance, position);
+        button.GetComponentInChildren<Text>().text = "Origin: " + GameManager.instance.locations[contract.originId].name;
+        button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(contract.originId));
+
+        if (contract.destinationId != null)
+        {
+            button = Instantiate(uiButtonInstance, position);
+            button.GetComponentInChildren<Text>().text = "Destination: " + GameManager.instance.locations[contract.destinationId].name;
+            button.onClick.AddListener(() => GameManager.instance.OpenInfoPanel(contract.destinationId));
+        }
+
+        if (contract.shipIds.Count > 0)
+        {
+            
+
+            button = Instantiate(uiButtonInstance, titleContent.transform);
+            button.GetComponentInChildren<Text>().text = "Assigned Ships";
+            //name.GetComponent<Image>().color = gov.spriteColor;
+            menuContent.Add(Instantiate(infoContentPanel, contentPosition.transform));
+            index = menuContent.Count - 1;
+            position = menuContent[index].transform;
+            button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+            var scroll = Instantiate(scrollViewPrefab, position);
+            position = scroll.Content.transform;
+
+            ButtonList<Ship>(contract.id, contract.GetShips(), position, (ship) =>
+            {
+                string output = "Name : " + ship.name +
+                                "\nLocation: " + GameManager.instance.locations[ship.referenceId].name;
+                if (ship.shipTargetId != null)
+                {
+                    Structure structure = GameManager.instance.locations[ship.shipTargetId] as Structure;
+                    double distance = Vector3d.Distance(structure.SystemPosition, ship.SystemPosition);
+                    output += "\nTarget: " + structure.id +
+                        "\nDistance: " + Units.ReadDistance(distance) +
+                        "\nETA: " + Dated.ReadTime(distance / ship.SubLightSpeed);
+                }
+                return output;
+            }, (ship) => () => GameManager.instance.OpenInfoPanel(ship), (ship, but) => {
+
+                Image image = but.GetComponent<Image>();
+                if (ship.shipAction == ShipAction.Moving) image.color = Color.green;
+                else image.color = Color.grey;
+            });
+        }
+
+        SelectPanel(0);
+    }
+
+    private void BuildGovernments()
+    {
+        title.text = "Governments                                                              " + GameManager.instance.data.governments.Count;
+
+        Button button = Instantiate(uiButtonInstance, titleContent.transform);
+        button.GetComponentInChildren<Text>().text = "Overview";
+        //name.GetComponent<Image>().color = gov.spriteColor;
+        var scroll = Instantiate(scrollViewPrefab, contentPosition.transform);
+        menuContent.Add(scroll.Content); 
+        var index = menuContent.Count - 1;
+        button.GetComponent<ButtonInfo>().SetPanelToggle(index, this);
+        var position = menuContent[index].transform;
+
+        foreach (GovernmentModel government in GameManager.instance.data.governments)
+        {
+            Button(position, () => 
+            { return "Name: " + government.name + " | " + Units.ReadItem(government.moneyTotal) +
+                    "c\nCompanies: " + Units.ReadItem(government.licensedCompanies.Count);
+            }, () => GameManager.instance.OpenInfoPanel(government));
+        }
+    }
+
+    public void ButtonList<TValue, TKey>(string name, Dictionary<TValue, TKey> list, Transform position, StringDel<KeyValuePair<TValue, TKey>> listStringDel, ListUnityAction<KeyValuePair<TValue, TKey>> listCall = null, ButtonUpdate<KeyValuePair<TValue, TKey>> updateDel = null)
+    {
+        if (list.Count > 5)
+        {
+            var scroll = Instantiate(scrollViewPrefab, position);
+            position = scroll.Content.transform;
+        }
+
+        TextUpdates += () =>
+        {
+            foreach (KeyValuePair<TValue, TKey> item in list)
+            {
+                if (!buttons.ContainsKey(name + item.GetHashCode().ToString()))
+                {
+                    Button(name + item.GetHashCode().ToString(), position, () => listStringDel(item), listCall(item));
+                }
+                else
+                {
+                    Button button = buttons[name + item.GetHashCode()];
+                    Image image = button.GetComponent<Image>();
+                    if (updateDel != null)
+                        updateDel(item, button);
+                }
+            }
+        };
+    }
+
+    public void ButtonList<T>( string name, List<T> list, Transform position, StringDel<T> listStringDel, ListUnityAction<T> listCall = null, ButtonUpdate<T> updateDel = null)
+    {
+        if (list.Count > 5)
+        {
+            var scroll = Instantiate(scrollViewPrefab, position);
+            position = scroll.Content.transform;
+        }
+        else position = Instantiate(infoContentPanel, position).transform;
+
+        TextUpdates += () =>
+        {
+            foreach (T item in list)
+            {
+                if (!buttons.ContainsKey(name + item.GetHashCode().ToString()))
+                {
+                    Button(name + item.GetHashCode().ToString(), position, () => listStringDel(item), listCall(item));
+                }
+                else
+                {
+                    Button button = buttons[name + item.GetHashCode()];
+                    Image image = button.GetComponent<Image>();
+                    if (updateDel != null)
+                        updateDel(item, button);
+                }
+            }
+        };
+    }
+
+    public delegate void ButtonUpdate<T>(T item, Button button);
+
+    public delegate string StringDel<T>(T item);
+
+    public delegate UnityEngine.Events.UnityAction ListUnityAction<T>(T item);
+
+    public Button Button(Transform position, StringDel stringDel, UnityEngine.Events.UnityAction call = null)
+    {
+        Button button = Instantiate(uiButtonInstance, position);
+        Text text = button.GetComponentInChildren<Text>();
+        TextUpdates += () =>
+        {
+            text.text = stringDel();
+        };
+        if (call != null)
+        {
+            button.onClick.AddListener(call);
+        }
+        else
+        {
+            button.interactable = false;
+        }
+
+        return button;
+    }
+
+    public Button Button( string id, Transform position, StringDel stringDel, UnityEngine.Events.UnityAction call = null)
+    {
+        Button button = Button(position, stringDel, call);
+        button.name = id;
+        buttons.Add(id, button);
+        return button;
+    }
+
+
     public void Close()
     {
         model.Delete();
@@ -574,197 +1167,11 @@ public class InfoPanelController : Controller<InfoPanelModel> {
             fix = false;
         }
 
-
-        if (model.targetType == TargetType.Identity)
-        {
-            if (model.target.Model.identityType == IdentityType.Government)
-            {
-                GovernmentModel gov = (GovernmentModel)model.target.Model;
-                var text = texts["Money"];
-                text.text = "Money: " + gov.money;
-
-
-                text = texts["Star Count"];
-                text.text = "Star Count:" + gov.stars.Count;
-
-                double totalInfluence = 0;
-                foreach (SolarModel star in gov.stars)
-                {
-                    totalInfluence += star.governmentInfluence;
-                }
-
-                text = texts["Influence"];
-                text.text = "Total Influence:" + Units.ReadItem(totalInfluence);
-
-            }
-        }
-        else if (model.targetType == TargetType.SolarBody)
-        {
-            SolarBody body = GameManager.instance.data.getSolarBody(model.solarIndex);
-            title.text = body.name;
-            Text text;
-
-            if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star && body.inhabited)
-            {
-                text = texts["Population"];
-                text.text = "Population: " + Units.ReadItem(body.population.totalPopulation) + "\n"
-                    + "Young: " + Units.ReadItem(body.population.young) + "\n"
-                    + "Adult: " + Units.ReadItem(body.population.adult) + "\n"
-                    + "Old: " + Units.ReadItem(body.population.old);
-
-                foreach (IdentityModel x in body.companies)
-                {
-                    text = texts["Companies" + x.name];
-                    text.text = "Entity: " + x.name + " - " + Units.ReadItem(x.money) + "c";
-                }
-            }
-
-            text = texts["SpaceStructureCount"];
-            text.text = "Space Structure Count: " + body.structures.FindAll(x => x.structureType == StructureTypes.SpaceStation).Count;
-
-            if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star)
-            {
-                text = texts["GroundStructureCount"];
-                text.text = "Ground Structure Count:" + body.structures.FindAll(x => x.structureType != StructureTypes.SpaceStation).Count;
-
-                text = texts["ResourceCount"];
-                text.text = "Resource Types Count: " + body.rawResources.Count;
-
-            }
-
-            if (body.solarType == SolarType.Star)
-            {
-                SolarModel solar = GameManager.instance.data.stars[body.solarIndex[0]];
-
-                if (solar.buyList.items.Count > 0)
-                {
-
-                    solar.buyList.items.ForEach(x => {
-                        if (texts.TryGetValue("SellList" + x.id  + x.structureId, out text))
-                            text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c";
-                    });
-                }
-
-                if (solar.sellList.items.Count > 0)
-                {
-                    solar.sellList.items.ForEach(x => {
-                        if (texts.TryGetValue("SellList" + x.id + x.structureId, out text))
-                            text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c";
-                    });
-                }
-
-                if (solar.supplyDemand.Count > 0)
-                {
-                    solar.supplyDemand.ForEach(x => {
-                        if (texts.TryGetValue("SupplyDemand" + x.itemId, out text))
-                            text.text = x.itemName + " - " + Units.ReadItem(x.marketPrice) + "c " + Units.ReadItem(x.itemDemand) + " (" + Units.ReadItem(x.averageItemBuyPrice)
-                        + "c) : " + Units.ReadItem(x.itemSupply) + " (" + Units.ReadItem(x.averageItemSellPrice) + "c)";
-                    });
-                }
-            }
-            else
-            {
-                if (body.buyList.items.Count > 0)
-                {
-
-                    body.buyList.items.ForEach(x => {
-                        if (texts.TryGetValue("BuyList" + x.id + x.structureId, out text))
-                            text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
-                    });
-                }
-
-                if (body.sellList.items.Count > 0)
-                {
-                    body.sellList.items.ForEach(x => {
-                        if (texts.TryGetValue("SellList" + x.id + x.structureId, out text))
-                        text.text = x.name + " - " + Units.ReadItem(x.amount) + "u for " + Units.ReadItem(x.price) + "c ";
-                    });
-                }
-            }
-
-
-
-            text = texts["OrbitInfo"];
-            text.text = body.GetInfo(GameManager.instance.data.date.time);
-
-            if (body.solarSubType != SolarSubType.GasGiant && body.solarType != SolarType.Star)
-            {
-
-                body.rawResources.ForEach(x => {
-
-                    if (texts.ContainsKey("Resources" + x.id))
-                    {
-                        text = texts["Resources" + x.id];
-                        text.text = "Resource: " + x.name + " - " + Units.ReadItem(x.amount);
-                        if (x.timeUntilDepleted > 0)
-                        text.text += "Time to Depletion: " + Dated.ReadTime(x.timeUntilDepleted);
-                    }
-                    
-                });
-
-                body.structures.ForEach(x => {
-                    if (texts.ContainsKey("Structure" + x.id))
-                    {
-                        text = texts["Structure" + x.id];
-                        text.text = "Name: " + x.name + " - " + x.owner.Model.name;
-                    }
-                        
-                });
-
-            }
-        }
-        else if (model.targetType == TargetType.Structure)
-        {
-            //SolarBody body = GameManager.instance.data.getSolarBody(model.solarIndex);
-            Text text;
-
-            text = texts["Info"];
-            text.text = model.structure.info;
-
-            if (model.structure.structureType == StructureTypes.GroundStorage)
-            {
-                text = texts["FillPercent"];
-                text.text = "Storage Filled: " + ((((GroundStorage)model.structure).currentStorageAmount / ((GroundStorage)model.structure).totalStorageAmount) * model.structure.count * 100).ToString("0.00") + " %  "
-                    + Units.ReadItem(((GroundStorage)model.structure).currentStorageAmount) + " - " +
-                     Units.ReadItem(((GroundStorage)model.structure).totalStorageAmount * model.structure.count);
-
-                ((GroundStorage)model.structure).storage.items.ForEach(x => {
-                    if (texts.ContainsKey("Items" + x.id))
-                    {
-                        text = texts["Items" + x.id];
-                        text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
-                    }
-                    
-                });
-            }
-
-            if (model.structure.structureType == StructureTypes.SpaceStation)
-            {
-
-                ((Station)model.structure).storage.items.ForEach(x => {
-                    if (texts.TryGetValue("Items" + x.id, out text))
-                    {
-                        text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
-                    }
-                });
-            }
-
-            if (model.structure.structureType == StructureTypes.Factory)
-            {
-                text = texts["ProductionPercent"];
-                text.text = "Production Percent: " + ((((Factory)model.structure).productionProgress * 100).ToString("0.00") + " %");
-
-                ((Factory)model.structure).storage.items.ForEach(x => {
-                    if (texts.ContainsKey("Items" + x.id))
-                    {
-                        text = texts["Items" + x.id];
-                        text.text = "Name: " + x.name + " - " + Units.ReadItem(x.amount);
-                    }
-                });
-            }
-        }
-
+        TextUpdates();
     }
+
+    public delegate void UpdateDel();
+    public delegate string StringDel();
 
     public void SelectPanel(int index)
     {

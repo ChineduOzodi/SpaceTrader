@@ -6,149 +6,108 @@ using System;
 
 public class ItemsModel: Model{
 
-    public List<ItemBlueprint> items { get; private set; }
+    public List<ItemBlueprint> blueprints { get; set; }
     
 
-    public ItemsModel() { items = new List<ItemBlueprint>(); }
+    public ItemsModel() { blueprints = new List<ItemBlueprint>(); }
 
-    public ItemBlueprint GetItem(int id)
+    public ItemBlueprint GetItem(string id)
     {
-        return items.Find(x => x.id == id);
+        return blueprints.Find(x => x.id == id);
     }
     
 }
-public class Item: IPositionEntity
+public class Item
 {
-    public string name { get; private set; }
-    public ItemType itemType { get; private set; }
-    public int id { get; private set; }
-    public double amount { get; private set; }
-    public double price;
-    public double estimatedValue { get; private set; }
-
-    public Vector2d galaxyPosition
+    public string name
+    {
+        get { return GameManager.instance.data.itemsData.Model.GetItem(id).name; }
+    }
+    public ItemType itemType
+    {
+        get { return GameManager.instance.data.itemsData.Model.GetItem(id).itemType; }
+    }
+    public double EstimatedValue
     {
         get
         {
-            if (shipId == -1)
-            {
-                if (solarIndex.Count == 3)
-                {
-                    return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]].galaxyPosition;
-                }
-                else if (solarIndex.Count == 2)
-                {
-                    return GameManager.instance.data.stars[solarIndex[0]].solar.satelites[solarIndex[1]].galaxyPosition;
-                }
-                else
-                {
-                    throw new System.Exception("BuildStructure " + name + " solarIndex count incorrect: " + solarIndex.Count);
-                }
-            }
-            else if (shipId > -1)
-            {
-                return GameManager.instance.data.ships.Model.ships.Find(x => x.id == shipId).galaxyPosition;
-            }
-            else
-            {
-                throw new Exception("Unknown error with retriviing galaxy position");
-            }
-            
+            return GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         }
-
-        set
+    }
+    public float Size
+    {
+        get
         {
-            throw new System.Exception("Can't set galaxyPosition of item, move item instead");
+            return GameManager.instance.data.itemsData.Model.GetItem(id).size;
+        }
+    }
+    /// <summary>
+    /// Item size in meters squared.
+    /// </summary>
+    public SizeClass ItemSize
+    {
+        get
+        {
+            if (Size < 10) return SizeClass.S;
+            if (Size < 100) return SizeClass.M;
+            if (Size < 1000) return SizeClass.L;
+            if (Size < 10000) return SizeClass.XL;
+            else return SizeClass.T;
         }
     }
 
-    public List<int> solarIndex { get; set; }
-    public int structureId { get; set; }
-    public int shipId { get; set; }
+    public string id;
+    public double amount;
+    public string referenceId;
+    public string destinationId;
 
-    public Item(int _itemId, double _amount, double _price, List<int> _solarIndex, int _structureId = -1)
+    public Item() { }
+
+    public Item(string _itemId, double _amount, string referenceId, string _destinationId)
+        : this(_itemId, _amount,referenceId)
     {
-
-        id = _itemId;
-        name = GameManager.instance.data.itemsData.Model.GetItem(id).name;
-        estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
-        amount = _amount;
-        structureId = _structureId;
-        shipId = -1;
-        solarIndex = _solarIndex;
-        price = _price;
-        itemType = ItemType.AI;
-        itemType = GetItemType();
-
-    }
-    public Item(int _itemId, double _amount, double _price)
-    {
-
-        id = _itemId;
-        name = GameManager.instance.data.itemsData.Model.GetItem(id).name;
-        estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
-        amount = _amount;
-        shipId = -1;
-        structureId = -1;
-        price = _price;
-        itemType = ItemType.AI;
-        itemType = GetItemType();
-
+        this.destinationId = _destinationId;
     }
 
-    public Item(string _name, int _itemId, ItemType type, int _amount, double _price)
+    public Item(string _itemId, double _amount, string referenceId)
+        :this(_itemId, _amount)
     {
-
-        id = _itemId;
-        name = _name;
-        amount = _amount;
-        estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
-        price = _price;
-        itemType = ItemType.AI;
-        itemType = type;
-
-        shipId = -1;
-        structureId = -1;
+        this.referenceId = referenceId;
     }
-
-    public Item(ItemType type, int _amount, double _price)
+    public Item(string _itemId, double _amount)
     {
-        var itemBlueprint = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == type);
+        id = _itemId;
+        amount = _amount;
+    }
+    public Item(ItemType type, int _amount)
+    {
+        var itemBlueprint = GameManager.instance.data.itemsData.Model.blueprints.Find(x => x.itemType == type);
         id = itemBlueprint.id;
-        name = itemBlueprint.name;
-        estimatedValue = GameManager.instance.data.itemsData.Model.GetItem(id).estimatedValue;
         amount = _amount;
-        price = _price;
-        itemType = type;
-
-        shipId = -1;
-        structureId = -1;
     }
-
-    public void SetAmount(double _amount, double _price)
+    public void SetAmount(double _amount)
     {
-        price = _price;
         amount = _amount;
     }
 
-    public void AddAmount(double _amount, double _price)
+    public void AddAmount(double _amount)
     {
         if (_amount <= 0)
             return;
-        price = amount * price + _amount * _price;
-        amount = amount + _amount;
-        price /= amount;
+        amount += _amount;
     }
 
     public double RemoveAmount(double _amount)
     {
+        
         if (amount - _amount < 0)
         {
+            double removedAmount = amount;
             amount = 0;
-            return amount;
+            return removedAmount;
         }
         amount -= _amount;
-        return amount;
+        return _amount;
     }
 
     public float GetBaseArmor()
@@ -160,96 +119,67 @@ public class Item: IPositionEntity
     {
         return GameManager.instance.data.itemsData.Model.GetItem(id).workers;
     }
-
-    private ItemType GetItemType()
-    {
-        return GameManager.instance.data.itemsData.Model.GetItem(id).itemType;
-    }
-
-    //Operators
-    //public static Item operator *(Item item, int num)
-    //{
-    //    item.amount *= num;
-    //    return item;
-    //}
-    //public static Item operator /(Item item, int num)
-    //{
-    //    item.amount /= num;
-    //    return item;
-    //}
-    //public static Item operator +(Item item, int num)
-    //{
-    //    item.amount += num;
-    //    return item;
-    //}
-    //public static Item operator -(Item item, float num)
-    //{
-    //    item.amount -= num;
-    //    return item;
-    //}
-    //public static Item operator *(Item item, float num)
-    //{
-    //    item.amount *= num;
-    //    return item;
-    //}
-    //public static Item operator /(Item item, float num)
-    //{
-    //    item.amount /= num;
-    //    return item;
-    //}
-    //public static Item operator +(Item item, float num)
-    //{
-    //    item.amount += num;
-    //    return item;
-    //}
-    //public static Item operator -(Item item, int num)
-    //{
-    //    item.amount -= num;
-    //    return item;
-    //}
 }
 
-public struct ItemBlueprint
+public class ItemBlueprint: IWorkers
 {
     public string name { get; private set; }
-    public int id { get; private set; }
+    public string id { get; private set; }
     public string description { get; private set; }
+
+    public int count;
 
     public Color color;
     public string coloredName;
 
-    public ItemType itemType { get; private set; }
-    public double productionTime { get; private set; }
+    public ItemType itemType;
+    /// <summary>
+    /// Work amount needed to create. On average, a worker does one work a day.
+    /// </summary>
+    public double workAmount { get; set; }
     public double estimatedValue { get; private set; }
     /// <summary>
     /// Required resources to create one component.
     /// </summary>
     public List<Item> contstructionParts { get; private set; }
 
+    /// <summary>
+    /// Item Size in meters squared;
+    /// </summary>
+    public float size = 1;
     public float baseArmor { get; private set; }
 
     /// <summary>
     /// workers to operate 1 unit
     /// </summary>
-    public int workers { get; private set; }
+    public int workers { get; set; }
 
-    public ItemBlueprint(string _name, ItemType _itemType, string _desctiption, float _productionTime, List<Item> parts)
+    public double workerPayRate { get; set; }
+
+    //Production Stats
+    public double unitsCreated = 0;
+    public double supply = 0;
+    public double demand = 0;
+
+    public ItemBlueprint() { }
+
+    public ItemBlueprint(string _name, ItemType _itemType, string _desctiption, float workAmount, List<Item> parts)
     {
         name = _name;
         description = "This is the " + name;
-        id = GameManager.instance.data.id++;
+        id = GetType().ToString()+ GameManager.instance.data.id++.ToString();
         itemType = _itemType;
-        productionTime = _productionTime;
+        this.workAmount = workAmount;
         contstructionParts = parts;
         float armor = 0;
         int workers = 0;
         double cost = 0;
-        parts.ForEach(x => { armor += x.GetBaseArmor(); workers += x.GetWorkers(); cost += x.estimatedValue * x.amount; } );
+        parts.ForEach(x => { armor += x.GetBaseArmor(); workers += x.GetWorkers(); cost += x.EstimatedValue * x.amount; } );
         baseArmor = armor;
         this.workers = workers;
-        cost += (workers + 15) * .00116f * productionTime; //worker pay rate
+        cost += (workers + 15) * .00116f * this.workAmount; //worker pay rate
         estimatedValue = cost;
-        System.Random rand = new System.Random(id);
+        System.Random rand = new System.Random(id.GetHashCode());
         float a = (float) rand.NextDouble();
         float b = (float)rand.NextDouble();
         float c = (float)rand.NextDouble();
@@ -263,14 +193,14 @@ public struct ItemBlueprint
         description = raw.description;
         id = raw.id;
         itemType = ItemType.RawMaterial;
-        productionTime = raw.miningTime;
+        workAmount = raw.miningTime;
         contstructionParts = new List<Item>();
         float armor = .1f;
         int workers = 0;
         baseArmor = armor;
         this.workers = workers;
-        estimatedValue = (workers + 10) * productionTime * .00116f;
-        System.Random rand = new System.Random(id);
+        estimatedValue = (workers + 10) * workAmount * .00116f;
+        System.Random rand = new System.Random(id.GetHashCode());
         float a = (float)rand.NextDouble();
         float b = (float)rand.NextDouble();
         float c = (float)rand.NextDouble();
@@ -279,130 +209,47 @@ public struct ItemBlueprint
     }
 }
 
-public class ItemStorage
+public interface IItemStorage
 {
-    public List<Item> items = new List<Item>();
-    public int structureId = -1;
+    double itemCapacity { get; set; }
 
-    public ItemStorage() {    }
-    public ItemStorage(int _structureId)
-    {
-        structureId = _structureId;
-    }
-    public bool SetAmount(Item item)
-    {
-        int itemIndex = -1;
-        itemIndex = items.FindIndex(x => x.id == item.id);
+    List<Item> itemsStorage { get; set; }
 
-        if (itemIndex >= 0)
-        {
-            items[itemIndex].SetAmount(item.amount, item.price);
-        }
-        else
-        {
-            item.structureId = structureId;
-            items.Add(item);
-        }
-        return true;
-    }
-    public bool AddItem(Item item)
-    {
-        int itemIndex = -1;
-        itemIndex = items.FindIndex(x => x.id == item.id);
+    bool AddItem(Item item);
 
-        if (itemIndex >= 0)
-        {
-            items[itemIndex].AddAmount(item.amount, item.price);
-        }
-        else
-        {
-            item.structureId = structureId;
-            items.Add(item);
-        }
-        return true;
-    }
+    bool UseItem(string itemId, double amount);
 
-    public bool UseItem(Item item)
-    {
-        int itemIndex = -1;
-        itemIndex = items.FindIndex(x => x.id == item.id);
-
-        //if (item.structureId == -1)
-        //{
-        //    itemIndex = items.FindIndex(x => x.id == item.id && x.structureId == item.structureId);
-        //}
-        //else
-        //    itemIndex = items.FindIndex(x => x.id == item.id);
-
-        if (itemIndex >= 0)
-        {
-            if (items[itemIndex].amount < item.amount)
-            {
-                return false;
-            }
-            items[itemIndex].RemoveAmount(item.amount);
-            if (items[itemIndex].amount == 0)
-            {
-                items.RemoveAt(itemIndex);
-            }
-            return true;
-        }
-        return false;
-    }
     /// <summary>
     /// Uses as much of the item amount as it can from the storage, returns the left over item amount that was not used.
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    public Item UseAsMuchItem(Item item)
-    {
-        int itemIndex = -1;
-        itemIndex = items.FindIndex(x => x.id == item.id);
+    double UseAsMuchItem(string itemId, double amount);
 
-        if (itemIndex >= 0)
-        {
-            if (items[itemIndex].amount <= item.amount)
-            {
-                item.RemoveAmount(items[itemIndex].amount);
-                items[itemIndex].RemoveAmount(items[itemIndex].amount);
-                items.RemoveAt(itemIndex);
-                return item;
-            }
-            else
-            {
-                items[itemIndex].RemoveAmount(item.amount);
-                item.RemoveAmount(item.amount);
-                return item;
-            }
-        }
-        throw new Exception("Could not find item " + item.name);
-    }
-
-    public bool ContainsItem(Item item)
-    {
-        int itemIndex = -1;
-        itemIndex = items.FindIndex(x => x.id == item.id);
-
-        return itemIndex != -1;
-    }
-
-    public bool ContainsItem(int itemId)
-    {
-        return items.Find(x => x.id == itemId) != null;
-    }
+    /// <summary>
+    /// Finds and returns whether the itemstorage contains a certain item at a certain amount
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    bool ContainsItem(string itemId, double amount);
+    /// <summary>
+    /// Returns whether storage contains a certain item.
+    /// </summary>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
+    bool ContainsItem(string itemId);
     /// <summary>
     /// Finds item with the same id stored in ItemStorage.
     /// </summary>
     /// <param name="item">item to look for</param>
     /// <returns>item that was found, or null</returns>
-    public Item Find(Item item)
-    {
-        return items.Find(x => x.id == item.id);
-    }
-    public Item Find(int itemId)
-    {
-        return items.Find(x => x.id == itemId);
-    }
+    Item Find(Item item);
+    /// <summary>
+    /// Finds item with the same id stored in ItemStorage.
+    /// </summary>
+    /// <param name="itemId"></param>
+    /// <returns></returns>
+    Item Find(string itemId);
 }
 
 public enum ItemType
@@ -424,6 +271,106 @@ public enum ItemType
     Factory,
     SpaceStation,
     SpaceShip,
-    GroundStorage,
+    DistributionCenter,
     StorageContainer
 }
+
+public enum SizeClass
+{
+    S,
+    M,
+    L,
+    XL,
+    T
+}
+
+public class FuelBlueprint : ItemBlueprint
+{
+    /// <summary>
+    /// Percent modification of ship fuel range.
+    /// </summary>
+    public double fuelRangeMod;
+
+    public FuelBlueprint() { }
+
+    public FuelBlueprint(string _name, double fuelRangeMod, string _desctiption, float workAmount, List<Item> parts) :
+        base(_name, ItemType.Fuel, _desctiption, workAmount, parts)
+    {
+        this.fuelRangeMod = fuelRangeMod;
+    }
+}
+
+public class ShipBlueprint : ItemBlueprint
+{
+    public ShipType shipType;
+
+    public int passangerCapacity;
+
+    /// <summary>
+    /// Sub light speed in km/s
+    /// </summary>
+    public float subLightSpeed;
+    /// <summary>
+    /// Rotate speed in degrees per second;
+    /// </summary>
+    public float rotateSpeed;
+
+    public string fuelBlueprintId;
+    public double fuelRange;
+    public int fuelCapacity = 100;
+
+    public double cargoCapacity = 100;
+
+    //Ship Properties
+    public double ApproxFuelCostPerKm
+    {
+        get { return Fuel.estimatedValue / fuelRange; }
+    }
+
+    public FuelBlueprint Fuel { get { return GameManager.instance.data.itemsData.Model.GetItem(fuelBlueprintId) as FuelBlueprint; } }
+
+    public ShipBlueprint() { }
+
+    public ShipBlueprint(string name, ShipType _shipType, string _desctiption, float workAmount, List<Item> parts) :
+        base(name, ItemType.SpaceShip, _desctiption,workAmount,parts)
+    {
+        shipType = _shipType;
+
+        this.workers = 10;
+        workerPayRate = 15 / Dated.Hour;
+
+        this.passangerCapacity = 10;
+        cargoCapacity = 100;
+
+        this.subLightSpeed = 1000;
+
+        this.fuelRange = 100 * Units.G;
+        this.fuelCapacity = 100;
+        FuelBlueprint fuelBlueprint = GameManager.instance.data.itemsData.Model.blueprints.Find(x => x.itemType == ItemType.Fuel) as FuelBlueprint;
+        fuelBlueprintId = fuelBlueprint.id;
+        fuelRange *= fuelBlueprint.fuelRangeMod;
+    }
+}
+
+public enum ShipType
+{
+    Cargo,
+    Explorer,
+    Combat
+}
+
+public class Fuel: Item
+{
+    /// <summary>
+    /// Percent modification of ship fuel range.
+    /// </summary>
+    public double fuelRangeMod;
+
+    public Fuel() { }
+    public Fuel(string _itemId, double _amount, string _structureId):
+        base(_itemId,_amount, _structureId)
+    {
+        fuelRangeMod = ((FuelBlueprint) GameManager.instance.data.itemsData.Model.GetItem(_itemId)).fuelRangeMod;
+    }
+}
+

@@ -16,12 +16,12 @@ public class Pathfinding : MonoBehaviour
     List<Node> path;
 
     private int maxLocalSize = 100 * 100;
-    private GalaxyManager galaxy;
+    private ViewManager galaxy;
     // Use this for initialization
     public void Awake()
     {
         game = GameManager.instance;
-        galaxy = GetComponent<GalaxyManager>();
+        galaxy = GetComponent<ViewManager>();
         maxLocalSize = game.data.stars.Count;
         nodes = new Node[game.data.stars.Count];
         requestManager = GetComponent<PathRequestManager>();
@@ -33,24 +33,24 @@ public class Pathfinding : MonoBehaviour
         StartCoroutine(FindPath(startIndex, targetIndex, maxDistance));
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawCube(transform.position, new Vector3(10, 10));
-        if (nodes != null && displayGizmos)
-        {
-            foreach (Node n in nodes)
-            {
-                if (n != null)
-                {
-                    Gizmos.color = new Color(n.fCost / 100f, 1, 1, .8f);
-                    Gizmos.DrawCube(CameraController.CameraOffsetGalaxyPosition(n.worldPosition / GameDataModel.galaxyDistanceMultiplication), Vector3.one);
-                }
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawCube(transform.position, new Vector3(10, 10));
+    //    if (nodes != null && displayGizmos)
+    //    {
+    //        foreach (Node n in nodes)
+    //        {
+    //            if (n != null)
+    //            {
+    //                Gizmos.color = new Color(n.fCost / 100f, 1, 1, .8f);
+    //                Gizmos.DrawCube(CameraController.CameraOffsetGalaxyPosition(n.worldPosition / GameDataModel.galaxyDistanceMultiplication), Vector3.one);
+    //            }
 
 
-            }
-        }
-    }
+    //        }
+    //    }
+    //}
     IEnumerator FindPath(int startIndex, int targetIndex, float maxDistance)
     {
         Stopwatch sw = new Stopwatch();

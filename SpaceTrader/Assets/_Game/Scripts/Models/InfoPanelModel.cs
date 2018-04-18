@@ -7,10 +7,9 @@ using UnityEngine.UI;
 public class InfoPanelModel : Model {
 
     public ModelRef<IdentityModel> target;
-    public int targetId;
-    public TargetType targetType; 
-    public List<int> solarIndex;
-    public IStructure structure;
+    public string id;
+    public TargetType targetType;
+    public Structure structure;
     public Creature creature;
 
     public InfoPanelModel() { }
@@ -19,37 +18,54 @@ public class InfoPanelModel : Model {
         target = new ModelRef<IdentityModel>(_target);
         targetType = TargetType.Identity;
     }
-    public InfoPanelModel(int _targetId, TargetType _targetType)
+    public InfoPanelModel(TargetType _targetType)
     {
-
-        targetId = _targetId;
         targetType = _targetType;
     }
-    public InfoPanelModel(List<int> solarIndex)
+    public InfoPanelModel(string _targetId, TargetType _targetType)
     {
-        this.solarIndex = solarIndex;
-        targetType = TargetType.SolarBody;
+
+        id = _targetId;
+        targetType = _targetType;
     }
-    public InfoPanelModel(IStructure structure)
+    public InfoPanelModel(string locationId)
     {
-        this.solarIndex = structure.solarIndex;
+        this.id = locationId;
+        var target = GameManager.instance.locations[locationId];
+        if (target.GetType() == typeof(SolarBody))
+        {
+            targetType = TargetType.SolarBody;
+        }
+        else if (target.GetType() == typeof(Ship))
+        {
+            targetType = TargetType.Ship;
+        }
+        else
+        {
+            targetType = TargetType.Structure;
+        }
+        
+    }
+    public InfoPanelModel(Structure structure)
+    {
+        this.id = structure.id;
         targetType = TargetType.Structure;
         this.structure = structure;
     }
     public InfoPanelModel(Creature creature)
     {
-        this.solarIndex = creature.solarIndex;
+        this.id = creature.id;
         targetType = TargetType.Creature;
         this.creature = creature;
     }
     public InfoPanelModel(Item item)
     {
-        this.targetId = item.id;
+        this.id = item.id;
         targetType = TargetType.Item;
     }
     public InfoPanelModel(RawResource raw)
     {
-        this.targetId = raw.id;
+        this.id = raw.id;
         targetType = TargetType.RawResource;
     }
 }
@@ -62,5 +78,7 @@ public enum TargetType
     Ship,
     Structure,
     Item,
-    RawResource
+    RawResource,
+    Contract,
+    Governments
 }

@@ -12,6 +12,9 @@ public class GameDataModel : Model {
     public int playerCreatureId;
 
     public static double G = 6.67e-11;
+    /// <summary>
+    /// Lightyear in km.
+    /// </summary>
     public static double galaxyDistanceMultiplication = 9.461e+11 ; // Lightyear in km = 9.461e12.
     public static string galaxyDistanceUnit = "ly";
     public static double solarDistanceMultiplication = Units.M * 100;
@@ -20,14 +23,10 @@ public class GameDataModel : Model {
     public static string sunMassUnit = @"M\u+0298";
 
     //Camera
-    public Vector2d cameraGalaxyPosition = Vector2d.zero;
-    public Vector2d cameraSolarPosition = Vector2d.zero;
-    public double cameraGalaxyOrtho = 100 * Units.ly / galaxyDistanceMultiplication;
-    public double cameraSolarOrtho = 10000000;
-    public double cameraGalCameraScaleMod = 1;
-    public double cameraSolCameraScaleMod = 1;
-    public double distanceDivision = 9.461e+15; // Lightyear.
-
+    public Position mainCameraPosition = new Position();
+    public float[] mainCameraOrtho = { 100, 100, 100, 100, 100 };
+    public List<int> mainCameraSolarIndex = new List<int>();
+    public ViewMode mainCamerViewMode = ViewMode.Galaxy;
     public static float galaxyCameraScaleMax = 500 * (float)(Units.ly / GameDataModel.galaxyDistanceMultiplication);
 
     public ModelRef<ShipsModel> ships = new ModelRef<ShipsModel>(new ShipsModel());
@@ -48,20 +47,8 @@ public class GameDataModel : Model {
 
     //----------------------------Solar Display Settings-------------------//
 
-    public SolarBody getSolarBody(List<int> solarIndex)
+    public SolarBody getSolarBody(string solarId)
     {
-        if (solarIndex.Count == 1)
-        {
-            return stars[solarIndex[0]].solar;
-        }
-        if (solarIndex.Count == 2)
-        {
-            return stars[solarIndex[0]].solar.satelites[solarIndex[1]];
-        }
-        if (solarIndex.Count == 3)
-        {
-            return stars[solarIndex[0]].solar.satelites[solarIndex[1]].satelites[solarIndex[2]];
-        }
-        throw new System.Exception("Solar Index invalid");
+        return GameManager.instance.locations[solarId] as SolarBody;
     }
 }

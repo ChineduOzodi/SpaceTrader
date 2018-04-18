@@ -1,39 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System;
 using CodeControl;
 
-public class Factory : ProductionStructure,IWorkers {
+public class Factory : ProductionStructure {
 
     
-    
-    public float productionProgress { get; private set; }
-
-    public int workers { get; set; }
-
-    public double workerPayRate { get; set; }
-
-    public bool isProducing;
-    public bool on = true;
 
     public Factory() { }
 
-    public Factory(IdentityModel owner, int _productionItemId, int count, SolarBody body): 
-        base(owner,_productionItemId,body,count)
+    public Factory(IdentityModel owner, string _productionItemId, int count, string referenceId): 
+        base(owner,_productionItemId,referenceId, (Vector3d)Random.onUnitSphere * ((SolarBody)GameManager.instance.locations[referenceId]).bodyRadius * .5,count)
     {
         
         structureType = StructureTypes.Factory;
 
-        workers = 30;
+        workers = 300 * count;
         workerPayRate = .00116;
-        owner.money -= 10000;
+        owner.PayConstruction(100000);
     }
 
-    public Factory(IdentityModel owner, int structureItemId, int productionItemId, List<int> solarIndex, int _count = 1):
-        base(owner,productionItemId, GameManager.instance.data.getSolarBody(solarIndex), _count)
+    public Factory(IdentityModel owner, string structureItemId, string productionItemId, string _referenceId, int _count = 1):
+        base(owner,productionItemId, _referenceId, (Vector3d)Random.onUnitSphere * ((SolarBody)GameManager.instance.locations[_referenceId]).bodyRadius * .5, _count)
     {
         structureType = StructureTypes.Factory;
-
+        blueprintId = GameManager.instance.data.itemsData.Model.blueprints.Find(x => x.itemType == ItemType.Factory).id;
         var blueprint = GameManager.instance.data.itemsData.Model.GetItem(structureItemId);
         if (blueprint.itemType == ItemType.RawMaterial)
             deleteStructure = true;
@@ -43,9 +33,9 @@ public class Factory : ProductionStructure,IWorkers {
         currentArmor = maxArmor;
 
         int machineryAmount = (int)blueprint.contstructionParts.Find(x => x.itemType == ItemType.FactoryMachinery).amount;
-        productionTime /= machineryAmount;
+        workAmount /= machineryAmount;
 
-        workers = 15 + blueprint.workers;
+        workers = 15 + blueprint.workers * count;
         workerPayRate = .00116;
     }
 
@@ -53,71 +43,48 @@ public class Factory : ProductionStructure,IWorkers {
     /// Creates items and uses items based on the elapsed time
     /// </summary>
     /// <param name="elapsedTime">time elapsed (in seconds)</param>
-    public void UpdateProduction(SolarBody parentBody, double deltaTime)
+    public override void Update()
     {
+        base.Update();
         if (deleteStructure)
             return;
-        var price = parentBody.GetMarketPrice(productionItemId) / productionTime;
-        var cost = workers * workerPayRate;
 
-        requiredItems.ForEach(x => cost += x.amount * x.price / GameManager.instance.data.itemsData.Model.GetItem(x.id).productionTime);
-        info = "Count: " + count + "\nOn: " + on.ToString()
-            + "\nIs Producing: " + isProducing.ToString()
-            + "\nPrice/Cost " + (price / cost).ToString("0.0000");
-        UpdateConnectionItems();
-        if (on && (price > cost ||
-            structureConnectionIdsOut.Exists(x => !((ProductionStructure)parentBody.GetStructure(x)).storage.ContainsItem(productionItemId) ||
-            (((ProductionStructure)parentBody.GetStructure(x)).storage.ContainsItem(productionItemId) &&
-                ((ProductionStructure)parentBody.GetStructure(x)).storage.items.Find(b => b.id == productionItemId).amount <
-                ((ProductionStructure)parentBody.GetStructure(x)).requiredItems.Find(b => b.id == productionItemId).amount * 3 *
-                ((ProductionStructure)parentBody.GetStructure(x)).count))
-            ))
-        {
-            requiredItems.ForEach(x => {
-                parentBody.RemoveBuying(x.id, id, x.amount * count);
-                x.price = parentBody.GetMarketPrice(x.id);
-            }
-            );
-            return;
-        }
-            
-        var progress = (float)(deltaTime / productionTime);
+        //var price = parentBody.GetMarketPrice(productionItemId) / productionTime;
+        //var cost = workers * workerPayRate;
+
+        //requiredItems.ForEach(x => cost += x.amount * x.price / GameManager.instance.data.itemsData.Model.GetItem(x.id).productionTime);
+        Info = "Count: " + count + "\nOn: " + on.ToString()
+            + "\nIs Producing: " + isProducing.ToString();
+            //+ "\nPrice/Cost " + (price / cost).ToString("0.0000");
+
+        var progress = (float)(deltaTime / ProductionTime);
         if (isProducing)
         {
             productionProgress += progress;
-            owner.Model.money -= workerPayRate * workers * deltaTime;
-            int loopCount = 0;
+            owner.Model.PayWorkers(workerPayRate * workers * deltaTime);
             while (productionProgress > 1)
             {
-                loopCount++;
-                if (loopCount > 1000)
-                {
-                    throw new Exception("Looping Update Production");
-                }
-                if (StoreCreatedItem(parentBody, count))
-                {
-                    productionProgress--;
-                    
-                    isProducing = false;
-                    if (SearchRequiredItems(parentBody, progress))
-                    {
-                        isProducing = true;
-                        UseRequiredItems(parentBody);
-                    }
-                    else
-                    {
-                        productionProgress = 0;
-                        requiredItems.ForEach(x => x.price = GameManager.instance.data.getSolarBody(solarIndex).GetMarketPrice(x.id));
-                        break;
-                    }
 
+                
+                //productionProgress -= Mathd.Floor(productionProgress);
+
+                if (SearchRequiredItems())
+                {
+                    isProducing = true;
+                    UseRequiredItems();
+                    productionProgress--;
+                }
+                else
+                {
+                    productionProgress = 0;
+                    isProducing = false;
+                    //requiredItems.ForEach(x => x.price = ReferenceBody.GetMarketPrice(x.id));
                 }
             }
         }
-        else if (SearchRequiredItems(parentBody, progress))
+        else if (SearchRequiredItems())
         {
             isProducing = true;
-            UseRequiredItems(parentBody);
-        }     
+        }
     }
-}
+    }

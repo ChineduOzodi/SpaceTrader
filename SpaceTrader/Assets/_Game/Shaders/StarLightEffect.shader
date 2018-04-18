@@ -4,11 +4,16 @@ Shader "Solar/StarBrightnessEffect"
 {
 	Properties
 	{
-		_MainTex ("Texture", 2D) = "white" {}
-		_StarPositionLength ("Star Position Lenght", int) = 1
+		_MainTex ("Particle Texture", 2D) = "white" {}
+		_TintColor ("Tint Color", Color) = (1,1,1,1)
+		_StarRadius ("Star Radius", float) = 1
+		_CutoffLight ("Cutoff Light", float) = .01
 	}
 	SubShader
 	{
+		Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
+		Blend One OneMinusSrcColor
+		ColorMask RGB
 		// No culling or depth
 		Cull Off ZWrite Off ZTest Always
 
@@ -24,12 +29,14 @@ Shader "Solar/StarBrightnessEffect"
 			{
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
+				fixed4 col: COLOR;
 			};
 
 			struct v2f
 			{
 				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
+				fixed4 color: COLOR;
 			};
 
 			v2f vert (appdata v)
@@ -37,33 +44,29 @@ Shader "Solar/StarBrightnessEffect"
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
+				o.color = v.col;
 				return o;
 			}
 
 			sampler2D _MainTex;
-			int _StarPositionLength;
-			uniform float2 _StarPositionArray[1000];
-			uniform float4 _StarColorArray[1000];
-			uniform float _StarRadi[1000];
+			float _StarRadius;
+			float4 _TintColor;
+			float _CutoffLight;
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = tex2D(_MainTex, i.uv);
 				float texPosX = i.uv.x;
 				float texPosY = i.uv.y;
 				float4 starColor = float4(0,0,0,0);
-				for (int i = 0; i < _StarPositionLength; i++)
-				{
-					float2 _StarPosition = _StarPositionArray[i];
-					float4 _StarColor = _StarColorArray[i];
-					float _StarRadius = _StarRadi[i];
-					float distance = sqrt(
-						pow((_StarPosition.x - (_WorldSpaceCameraPos.x + ((texPosX - .5) * unity_OrthoParams.x * 2))), 2)
-						+ pow((_StarPosition.y - (_WorldSpaceCameraPos.y + ((texPosY - .5) * unity_OrthoParams.y * 2))), 2));
 
-					starColor += _StarColor * _StarRadius / (pow((distance + .001),1.5));
-				}
-				return col + (starColor * (1 - col));
+				float realDistance = sqrt( pow((texPosX - .5) * 2, 2)
+						+ pow((texPosY - .5) * 2, 2));
+
+				starColor += _TintColor * i.color * _StarRadius / (pow((realDistance + .001),1.5));
+				clip(starColor[3] - _CutoffLight);
+				//float4 randomCol = float4(1,1,0,1);
+				//return col + randomCol;
+				return starColor;
 			}
 			ENDCG
 		}

@@ -5,7 +5,7 @@ using CodeControl;
 
 public class CompanyModel : StructureModel {
 
-    public int ceo;
+    public string ceoId;
 
     public ModelRefs<GovernmentModel> governmentAccess = new ModelRefs<GovernmentModel>();
 
@@ -15,24 +15,31 @@ public class CompanyModel : StructureModel {
     public CompanyModel(string _name, SolarBody home, GovernmentModel[] govs, Creature _ceo)
     {
         name = _name;
-        ceo = _ceo.id;
-        solarIndex = home.solarIndex;
+        ceoId = _ceo.id;
+        referenceId = home.id;
         home.companies.Add(this);
         foreach (GovernmentModel gov in govs)
         {
             governmentAccess.Add(gov);
+            gov.licensedCompanies.Add(this);
         }
     }
     public CompanyModel(string _name, SolarBody home, GovernmentModel gov, Creature _ceo)
     {
         name = _name;
-        ceo = _ceo.id;
-        solarIndex = home.solarIndex;
-        AddKnownSolar(GameManager.instance.data.stars[solarIndex[0]]);
+        ceoId = _ceo.id;
+        referenceId = home.id;
+        AddKnownSolarBodyId(referenceId);
         home.companies.Add(this);
-        gov.trustedCompanies.Add(this);
+        gov.localCompanies.Add(this);
         governmentAccess.Add(gov);
-        money = 1000000;
+        gov.licensedCompanies.Add(this);
+        StartingBalance(1000000);
         GameManager.instance.data.companies.Add(this);
+    }
+
+    public virtual void Update()
+    {
+
     }
 }

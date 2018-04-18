@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using CodeControl;
+using UnityEngine.EventSystems;
 
 public class PlanetInfo : MonoBehaviour {
 
     internal SolarBody solar;
-    internal string planetName;
-    internal string planetInfo;
 
 	// Use this for initialization
 	void Start () {
@@ -21,11 +20,13 @@ public class PlanetInfo : MonoBehaviour {
 
     public void OnMouseEnter()
     {
-        ToolTip.instance.SetTooltip(solar.name, solar.GetInfo(GameManager.instance.data.date.time));
+        if (!EventSystem.current.IsPointerOverGameObject())
+            ToolTip.instance.SetTooltip(solar.name, solar.GetInfo(GameManager.instance.data.date.time));
     }
     public void OnMouseOver()
     {
-        ToolTip.instance.SetTooltip(solar.name, solar.GetInfo(GameManager.instance.data.date.time));
+        if (!EventSystem.current.IsPointerOverGameObject())
+            ToolTip.instance.SetTooltip(solar.name, solar.GetInfo(GameManager.instance.data.date.time));
     }
     public void OnMouseExit()
     {
@@ -33,6 +34,12 @@ public class PlanetInfo : MonoBehaviour {
     }
     public void OnMouseDown()
     {
-        GameManager.instance.OpenInfoPanel(solar.solarIndex);
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            //GameManager.instance.OpenInfoPanel(solar.solarIndex);
+            PlanetView.instance.CreatePlanetSystem(solar);
+            SolarView.instance.SelectPlanet(solar);
+        }
+            
     }
 }

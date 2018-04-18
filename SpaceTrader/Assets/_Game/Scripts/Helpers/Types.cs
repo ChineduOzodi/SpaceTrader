@@ -15,9 +15,14 @@ public enum BlueprintType
     LivingQuarters
 }
 
-
-
-
+public enum ViewMode
+{
+    Galaxy,
+    Planet,
+    Moon,
+    Satellite,
+    ThirdPerson
+}
 
 public enum SolarType
 {

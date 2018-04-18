@@ -6,7 +6,9 @@ public struct Orbit {
 
     //public static double massConversion = Mathd.Pow(10, 24);
     //public static double distanceConversion = Units.G * 100; // Multiplication factor to used to view orbits. Base unit will be meters
-
+    /// <summary>
+    /// Semi-major axis. Currently stored in km
+    /// </summary>
     public double sma { get; set; } // Semi-major axis.
     public double ecc { get; set; }
     public double inc { get; set; } // Not used

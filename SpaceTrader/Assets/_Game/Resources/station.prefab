@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212000014083794360}
   - component: {fileID: 61000012010365984}
   - component: {fileID: 120272220213447662}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: stationBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 114000011590287876}
   - component: {fileID: 61567532644755576}
   - component: {fileID: 120367623340016260}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: station
   m_TagString: station
   m_Icon: {fileID: 0}

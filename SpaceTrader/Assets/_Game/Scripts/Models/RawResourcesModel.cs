@@ -14,7 +14,7 @@ public class RawResourcesModel: Model
         int scarce = 10000;
         int common = 100000;
         int abundant = 1000000;
-        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Warium.ToString(), (int)defaultRawResources.Warium,
+        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Warium.ToString(), defaultRawResources.Warium.ToString(),
             "Gaseous material mainly used for weapons", 1000 * Dated.Day / common,
             new List<RawResourceInfo>()
         {
@@ -26,7 +26,7 @@ public class RawResourcesModel: Model
             new RawResourceInfo(PlanetTileType.Volcanic, .75f, Vector2.up,common),
         }));
 
-        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Armoroid.ToString(), (int)defaultRawResources.Armoroid,
+        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Armoroid.ToString(), defaultRawResources.Armoroid.ToString(),
             "Main material used to build structures", 1000 * Dated.Day / abundant,
             new List<RawResourceInfo>()
         {
@@ -38,7 +38,7 @@ public class RawResourcesModel: Model
             new RawResourceInfo(PlanetTileType.Volcanic, .25f, Vector2.up,abundant),
         }));
 
-        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Fuelodite.ToString(), (int)defaultRawResources.Fuelodite,
+        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Fuelodite.ToString(), defaultRawResources.Fuelodite.ToString(),
             "Used to create ship fuel", 1000 * Dated.Day / abundant,
             new List<RawResourceInfo>()
         {
@@ -50,7 +50,7 @@ public class RawResourcesModel: Model
             new RawResourceInfo(PlanetTileType.Volcanic, .5f, Vector2.up,common),
         }));
 
-        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Glassitum.ToString(), (int)defaultRawResources.Glassitum,
+        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Glassitum.ToString(), defaultRawResources.Glassitum.ToString(),
             "Used to create glass like structure", 1000 * Dated.Day / common,
             new List<RawResourceInfo>()
         {
@@ -62,7 +62,7 @@ public class RawResourcesModel: Model
             new RawResourceInfo(PlanetTileType.Volcanic, .35f, Vector2.up,common),
         }));
 
-        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Goldium.ToString(), (int)defaultRawResources.Goldium,
+        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Goldium.ToString(), defaultRawResources.Goldium.ToString(),
             "Rare gold like material", 1000 * Dated.Day / rare,
             new List<RawResourceInfo>()
         {
@@ -74,7 +74,7 @@ public class RawResourcesModel: Model
             new RawResourceInfo(PlanetTileType.Volcanic, .05f, Vector2.up,rare),
         }));
 
-        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Coppode.ToString(), (int)defaultRawResources.Coppode,
+        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Coppode.ToString(), defaultRawResources.Coppode.ToString(),
             "Used to make intricate machinery", 1000 * Dated.Day / scarce,
             new List<RawResourceInfo>()
         {
@@ -86,7 +86,7 @@ public class RawResourcesModel: Model
             new RawResourceInfo(PlanetTileType.Volcanic, .75f, Vector2.up,common),
         }));
 
-        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Limoite.ToString(), (int)defaultRawResources.Limoite,
+        rawResources.Add(new RawResourceBlueprint(defaultRawResources.Limoite.ToString(), defaultRawResources.Limoite.ToString(),
             "Used to make things more heat resistant", 1000 * Dated.Day / scarce,
             new List<RawResourceInfo>()
         {
@@ -106,7 +106,7 @@ public class RawResourcesModel: Model
         this.rawResources = rawResources;
     }
 
-    public RawResourceBlueprint GetResource(int id)
+    public RawResourceBlueprint GetResource(string id)
     {
         return rawResources.Find(x => x.id == id);
     }
@@ -148,7 +148,7 @@ public class RawResourcesModel: Model
 public class RawResource
 {
     public string name { get; private set; }
-    public int id { get; private set; }
+    public string id { get; private set; }
     public double amount { get; private set; }
     public double accessibility { get; private set; }
 
@@ -157,7 +157,7 @@ public class RawResource
 
     public double timeUntilDepleted { get; private set; }
 
-    public RawResource(string _name, int _resourceId, int _amount, float accessibility)
+    public RawResource(string _name, string _resourceId, int _amount, float accessibility)
     {
         name = _name;
         id = _resourceId;
@@ -242,12 +242,12 @@ public class RawResource
     }
 }
 
-public struct RawResourceBlueprint
+public class RawResourceBlueprint
 {
     public string name;
     public string description;
     public List<RawResourceInfo> rawResourceInfos { get; private set; }
-    public int id { get; private set; }
+    public string id { get; private set; }
     public double miningTime;
 
     public RawResourceBlueprint(string _name, string _description, double _miningTime, List<RawResourceInfo> resourcesInfo)
@@ -255,10 +255,10 @@ public struct RawResourceBlueprint
         name = _name;
         description = _description;
         rawResourceInfos = resourcesInfo;
-        id = GameManager.instance.data.id++;
+        id = GetType().ToString() + GameManager.instance.data.id++;
         miningTime = _miningTime;
     }
-    public RawResourceBlueprint(string _name, int _id, string _description, double _miningTime, List<RawResourceInfo> resourcesInfo)
+    public RawResourceBlueprint(string _name, string _id, string _description, double _miningTime, List<RawResourceInfo> resourcesInfo)
     {
         name = _name;
         description = _description;

@@ -100,7 +100,7 @@ public abstract class Labourer : MonoBehaviour, IGoap
 
         //unit.target = nextAction.target.transform;
 		
-		if ((gameObject.transform.position - (Vector3)(Vector2) nextAction.target.galaxyPosition).sqrMagnitude < 5 ) {
+		if ((gameObject.transform.position - (Vector3) nextAction.target.SystemToGalaxyPosition()).sqrMagnitude < 5 ) {
 			// we are at the target location, we are done
 			nextAction.setInRange(true);
 			return true;

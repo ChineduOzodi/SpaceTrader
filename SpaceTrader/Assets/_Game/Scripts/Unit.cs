@@ -8,7 +8,7 @@ public class Unit : MonoBehaviour {
     internal int target;
     internal int oldTarget;
     internal int currentIndex;
-    internal GalaxyManager galaxy;
+    internal ViewManager galaxy;
     internal ShipController ship;
     public float speed = 2;
     public float jumpDistance = 100;
@@ -19,7 +19,7 @@ public class Unit : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         line = GetComponent<LineRenderer>();
-        galaxy = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<GalaxyManager>();
+        galaxy = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<ViewManager>();
         ship = GetComponent<ShipController>();
         //target = ship.solarIndex;
         //oldTarget = ship.solarIndex;

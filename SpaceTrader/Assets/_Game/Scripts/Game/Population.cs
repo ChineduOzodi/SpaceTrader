@@ -19,7 +19,8 @@ public class Population
         adult = Random.Range(1000, 10000000);
         old = Random.Range(1000, 1000000);
         totalPopulation = young + adult + old;
-        requiredItems = new List<Item>() { new Item(defaultRawResources.Goldium.ToString(), (int)defaultRawResources.Goldium, ItemType.RawMaterial, (int)(adult * .0001f), body.GetMarketPrice((int)defaultRawResources.Goldium)) };
+        //requiredItems = new List<Item>() { new Item(defaultRawResources.Goldium.ToString(), (int)defaultRawResources.Goldium, ItemType.RawMaterial, (int)(adult * .0001f), body.GetMarketPrice((int)defaultRawResources.Goldium)) };
+        requiredItems = new List<Item>();
     }
 
     // Update is called once per frame
@@ -39,7 +40,7 @@ public class Population
         old = (int)(old + toOld - toDeath - accidentOld);
 
         totalPopulation = young + adult + old;
-        SolarModel solar = GameManager.instance.data.stars[body.solarIndex[0]];
+        //SolarModel solar = GameManager.instance.data.stars[body.solarIndex[0]];
         //foreach (Item item in requiredItems)
         //{
         //    var found = false;

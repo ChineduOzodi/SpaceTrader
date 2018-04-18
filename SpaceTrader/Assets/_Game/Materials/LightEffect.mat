@@ -61,6 +61,7 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _CutoffLight: 0.01
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
@@ -72,8 +73,10 @@ Material:
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _SqrDistanceCutoff: 10000000
     - _SrcBlend: 1
-    - _StarPositionLength: 100
+    - _StarPositionLength: 1000
+    - _StarRadius: 0.01
     - _StarTemp: 0
     - _StarTemperature: 1000
     - _UVSec: 0
@@ -84,5 +87,6 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HotColor: {r: 1, g: 0, b: 0, a: 1}
     - _SafeColor: {r: 0, g: 1, b: 0, a: 1}
-    - _StarColor: {r: 1, g: 0, b: 0, a: 1}
+    - _StarColor: {r: 1, g: 1, b: 1, a: 1}
     - _StarPosition: {r: 21.41, g: 4.78, b: 0, a: 0}
+    - _TintColor: {r: 1, g: 1, b: 1, a: 1}

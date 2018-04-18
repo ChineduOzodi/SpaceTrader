@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class BuyItemTradeAction : GoapAction {
 
-    private bool itemBought = false;
-    private IPositionEntity item; // where the item is located
+    private bool itemLoaded = false;
     private IdentityModel owner;
     private Ship ship;
 
-    private float startTime = 0;
-    public float workDuration = 30; // seconds
+    private double startTime = 0;
+    public double workDuration = Dated.Hour; // seconds
 
     public BuyItemTradeAction(Ship _ship)
     {
@@ -19,88 +18,130 @@ public class BuyItemTradeAction : GoapAction {
         addEffect("hasTradeItems", true);
 
         ship = _ship;
-        owner = _ship.owner.Model;
-        
+        owner = _ship.owner.Model;      
+
     }
 
 
     public override void reset()
     {
-        itemBought = false;
-        item = null;
+        itemLoaded = false;
         startTime = 0;
     }
 
     public override bool isDone()
     {
-        return itemBought;
+        return itemLoaded;
     }
 
     public override bool requiresInRange()
     {
-        return true; // yes we need to be near a chopping block
+        return true; // yes
     }
 
-    public override bool checkProceduralPrecondition(IPositionEntity agent)
+    public override bool checkProceduralPrecondition(PositionEntity agent)
     {
-        // find the nearest station to buy item to be sold at a profit
-      
+        // Check to make sure contract exists, is active, and has an origin
 
-        IPositionEntity profitableItem = null;
-
-        foreach (SolarModel solar in owner.knownSolars)
+        Ship ship = agent as Ship;
+        if (ship.contractId != null)
         {
-            foreach (Item item in solar.sellList.items)
+            try
             {
-                if (profitableItem == null && CalculateProfit(item, ship) > 0)
+                Contract contract = GameManager.instance.contracts[ship.contractId];
+
+                if (contract.contractState == ContractState.Active)
                 {
-                    // first one, so choose it for now
-                    profitableItem = item;
-                }
-                else if (CalculateProfit(item, ship) > 0)
-                {
-                    profitableItem = item;
+                    if (contract.originId != null && contract.originId != "")
+                    {
+                        target = GameManager.instance.locations[contract.originId];
+                        var structure = target as ProductionStructure;
+                        Item item = structure.itemsStorage.Find(x => x.id == contract.itemId && x.destinationId == contract.destinationId);
+
+                        if (item == null)
+                        {
+                            //Debug.Log("Could not find item " + contract.itemId + " in " + structure.name + " with destination " + contract.destinationId);
+                            return false;
+                        }
+                        else
+                        {
+                            if (item.amount < 1)
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
                 }
             }
+            catch(KeyNotFoundException e)
+            {
+                return false;
+            }
+
             
         }
-        if (profitableItem == null)
-            return false;
 
-        item = profitableItem;
-        target = item;
-
-        return profitableItem != null;
+        return false;
     }
 
-    public override bool perform(IPositionEntity agent)
+    public override bool perform(PositionEntity agent)
     {
+        
+        
         if (startTime == 0)
-            startTime = Time.time;
-
-        if (Time.time - startTime > workDuration)
         {
-            // finished chopping
-            //BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-            //backpack.numFirewood += 5;
-            //chopped = true;
-            //ToolComponent tool = backpack.tool.GetComponent(typeof(ToolComponent)) as ToolComponent;
-            //tool.use(0.34f);
-            //if (tool.destroyed()) {
-            //	Destroy(backpack.tool);
-            //	backpack.tool = null;
-            //}
+            startTime = GameManager.instance.data.date.time;
+
+            Ship ship = agent as Ship;
+            ProductionStructure structure = GameManager.instance.locations[ship.referenceId] as ProductionStructure;
+            Contract contract = GameManager.instance.contracts[ship.contractId];
+            Item item = structure.itemsStorage.Find(x => x.id == contract.itemId && x.destinationId == contract.destinationId);
+
+            if (item == null)
+            {
+                //Debug.Log("Could not find item " + contract.itemId + " in " + structure.name + " with destination " + contract.destinationId);
+                return false;
+            }
+            if (item.amount > ship.itemCapacity)
+            {
+                workDuration = Dated.Minute * ship.itemCapacity;
+            }
+            else
+                workDuration = Dated.Minute * item.amount;
+
+            ship.Info = "Loading " + ship.name + ", duration: " + Dated.ReadTime(workDuration);
+            if (GameManager.instance.debugLog)
+                GameManager.instance.timeScale = 1;
+        }
+            
+
+        if (GameManager.instance.data.date.time - startTime > workDuration)
+        {
+            // Finish item load
+            Ship ship = agent as Ship;
+            ProductionStructure structure = GameManager.instance.locations[ship.referenceId] as ProductionStructure;
+            Contract contract = GameManager.instance.contracts[ship.contractId];
+            Item item = structure.itemsStorage.Find(x => x.id == contract.itemId && x.destinationId == contract.destinationId);
+            if (item == null)
+            {
+                //Debug.Log("Could not find item " + contract.itemId + " in " + structure.name + " with destination " + contract.destinationId);
+                return false;
+            }
+            if (item.amount > ship.itemCapacity)
+            {
+                ship.AddItem(item.id, item.destinationId, ship.itemCapacity);
+                structure.itemsStorage.Find(x => x.id == item.id && x.destinationId == item.destinationId).RemoveAmount(ship.itemCapacity);
+            }
+            else
+            {
+                ship.AddItem(item);
+                structure.itemsStorage.Remove(item);
+            }
+            itemLoaded = true;
+            ship.Info = ("Loading " + ship.name + " Finished. Destination: " + GameManager.instance.locations[contract.destinationId].name);
+
         }
         return true;
-    }
-
-    private double CalculateProfit(Item item, Ship ship)
-    {
-        double fuelMarketPrice = owner.knownSolars[0].GetMarketPrice(ship.fuel.id);
-        double itemAmount = item.amount;
-        if (ship.itemCapacity < itemAmount)
-            itemAmount = ship.itemCapacity;
-
-        return item.price * itemAmount - (item.galaxyPosition - ship.galaxyPosition).magnitude *  fuelMarketPrice / (ship.speed * ship.fuelEfficiency);
     }
 }

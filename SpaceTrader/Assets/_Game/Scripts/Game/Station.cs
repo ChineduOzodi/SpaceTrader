@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using CodeControl;
 using System.Xml.Serialization;
 
-public class Station: ProductionStructure, IWorkers {
+public class Station: ProductionStructure {
 
     //public ModelRef<CreatureModel> manager = new ModelRef<CreatureModel>();
     //public ModelRefs<ShipModel> incomingShips = new ModelRefs<ShipModel>();
     
-    public float totalDocks { get; private set; }
-    public float usedDocks { get; private set; }
+    /// <summary>
+    /// List of the ids of ships that are docked. If 0 then dock is empty.
+    /// </summary>
+    public List<int> docks { get; private set; }
 
-    public List<Item> planetItems = new List<Item>();
+    public List<Item> planetItems = new List<Item>(); //TODO: replace planet items with proper suply demand for planets
 
 
     public bool isProducing = true;
@@ -20,55 +22,50 @@ public class Station: ProductionStructure, IWorkers {
 
     public float runningCost = 10f;
 
-    public int workers { get; set; }
-
-    public double workerPayRate { get; set; }
-
     public Station() { }
 
-    public Station(string name, IdentityModel owner, SolarBody body, int _count = 1)
+    public Station(string name, IdentityModel owner, string referenceId, int _count = 1):
+        base( owner, referenceId, (Vector3d)Random.onUnitSphere * (((SolarBody)GameManager.instance.locations[referenceId]).bodyRadius * .5 + 2500))
     {
-
-        this.owner = new ModelRef<IdentityModel>(owner);
+        //blueprintId = GameManager.instance.data.itemsData.Model.blueprints.Find(x => x.itemType == ItemType.SpaceStation).id;
         structureType = StructureTypes.SpaceStation;
-        id = GameManager.instance.data.id++;
         count = _count;
-        solarIndex = body.solarIndex;
-        structureId = -1;
-        shipId = -1;
         this.name = name;
-        workers = 250;
+        workers = 250 * count;
         workerPayRate = .00116;
-        totalDocks = 50;
-        usedDocks = 0;
+        docks = new List<int>(4);
         planetItems = new List<Item>();
         //GameManager.instance.data.itemsData.Model.items.ForEach(x =>
         //{
         //    if (x.itemType != ItemType.Fuel)
         //        planetItems.Add(new Item(x.id, Mathd.Ceil(Mathd.Pow(body.population,.5) / (Mathd.Pow(x.productionTime, 1.25))), 1,owner, solarIndex));
         //});
-        var fuel = GameManager.instance.data.itemsData.Model.items.Find(x => x.itemType == ItemType.Fuel);
-        requiredItems = new List<Item>() { new Item(fuel.id, 100, fuel.estimatedValue, solarIndex)};
+        var fuel = GameManager.instance.data.itemsData.Model.blueprints.Find(x => x.itemType == ItemType.Fuel);
+        requiredItems = new List<Item>() { new Item(fuel.id, 100)};
+
+        SolarBody body = ((SolarBody)GameManager.instance.locations[referenceId]);
 
         requiredItems.AddRange(planetItems);
-        requiredItems.ForEach(x => {
-            x.price = body.GetMarketPrice(x.id);
-        });
+        //requiredItems.ForEach(x => {
+        //    x.price = body.GetMarketPrice(x.id);
+        //});
         body.structures.Add(this);
-        owner.AddSolarBodyWithStructure(body);
-
-        productionTime = 1;
+        workAmount = 1;
     }
 
-    public void Update(SolarBody parentBody, double deltaTime)
+    public override void Update()
     {
+        deltaTime = GameManager.instance.data.date.time - lastUpdated.time;
+        lastUpdated.AddTime(deltaTime);
+
         if (deleteStructure)
             return;
-        info = "Is producing: " + isProducing + "\nTime Completed: " + (timePassed / Dated.Day).ToString("0.000") + "%";
+
+        Info = "Is producing: " + isProducing + "\nTime Completed: " + (timePassed / Dated.Day).ToString("0.000") + "%";
         if (isProducing)
         {
             timePassed += deltaTime;
-            SearchRequiredItems(parentBody, deltaTime);
+            SearchRequiredItems();
             if (timePassed > Dated.Day)
             {
                 timePassed = 0;
@@ -82,10 +79,10 @@ public class Station: ProductionStructure, IWorkers {
     {
         foreach (Item item in planetItems)
         {
-            Item use = storage.Find(item.id);
+            Item use = Find(item.id);
             if (use != null)
             {
-                var found = storage.UseItem(use);
+                var found = UseItem(use.id,use.amount);
                 if (!found)
                     throw new System.Exception("Item is not found in correct amount");
             }
@@ -100,61 +97,63 @@ public class Station: ProductionStructure, IWorkers {
     /// <param name="itemAmount"></param>
     /// <param name="buyer"></param>
     /// <returns></returns>
-    //internal Items Buy(Items buyItem, IdentityModel buyer)
-    //{
-    //    foreach (ProductionItem item in factory.outputItems)
-    //    {
-    //        if (item.name == buyItem.name)
-    //        {
-    //            if (buyItem.amount > item.amount)
-    //            {
-    //                buyItem.amount = item.amount;
-    //            }
-    //            ProductionItem soldItem = (ProductionItem) buyItem;
-    //            soldItem.price = item.price;
-    //            soldItem.totalPrice = soldItem.price * soldItem.amount;
+    internal Item Buy(Item buyItem, IdentityModel buyer)
+    {
+        return null;
+        //    foreach (ProductionItem item in factory.outputItems)
+        //    {
+        //        if (item.name == buyItem.name)
+        //        {
+        //            if (buyItem.amount > item.amount)
+        //            {
+        //                buyItem.amount = item.amount;
+        //            }
+        //            ProductionItem soldItem = (ProductionItem) buyItem;
+        //            soldItem.price = item.price;
+        //            soldItem.totalPrice = soldItem.price * soldItem.amount;
 
-    //            money += soldItem.totalPrice;
-    //            item.amount -= buyItem.amount;
-    //            buyer.money -= soldItem.totalPrice;
-    //            buyItem.amount = 0;
-    //            buyItem.pendingAmount = soldItem.amount;
-    //            return buyItem;
-    //        }
+        //            money += soldItem.totalPrice;
+        //            item.amount -= buyItem.amount;
+        //            buyer.money -= soldItem.totalPrice;
+        //            buyItem.amount = 0;
+        //            buyItem.pendingAmount = soldItem.amount;
+        //            return buyItem;
+        //        }
 
-    //    }
+        //    }
 
-    //    return buyItem * 0;
-    //}
+        //    return buyItem * 0;
+    }
     ///// <summary>
     ///// Item is being sold to station
     ///// </summary>
     ///// <param name="sellItem"></param>
     ///// <returns>Return much item that was actually sold to station</returns>
-    //internal Items Sell(Items sellItem, IdentityModel seller)
-    //{
-    //    foreach (ProductionItem item in factory.inputItems)
-    //    {
-    //        if (item.name == sellItem.name)
-    //        {
-    //            item.pendingAmount += sellItem.amount;
-    //            float price = item.price * sellItem.amount;
-    //            money -= price;
-    //            return sellItem;
-    //        }
-    //    }
+    internal Item Sell(Item sellItem, IdentityModel seller)
+    {
+        return null;
+        //    foreach (ProductionItem item in factory.inputItems)
+        //    {
+        //        if (item.name == sellItem.name)
+        //        {
+        //            item.pendingAmount += sellItem.amount;
+        //            float price = item.price * sellItem.amount;
+        //            money -= price;
+        //            return sellItem;
+        //        }
+        //    }
 
-    //    return sellItem * 0;
-    //}
-    //internal void SellIncomplete(Items sellItem)
-    //{
-    //    foreach (ProductionItem item in factory.inputItems)
-    //    {
-    //        if (item.name == sellItem.name)
-    //        {
-    //            item.pendingAmount -= sellItem.amount;
-    //            money += item.price * sellItem.amount;
-    //        }
-    //    }
-    //}
-}
+        //    return sellItem * 0;
+        //}
+        //internal void SellIncomplete(Items sellItem)
+        //{
+        //    foreach (ProductionItem item in factory.inputItems)
+        //    {
+        //        if (item.name == sellItem.name)
+        //        {
+        //            item.pendingAmount -= sellItem.amount;
+        //            money += item.price * sellItem.amount;
+        //        }
+        //    }
+    }
+    }

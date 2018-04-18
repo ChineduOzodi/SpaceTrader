@@ -457,10 +457,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818b18a60cf8e224789ac035b7aabd05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  emptyGraphPrefab: {fileID: 11450752, guid: f97becae024eea343a46b501a1d5d7fb, type: 2}
   uiButtonInstance: {fileID: 114260612611395230, guid: 32c600df29de25141987586484ca09b9,
     type: 2}
   title: {fileID: 114938879527076848}
   titleContent: {fileID: 1078971009588448}
+  scrollViewPrefab: {fileID: 114330024972240708, guid: 19ef83cfc7ecf99439a828bc389b3868,
+    type: 2}
   infoContentPanel: {fileID: 1734404803095652, guid: b7e9befee1ab2314a95bb6ce6b297044,
     type: 2}
   planetTiles: {fileID: 114835019485179322, guid: 481210384bb115d499f02d08d2fba87e,

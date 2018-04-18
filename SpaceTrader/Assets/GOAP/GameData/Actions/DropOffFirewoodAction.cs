@@ -30,7 +30,7 @@ public class DropOffFirewoodAction : GoapAction
 		return true; // yes we need to be near a supply pile so we can drop off the firewood
 	}
 	
-	public override bool checkProceduralPrecondition (IPositionEntity agent)
+	public override bool checkProceduralPrecondition (PositionEntity agent)
 	{
         // find the nearest supply pile that has spare firewood
         //SupplyPileComponent[] supplyPiles = (SupplyPileComponent[]) UnityEngine.GameObject.FindObjectsOfType ( typeof(SupplyPileComponent) );
@@ -63,7 +63,7 @@ public class DropOffFirewoodAction : GoapAction
         return false;
 	}
 	
-	public override bool perform (IPositionEntity agent)
+	public override bool perform (PositionEntity agent)
 	{
 		//BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
 		//targetSupplyPile.numFirewood += backpack.numFirewood;
